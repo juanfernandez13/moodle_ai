@@ -19,6 +19,8 @@ import {
   AlertCircle,
   ArrowLeft,
   LoaderCircle,
+  ClipboardList,
+  ListChecks,
 } from "lucide-react";
 import { validateDraft } from "../src/domain/course/index.ts";
 import type {
@@ -117,6 +119,21 @@ function projectIssues(project: CourseProject): UiIssue[] {
   return issues;
 }
 
+function activitySummary(
+  activities: CourseProject["draft"]["sections"][number]["activities"],
+): string {
+  const total = `${activities.length} ${activities.length === 1 ? "atividade" : "atividades"}`;
+  const tasks = activities.filter((entry) => entry.type === "assignment").length;
+  const quizzes = activities.filter((entry) => entry.type === "quiz").length;
+  return [
+    total,
+    tasks > 0 ? `${tasks} ${tasks === 1 ? "tarefa" : "tarefas"}` : "",
+    quizzes > 0 ? `${quizzes} ${quizzes === 1 ? "quiz" : "quizzes"}` : "",
+  ]
+    .filter(Boolean)
+    .join(" · ");
+}
+
 export default function Home() {
   const [project, setProject] = useState<CourseProject | null>(
     workspaceSession.project,
@@ -132,7 +149,6 @@ export default function Home() {
   const [saveState, setSaveState] = useState("Ainda não salvo");
   const [lastCopy, setLastCopy] = useState<number | null>(null);
   const [entry, setEntry] = useState<"files" | "manual" | "json">("files");
-  const [showComplements, setShowComplements] = useState(false);
   const [coursePane, setCoursePane] = useState("discipline");
   const [name, setName] = useState("");
   const [firstSection, setFirstSection] = useState("Unidade 1");
@@ -906,11 +922,16 @@ export default function Home() {
                     <div
                       className={`upload-group ${group === "planning" ? "planning-group" : ""}`}
                       id={`upload-group-${group}`}
-                      hidden={group !== "planning" && !showComplements}
                       key={group}
                     >
                       <div className="upload-row">
-                        <FileText size={24} />
+                        {group === "planning" ? (
+                          <FileText size={24} aria-hidden="true" />
+                        ) : group === "tasks" ? (
+                          <ClipboardList size={24} aria-hidden="true" />
+                        ) : (
+                          <ListChecks size={24} aria-hidden="true" />
+                        )}
                         <div className="upload-copy">
                           <label htmlFor={`upload-${group}`}>
                             {label}
@@ -986,19 +1007,6 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
-                <button
-                  type="button"
-                  className="text-button"
-                  aria-expanded={showComplements}
-                  aria-controls="upload-group-tasks upload-group-quizzes"
-                  onClick={() => setShowComplements(!showComplements)}
-                >
-                  {showComplements ? "Recolher" : "Adicionar"} documentos
-                  complementares
-                  {selectedFiles.tasks.length + selectedFiles.quizzes.length > 0
-                    ? ` (${selectedFiles.tasks.length + selectedFiles.quizzes.length} arquivos)`
-                    : " (opcional)"}
-                </button>
                 <details className="interpret-settings">
                   <summary>
                     Organização:{" "}
@@ -1098,9 +1106,9 @@ export default function Home() {
                   <Upload size={18} />
                   Interpretar planejamento
                 </button>
-                <p className="field-help centered">
-                  Importação: até 10 MiB por arquivo, 20 MiB no total e 10
-                  arquivos. A proposta será conferida no editor.
+                <p className="field-help centered import-limits">
+                  Até 10 MiB por arquivo, 20 MiB e 10 arquivos no total. Confira
+                  a proposta antes de abrir o editor.
                 </p>
               </>
             )}
@@ -1277,8 +1285,7 @@ export default function Home() {
                 <option value="course">Dados da disciplina</option>
                 {project.draft.sections.map((entry, index) => (
                   <option key={entry.id} value={entry.id}>
-                    {index + 1}. {entry.title} ({entry.activities.length}{" "}
-                    atividades)
+                    {index + 1}. {entry.title} ({activitySummary(entry.activities)})
                   </option>
                 ))}
                 <option value="grades">Avaliação e presets</option>
@@ -1353,10 +1360,7 @@ export default function Home() {
                 <span className="unit-number">{index + 1}</span>
                 <span>
                   {entry.title}
-                  <small>
-                    {entry.activities.length}{" "}
-                    {entry.activities.length === 1 ? "atividade" : "atividades"}
-                  </small>
+                  <small>{activitySummary(entry.activities)}</small>
                 </span>
               </button>
             ))}
@@ -1752,63 +1756,38 @@ export default function Home() {
                   </>
                 ) : (
                   <>
-                    <label className="field">
-                      <span>Título da unidade</span>
-                      <input
-                        data-field="title"
-                        value={section.title}
-                        onChange={(event) =>
-                          commands([
-                            {
-                              type: "set_section",
-                              sectionId: section.id,
-                              title: event.target.value,
-                              summary: section.summary,
-                            },
-                          ])
-                        }
-                      />
-                    </label>
-                    <label className="field">
-                      <span>Resumo da unidade</span>
-                      <textarea
-                        data-field="summary"
-                        value={section.summary}
-                        onChange={(event) =>
-                          commands([
-                            {
-                              type: "set_section",
-                              sectionId: section.id,
-                              title: section.title,
-                              summary: event.target.value,
-                            },
-                          ])
-                        }
-                      />
-                    </label>
-                    <RichEditor
-                      key={`section-summary-${section.id}-${issueFocus?.request ?? 0}`}
-                      label="Resumo da unidade"
-                      fallback={section.summary}
-                      blocks={section.summaryBlocks}
-                      focusBlock={richBlockFocus(
-                        issueFocus?.path,
-                        `sections[${project.draft.sections.indexOf(section)}].summaryBlocks`,
-                      )}
-                      focusPath={issueFocus?.path}
-                      assets={project.assets}
-                      onChange={(blocks) =>
-                        commands([
-                          {
-                            type: "set_section",
-                            sectionId: section.id,
-                            title: section.title,
-                            summary: section.summary,
-                            summaryBlocks: blocks,
-                          },
-                        ])
-                      }
-                    />
+                    <div className="add-activities">
+                      <h3>Adicionar atividade</h3>
+                      <div className="activity-choices">
+                        {Object.entries(activityLabels).map(([type, label]) => (
+                          <button
+                            type="button"
+                            key={type}
+                            className="secondary"
+                            onClick={() => {
+                              const next = makeActivity(type);
+                              commands([
+                                {
+                                  type: "add_activity",
+                                  sectionId: section.id,
+                                  activity: next,
+                                },
+                              ]);
+                              setActivityId(next.id);
+                              setActivityPages((previous) => ({
+                                ...previous,
+                                [section.id]: Math.floor(
+                                  section.activities.length / 5,
+                                ),
+                              }));
+                            }}
+                          >
+                            <Plus size={16} />
+                            {label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                     <h3>Atividades</h3>
                     {section.activities.length === 0 && (
                       <p className="empty-state">
@@ -1909,38 +1888,64 @@ export default function Home() {
                         }
                       />
                     )}
-                    <div className="add-activities">
-                      <h3>Adicionar atividade</h3>
-                      <div className="activity-choices">
-                        {Object.entries(activityLabels).map(([type, label]) => (
-                          <button
-                            type="button"
-                            key={type}
-                            className="secondary"
-                            onClick={() => {
-                              const next = makeActivity(type);
-                              commands([
-                                {
-                                  type: "add_activity",
-                                  sectionId: section.id,
-                                  activity: next,
-                                },
-                              ]);
-                              setActivityId(next.id);
-                              setActivityPages((previous) => ({
-                                ...previous,
-                                [section.id]: Math.floor(
-                                  section.activities.length / 5,
-                                ),
-                              }));
-                            }}
-                          >
-                            <Plus size={16} />
-                            {label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
+                    <h3>Título e resumo da unidade</h3>
+                    <label className="field">
+                      <span>Título da unidade</span>
+                      <input
+                        data-field="title"
+                        value={section.title}
+                        onChange={(event) =>
+                          commands([
+                            {
+                              type: "set_section",
+                              sectionId: section.id,
+                              title: event.target.value,
+                              summary: section.summary,
+                            },
+                          ])
+                        }
+                      />
+                    </label>
+                    <label className="field">
+                      <span>Resumo da unidade</span>
+                      <textarea
+                        data-field="summary"
+                        value={section.summary}
+                        onChange={(event) =>
+                          commands([
+                            {
+                              type: "set_section",
+                              sectionId: section.id,
+                              title: section.title,
+                              summary: event.target.value,
+                            },
+                          ])
+                        }
+                      />
+                    </label>
+                    <RichEditor
+                      key={`section-summary-${section.id}-${issueFocus?.request ?? 0}`}
+                      label="Resumo da unidade"
+                      fallback={section.summary}
+                      blocks={section.summaryBlocks}
+                      focusBlock={richBlockFocus(
+                        issueFocus?.path,
+                        `sections[${project.draft.sections.indexOf(section)}].summaryBlocks`,
+                      )}
+                      focusPath={issueFocus?.path}
+                      assets={project.assets}
+                      onChange={(blocks) =>
+                        commands([
+                          {
+                            type: "set_section",
+                            sectionId: section.id,
+                            title: section.title,
+                            summary: section.summary,
+                            summaryBlocks: blocks,
+                          },
+                        ])
+                      }
+                    />
                   </>
                 )}
               </>
