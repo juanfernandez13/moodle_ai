@@ -1,31 +1,30 @@
 import type { ResourceScope } from "./resources.ts";
 import type { Geometry, Material, OwlObject, ThreeApi } from "./three-types.ts";
 
-/** Geometry and palette adapted from docs/design-proposals/glass-owl-v4/owl.js. */
+/** A small clay-like scholar owl, with shallow face discs and a calm gaze. */
 export function createOwlModel(THREE: ThreeApi, scope: ResourceScope, textureReady: () => void) {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(31, 1, 0.1, 30);
   camera.position.set(0, 0.15, 4.8);
   camera.lookAt(0, 0.1, 0);
-  const ambient = new THREE.HemisphereLight(0xffffff, 0x6e7775, 2.4);
-  const key = new THREE.DirectionalLight(0xffffff, 3.1);
+  const ambient = new THREE.HemisphereLight(0xfff8ed, 0x776e61, 2.1);
+  const key = new THREE.DirectionalLight(0xfffaf1, 2.5);
   key.position.set(-4, 5, 6);
-  const rim = new THREE.DirectionalLight(0xe7efff, 2);
+  const rim = new THREE.DirectionalLight(0xe7efff, 1.4);
   rim.position.set(3, 2, -2);
   scene.add(ambient, key, rim);
 
-  const material = (color: number, roughness = 0.72) => scope.own(new THREE.MeshStandardMaterial({ color, roughness, metalness: 0.03 }));
-  const brown = material(0xb89060, 0.86);
-  const ivory = material(0xead4a9, 0.88);
-  const charcoal = material(0x17191c, 0.76);
-  const black = material(0x14221a, 0.24);
-  const white = material(0xffffff, 0.22);
-  const gold = material(0xf3bc35, 0.48);
-  const eyeRim = material(0x55452f, 0.82);
-  const irisRim = material(0x22503b, 0.48);
-  const emerald = material(0x21a65d, 0.34);
-  const wingBrown = material(0x9a744b, 0.9);
-  const feathers = [0xc4a072, 0xb28c5e, 0xa37c50].map((color) => material(color, 0.9));
+  const material = (color: number, roughness = 0.9) => scope.own(new THREE.MeshStandardMaterial({ color, roughness, metalness: 0 }));
+  const brown = material(0xb68c62);
+  const ivory = material(0xf1e2c3, 0.96);
+  const charcoal = material(0x292b2a);
+  const black = material(0x302c25, 0.8);
+  const white = material(0xfcf4de, 0.88);
+  const gold = material(0xe0ac49, 0.81);
+  const irisRim = material(0x586c47, 0.86);
+  const moss = material(0x819264, 0.8);
+  const wingBrown = material(0xa27b54, 0.96);
+  const feathers = [0xb58a5e, 0xaa8057].map((color) => material(color, 0.96));
   const head = new THREE.Group();
   scene.add(head);
   const spheres = new Map<number, Geometry>();
@@ -42,7 +41,7 @@ export function createOwlModel(THREE: ThreeApi, scope: ResourceScope, textureRea
     return mesh;
   }
 
-  sphere(head, brown, 0.7, [0, -0.14, 0], [1, 1.16, 0.79]);
+  sphere(head, brown, 0.72, [0, -0.13, 0], [1, 1.1, 0.79]);
   sphere(head, ivory, 1, [0, -0.4, 0.465], [0.3, 0.38, 0.115]);
   const chestGeometry = scope.own(new THREE.PlaneGeometry(0.35, 0.35 * 238 / 345, 16, 12));
   const positions = chestGeometry.getAttribute("position");
@@ -69,23 +68,20 @@ export function createOwlModel(THREE: ThreeApi, scope: ResourceScope, textureRea
   scope.own(texture);
 
   for (const side of [-1, 1]) {
-    const ear = new THREE.Mesh(scope.own(new THREE.ConeGeometry(0.13, 0.34, 4)), brown);
-    ear.position.set(side * 0.51, 0.55, -0.015);
-    ear.rotation.z = -side * 0.62;
-    ear.rotation.y = Math.PI / 4;
-    head.add(ear);
+    const ear = sphere(head, brown, 0.13, [side * 0.49, 0.5, -0.015], [0.9, 1.35, 0.65]);
+    ear.rotation.z = -side * 0.5;
     for (let toe = 0; toe < 3; toe++) {
-      sphere(head, ivory, 1, [side * 0.265 + (toe - 1) * 0.064, -0.865, 0.24], [0.043, 0.105, 0.071]);
+      sphere(head, ivory, 1, [side * 0.265 + (toe - 1) * 0.064, -0.865, 0.24], [0.043, 0.08, 0.071]);
     }
   }
   const wings: { wing: OwlObject; side: number }[] = [];
   for (const side of [-1, 1]) {
     const wing = new THREE.Group();
     wing.position.set(side * 0.59, -0.19, 0.025);
-    sphere(wing, wingBrown, 1, [side * 0.025, -0.16, 0], [0.145, 0.44, 0.15]);
+    sphere(wing, wingBrown, 1, [side * 0.025, -0.16, 0], [0.155, 0.39, 0.135]);
     for (let i = 0; i < feathers.length; i++) {
-      const feather = sphere(wing, feathers[i]!, 1, [side * (-0.035 + i * 0.049), -0.21 + i * 0.018, 0.105], [0.052, 0.3 - i * 0.022, 0.054]);
-      feather.rotation.z = -side * (0.04 + i * 0.07);
+      const feather = sphere(wing, feathers[i]!, 1, [side * (-0.026 + i * 0.068), -0.22 + i * 0.025, 0.086], [0.062, 0.26 - i * 0.025, 0.05]);
+      feather.rotation.z = -side * (0.06 + i * 0.07);
     }
     head.add(wing);
     wings.push({ wing, side });
@@ -93,52 +89,23 @@ export function createOwlModel(THREE: ThreeApi, scope: ResourceScope, textureRea
 
   const eyes: { eye: OwlObject; iris: OwlObject }[] = [];
   for (const side of [-1, 1]) {
+    // The cream discs belong to the face; blinking only closes the small eyes.
+    sphere(head, ivory, 0.27, [side * 0.248, 0.17, 0.46], [1.07, 1.02, 0.24]);
     const eye = new THREE.Group();
-    eye.position.set(side * 0.275, 0.145, 0.485);
+    eye.position.set(side * 0.245, 0.18, 0.523);
     head.add(eye);
-    sphere(eye, eyeRim, 0.272, [0, 0, 0], [1, 1, 0.32]);
-    sphere(eye, white, 0.254, [0, 0, 0.035], [1, 1, 0.4]);
+    sphere(eye, white, 0.158, [0, 0, 0], [1, 0.96, 0.14]);
     const iris = new THREE.Group();
     eye.add(iris);
-    sphere(iris, irisRim, 0.151, [0, 0, 0.12], [1, 1, 0.32]);
-    sphere(iris, emerald, 0.138, [0, 0, 0.137], [1, 1, 0.28]);
-    sphere(iris, black, 0.076, [0, 0, 0.166], [1, 1, 0.24]);
-    sphere(iris, white, 0.029, [-0.025, 0.036, 0.188], [1, 1, 0.48]);
-    sphere(iris, white, 0.01, [0.025, -0.025, 0.186], [1, 1, 0.4]);
+    sphere(iris, irisRim, 0.111, [0, 0, 0.023], [1, 1, 0.16]);
+    sphere(iris, moss, 0.097, [0, 0, 0.036], [1, 1, 0.15]);
+    sphere(iris, black, 0.06, [0, 0, 0.05], [1, 1, 0.15]);
+    sphere(iris, white, 0.014, [-0.017, 0.023, 0.062], [1, 1, 0.25]);
     eyes.push({ eye, iris });
   }
 
-  const beakCurve = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(0, -0.065, 0.646), new THREE.Vector3(0, -0.105, 0.689),
-    new THREE.Vector3(0, -0.161, 0.713), new THREE.Vector3(0, -0.211, 0.692),
-  ]);
-  const vertices: number[] = [];
-  const indices: number[] = [];
-  const rings = 18;
-  const sides = 16;
-  for (let ring = 0; ring <= rings; ring++) {
-    const t = ring / rings;
-    const center = beakCurve.getPoint(t);
-    const tangent = beakCurve.getTangent(t);
-    const normal = new THREE.Vector3(1, 0, 0);
-    const binormal = new THREE.Vector3().crossVectors(tangent, normal).normalize();
-    const radius = 0.05 * Math.pow(1 - t, 0.65) + 0.001;
-    for (let side = 0; side < sides; side++) {
-      const angle = side / sides * Math.PI * 2;
-      const p = center.clone().addScaledVector(normal, Math.cos(angle) * radius).addScaledVector(binormal, Math.sin(angle) * radius * 0.65);
-      vertices.push(p.x, p.y, p.z);
-      if (ring < rings) {
-        const a = ring * sides + side;
-        const b = ring * sides + (side + 1) % sides;
-        indices.push(a, b, a + sides, b, b + sides, a + sides);
-      }
-    }
-  }
-  const beakGeometry = scope.own(new THREE.BufferGeometry());
-  beakGeometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3));
-  beakGeometry.setIndex(indices);
-  beakGeometry.computeVertexNormals();
-  head.add(new THREE.Mesh(beakGeometry, material(0xd4ac67, 0.5)));
+  const beak = sphere(head, gold, 1, [0, -0.055, 0.557], [0.078, 0.093, 0.072]);
+  beak.rotation.x = -0.18;
 
   const cap = new THREE.Group();
   cap.position.set(0, 0.65, -0.03);
@@ -174,9 +141,9 @@ export function createOwlModel(THREE: ThreeApi, scope: ResourceScope, textureRea
   let gazeX = 0, gazeY = 0, wingLift = 0;
   function resetPose() {
     gazeX = gazeY = wingLift = 0;
-    head.rotation.set(0, -0.07, -0.055);
+    head.rotation.set(0, -0.07, -0.025);
     head.position.y = 0;
-    for (const { wing, side } of wings) wing.rotation.z = side * 0.1;
+    for (const { wing, side } of wings) wing.rotation.z = side * 0.08;
     for (const { eye, iris } of eyes) {
       iris.position.set(0, 0, 0);
       eye.scale.y = 1;
@@ -185,22 +152,22 @@ export function createOwlModel(THREE: ThreeApi, scope: ResourceScope, textureRea
   resetPose();
   return {
     scene, camera, resetPose,
-    setTheme(theme: "light" | "dark") { ambient.intensity = theme === "dark" ? 1.65 : 2.4; },
+    setTheme(theme: "light" | "dark") { ambient.intensity = theme === "dark" ? 1.7 : 2.1; },
     animate(elapsed: number, dt: number, targetX: number, targetY: number, hovered: boolean) {
-      const blend = 1 - Math.exp(-dt * 10);
+      const blend = 1 - Math.exp(-dt * 6);
       gazeX += (targetX - gazeX) * blend;
       gazeY += (targetY - gazeY) * blend;
       wingLift += ((hovered ? 1 : 0) - wingLift) * blend;
-      for (const { wing, side } of wings) wing.rotation.z = side * (0.1 + wingLift * 0.15);
-      head.rotation.y = -0.07 + gazeX * 0.085;
-      head.rotation.x = -gazeY * 0.045;
-      head.rotation.z = -0.055 + Math.sin(elapsed * 0.3) * 0.009;
-      head.position.y = Math.sin(elapsed * 0.6) * 0.018;
-      const phase = elapsed % 6.8;
-      const blink = phase > 6.5 ? Math.sin((phase - 6.5) / 0.3 * Math.PI) : 0;
+      for (const { wing, side } of wings) wing.rotation.z = side * (0.08 + wingLift * 0.07);
+      head.rotation.y = -0.07 + gazeX * 0.045;
+      head.rotation.x = -gazeY * 0.025;
+      head.rotation.z = -0.025 + Math.sin(elapsed * 0.3) * 0.005;
+      head.position.y = Math.sin(elapsed * 0.6) * 0.01;
+      const phase = elapsed % 7.6;
+      const blink = phase > 7.3 ? Math.sin((phase - 7.3) / 0.3 * Math.PI) : 0;
       for (const { eye, iris } of eyes) {
-        iris.position.x = gazeX * 0.027;
-        iris.position.y = gazeY * 0.018;
+        iris.position.x = gazeX * 0.013;
+        iris.position.y = gazeY * 0.009;
         eye.scale.y = 1 - blink * 0.94;
       }
     },
