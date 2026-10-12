@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"><w:body>
+<w:p><w:r><w:t>Disciplina: Matemática ilustrada</w:t></w:r></w:p>
+<w:p><w:r><w:t>Código: MAT-IMG</w:t></w:r></w:p>
+<w:p><w:r><w:t>Tópico 1: Figuras</w:t></w:r></w:p>
+<w:p><w:r><w:t>Observe esta figura.</w:t><w:drawing><wp:inline><wp:docPr id="1" descr="Um quadrado fictício"/><wp:extent cx="914400" cy="914400"/><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="0" name="figure.png"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="rId1"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="914400" cy="914400"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing><w:t>Ela acompanha o texto.</w:t></w:r></w:p>
+<w:tbl><w:tr><w:tc><w:p><w:r><w:t>Elemento</w:t></w:r></w:p></w:tc><w:tc><w:p><w:r><w:t>Representação</w:t></w:r></w:p></w:tc></w:tr><w:tr><w:tc><w:p><w:r><w:t>Quadrado</w:t></w:r></w:p></w:tc><w:tc><w:p><w:r><w:drawing><wp:inline><wp:docPr id="2" descr="Quadrado na tabela"/><wp:extent cx="914400" cy="914400"/><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="0" name="figure.png"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="rId1"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="914400" cy="914400"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p></w:tc></w:tr></w:tbl>
+<w:p><w:r><w:t>Quiz: Verificação</w:t></w:r></w:p>
+<w:p><w:r><w:t>Nota: 10</w:t></w:r></w:p>
+<w:p><w:r><w:t>Tentativas: 2</w:t></w:r></w:p>
+<w:p><w:r><w:t>Embaralhar: false</w:t></w:r></w:p>
+<w:p><w:r><w:t>Questão MC: Quantos lados tem a figura?</w:t></w:r></w:p>
+<w:p><w:r><w:drawing><wp:inline><wp:docPr id="3" descr="Figura da questão"/><wp:extent cx="914400" cy="914400"/><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="0" name="figure.png"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="rId1"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="914400" cy="914400"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p>
+<w:p><w:r><w:t>Alternativa correta: Quatro</w:t></w:r></w:p>
+<w:p><w:r><w:t>Alternativa: Cinco</w:t></w:r></w:p>
+</w:body></w:document>

@@ -1,0 +1,77 @@
+FULL-01 importação — evidência de execução nesta sessão, 12/10/2026
+
+1. Batch inicial de seis comportamentos offline: testes foram escritos antes
+   da implementação, interpretText retornava not_implemented. Comando
+   node --test tests/import/import.test.ts terminou exit 1, 0/6 passaram.
+   Após implementar contrato, parser de perfis, runtime validation e diagnóstico
+   de provider ausente: mesmo comando exit 0, 6/6 passaram.
+
+2. Regressão de origem inválida em resposta de IA: teste de path inexistente
+   com sourceId/blockId reais foi escrito antes da correção. Comando
+   node --test tests/import/providers.test.ts terminou exit 1, 8/9 passaram;
+   o resultado indevidamente retornava ok:true. Após hasField e checagem da
+   origem contra campo real, o teste passou (exit 0 no batch posterior).
+
+3. Regressão de metadados conflitantes: teste foi escrito antes de metadataFact.
+   node --test tests/import/import.test.ts tests/import/providers.test.ts
+   terminou exit 1, 15/16 passaram; Disciplina repetida com outro valor era
+   sobrescrita. Depois da correção, todos passaram e ambiguous_field conserva
+   o diagnóstico localizado sem aplicar um valor silenciosamente.
+
+Os testes DOCX, PDF e HTTP restantes verificam a implementação já construída;
+não são declarados ciclos red/green individuais. Houve um erro no próprio
+teste PDF (comparava base64 com texto do arquivo), corrigido para comparação
+dos bytes. Essa falha não é evidência de TDD da implementação.
+
+Nenhum documento pessoal, chave real ou chamada de IA real foi usado.
+
+4. Correções de proveniência offline solicitadas pelo integrador:
+   - Feedback das alternativas: teste confirma origem do rótulo e da continuação
+     em options[K].feedback, sem atribuir esses blocos a questions[N].feedback.
+   - Metadados em tabela: teste exige que fullName/shortName apontem para o ID
+     da tabela efetivamente presente na prévia, sem ID sintético de origem.
+   - Campos principais: teste exige origem real de datas, pontuação, pares
+     (statement/answer), feedback geral, configurações discursivas e conceito.
+   Os três testes foram escritos antes das correções. Comando
+   node --test tests/import/import.test.ts tests/import/documents.test.ts
+   terminou exit 1, 11/14 passaram. Falhas concretas: blockId sintético de
+   tabela, ausência de origem no feedback da alternativa e na data de abertura.
+   Após corrigir readLine/origins, mesmo comando exit 0, 14/14 passaram.
+
+Todos os testes continuam usando entradas fictícias e HTTP simulado. Nenhum
+acesso ou teste à instância Moodle institucional foi realizado nesta frente.
+
+5. Perda adjacente encontrada no mesmo fluxo de pares:
+   Teste novo exigiu que a continuação de matching.pairs conserve o enunciado
+   inicial no statementBlocks, que substitui a apresentação da string.
+   node --test --test-name-pattern='continuação de par associativo'
+   tests/import/import.test.ts terminou exit 1, 0/1 passou; somente o texto da
+   continuação aparecia nos blocos. Depois de inicializar statementBlocks com
+   o texto real do par, o batch completo passou: 30/30, exit 0.
+
+Verificação final após estas correções:
+- node --test tests/import/*.test.ts: exit 0, 30/30.
+- eslint nos arquivos próprios: exit 0, sem avisos.
+- npm run typecheck: exit 0 para o staging completo.
+- Prettier oficial 3.9.10 do cache transitório aplicado aos TS/MJS próprios;
+  package.json e lockfile não foram alterados nesta frente.
+
+6. Correção de transporte após a revisão independente do FULL-01:
+   Novos testes instalaram OPENAI_API_KEY sintética apenas no processo do teste
+   e substituíram fetch por transporte simulado. Nenhuma chave real foi usada.
+   node --test tests/import/routes.test.ts terminou exit 1, 5/7 passaram.
+   A prova registrou duas chamadas indevidas nas rotas cross-origin (JSON e
+   multipart) e uma chamada indevida em text/plain com JSON no corpo.
+   Depois da política aplicada antes de ler o body/credenciais, mesmo comando
+   terminou exit 0, 7/7 passaram. Origem externa, ausente, null, porta diferente
+   e origem com path recebem HTTP403 e zero chamadas de IA. A interpretação
+   text/plain recebe HTTP415 e zero chamadas. JSON e multipart legítimos seguem
+   funcionando com Origin explícito e chave sintética, que não sai na resposta.
+   A variável de ambiente é restaurada ao terminar cada teste.
+
+Verificação final da correção de transporte:
+- node --test tests/import/*.test.ts: exit 0, 33/33.
+- eslint nos arquivos próprios: exit 0, sem avisos.
+- npm run typecheck: exit 0 para o staging completo.
+- Prettier oficial 3.9.10 aplicado aos arquivos alterados.
+- Nenhum acesso ao Moodle institucional, chave real ou chamada de IA real.

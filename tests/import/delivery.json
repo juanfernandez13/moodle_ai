@@ -1,0 +1,107 @@
+{
+  "digest": "sha256:db61a1e0e671e3bb071b44aa9f92f138c883ab773bac60fa17448144023818a4",
+  "rule": "SHA256 of UTF8 path + NUL + SHA256 + newline; paths sorted localeCompare; delivery.json excluded",
+  "files": [
+    {
+      "path": "app/api/import/route.ts",
+      "sha256": "dcdfad8ae9e7d0f4e49d9dc5cc61d29a6bce6e79fd2401cdacb19ff859ec714c"
+    },
+    {
+      "path": "app/api/interpret/route.ts",
+      "sha256": "20a8f72ad57204b5b7f2dfd87ae45fa5d21f04e3acdf8af52e19bd8494c2fdcf"
+    },
+    {
+      "path": "src/server/import/documents.ts",
+      "sha256": "d89a705fadbd4842c89ab0503095807447299e877df31b846a32ba2db73fe759"
+    },
+    {
+      "path": "src/server/import/index.ts",
+      "sha256": "b51dd4141cc7b4b790de7ec07121b0d42a485a1e05d1b476024d7394670801ba"
+    },
+    {
+      "path": "src/server/import/offline.ts",
+      "sha256": "5d574e1c6469950d80889524bbc82e70486c2236e46a82de11f1922455d5c3de"
+    },
+    {
+      "path": "src/server/import/providers.ts",
+      "sha256": "c102081c40eb97b5b11f4419cf126d88b54377f16fe76eebbce784c26ec42217"
+    },
+    {
+      "path": "src/server/import/request-policy.ts",
+      "sha256": "818259d96204b35c498ce250e2cac6171d879af8a8aa8621aa0a597ce9c8deed"
+    },
+    {
+      "path": "src/server/import/types.ts",
+      "sha256": "1bc82b3d137d05071198ffb81579b82ae77e2fdce1c9450ad32539d6a40889d2"
+    },
+    {
+      "path": "tests/fixtures/import/create-fixtures.mjs",
+      "sha256": "2624303359c157e439a372b8fae3a22404b23861120b148aed3e875cb69779c1"
+    },
+    {
+      "path": "tests/fixtures/import/figure.png",
+      "sha256": "e3ad22be493639733a061cd65ee6b2d6dd67f6a1cc030785ccf9f9cce34f8672"
+    },
+    {
+      "path": "tests/fixtures/import/semanas-em-tabela.docx",
+      "sha256": "72bf5f126ee2c32b7549706447dda1e4c708162d39c3472ed4f8768dc9b19ac0"
+    },
+    {
+      "path": "tests/fixtures/import/topicos-com-imagens.docx",
+      "sha256": "8d876c9bfbe01e2ad87c040eba9144aaf00edbfc13ce156a7e3a623940187985"
+    },
+    {
+      "path": "tests/fixtures/import/topics-images.xml",
+      "sha256": "beda23d78cc9ddf8e9328fd9acd36ad6dec46948046bbe520fe6ce347704a870"
+    },
+    {
+      "path": "tests/fixtures/import/topics.txt",
+      "sha256": "3434d15118f1b396e3adbc094fb44bc8afae5b62270add3096e77706bdb63a65"
+    },
+    {
+      "path": "tests/fixtures/import/weeks-table.xml",
+      "sha256": "b43983489da4bab456eaf74dead2f8fc242d75f7c5d159577f3af93eb12874f7"
+    },
+    {
+      "path": "tests/fixtures/import/weeks.txt",
+      "sha256": "d5944d8ecae3101e64a677aa69c3d2d018831f92a4c64ad9ebf694c49259a668"
+    },
+    {
+      "path": "tests/import/documents.test.ts",
+      "sha256": "57c2d5e3a343a40149ed6243d60aa635c2b58552d1375240a07031d3b7c34252"
+    },
+    {
+      "path": "tests/import/import.test.ts",
+      "sha256": "5ae52b8a8fd9f67201eb8505f1935c84fd02034a84e4c7dbc51b7081ccdfe48c"
+    },
+    {
+      "path": "tests/import/pdf.test.ts",
+      "sha256": "b97a87b254cc0ecd2e2205f8e9fd1a3124e144bde20302ab1080d649361504be"
+    },
+    {
+      "path": "tests/import/providers.test.ts",
+      "sha256": "652958fce7cc4e055da5b82c8f5eb2f28d8697b80dd397f194ba3deb51208989"
+    },
+    {
+      "path": "tests/import/routes.test.ts",
+      "sha256": "12c4a6bce422ece7bec2cb0e2ae8b59632279f63789360be957a80151a78245f"
+    },
+    {
+      "path": "tests/import/tdd-evidence.txt",
+      "sha256": "89d8361b7b2c4a5f5668a34a7fcf6fca3ac94fff180113ec4b236405483242cb"
+    }
+  ],
+  "checks": {
+    "tests": "node --test tests/import/*.test.ts — exit 0, 33/33",
+    "lint": "eslint own paths — exit 0",
+    "preview": "mammoth: three images in DOCX fixture",
+    "typecheck": "npm run typecheck — exit 0",
+    "format": "Official Prettier 3.9.10 from transient cache; own TS/MJS paths formatted; no package or lock changes",
+    "transport": "Explicit same Origin required before body or credential lookup; interpret application/json; import multipart/form-data; synthetic env key and mocked HTTP regression — blocked requests make zero provider calls"
+  },
+  "integrationCorrection": {
+    "executor": "/root",
+    "finding": "Next internal localhost URL differs from matching public loopback Host/Origin; shared bounded alias guard added in correction2.",
+    "sharedDependency": "src/shared/request-origin.ts"
+  }
+}
