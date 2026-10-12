@@ -1,0 +1,80 @@
+FULL-01 exportação — 12/10/2026
+
+Interface pública: exportCourse(unknown, options), lida via tar-stream e XML parser
+independentes; rota POST multipart exerce a mesma função.
+
+Ciclo inicial: testes preservação de seis atividades e falhas escritos antes do
+exportador; execução exit1 por index.ts inexistente. Isso comprova somente o
+primeiro ciclo de criação. Após implementação: exit0, 2/2 testes passam.
+
+Ciclo cancelamento: teste escrito depois da implementação inicial.
+RED node --test tests/export/export-course.test.ts: exit1, 2pass/1fail,
+adapter de 300ms segurava a resposta após AbortController.abort().
+GREEN após Promise.race com remoção do listener no finally: exit0, 3/3pass,
+resposta de cancelamento em 21ms (novo run 23ms).
+
+Regressões adicionais escritas após o exportador: fixture completa independente,
+precisão XML/datas/limites/nomes, concorrência/clonagem/fechamento isolado.
+Não foram ciclos RED individuais; são gates do candidato, 6/6pass.
+HTTP: testes integração multipart/hash/revisão/limites/invalid transport.
+
+Fixture completa: full-course.json/assets.json/expected.json escritos como dados
+sintéticos com nove atividades, seis tipos de módulo, quatro questões de três
+tipos e seis ocorrências da mesma imagem em destinos Moodle diferentes.
+expected.json tem expectativas semânticas fixas, não extraídas do exportador.
+MBZ de investigação em work/export-fixture.mbz; SHA256 inicial
+0155706667931e557f6d41ca5b7193c2399ab81e38af77e0bdd3545fbe337310.
+Restauração ainda não comprovada por este executor. Integrador executa Lab.
+
+Regressão de restauração real, solicitada pelo integrador:
+Moodle 4.1.17 selecionava o ramo legado do quiz porque module.xml não trazia
+atributo version. Fontes oficiais locais lidas: backup_stepslib.php atributo
+module.version; restore_stepslib.php process_module; restore_quiz_stepslib.php
+define_structure e process_quiz_question_legacy_instance; seis mod/version.php.
+RED novo teste pelo MBZ: módulo.version era undefined em vez de 2022112801.
+GREEN: versões dos seis módulos fixadas conforme 4.1.17; quiz utiliza references
+modernas existentes. Não foi inserido questionid legado artificial.
+Títulos da seção0 técnica e settings foram conciliados com restore_root_task.
+node --test tests/export/*.test.ts: exit0, 10/10pass.
+MBZ regenerado no mesmo path,12116bytes,SHA256
+f3fb0b242afc69257acc7d55aaf8c98672e87978ea58ddecc651abab242cb16e.
+Integração e novo restore são responsabilidade do integrador.
+
+Regressão semântica Lab: restore fix1 terminou, porém glossary_entries e sua
+imagem desapareceram porque Moodle 4.1 considera conteúdo do glossário userinfo.
+Fontes oficiais locais: restore_glossary_stepslib.php define_structure,
+process_glossary_entry e after_execute; restore_activity_task dependências de
+userinfo; restore_root_task users; query_builder do glossário LEFT JOIN do autor.
+RED teste público root.users: '0' recebido em vez de '1' para glossário com entradas.
+GREEN11/11 export+route depois da alteração específica: users.xml vazio, userid0,
+userinfo apenas nas seções e atividades glossary com entradas; demais módulos0.
+Warning público e header dedicado explicam informação de usuário necessária,
+autoria anônima e ausência de contas/matrículas/submissões. Contrato do draft
+permaneceu congelado. Não há usuários ou referências de usuários no pacote.
+MBZfix2:12197bytes,SHA256
+ce3001d713bcc80180ede6274a442a06561aaaca73394f58e76694efd808ab74.
+Integrador comprovará restauração, semântica, HTML e contagens usuários/inscrições;
+essa evidência ainda não é afirmada por este executor.
+
+Verificação recebida do integrador após Labfix2 (12/10/2026):
+restore CLIexit0 course4 no Moodle 4.1.17 Build20250317; checker independente
+scripts/check-lab-snapshot.mjs passou nove módulos/quatro questões/dez arquivos/
+seis ocorrências de imagem, hashes dos bytes, notas, datas, referências de quiz
+e configuração de fórum single. Usuários antes2/depois2; inscrições antes0/depois0.
+Navegador local exibiu entrada Revisão e imagem pluginfile no glossário, loaded
+com naturalWidth1; nenhuma autoria foi inventada.
+DOCX tópicoscourse5 e semanalcourse6 também restaurados e checker passou.
+Semanal recebeu startDate explicitamente na revisão, não do exportador.
+Não foi usado Moodle institucional ou outro ambiente real.
+
+Estado público atual: lab_validated para perfil investigado no ambiente local
+4.1.17 Build20250317. Header release/build explícitos, sem promessa sobre
+4.1.17+Build20250321, outras versões/plugins/instâncias. Warning de userinfo do
+glossário permanece. Alteração somente de mensagens/prova/headers e testes;
+builders, alocação de IDs e bytes de geração não foram alterados nessa rodada.
+
+Formatação oficial temporária: npm view prettier version retornou3.9.10;
+npm exec --package=prettier@3.9.10 executou somente source export/route,
+tests export e fixtures export. Não alterou package.json/package-lock.json ou
+domínio aceito. Checks após formatação: node --test tests/export/*.test.ts
+exit0,11/11pass; eslint paths do export/rota/tests exit0.

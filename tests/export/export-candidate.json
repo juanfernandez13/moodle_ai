@@ -1,0 +1,55 @@
+{
+  "revision": "sha256:9d5f2836a40eea6132151d58d7cef80993c37c98475e83151466b368bd70ab03",
+  "algorithm": "sha256(path + NUL + fileSha256 + LF), paths sorted",
+  "fileCount": 12,
+  "files": [
+    {
+      "path": "app/api/export/route.ts",
+      "sha256": "32a202785515eb57c0ec0e377cb37074eedd97e0d8ec6f847e535f76f5fdaa92"
+    },
+    {
+      "path": "src/server/export/archive.ts",
+      "sha256": "cafb2c83ee41eb9d9a5b1f198f8918705f05b916707e8ac0d05faaa718317452"
+    },
+    {
+      "path": "src/server/export/builders.ts",
+      "sha256": "a4871bffbb7baf68fc4a493a01dbd8bbc9907002776d90bd5a8f53b8bca0f908"
+    },
+    {
+      "path": "src/server/export/index.ts",
+      "sha256": "bfe50bb653e5c87e0c723ca8488116a80cda327b251fb342ccb129e3f81dfdad"
+    },
+    {
+      "path": "src/server/export/model.ts",
+      "sha256": "4ae70a18e0cfeb5a941c8d32000919418d05a5c0dc45250cdfabdd4e44d382a9"
+    },
+    {
+      "path": "src/server/export/profile.ts",
+      "sha256": "86fe8c2f5dd4b690d8deeb7c200f2ed7089e20c58c7768d7c59226ccbbbf67d6"
+    },
+    {
+      "path": "tests/export/export-course.test.ts",
+      "sha256": "2d2c96c42301833bcdd11e852606be2e94b1fd9d9f6e62ffc158d842cf7a39b6"
+    },
+    {
+      "path": "tests/export/export-route.test.ts",
+      "sha256": "b01840396c0cfcead24372db80489b2c7aa71c45d9271e9edfcbe2623c98dc01"
+    },
+    {
+      "path": "tests/export/tdd-evidence.txt",
+      "sha256": "8c464bdc5f0f75075561c29a4d57f3e634515339810f49315b51be2f259d4a5a"
+    },
+    {
+      "path": "tests/fixtures/export/assets.json",
+      "sha256": "0af320fad4a7b5678bf927e715077c898320a18319eafef1199f898d0fef0e67"
+    },
+    {
+      "path": "tests/fixtures/export/expected.json",
+      "sha256": "281d1ea690bb662a7f260f0d0933323b5df230aeb4356faa20bd81253fb3dbbf"
+    },
+    {
+      "path": "tests/fixtures/export/full-course.json",
+      "sha256": "efb71345d8a62e1ec8b05401dd5ba9017b4640c9a9fbffec031f2b1815468f81"
+    }
+  ]
+}

@@ -1,0 +1,330 @@
+{
+  "schemaVersion": 1,
+  "id": "course-full",
+  "revision": 3,
+  "metadata": {
+    "fullName": "Curso de paridade fictício",
+    "shortName": "FULL-01",
+    "summary": "Conteúdo fictício para validar o contrato inicial.",
+    "organization": "topics",
+    "startDate": "2026-10-12T09:00:00-03:00",
+    "summaryBlocks": [
+      {
+        "id": "course-summary-text",
+        "kind": "text",
+        "text": "Resumo rico literal <script>texto</script>"
+      },
+      {
+        "id": "course-summary-table",
+        "kind": "table",
+        "rows": [
+          [
+            {
+              "blocks": [
+                {
+                  "id": "summary-cell-text",
+                  "kind": "text",
+                  "text": "Tabela de exemplo"
+                },
+                {
+                  "id": "summary-cell-image",
+                  "kind": "image",
+                  "attachmentId": "image-1",
+                  "alt": "Ponto de exemplo"
+                }
+              ]
+            }
+          ]
+        ]
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "section-1",
+      "title": "Primeiro tópico",
+      "summary": "Exemplo com duas atividades de cada tipo.",
+      "activities": [
+        {
+          "id": "forum-1",
+          "type": "forum",
+          "title": "Apresentações",
+          "description": "Apresente uma expectativa para o curso.",
+          "attachmentIds": ["attachment-intro"],
+          "settings": {
+            "discussionMode": "general"
+          },
+          "descriptionBlocks": [
+            {
+              "id": "forum-image",
+              "kind": "image",
+              "attachmentId": "image-1",
+              "alt": "Imagem do fórum"
+            }
+          ]
+        },
+        {
+          "id": "forum-2",
+          "type": "forum",
+          "title": "Discussão do tópico",
+          "description": "Compare duas estratégias de estudo.",
+          "attachmentIds": [],
+          "settings": {
+            "discussionMode": "single"
+          }
+        },
+        {
+          "id": "assignment-1",
+          "type": "assignment",
+          "title": "Plano de estudo",
+          "description": "Envie seu plano fictício.",
+          "attachmentIds": ["attachment-plan"],
+          "schedule": {
+            "opensAt": "2026-10-12T12:00:00Z",
+            "closesAt": "2026-10-19T12:00:00Z"
+          },
+          "settings": {
+            "maxGrade": 10,
+            "submissionMode": "file"
+          }
+        },
+        {
+          "id": "assignment-2",
+          "type": "assignment",
+          "title": "Reflexão final",
+          "description": "Relate o que você aprendeu.",
+          "attachmentIds": ["attachment-reflection"],
+          "settings": {
+            "maxGrade": 100,
+            "submissionMode": "both"
+          }
+        },
+        {
+          "id": "quiz-1",
+          "type": "quiz",
+          "title": "Verificação inicial",
+          "description": "Escolha uma resposta para a pergunta.",
+          "attachmentIds": [],
+          "settings": {
+            "maxGrade": 10,
+            "attempts": 0,
+            "shuffleQuestions": false
+          },
+          "questions": [
+            {
+              "id": "question-1",
+              "type": "multiple-choice",
+              "statement": "Qual ação ajuda a organizar o estudo?",
+              "options": [
+                {
+                  "id": "option-1-a",
+                  "text": "Planejar horários",
+                  "fraction": 1,
+                  "feedback": "Correto."
+                },
+                {
+                  "id": "option-1-b",
+                  "text": "Evitar revisões",
+                  "fraction": 0,
+                  "feedback": "Tente novamente."
+                },
+                {
+                  "id": "option-1-c",
+                  "text": "Ignorar objetivos",
+                  "fraction": 0,
+                  "feedback": "Tente novamente."
+                }
+              ],
+              "feedback": "Um plano ajuda a distribuir o tempo.",
+              "statementBlocks": [
+                {
+                  "id": "question-image",
+                  "kind": "image",
+                  "attachmentId": "image-1",
+                  "alt": "Imagem da questão"
+                }
+              ]
+            },
+            {
+              "id": "matching-1",
+              "type": "matching",
+              "statement": "Associe V e F",
+              "feedback": "Revise as afirmações.",
+              "maxMark": 2,
+              "pairs": [
+                {
+                  "id": "matching-pair-1",
+                  "statement": "Aprender exige prática",
+                  "answer": "V",
+                  "statementBlocks": [
+                    {
+                      "id": "matching-image",
+                      "kind": "image",
+                      "attachmentId": "image-1",
+                      "alt": "Prática"
+                    }
+                  ]
+                },
+                {
+                  "id": "matching-pair-2",
+                  "statement": "Revisar nunca ajuda",
+                  "answer": "F"
+                }
+              ]
+            },
+            {
+              "id": "essay-1",
+              "type": "essay",
+              "statement": "Explique sua estratégia",
+              "feedback": "Avalie clareza e coerência.",
+              "maxMark": 3,
+              "settings": {
+                "responseFormat": "editor",
+                "responseRequired": true,
+                "responseLines": 15,
+                "attachments": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "quiz-2",
+          "type": "quiz",
+          "title": "Verificação final",
+          "description": "Confira o conceito trabalhado.",
+          "attachmentIds": ["attachment-intro"],
+          "settings": {
+            "maxGrade": 100,
+            "attempts": 2,
+            "shuffleQuestions": true
+          },
+          "questions": [
+            {
+              "id": "question-2",
+              "type": "multiple-choice",
+              "statement": "Qual hábito favorece a aprendizagem?",
+              "options": [
+                {
+                  "id": "option-2-a",
+                  "text": "Revisar conceitos",
+                  "fraction": 1,
+                  "feedback": "Correto."
+                },
+                {
+                  "id": "option-2-b",
+                  "text": "Nunca praticar",
+                  "fraction": 0,
+                  "feedback": "Tente novamente."
+                }
+              ],
+              "feedback": "A revisão retoma e consolida conceitos."
+            }
+          ]
+        },
+        {
+          "id": "chat-1",
+          "type": "chat",
+          "title": "Conversa de estudo",
+          "description": "Chat e tarefas coexistem.",
+          "attachmentIds": [],
+          "schedule": {
+            "closesAt": "2026-10-20T12:00:00Z"
+          },
+          "settings": {
+            "sessionAt": "2026-10-19T12:00:00Z",
+            "repeat": "weekly",
+            "keepDays": 30
+          }
+        },
+        {
+          "id": "wiki-1",
+          "type": "wiki",
+          "title": "Wiki da turma",
+          "description": "Construa coletivamente.",
+          "attachmentIds": [],
+          "settings": {
+            "mode": "collaborative",
+            "firstPageTitle": "Estratégias"
+          }
+        },
+        {
+          "id": "glossary-1",
+          "type": "glossary",
+          "title": "Glossário do curso",
+          "description": "Registre termos.",
+          "attachmentIds": [],
+          "settings": {
+            "allowDuplicates": false,
+            "requireApproval": true,
+            "entriesPerPage": 10
+          },
+          "entries": [
+            {
+              "id": "glossary-entry-1",
+              "concept": "Revisão",
+              "definition": "Retomada de conceitos.",
+              "definitionBlocks": [
+                {
+                  "id": "glossary-entry-image",
+                  "kind": "image",
+                  "attachmentId": "image-1",
+                  "alt": "Revisão"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "summaryBlocks": [
+        {
+          "id": "section-image",
+          "kind": "image",
+          "attachmentId": "image-1",
+          "alt": "Imagem da seção"
+        }
+      ]
+    }
+  ],
+  "attachments": [
+    {
+      "id": "attachment-intro",
+      "name": "introducao.txt",
+      "size": 27,
+      "mediaType": "text/plain"
+    },
+    {
+      "id": "attachment-plan",
+      "name": "plano.txt",
+      "size": 41,
+      "mediaType": "text/plain"
+    },
+    {
+      "id": "attachment-reflection",
+      "name": "reflexao.txt",
+      "size": 36,
+      "mediaType": "text/plain"
+    },
+    {
+      "id": "image-1",
+      "name": "diagrama.png",
+      "size": 68,
+      "mediaType": "image/png"
+    }
+  ],
+  "gradebook": {
+    "categories": [
+      {
+        "id": "category-assignments",
+        "name": "Tarefas",
+        "weight": 60,
+        "activityIds": ["assignment-1", "assignment-2"]
+      },
+      {
+        "id": "category-quizzes",
+        "name": "Quizzes",
+        "weight": 40,
+        "activityIds": ["quiz-1", "quiz-2"]
+      }
+    ]
+  }
+}
