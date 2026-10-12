@@ -316,13 +316,12 @@ test("confirmation consumes its current preview before sending; unknown results 
 
 test("changing or reconnecting Moodle invalidates the current student preview before an old confirm action can send", async () => {
   const calls: string[] = [];
-  let candidate: StudentPreview;
   const render = workflowFixture(async (url) => {
     calls.push(url);
     return remotePreview(candidate);
   });
   let workflow = await prepared(render);
-  candidate = workflow.csv.previews[0]!;
+  const candidate = workflow.csv.previews[0]!;
   await workflow.remote.previewMoodle();
   workflow = render();
   const oldConfirm = workflow.remote.confirmMoodle;
@@ -367,7 +366,6 @@ test("late student preview from the earlier connection cannot restore a confirma
 
 test("student confirmation that was already sent remains locked across a connection change and a late failure", async () => {
   let reject: ((error: Error) => void) | undefined;
-  let candidate: StudentPreview;
   let confirms = 0;
   const render = workflowFixture(async (url) => {
     if (url.endsWith("/preview")) return remotePreview(candidate);
@@ -377,7 +375,7 @@ test("student confirmation that was already sent remains locked across a connect
     });
   });
   let workflow = await prepared(render);
-  candidate = workflow.csv.previews[0]!;
+  const candidate = workflow.csv.previews[0]!;
   await workflow.remote.previewMoodle();
   workflow = render();
   const pending = workflow.remote.confirmMoodle();
