@@ -1,0 +1,110 @@
+{
+  "task": "URL01",
+  "status": "historical-first-candidate",
+  "contentDigest": "sha256:b20bf22b571e1a9ece2631959f09f3fdd8ace1eb1f4c063ed5e8d60bfb8e2d80",
+  "files": [
+    {
+      "path": "src/client/components/moodle-connection.tsx",
+      "sha256": "bccea8be0b01a064a63fe4a52ca1c43f409283dfc7b3b07ea0ae104ed3b41a7b"
+    },
+    {
+      "path": "src/client/features/moodle/components/moodle-connection.tsx",
+      "sha256": "d1918178932e320932188c6c7397bb2020f02ab6b68d7b899eb6a55c98acdd12"
+    },
+    {
+      "path": "src/client/features/moodle/helpers/moodle-api.ts",
+      "sha256": "82d301cd4437ffe68b120b8e90426b8e076e5cc5ccc930b7f8cb58ee1e250c09"
+    },
+    {
+      "path": "src/client/features/moodle/hooks/use-moodle.ts",
+      "sha256": "809f905e0152f96d242ba990c6cb3c5fc9cb00b8424c7f480e4cb9732d6de64e"
+    },
+    {
+      "path": "src/client/features/moodle/types.ts",
+      "sha256": "70ee8c98c9ccbe938c7d1ddd894813f46af4d70985d011ae24130e57f9252707"
+    },
+    {
+      "path": "src/server/moodle/api.ts",
+      "sha256": "8cdc440f2e531ddf9716319b298832f2da9261067dbc9f7b543cf90b77a18a32"
+    },
+    {
+      "path": "src/server/moodle/errors.ts",
+      "sha256": "5d70513128c3f8ead5635a9a62dece3ff280a6bdd5de987d53f1f2661ccb8418"
+    },
+    {
+      "path": "src/server/moodle/http.ts",
+      "sha256": "bc5786c5926cf3b3c9c91b290653b23fc0c8de5a0763c17cd463d8147ca0ce90"
+    },
+    {
+      "path": "src/server/moodle/native-transport.ts",
+      "sha256": "e6266797b26ea18f718d9239ee9b57318687948e346594c2d80d9ee3325d7d9d"
+    },
+    {
+      "path": "src/server/moodle/url-policy.ts",
+      "sha256": "e42b0389f1f13be31657df35bd470265f4ab858be6331db99a0d5746f0a6cace"
+    },
+    {
+      "path": "tests/moodle/api.test.ts",
+      "sha256": "a01a9362f9acc51305a00a3f07aff59e53ee9d9a81fb33b1b2aad5f1c79668a8"
+    },
+    {
+      "path": "tests/moodle/url-api.test.ts",
+      "sha256": "806f827f329832cf4388af0729afcd0271d30a99e74d5450b58384c10a30b557"
+    },
+    {
+      "path": "tests/moodle/url-security.test.ts",
+      "sha256": "6e416a3a0df042c2f2f67d775fd2854422a9acaee4957bcad861bdad9c6c3c0f"
+    }
+  ],
+  "behavior": [
+    "Optional per-login canonical HTTP/HTTPS Moodle URL with subdirectory support",
+    "Adapter availability separate from verified Lab compatibility",
+    "Target bound to opaque session; reconnect invalidates earlier cookies and previews even after failed authentication",
+    "All DNS answers validated and selected public IP pinned in native HTTP/TLS socket",
+    "Credentials never sent across origins or outside installation prefix",
+    "UI split into components/hooks/helpers/types with stable legacy exports"
+  ],
+  "verification": {
+    "targetedMoodleTests": {
+      "command": "node --test tests/moodle/*.test.ts",
+      "passed": 42,
+      "failed": 0
+    },
+    "typecheck": {
+      "command": "npm run typecheck",
+      "exitCode": 0
+    },
+    "lint": {
+      "command": "npm run lint",
+      "exitCode": 0
+    },
+    "diffCheck": {
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    "nativeLabGet": {
+      "url": "http://localhost:3211/login/index.php",
+      "status": 200,
+      "loginTokenPresent": true,
+      "bytes": 34497,
+      "node": "24.19.0"
+    },
+    "tdd": [
+      "No-default public URL login red then green",
+      "Failed target switch revokes previous session and preview red then green",
+      "Encoded redirect path guard red then green",
+      "Post-send DNS failure preserves uncertain outcome red then green"
+    ]
+  },
+  "limits": [
+    "Public destinations simulated with trusted DNS/transport mocks; no external Moodle network access",
+    "Browser integration and real Lab login/catalogue/logout are assigned to root",
+    "No general Moodle version/plugin/SSO compatibility claim",
+    "CodeGraph not initialized; direct source/import inspection used"
+  ],
+  "institutionalMoodleAccess": false,
+  "externalMoodleNetworkAccess": false,
+  "committed": false,
+  "supersededBy": "docs/tasks/UX02/candidate.json",
+  "snapshotNote": "Historical snapshot of the first URL01 delivery before the UX02 session-invalidation correction. contentDigest, files, verification and committed describe that earlier snapshot; they are not the final integrated hashes or checks. The current candidate and review evidence are in docs/tasks/UX02."
+}
