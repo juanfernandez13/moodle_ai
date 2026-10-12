@@ -47,7 +47,7 @@ export function Shell({
           enabled={scene}
           theme={dark ? "dark" : "light"}
         />
-        <div className="workspace">
+        <div className={`workspace${active === "students" ? " workspace-students" : ""}`}>
           <header className="topbar">
             <Link className="brand" href="/">
               <img src="/brand-owl.svg" width="39" height="39" alt="" />

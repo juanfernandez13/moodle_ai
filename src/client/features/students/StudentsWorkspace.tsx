@@ -22,7 +22,7 @@ export function StudentsWorkspace() {
   } = useStudentsWorkflow();
   return (
     <Shell active="students">
-      <main className="tool-panel glass">
+      <main className="tool-panel students-panel glass">
         <div className="tool-heading">
           <div>
             <h1>Cadastro em lote</h1>
