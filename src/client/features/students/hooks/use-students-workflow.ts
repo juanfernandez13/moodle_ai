@@ -13,7 +13,16 @@ export function useStudentsWorkflow() {
   const [error, setError] = useState("");
   const [stage, setStage] = useState<StudentStage>(1);
   const generation = useRef(0);
-  const connection = useMoodle();
+  const sessionGeneration = useRef(0);
+  const connection = useMoodle({
+    onSessionChange() {
+      generation.current++;
+      sessionGeneration.current++;
+      setBusy(false);
+      setError("");
+      remote.invalidateConnection();
+    },
+  });
 
   // Called from user actions after all three state owners have been created.
   function invalidate() {
@@ -27,7 +36,7 @@ export function useStudentsWorkflow() {
     setBusy,
     setError,
     onInvalidate: invalidate,
-    onReview: () => setStage(2)
+    onReview: () => setStage(2),
   });
   const csv = useStudentCsv({
     rows: source.rows,
@@ -36,16 +45,20 @@ export function useStudentsWorkflow() {
     setError,
     onInvalidate: invalidate,
     onReady: () => setStage(3),
-    onPreviewChange: () => remote.clearPreview()
+    onPreviewChange: () => remote.clearPreview(),
   });
   const remote = useStudentMoodle({
     candidate: csv.previews[csv.previewIndex],
     generation,
+    sessionGeneration,
     setBusy,
-    setError
+    setError,
   });
   const validation = useMemo(
-    () => source.rows.length ? validateStudents(source.rows) : { valid: false, issues: [] },
+    () =>
+      source.rows.length
+        ? validateStudents(source.rows)
+        : { valid: false, issues: [] },
     [source.rows],
   );
   return {
@@ -57,6 +70,6 @@ export function useStudentsWorkflow() {
     csv,
     remote,
     connection,
-    validation
+    validation,
   };
 }
