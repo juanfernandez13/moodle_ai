@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark" data-scene="field">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#eef6f1">
+  <title>Moodle AI · Arquivos do curso</title>
+  <link rel="icon" type="image/svg+xml" href="assets/brand-owl-plain.svg">
+  <link rel="preload" href="../glass-owl-v3/fonts/Nunito-Variable.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="styles.css?v=tailwind-board-20261012">
+  <link rel="stylesheet" href="controls.css?v=controls-review-20261012-3">
+  <link rel="stylesheet" href="tailwind.css?v=tailwind-board-20261012">
+  <link rel="stylesheet" href="file-list.css?v=controls-review-20261012">
+  <link rel="stylesheet" href="students.css?v=students-batch-20261012">
+  <script defer src="../glass-owl-v2/vendor/three.browser.js"></script>
+  <script defer src="motion.js"></script>
+  <script defer src="app.js?v=students-owl-20261012"></script>
+  <script defer src="uploads.js?v=controls-review-20261012"></script>
+  <script defer src="students.js?v=students-batch-20261012-final"></script>
+  <script defer src="scenery.js?v=idle-fireflies-20261012-final"></script>
+  <script defer src="prompt.js?v=controls-review-20261012"></script>
+  <script defer src="controls.js?v=controls-review-20261012-3"></script>
+  <script defer src="owl.js?v=moodle-mark-20261012"></script>
+</head>
+<body>
+  <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-cap" viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5-10-5Zm4 3v5c4 3 8 3 12 0v-5M22 9v7"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V3m-4 4 4-4 4 4M7 12H5a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2h-2"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m7 8-4 4 4 4m10-8 4 4-4 4M14 4l-4 16"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M15 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2m22 0v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/><circle cx="8" cy="7" r="4"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 0v6h6M8 13h8m-8 4h5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.44.402.784a6.25 6.25 0 0 0 8.268 8.268c.345-.215.807-.004.803.42Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6c-3-2-7-2-10-1v14c3-1 7-1 10 1m0-14c3-2 7-2 10-1v14c-3-1-7-1-10 1V6Z"/></symbol>
+    <symbol id="i-landscape" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="5"/><circle cx="8" cy="8" r="1.5"/><path d="m2 17 6-6 4 4 4-5 6 7"/></symbol>
+  </svg>
+
+  <div class="landscape" aria-hidden="true"><div id="field-scene"></div></div>
+
+  <div class="workspace">
+    <header class="topbar flex items-center justify-between gap-5 py-4 max-[600px]:flex-col max-[600px]:items-stretch max-[600px]:gap-3">
+      <a class="brand flex items-center gap-[9px] max-[600px]:gap-[7px]" href="./" aria-label="Moodle AI, início da proposta"><span class="brand-mark" aria-hidden="true"><img src="assets/brand-owl.svg" width="39" height="39" alt=""></span><span>Moodle<span class="brand-ai"> AI</span></span></a>
+      <div class="header-actions flex items-center gap-2 max-[600px]:grid max-[600px]:w-full max-[600px]:grid-cols-3 max-[360px]:gap-1.5" role="group" aria-label="Ferramentas e aparência"><button class="header-action header-action--students inline-flex items-center justify-center gap-2 min-h-11 rounded-full max-[360px]:gap-1.5" type="button" data-open-mode="students"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg><span>Alunos</span></button>
+        <button class="header-action inline-flex items-center justify-center gap-2 min-h-11 rounded-full max-[360px]:gap-1.5" id="scene-toggle" type="button" aria-label="Ocultar fundo" aria-pressed="true" title="Ocultar fundo"><svg class="icon" aria-hidden="true"><use href="#i-landscape"/></svg><span>Fundo</span></button>
+        <button class="header-action inline-flex items-center justify-center gap-2 min-h-11 rounded-full max-[360px]:gap-1.5" id="theme-toggle" type="button" aria-label="Ativar tema escuro" aria-pressed="false" title="Ativar tema escuro"><svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg><span>Tema</span></button>
+      </div>
+    </header>
+
+    <main>
+      <div class="main-slot surface glass">
+      <nav class="journey" aria-label="Etapas de criação do curso"><ol><li aria-current="step"><span>1</span>Documentos</li><li><span>2</span>Revisão</li><li><span>3</span>Baixar curso</li></ol></nav>
+      <div class="entry-bar">
+        <div class="view-switch" role="tablist" aria-label="Como começar o curso">
+          <button id="tab-files" class="view-tab active" role="tab" aria-selected="true" aria-controls="panel-files" tabindex="0" type="button" data-mode="files">Importar arquivos</button>
+          <button id="tab-manual" class="view-tab" role="tab" aria-selected="false" aria-controls="panel-manual" tabindex="-1" type="button" data-mode="manual">Criar manualmente</button>
+        </div>
+      </div>
+
+        <section class="main-card" id="panel-files" role="tabpanel" aria-labelledby="tab-files" tabindex="0">
+          <div class="panel-heading import-heading">
+            <div><h1>Arquivos do curso</h1><p class="intro-help">Adicione o planejamento e os materiais.</p></div>
+            <div class="scene-wrap" aria-hidden="true">
+      <div id="owl-scene"></div>
+      <svg class="owl-fallback" viewBox="0 0 200 200"><g stroke="#765334" stroke-width="1.5" stroke-linejoin="round"><ellipse cx="100" cy="117" rx="55" ry="68" fill="#b89060"/><path d="m49 80-9-35 34 19m52 0 34-19-9 35" fill="#b89060"/><ellipse cx="45" cy="130" rx="12" ry="40" fill="#9f794c"/><ellipse cx="155" cy="130" rx="12" ry="40" fill="#9f794c"/><ellipse cx="100" cy="153" rx="26" ry="31" fill="#ead4a9"/><circle cx="75" cy="96" r="25" fill="#fffaf0"/><circle cx="125" cy="96" r="25" fill="#fffaf0"/></g><g fill="#38a66b" stroke="#226542" stroke-width="2"><circle cx="76" cy="97" r="15"/><circle cx="124" cy="97" r="15"/></g><g fill="#182219"><circle cx="76" cy="97" r="8"/><circle cx="124" cy="97" r="8"/></g><g fill="#fff"><circle cx="72" cy="92" r="4"/><circle cx="120" cy="92" r="4"/><circle cx="80" cy="101" r="1.5"/><circle cx="128" cy="101" r="1.5"/></g><path d="M94 120Q100 113 106 120L100 134Z" fill="#cea85d" stroke="#886332"/><path d="M66 40h68v23q-34-6-68 0Z" fill="#17191c"/><path d="m31 35 69-28 69 28-69 27Z" fill="#17191c"/><path d="M100 36 56 45v33" fill="none" stroke="#e4bd45" stroke-width="4"/><path d="m53 77-2 12h10l-2-12" fill="#e4bd45"/><image href="assets/moodle-mark.svg" x="81" y="139" width="38" height="27" preserveAspectRatio="xMidYMid meet"/></svg>
+      <div class="owl-shadow"></div>
+    </div>
+          </div>
+          <div class="upload-group matrix-group" data-upload-group="matrix">
+            <div class="upload-row">
+              <svg class="icon file-kind" aria-hidden="true"><use href="#i-file"/></svg>
+              <div class="upload-copy"><div class="upload-label"><label for="matrix-input">Documento de planejamento</label><span>Obrigatório</span></div><p id="matrix-hint">Conteúdo e organização do curso · DOCX</p></div>
+              <button class="file-button" id="matrix-drop" type="button" aria-label="Escolher documento de planejamento" aria-describedby="matrix-hint matrix-error"><span class="drop-title">Escolher documento</span></button>
+            </div>
+            <input id="matrix-input" class="file-input" type="file" accept=".docx" tabindex="-1" aria-label="Documento de planejamento">
+            <ul class="upload-files" id="matrix-list" aria-label="Documento selecionado" hidden></ul><p class="input-error" id="matrix-error" role="alert" hidden></p>
+          <div class="reading-scope" id="reading-scope" hidden>
+            <div><span class="field-label">Ler a partir de</span><strong id="reading-summary" aria-live="polite">Início do documento</strong><p id="reading-note">Todo o documento será incluído.</p></div>
+            <div class="reading-actions"><button class="secondary" id="choose-reading-start" type="button">Escolher trecho</button><button class="text-button" id="reset-reading-start" type="button" hidden>Ler documento inteiro</button></div>
+          </div>
+          </div>
+          <div class="extra-files" id="extra-files">
+            <div class="upload-group" data-upload-group="tasks">
+              <div class="upload-row">
+                <svg class="icon file-kind" aria-hidden="true"><use href="#i-upload"/></svg>
+                <div class="upload-copy"><div class="upload-label"><label for="tasks-input">Tarefas</label><span>Opcional</span></div><p id="tasks-hint">Anexos em Word, PDF, planilha ou slides</p></div>
+                <button class="file-button" id="tasks-drop" type="button" aria-label="Adicionar tarefas" aria-describedby="tasks-hint tasks-error">Adicionar tarefas</button>
+              </div>
+              <input id="tasks-input" class="file-input" type="file" accept=".docx,.doc,.pdf,.xlsx,.xls,.ppt,.pptx" multiple tabindex="-1" aria-label="Anexos de tarefas">
+              <ul class="upload-files" id="tasks-list" aria-label="Arquivos de tarefas" hidden></ul><p class="input-error" id="tasks-error" role="alert" hidden></p>
+            </div>
+            <div class="upload-group" data-upload-group="quizzes">
+              <div class="upload-row">
+                <svg class="icon file-kind" aria-hidden="true"><use href="#i-book"/></svg>
+                <div class="upload-copy"><div class="upload-label"><label for="quizzes-input">Quizzes</label><span>Opcional</span></div><p id="quizzes-hint">Documentos com as questões · DOCX</p></div>
+                <button class="file-button" id="quizzes-drop" type="button" aria-label="Adicionar quizzes" aria-describedby="quizzes-hint quizzes-error">Adicionar quizzes</button>
+              </div>
+              <input id="quizzes-input" class="file-input" type="file" accept=".docx" multiple tabindex="-1" aria-label="Documentos dos quizzes">
+              <ul class="upload-files" id="quizzes-list" aria-label="Arquivos de quizzes" hidden></ul><p class="input-error" id="quizzes-error" role="alert" hidden></p>
+            </div>
+          </div>
+          <p id="file-demo-status" class="file-demo-status" role="status"></p>
+          <div class="panel-bottom"><div class="secondary-actions"><button class="text-button" id="load-file-examples" type="button">Usar exemplo</button><button class="text-button advanced-link" type="button" data-open-mode="json">Importar JSON</button><button class="text-button advanced-link" type="button" data-copy-prompt>Copiar prompt</button></div><button class="primary" id="start-processing" type="button">Conferir arquivos<svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></button></div>
+        </section>
+
+        <section class="main-card" id="panel-manual" role="tabpanel" aria-labelledby="tab-manual" tabindex="0" hidden>
+          <div class="panel-heading"><h1>Criar curso manualmente</h1></div>
+          <p class="panel-help">Comece pelo nome do curso e pelo primeiro tópico.</p>
+          <form id="manual-form"><label class="field-label" for="manual-title">Nome do curso</label><input id="manual-title" maxlength="160" required placeholder="Ex.: Introdução à sustentabilidade"><label class="field-label spaced-label" for="manual-topic">Primeiro tópico</label><input id="manual-topic" maxlength="160" required placeholder="Ex.: Consumo consciente"><div class="panel-bottom"><p>Depois, você adiciona as atividades.</p><button class="primary" type="submit">Conferir curso</button></div></form>
+        </section>
+
+        <section class="main-card" id="panel-json" aria-labelledby="heading-json" tabindex="-1" hidden>
+          <button class="text-button back-link" type="button" data-open-mode="files">Voltar aos documentos</button>
+          <div class="panel-heading"><h1 id="heading-json">Importar JSON</h1><button class="text-button" id="load-example" type="button">Usar exemplo</button></div>
+          <p class="panel-help">Cole o JSON gerado em outra IA ou use o exemplo. <button class="text-button" type="button" data-copy-prompt>Copiar prompt</button></p>
+          <label class="field-label" for="json-input">Conteúdo do arquivo JSON</label><textarea id="json-input" spellcheck="false" placeholder='{"title": "Meu curso", "sections": []}' aria-describedby="json-error"></textarea><p class="input-error" id="json-error" role="alert" hidden></p>
+          <div class="panel-bottom"><p>Você poderá revisar o conteúdo antes de baixar.</p><button class="primary" id="review-json" type="button">Conferir JSON</button></div>
+        </section>
+
+        <section class="main-card" id="panel-students" aria-labelledby="heading-students" tabindex="-1" hidden>
+          <button class="text-button back-link" type="button" data-open-mode="return">Voltar ao curso</button>
+          <nav class="journey student-journey" aria-label="Etapas do cadastro em lote"><ol><li data-student-step="upload" aria-current="step"><span>1</span>Planilha</li><li data-student-step="review"><span>2</span>Revisão</li><li data-student-step="done"><span>3</span>Download</li></ol></nav>
+          <div class="panel-heading"><h1 id="heading-students" tabindex="-1">Cadastro em lote de alunos</h1></div>
+          <p class="panel-help" id="student-intro">Adicione a planilha. Confira os alunos e os cursos antes de baixar os arquivos.</p>
+          <div class="student-stage" id="student-upload-stage">
+            <button class="student-drop" id="student-plan-drop" type="button" aria-describedby="student-plan-hint"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg><strong>Escolher planilha</strong><span id="student-plan-hint">Arraste aqui ou escolha um arquivo XLSX, XLS ou CSV.</span></button>
+            <input class="file-input" id="student-plan-input" type="file" accept=".xlsx,.xls,.csv" aria-label="Planilha de alunos" tabindex="-1">
+            <div id="student-plan-selection" class="student-selection" hidden><svg class="icon" aria-hidden="true"><use href="#i-file"/></svg><div><strong id="student-plan-name"></strong><span id="student-plan-size"></span></div><button class="text-button" id="student-plan-remove" type="button" aria-label="Remover planilha">Remover</button></div>
+            <p class="input-error" id="student-file-error" role="alert" hidden></p>
+            <p class="student-prototype-note" id="student-file-note">Nesta prévia, use o exemplo para experimentar a revisão. Planilhas locais mostram apenas nome e tamanho.</p>
+            <div class="panel-bottom"><button class="text-button" id="student-use-example" type="button">Usar planilha de exemplo</button><button class="primary" id="student-analyze" type="button" disabled aria-describedby="student-file-note">Analisar planilha</button></div>
+          </div>
+          <div class="student-stage" id="student-review-stage" hidden>
+            <section class="student-courses" aria-labelledby="student-courses-title"><h2 id="student-courses-title">Cursos de destino</h2><p>Todos os alunos da lista serão incluídos em cada curso escolhido. Use o nome breve do curso no Moodle.</p><ul id="student-course-list" aria-label="Cursos de destino"></ul><form id="student-course-form"><label class="sr-only" for="student-course-name">Adicionar curso de destino</label><input id="student-course-name" placeholder="Ex.: programacao-2026" maxlength="120"><button class="secondary" type="submit">Adicionar curso</button></form><p id="student-course-status" class="student-helper" role="status"></p></section>
+            <div class="student-list-heading"><h2>Lista de alunos</h2><p id="student-summary" role="status"></p></div>
+            <div class="student-table-wrap"><table class="student-table"><caption class="sr-only">Dados editáveis dos alunos do exemplo</caption><thead><tr><th scope="col">Linha</th><th scope="col">Usuário</th><th scope="col">Nome</th><th scope="col">Sobrenome</th><th scope="col">E-mail</th><th scope="col">Cidade</th><th scope="col">Papel</th></tr></thead><tbody id="student-rows"></tbody></table></div>
+            <div id="student-issues" class="student-issues" role="status" hidden></div>
+            <p class="student-prototype-note">Dados fictícios e editáveis. Confira as pendências antes de gerar os CSVs de demonstração.</p>
+            <div class="panel-bottom"><button class="secondary" id="student-back" type="button">Voltar à planilha</button><button class="primary" id="student-generate" type="button">Gerar CSV de exemplo</button></div>
+          </div>
+          <div class="student-stage" id="student-done-stage" hidden>
+            <p id="student-download-summary" class="student-helper"></p><ul id="student-download-list" class="student-download-list" aria-label="Arquivos CSV por curso"></ul>
+            <p class="student-prototype-note">Os CSVs são exemplos locais. Nenhum aluno será cadastrado no Moodle.</p>
+            <div class="panel-bottom"><button class="secondary" id="student-edit" type="button">Voltar à revisão</button><button class="text-button" id="student-reset" type="button">Escolher outra planilha</button></div>
+          </div>
+        </section>
+        <p id="prompt-status" class="file-demo-status prompt-status" role="status" aria-live="polite"></p>
+      </div>
+      <footer class="prototype-note">Prévia de design · Sem leitura por IA ou geração de curso.</footer>
+    </main>
+  </div>
+  <dialog id="preview-dialog" aria-labelledby="preview-title" aria-describedby="preview-description"><button class="close-dialog" id="close-dialog" type="button" aria-label="Fechar prévia" autofocus><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button><span class="dialog-icon"><svg class="icon" aria-hidden="true"><use id="preview-icon" href="#i-book"/></svg></span><h2 id="preview-title"></h2><p id="preview-description"></p><div id="preview-body"></div>
+    <details class="setup-details" id="review-settings" open hidden><summary>Organização e início do curso <svg class="icon" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div class="course-settings"><fieldset class="choice-group"><legend>Organizar o curso por</legend><label class="choice"><input type="radio" name="course-organization" value="topics" checked>Tópicos</label><label class="choice"><input type="radio" name="course-organization" value="weeks">Semanas</label></fieldset><div class="settings-date"><label class="field-label" for="course-start">Início do curso</label><input id="course-start" data-datepicker placeholder="dd/mm/aaaa" aria-describedby="course-start-hint"><p class="settings-hint" id="course-start-hint">Opcional nesta prévia.</p></div></div></details>
+    <button class="primary dialog-return" id="dialog-return" type="button">Voltar e ajustar</button>
+  </dialog>
+  <dialog id="student-moodle-dialog" aria-labelledby="student-moodle-title" aria-describedby="student-moodle-note"><button class="close-dialog" id="student-moodle-close" type="button" aria-label="Fechar prévia de envio"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button><h2 id="student-moodle-title">Envio ao Moodle</h2><p id="student-moodle-note" class="student-helper">Etapas previstas para a integração. Esta prévia não conecta ao Moodle.</p><p id="student-moodle-course" class="student-helper"></p><ol class="student-send-steps"><li><strong>Conectar ao Moodle</strong><span>Escolher a instância e autenticar uma conta autorizada.</span></li><li><strong>Simular o cadastro</strong><span>Conferir a prévia devolvida pelo Moodle, com novos usuários, atualizações e erros.</span></li><li><strong>Confirmar o envio</strong><span>Confirmar os registros revisados e acompanhar o resultado.</span></li></ol><button class="primary dialog-return" id="student-moodle-return" type="button">Voltar aos arquivos</button></dialog>
+  <dialog id="reading-dialog" class="reading-dialog" aria-labelledby="reading-title" aria-describedby="reading-description">
+    <button class="close-dialog" id="close-reading" type="button" aria-label="Fechar escolha de trecho"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+    <span class="example-label">Documento de exemplo</span><h2 id="reading-title">Onde a leitura começa?</h2><p id="reading-description">Escolha o primeiro trecho. Ele e todo o conteúdo abaixo serão incluídos.</p>
+    <fieldset class="reading-blocks" id="reading-blocks"><legend class="sr-only">Primeiro trecho da leitura</legend></fieldset>
+    <p class="selection-summary" id="selection-summary" role="status"></p>
+    <div class="dialog-actions"><button class="secondary" id="cancel-reading" type="button">Cancelar</button><button class="primary" id="confirm-reading" type="button">Começar aqui</button></div>
+  </dialog>
+  <dialog id="prompt-dialog" aria-labelledby="prompt-title" aria-describedby="prompt-description">
+    <button class="close-dialog" type="button" id="close-prompt" aria-label="Fechar prompt"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+    <h2 id="prompt-title">Prompt para outra IA</h2><p id="prompt-description">Copie este texto e use-o com o planejamento do curso. Depois, cole a resposta em Importar JSON.</p>
+    <label class="field-label" for="prompt-text">Texto do prompt</label><textarea id="prompt-text" readonly spellcheck="false"></textarea>
+    <p id="prompt-copy-error" class="input-error" role="status" hidden>Não foi possível copiar automaticamente. Selecione o texto e copie pelo teclado.</p>
+    <button class="primary dialog-return" type="button" id="copy-prompt-text">Copiar texto</button>
+  </dialog>
+</body>
+</html>

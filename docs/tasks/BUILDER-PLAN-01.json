@@ -1,0 +1,288 @@
+{
+  "schemaVersion": 1,
+  "id": "BUILDER-PLAN-01",
+  "goal": "Planejar a evolução do builder preservando escopo legado, MBZ confiável, múltiplas IAs, WebMCP, persistência recuperável e contribuição pública.",
+  "spec": [
+    "docs/tasks/BUILDER-PLAN-01/context.md",
+    "docs/PRD.md",
+    "docs/ARCHITECTURE.md",
+    "docs/BACKLOG.md"
+  ],
+  "status": "integrated",
+  "revision": "sha256:036ee62813d129e2a870bf91ba7a0e151df82837b14a87c2c9fcb44bbf46ab2b",
+  "contextEvidence": "docs/tasks/BUILDER-PLAN-01/context.md",
+  "owners": [
+    {
+      "agent": "/root",
+      "writePaths": [
+        "docs/BUILDER_PIPELINE_PLAN.md",
+        "GLOSSARY.md"
+      ]
+    }
+  ],
+  "acceptance": [
+    {
+      "id": "A1",
+      "text": "Preservar criação de cursos e todo o escopo antigo, incluindo alunos e datas, sem tratar capacidades antigas como já verificadas na nova aplicação.",
+      "revision": "sha256:036ee62813d129e2a870bf91ba7a0e151df82837b14a87c2c9fcb44bbf46ab2b",
+      "evidence": [
+        "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+        "docs/tasks/BUILDER-PLAN-01/verification.md"
+      ]
+    },
+    {
+      "id": "A2",
+      "text": "Definir contrato canônico, perfis separados e pipeline determinística até MBZ, com invariantes e falhas sem perda silenciosa.",
+      "revision": "sha256:036ee62813d129e2a870bf91ba7a0e151df82837b14a87c2c9fcb44bbf46ab2b",
+      "evidence": [
+        "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+        "docs/tasks/BUILDER-PLAN-01/verification.md"
+      ]
+    },
+    {
+      "id": "A3",
+      "text": "Separar IA interna de WebMCP, propor dois provedores reais mais fake e revisão de alterações por versão.",
+      "revision": "sha256:036ee62813d129e2a870bf91ba7a0e151df82837b14a87c2c9fcb44bbf46ab2b",
+      "evidence": [
+        "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+        "docs/tasks/BUILDER-PLAN-01/verification.md"
+      ]
+    },
+    {
+      "id": "A4",
+      "text": "Definir persistência somente no navegador e cópia portátil completa com anexos, recuperável por importação após perder os dados locais, sem exigir banco/contas.",
+      "revision": "sha256:036ee62813d129e2a870bf91ba7a0e151df82837b14a87c2c9fcb44bbf46ab2b",
+      "evidence": [
+        "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+        "docs/tasks/BUILDER-PLAN-01/verification.md"
+      ]
+    },
+    {
+      "id": "A5",
+      "text": "Planejar Moodle local/CI fixado por versão com restauração e comparação semântica, sem alegar execução do laboratório.",
+      "revision": "sha256:036ee62813d129e2a870bf91ba7a0e151df82837b14a87c2c9fcb44bbf46ab2b",
+      "evidence": [
+        "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+        "docs/tasks/BUILDER-PLAN-01/verification.md"
+      ]
+    },
+    {
+      "id": "A6",
+      "text": "Propor entregas com dependências, gates de CI e preparação para contribuições públicas reproduzíveis.",
+      "revision": "sha256:036ee62813d129e2a870bf91ba7a0e151df82837b14a87c2c9fcb44bbf46ab2b",
+      "evidence": [
+        "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+        "docs/tasks/BUILDER-PLAN-01/verification.md"
+      ]
+    },
+    {
+      "id": "A7",
+      "text": "Registrar fontes primárias, conflitos com o plano anterior e estado de planejamento; não alterar design, legado nem implementar a aplicação.",
+      "revision": "sha256:036ee62813d129e2a870bf91ba7a0e151df82837b14a87c2c9fcb44bbf46ab2b",
+      "evidence": [
+        "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+        "docs/tasks/BUILDER-PLAN-01/verification.md"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "document-inspection",
+      "required": true,
+      "status": "passed",
+      "revision": "sha256:036ee62813d129e2a870bf91ba7a0e151df82837b14a87c2c9fcb44bbf46ab2b",
+      "evidence": "docs/tasks/BUILDER-PLAN-01/verification.md"
+    }
+  ],
+  "reviews": [
+    {
+      "axis": "spec",
+      "agent": "/root/review_spec",
+      "status": "passed",
+      "revision": "sha256:036ee62813d129e2a870bf91ba7a0e151df82837b14a87c2c9fcb44bbf46ab2b",
+      "evidence": "docs/tasks/BUILDER-PLAN-01/review-spec.md"
+    },
+    {
+      "axis": "quality",
+      "agent": "/root/review_quality",
+      "status": "passed",
+      "revision": "sha256:036ee62813d129e2a870bf91ba7a0e151df82837b14a87c2c9fcb44bbf46ab2b",
+      "evidence": "docs/tasks/BUILDER-PLAN-01/review-quality.md"
+    }
+  ],
+  "budget": {
+    "maxCorrections": 2,
+    "corrections": 1
+  },
+  "integration": {
+    "revision": "sha256:036ee62813d129e2a870bf91ba7a0e151df82837b14a87c2c9fcb44bbf46ab2b",
+    "evidence": "docs/tasks/BUILDER-PLAN-01/integration.md"
+  },
+  "history": [
+    {
+      "from": "planned",
+      "to": "executing",
+      "requestedTo": "executing",
+      "at": "2026-10-12T12:31:30.993Z",
+      "revision": null,
+      "reason": "Planejamento autorizado; análises somente leitura e autoria delimitada.",
+      "evidence": {
+        "checks": [],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "executing",
+      "to": "verifying",
+      "requestedTo": "verifying",
+      "at": "2026-10-12T12:36:37.513Z",
+      "revision": "sha256:3782a973ffa4d4b44cd7e4619433f1f5dd516e76d699b31f1abce259dbe81613",
+      "reason": "Candidato fixado por digest de dois documentos; verificar links, conteúdo e fontes.",
+      "evidence": {
+        "checks": [],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "verifying",
+      "to": "reviewing",
+      "requestedTo": "reviewing",
+      "at": "2026-10-12T12:39:08.409Z",
+      "revision": "sha256:13950907bcbc65c8f0a7381a87ba9a41cdf725c05c71f7c4c996e18083fcd201",
+      "reason": "Inspeção documentada e candidato fixado após incorporar respostas do usuário.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/BUILDER-PLAN-01/verification.md"
+        ],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "reviewing",
+      "to": "needs-fix",
+      "requestedTo": "needs-fix",
+      "at": "2026-10-12T12:44:27.987Z",
+      "revision": "sha256:13950907bcbc65c8f0a7381a87ba9a41cdf725c05c71f7c4c996e18083fcd201",
+      "reason": "Spec F1/A1: explicitar prompt externo e prévia DOCX/PDF; quality P3: preservar presets personalizados no projeto portátil.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/BUILDER-PLAN-01/verification.md"
+        ],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "needs-fix",
+      "to": "executing",
+      "requestedTo": "executing",
+      "at": "2026-10-12T12:44:28.127Z",
+      "revision": "sha256:13950907bcbc65c8f0a7381a87ba9a41cdf725c05c71f7c4c996e18083fcd201",
+      "reason": "Uma correção delimitada de paridade e portabilidade, sem implementação.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/BUILDER-PLAN-01/verification.md"
+        ],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "executing",
+      "to": "verifying",
+      "requestedTo": "verifying",
+      "at": "2026-10-12T12:45:16.449Z",
+      "revision": "sha256:036ee62813d129e2a870bf91ba7a0e151df82837b14a87c2c9fcb44bbf46ab2b",
+      "reason": "Correção localizada concluída; links e cercas novamente verificados no novo candidato.",
+      "evidence": {
+        "checks": [],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "verifying",
+      "to": "reviewing",
+      "requestedTo": "reviewing",
+      "at": "2026-10-12T12:45:17.818Z",
+      "revision": "sha256:036ee62813d129e2a870bf91ba7a0e151df82837b14a87c2c9fcb44bbf46ab2b",
+      "reason": "Verificação repetida porque o conteúdo mudou; duas revisões finais solicitadas no mesmo digest.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/BUILDER-PLAN-01/verification.md"
+        ],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "reviewing",
+      "to": "accepted",
+      "requestedTo": "accepted",
+      "at": "2026-10-12T12:47:48.235Z",
+      "revision": "sha256:036ee62813d129e2a870bf91ba7a0e151df82837b14a87c2c9fcb44bbf46ab2b",
+      "reason": "A1-A7 satisfeitos; duas revisões passed no mesmo digest e verificação documental registrada.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/BUILDER-PLAN-01/verification.md"
+        ],
+        "reviews": [
+          "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+          "docs/tasks/BUILDER-PLAN-01/review-quality.md"
+        ],
+        "acceptance": [
+          "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+          "docs/tasks/BUILDER-PLAN-01/verification.md",
+          "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+          "docs/tasks/BUILDER-PLAN-01/verification.md",
+          "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+          "docs/tasks/BUILDER-PLAN-01/verification.md",
+          "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+          "docs/tasks/BUILDER-PLAN-01/verification.md",
+          "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+          "docs/tasks/BUILDER-PLAN-01/verification.md",
+          "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+          "docs/tasks/BUILDER-PLAN-01/verification.md",
+          "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+          "docs/tasks/BUILDER-PLAN-01/verification.md"
+        ]
+      }
+    },
+    {
+      "from": "accepted",
+      "to": "integrated",
+      "requestedTo": "integrated",
+      "at": "2026-10-12T12:47:49.674Z",
+      "revision": "sha256:036ee62813d129e2a870bf91ba7a0e151df82837b14a87c2c9fcb44bbf46ab2b",
+      "reason": "Plano e glossário salvos, com conteúdo idêntico ao revisado; implementação e publicação continuam fora desta entrega.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/BUILDER-PLAN-01/verification.md"
+        ],
+        "reviews": [
+          "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+          "docs/tasks/BUILDER-PLAN-01/review-quality.md"
+        ],
+        "acceptance": [
+          "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+          "docs/tasks/BUILDER-PLAN-01/verification.md",
+          "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+          "docs/tasks/BUILDER-PLAN-01/verification.md",
+          "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+          "docs/tasks/BUILDER-PLAN-01/verification.md",
+          "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+          "docs/tasks/BUILDER-PLAN-01/verification.md",
+          "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+          "docs/tasks/BUILDER-PLAN-01/verification.md",
+          "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+          "docs/tasks/BUILDER-PLAN-01/verification.md",
+          "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+          "docs/tasks/BUILDER-PLAN-01/verification.md"
+        ]
+      }
+    }
+  ]
+}

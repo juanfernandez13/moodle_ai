@@ -1,0 +1,78 @@
+:root { --control-ink: var(--text,var(--ink)); --control-bg: var(--field,var(--surface)); --control-stroke: var(--field-border,var(--border-strong)); --control-accent: var(--green,var(--action)); --control-accent-ink: var(--action-ink); --control-menu: color-mix(in srgb,var(--background) 92%,transparent); }
+.choice-group { display:flex; gap:8px; flex-wrap:wrap; border:0; margin:0; padding:0; }
+.choice-group legend { margin-bottom:8px; font-size:12px; font-weight:750; }
+.choice, .check-row { display:flex; align-items:center; gap:9px; cursor:pointer; }
+.choice { font-size:12px; border:1px solid var(--glass-border); border-radius:16px; padding:10px 13px; background:var(--soft,var(--subtle)); }
+.choice:has(:checked) { border-color:var(--control-accent); background:color-mix(in srgb,var(--control-accent) 12%,transparent); }
+.choice input[type=radio], .choice input[type=checkbox], .check-row input[type=radio], .check-row input[type=checkbox] { appearance:none; -webkit-appearance:none; display:inline-grid; place-content:center; flex:0 0 21px; width:21px; height:21px; min-height:21px; padding:0; margin:0; border:1.5px solid var(--control-stroke); border-radius:7px; background:var(--control-bg); box-shadow:inset 0 1px 2px #122a1e0c; cursor:pointer; }
+.choice input[type=radio], .check-row input[type=radio] { border-radius:50%; }
+.choice input::before, .check-row input::before { content:''; width:11px; height:11px; background:var(--control-accent-ink); transform:scale(0); transition:transform var(--motion-duration,300ms) ease; }
+.choice input[type=radio]::before, .check-row input[type=radio]::before { width:7px; height:7px; border-radius:50%; }
+.choice input[type=checkbox]::before, .check-row input[type=checkbox]::before { clip-path:polygon(10% 42%,39% 70%,91% 12%,100% 23%,41% 91%,0 53%); }
+.choice input:checked, .check-row input:checked { border-color:var(--control-accent); background:var(--control-accent); }
+.choice input:checked::before, .check-row input:checked::before { transform:scale(1); }
+.choice input:focus-visible, .check-row input:focus-visible { outline:2px solid var(--control-accent); outline-offset:2px; }
+.choice input:disabled, .check-row input:disabled { opacity:.45; cursor:not-allowed; }
+.check-row { font-size:12px; line-height:1.4; padding:6px 0; }
+.control, input:not([type=file]):not([type=radio]):not([type=checkbox]), textarea, select { transition:border-color var(--motion-duration,300ms); }
+.control:focus, input:not([type=file]):not([type=radio]):not([type=checkbox]):focus, textarea:focus, select:focus { border-color:var(--control-accent); box-shadow:none; }
+.control:focus-visible, input:not([type=file]):not([type=radio]):not([type=checkbox]):focus-visible, textarea:focus-visible, select:focus-visible { outline:2px solid var(--control-accent); outline-offset:1px; }
+.select-field { position:relative; width:100%; }
+select.select-source { position:absolute; width:1px; height:1px; min-height:0; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); clip-path:inset(50%); white-space:nowrap; border:0; }
+.select-trigger { display:flex; justify-content:space-between; align-items:center; gap:12px; width:100%; min-height:46px; padding:11px 14px; border:1px solid var(--control-stroke); border-radius:14px; background:var(--control-bg); color:var(--control-ink); font:inherit; font-size:14px; text-align:left; cursor:pointer; box-shadow:none; }
+.select-trigger span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.select-trigger svg { width:17px; height:17px; flex:0 0 auto; transition:transform 160ms ease; }
+.select-trigger[aria-expanded=true] svg { transform:rotate(180deg); }
+.select-trigger:hover:not(:disabled), .select-trigger[aria-expanded=true] { border-color:var(--control-accent); }
+.select-trigger:focus { outline:none; box-shadow:none; border-color:var(--control-accent); }
+.select-trigger:focus-visible { outline:2px solid var(--control-accent); outline-offset:1px; box-shadow:none; }
+.select-trigger[aria-invalid=true] { border-color:var(--error); }
+.select-trigger:disabled { cursor:not-allowed; opacity:.55; }
+.select-menu, .calendar-popover { position:fixed; inset:auto; margin:0; box-sizing:border-box; overflow:auto; border:1px solid var(--control-stroke); background:var(--control-menu); color:var(--control-ink); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); box-shadow:0 12px 36px #091b192b,inset 0 1px 0 #ffffff20; font-family:inherit; z-index:1000; }
+.select-menu::backdrop, .calendar-popover::backdrop { background:transparent; pointer-events:none; }
+.select-menu { padding:5px; border-radius:15px; overscroll-behavior:contain; }
+.select-option { display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:40px; padding:9px 11px; border-radius:10px; font-size:14px; line-height:1.4; cursor:pointer; }
+.select-option.is-active { background:color-mix(in srgb,var(--control-accent) 15%,transparent); }
+.select-option[aria-selected=true] { font-weight:750; }
+.select-option[aria-disabled=true] { opacity:.45; cursor:not-allowed; }
+.select-option svg { width:17px; height:17px; flex:0 0 auto; color:var(--control-accent); }
+.select-group-label { padding:9px 11px 4px; font-size:11px; font-weight:750; color:var(--muted); }
+.date-field { display:flex; align-items:center; border:1px solid var(--control-stroke); background:var(--control-bg); border-radius:14px; min-height:46px; }
+.date-field:focus-within { border-color:var(--control-accent); }
+.date-field:has(:focus-visible) { outline:2px solid var(--control-accent); outline-offset:1px; }
+.date-field input.control, .date-field input:not([type=file]), .date-field input:not([type=file]):focus, .date-field input:not([type=file]):focus-visible { background:transparent; border:0; box-shadow:none; border-radius:14px 0 0 14px; outline:none; min-width:0; width:100%; margin:0; padding:11px 13px; font-size:14px; }
+.date-open { flex:0 0 40px; height:36px; display:grid; place-items:center; margin-right:4px; padding:0; border-radius:10px; background:transparent; color:var(--control-accent); border:0; cursor:pointer; }
+.date-open:hover { background:color-mix(in srgb,var(--control-accent) 12%,transparent); }
+.date-open:focus-visible { outline:none; }
+.date-open svg { width:19px; height:19px; }
+.date-field:has(input:disabled) { opacity:.55; }
+.date-field:has(input:disabled) .date-open { pointer-events:none; }
+.date-validation { font-size:11px; color:var(--error); margin:6px 0 0; }
+.date-field:has([aria-invalid=true]) { border-color:var(--error); }
+.calendar-popover { width:318px; padding:16px; border-radius:19px; overscroll-behavior:contain; }
+.calendar-context { margin:0 0 11px; color:var(--muted); font-size:11px; line-height:1.4; }
+.calendar-header { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; }
+.calendar-popover .calendar-title { padding:0; margin:0; font-size:15px; font-weight:800; }
+.calendar-title::first-letter { text-transform:uppercase; }
+.calendar-nav { display:grid; place-items:center; width:31px; height:31px; padding:0; background:transparent; border:1px solid var(--glass-border,var(--control-stroke)); border-radius:10px; color:var(--control-ink); cursor:pointer; }
+.calendar-nav:hover:not(:disabled) { background:color-mix(in srgb,var(--control-accent) 12%,transparent); }
+.calendar-nav:disabled { opacity:.35; cursor:default; }
+.calendar-nav svg { width:16px; height:16px; }
+.calendar-table { table-layout:fixed; border-collapse:collapse; width:100%; }
+.calendar-table th { font-size:10px; color:var(--muted); font-weight:700; padding:0 0 7px; }
+.calendar-table td { padding:2px; text-align:center; }
+.calendar-day { display:grid; place-items:center; padding:0; border:0; border-radius:10px; width:100%; aspect-ratio:1; background:transparent; color:var(--control-ink); font-family:inherit; font-size:12px; font-weight:700; cursor:pointer; }
+.calendar-day:hover:not(:disabled) { background:color-mix(in srgb,var(--control-accent) 12%,transparent); }
+.calendar-day[aria-current=date] { box-shadow:inset 0 0 0 1px var(--control-accent); }
+.calendar-day[data-selected=true] { background:var(--control-accent); color:var(--control-accent-ink); }
+.calendar-day.outside { opacity:.5; }
+.calendar-day:disabled { opacity:.2; cursor:default; }
+.calendar-day:focus-visible, .calendar-nav:focus-visible, .calendar-footer button:focus-visible { outline:2px solid var(--control-accent); outline-offset:1px; }
+.calendar-footer { display:flex; gap:6px; border-top:1px solid var(--glass-border,var(--control-stroke)); margin-top:11px; padding-top:11px; }
+.calendar-footer button { border:0; background:transparent; color:var(--control-accent); border-radius:8px; padding:7px 10px; cursor:pointer; font:inherit; font-size:11px; font-weight:750; }
+.calendar-footer button:hover { background:color-mix(in srgb,var(--control-accent) 12%,transparent); }
+.calendar-footer button:last-child { margin-left:auto; }
+.calendar-keyboard { color:var(--muted); font-size:10px; line-height:1.5; margin:10px 0 0; }
+@supports not (backdrop-filter:blur(1px)) { .select-menu, .calendar-popover { background:var(--background); } }
+@media (prefers-reduced-motion:reduce) { .choice input::before, .check-row input::before, .select-trigger svg { transition:none; } }
+@media (forced-colors:active) { .choice input[type=radio], .choice input[type=checkbox], .check-row input[type=radio], .check-row input[type=checkbox] { appearance:auto; } .choice input::before, .check-row input::before { display:none; } .select-option.is-active { outline:1px solid Highlight; } .select-menu, .calendar-popover { background:Canvas; } }

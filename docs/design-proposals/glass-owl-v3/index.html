@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark" data-scene="field">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#eef6f1">
+  <title>Moodle AI · Vidro e coruja</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='16' fill='%2326764f'/%3E%3Cpath d='m8 19 16-8 16 8-16 8Zm6 7v8q10 7 20 0v-8' fill='none' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preload" href="fonts/Nunito-Variable.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="../glass-owl-v2/vendor/three.browser.js"></script>
+  <script defer src="app.js"></script>
+  <script defer src="field.js"></script>
+  <script defer src="owl.js"></script>
+</head>
+<body>
+  <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-cap" viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5-10-5Zm4 3v5c4 3 8 3 12 0v-5M22 9v7"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V3m-4 4 4-4 4 4M7 12H5a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2h-2"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m7 8-4 4 4 4m10-8 4 4-4 4M14 4l-4 16"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M15 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2m22 0v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/><circle cx="8" cy="7" r="4"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 0v6h6M8 13h8m-8 4h5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 4 12 8-12 8V4Z"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.8 13.5A9 9 0 0 1 10.5 3.2a9 9 0 1 0 10.3 10.3Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2m-15.7-15.7 1.4 1.4m12.6 12.6 1.4 1.4M3.7 20.3l1.4-1.4M18.9 5.1l1.4-1.4"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6c-3-2-7-2-10-1v14c3-1 7-1 10 1m0-14c3-2 7-2 10-1v14c-3-1-7-1-10 1V6Z"/></symbol>
+    <symbol id="i-landscape" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="5"/><circle cx="8" cy="8" r="1.5"/><path d="m2 17 6-6 4 4 4-5 6 7"/></symbol>
+  </svg>
+
+  <div class="landscape" aria-hidden="true">
+    <div id="field-scene"></div>
+    <svg viewBox="0 0 1280 800" preserveAspectRatio="xMidYMax slice">
+      <g class="stars" fill="currentColor"><circle cx="78" cy="129" r="1"/><circle cx="159" cy="204" r="1.5"/><circle cx="276" cy="80" r="1"/><circle cx="396" cy="151" r="1.3"/><circle cx="511" cy="45" r="1"/><circle cx="583" cy="221" r=".8"/><circle cx="693" cy="124" r="1.4"/><circle cx="752" cy="55" r="1"/><circle cx="823" cy="194" r="1"/><circle cx="904" cy="99" r="1.5"/><circle cx="996" cy="52" r=".8"/><circle cx="1084" cy="121" r="1.1"/><circle cx="1201" cy="51" r="1.5"/><circle cx="1137" cy="210" r=".9"/><circle cx="122" cy="55" r=".7"/><circle cx="354" cy="258" r=".9"/><circle cx="640" cy="291" r="1"/><circle cx="54" cy="299" r=".9"/><circle cx="1042" cy="276" r=".8"/><path d="M862 51v7m-3.5-3.5h7M225 153v6m-3-3h6" fill="none" stroke="currentColor" stroke-width=".8"/></g>
+      <path class="far-field" d="M0 547c190-62 263-20 414-35 184-19 255-92 451-67 155 21 234 35 415-9v364H0Z"/>
+      <path class="near-field" d="M0 648c244-86 402-21 608-42 251-28 441-66 672 17v177H0Z"/>
+      <g class="field-lines" fill="none" stroke="currentColor" stroke-width="1"><path d="M0 746c363-39 592-18 970-47m-842 101c281-60 572-39 849-47m-929-40c251-47 412-22 574-41"/></g>
+      <g class="tree" fill="currentColor"><path d="M1014 800c-2-92-15-177-17-263-1-38-4-73-15-101-25-60-46-106-59-168 26 50 43 80 63 99-2-35-2-70 0-118 10 47 13 92 16 128 32-33 48-67 62-110-4 60-18 104-52 148 0 28 0 67 8 104 20-56 45-79 82-123-28 55-57 103-71 156-11 44 11 163 16 248Z"/><path d="M999 383c-43-8-67-32-98-70 33 23 60 36 89 34Z"/><path d="M1008 466c53-17 84-16 118-37-21 25-53 35-111 52Z"/><path d="M957 334c-38-6-50-17-72-45 26 16 41 23 61 20Z"/></g>
+      <g class="leaves" fill="currentColor"><ellipse cx="918" cy="267" rx="38" ry="12" transform="rotate(35 918 267)"/><ellipse cx="885" cy="290" rx="26" ry="9" transform="rotate(-22 885 290)"/><ellipse cx="978" cy="248" rx="37" ry="12" transform="rotate(-57 978 248)"/><ellipse cx="1016" cy="290" rx="31" ry="10" transform="rotate(-30 1016 290)"/><ellipse cx="1068" cy="267" rx="33" ry="11" transform="rotate(-31 1068 267)"/><ellipse cx="1089" cy="332" rx="35" ry="12" transform="rotate(-32 1089 332)"/><ellipse cx="1125" cy="420" rx="31" ry="10" transform="rotate(-24 1125 420)"/><ellipse cx="1048" cy="456" rx="30" ry="10" transform="rotate(16 1048 456)"/></g>
+    </svg>
+  </div>
+
+  <div class="workspace">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="Moodle AI, início da proposta"><span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#i-cap"/></svg></span><span>Moodle<span class="brand-ai"> AI</span></span></a>
+      <nav class="view-switch glass" role="tablist" aria-label="Visualização da área de trabalho">
+        <button id="tab-files" class="view-tab active" role="tab" aria-selected="true" aria-controls="panel-files" tabindex="0" type="button" data-mode="files"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Arquivos</button>
+        <button id="tab-json" class="view-tab" role="tab" aria-selected="false" aria-controls="panel-json" tabindex="-1" type="button" data-mode="json"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg>JSON</button>
+        <button id="tab-students" class="view-tab" role="tab" aria-selected="false" aria-controls="panel-students" tabindex="-1" type="button" data-mode="students"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg>Alunos</button>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-button glass" id="scene-toggle" type="button" aria-label="Mostrar fundo pontilhado" aria-pressed="true" title="Mostrar fundo pontilhado"><svg class="icon" aria-hidden="true"><use href="#i-landscape"/></svg></button>
+        <button class="icon-button glass" id="theme-toggle" type="button" aria-label="Ativar tema escuro" aria-pressed="false" title="Ativar tema escuro"><svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg></button>
+        <button class="icon-button glass" id="motion-toggle" type="button" aria-label="Pausar animação" aria-pressed="false" title="Pausar animação"><svg class="icon" aria-hidden="true"><use href="#i-pause"/></svg><span class="sr-only">Pausar animação</span></button>
+      </div>
+    </header>
+
+    <div class="scene-wrap" aria-hidden="true">
+      <div id="owl-scene"></div>
+      <svg class="owl-fallback" viewBox="0 0 200 185"><defs><radialGradient id="owl-tone"><stop stop-color="#fff"/><stop offset="1" stop-color="#bfc3c1"/></radialGradient></defs><ellipse cx="100" cy="105" rx="64" ry="65" fill="url(#owl-tone)"/><path d="M100 162C72 143 40 112 48 88c7-23 38-21 52-8 14-13 45-15 52 8 8 24-24 55-52 74Z" fill="#f5f5f3"/><ellipse cx="76" cy="106" rx="10" ry="12" fill="#252a27"/><ellipse cx="124" cy="106" rx="10" ry="12" fill="#252a27"/><path d="m95 124 5 15 5-15" fill="#676a67"/><path d="M62 35h77v20H62Z" fill="#515650"/><path d="m32 28 68-22 68 22-68 23Z" fill="#343b35"/><path d="m165 28 0 47" stroke="#848983" stroke-width="3" stroke-linecap="round"/></svg>
+      <div class="owl-shadow"></div>
+    </div>
+
+    <main>
+      <div class="intro"><h1>Prepare seu<br>próximo curso.</h1><p>Seu material, um bom começo.</p></div>
+      <div class="work-grid">
+        <div class="main-slot">
+          <section class="surface main-card glass" id="panel-files" role="tabpanel" aria-labelledby="tab-files" tabindex="0">
+            <div class="panel-heading"><div><span class="panel-kind"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Preparar curso</span><h2>O que vamos ensinar?</h2></div><span class="format-tag">.docx</span></div>
+            <input id="document-input" class="file-input" type="file" accept=".docx" tabindex="-1" aria-label="Escolher documento principal">
+            <button class="dropzone" id="dropzone" type="button" aria-describedby="file-hint file-error"><span class="upload-orbit"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg></span><span class="drop-title" id="drop-title">Solte seu documento aqui</span><span class="drop-description" id="drop-description">ou clique para escolher um arquivo</span></button>
+            <div class="file-meta" id="file-meta" hidden><span id="file-size"></span><button class="text-button" id="remove-file" type="button">Remover</button></div>
+            <p class="input-error" id="file-error" role="alert" hidden></p>
+            <div class="attachments-row"><button class="text-button" id="add-materials" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Adicionar materiais de apoio</button><span class="optional">opcional</span><input id="materials-input" class="file-input" type="file" multiple tabindex="-1" aria-label="Escolher materiais de apoio"></div>
+            <ul class="materials" id="materials-list" aria-label="Materiais selecionados" hidden></ul>
+            <div class="panel-bottom"><p id="file-hint"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Você revisa antes de exportar.</p><button class="primary" id="start-processing" type="button">Iniciar processamento<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></div>
+          </section>
+
+          <section class="surface main-card glass" id="panel-json" role="tabpanel" aria-labelledby="tab-json" tabindex="0" hidden>
+            <div class="panel-heading"><div><span class="panel-kind"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg>Estrutura do curso</span><h2>Seu curso, do seu jeito.</h2></div><button class="text-button" id="load-example" type="button">Usar exemplo</button></div>
+            <label class="field-label" for="json-input">Cole ou escreva seu JSON</label><textarea id="json-input" spellcheck="false" placeholder='{"title": "Meu curso", "sections": []}' aria-describedby="json-hint json-error"></textarea><p class="input-error" id="json-error" role="alert" hidden></p>
+            <div class="panel-bottom"><p id="json-hint">Uma estrutura pronta também é um início.</p><button class="primary" id="review-json" type="button">Revisar JSON<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></div>
+          </section>
+
+          <section class="surface main-card glass" id="panel-students" role="tabpanel" aria-labelledby="tab-students" tabindex="0" hidden>
+            <div class="panel-heading"><div><span class="panel-kind"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg>Cadastro de alunos</span><h2>Prepare sua turma.</h2></div></div>
+            <form id="student-form"><div class="student-fields"><div><label class="field-label" for="student-name">Nome completo</label><input id="student-name" name="studentName" autocomplete="off" placeholder="Nome do aluno" required maxlength="120"></div><div><label class="field-label" for="student-email">E-mail</label><input id="student-email" name="studentEmail" type="email" autocomplete="off" placeholder="aluno@exemplo.com" required maxlength="254"></div></div><div class="student-note"><span class="small-icon"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg></span><p>Uma turma começa com pessoas.<br>Confira os dados antes de continuar.</p></div><div class="panel-bottom"><p>Explore com dados fictícios.</p><button class="primary" type="submit">Pré-visualizar cadastro<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></div></form>
+          </section>
+        </div>
+        <aside class="side-stack" aria-label="Outras formas de começar">
+          <article class="side-card glass" data-side-slot="0"><span class="side-icon"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg></span><div><h2>JSON manual</h2><p>Já tem uma estrutura?<br>Comece por ela.</p></div><button class="secondary" type="button" data-open-mode="json">Escrever JSON<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></article>
+          <article class="side-card glass" data-side-slot="1"><span class="side-icon"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg></span><div><h2>Seus alunos</h2><p>Organize quem vai<br>aprender com você.</p></div><button class="secondary" type="button" data-open-mode="students">Preparar turma<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></article>
+        </aside>
+      </div>
+      <footer class="prototype-note"><span></span>Proposta de design. Seus dados ficam nesta página.</footer>
+    </main>
+  </div>
+  <dialog id="preview-dialog" aria-labelledby="preview-title" aria-describedby="preview-description"><button class="close-dialog" id="close-dialog" type="button" aria-label="Fechar prévia" autofocus><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button><span class="dialog-icon"><svg class="icon" aria-hidden="true"><use id="preview-icon" href="#i-book"/></svg></span><h2 id="preview-title"></h2><p id="preview-description"></p><div id="preview-body"></div><button class="primary dialog-return" id="dialog-return" type="button">Voltar à área de trabalho</button></dialog>
+</body>
+</html>

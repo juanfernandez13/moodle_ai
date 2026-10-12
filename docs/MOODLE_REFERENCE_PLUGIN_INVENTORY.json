@@ -1,0 +1,6111 @@
+{
+  "schemaVersion": 1,
+  "capturedOn": "2026-10-12",
+  "source": {
+    "kind": "user_provided_plugins_overview",
+    "sha256": "e4ce2cc3503e5690f78fffb3832d86e1e5888179962407d4017d54c502fb71e6",
+    "declaredTotal": 461,
+    "declaredAdditional": 23,
+    "notes": "Dados fornecidos pelo usuário; disponibilidade null significa não exibida na cópia, não desabilitada."
+  },
+  "moodle": {
+    "release": "4.1.17+",
+    "build": "20250321",
+    "version": "2022112817.01",
+    "origin": "user_provided_notifications",
+    "sourceCommit": null
+  },
+  "plugins": [
+    {
+      "component": "mod_assign",
+      "displayName": "Tarefa",
+      "releaseShown": null,
+      "versionCode": "2022112801",
+      "versionLinesShown": [
+        "2022112801"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 6
+    },
+    {
+      "component": "mod_assignment",
+      "displayName": "Tarefa 2.2 (Desabilitado)",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 10
+    },
+    {
+      "component": "mod_attendance",
+      "displayName": "Presença",
+      "releaseShown": "2023020108",
+      "versionCode": "2023020108",
+      "versionLinesShown": [
+        "2023020108",
+        "2023020108"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 14
+    },
+    {
+      "component": "mod_bigbluebuttonbn",
+      "displayName": "BigBlueButton",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 19
+    },
+    {
+      "component": "mod_book",
+      "displayName": "Livro",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 23
+    },
+    {
+      "component": "mod_chat",
+      "displayName": "Chat",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 27
+    },
+    {
+      "component": "mod_choice",
+      "displayName": "Escolha",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 31
+    },
+    {
+      "component": "mod_coursecertificate",
+      "displayName": "Certificado do curso",
+      "releaseShown": "4.5.3",
+      "versionCode": "2025031800",
+      "versionLinesShown": [
+        "4.5.3",
+        "2025031800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 35
+    },
+    {
+      "component": "mod_data",
+      "displayName": "Base de dados",
+      "releaseShown": null,
+      "versionCode": "2022112801",
+      "versionLinesShown": [
+        "2022112801"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "filter_data"
+      ],
+      "sourceLine": 40
+    },
+    {
+      "component": "mod_feedback",
+      "displayName": "Pesquisa",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "block_feedback"
+      ],
+      "sourceLine": 45
+    },
+    {
+      "component": "mod_folder",
+      "displayName": "Pasta",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 50
+    },
+    {
+      "component": "mod_forum",
+      "displayName": "Fórum",
+      "releaseShown": null,
+      "versionCode": "2022112801",
+      "versionLinesShown": [
+        "2022112801"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "block_news_items",
+        "block_search_forums"
+      ],
+      "sourceLine": 54
+    },
+    {
+      "component": "mod_glossary",
+      "displayName": "Glossário",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "block_glossary_random",
+        "filter_glossary"
+      ],
+      "sourceLine": 59
+    },
+    {
+      "component": "mod_h5pactivity",
+      "displayName": "H5P",
+      "releaseShown": null,
+      "versionCode": "2022112801",
+      "versionLinesShown": [
+        "2022112801"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 64
+    },
+    {
+      "component": "mod_hvp",
+      "displayName": "H5P",
+      "releaseShown": "1.27.2",
+      "versionCode": "2024120900",
+      "versionLinesShown": [
+        "1.27.2",
+        "2024120900"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 68
+    },
+    {
+      "component": "mod_imscp",
+      "displayName": "Conteúdo do pacote IMS",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 73
+    },
+    {
+      "component": "mod_label",
+      "displayName": "Área de texto e mídia",
+      "releaseShown": null,
+      "versionCode": "2022112801",
+      "versionLinesShown": [
+        "2022112801"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 77
+    },
+    {
+      "component": "mod_lesson",
+      "displayName": "Lição",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 81
+    },
+    {
+      "component": "mod_lti",
+      "displayName": "Ferramenta externa - LTI",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 85
+    },
+    {
+      "component": "mod_page",
+      "displayName": "Página",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 89
+    },
+    {
+      "component": "mod_pdfannotator",
+      "displayName": "PDF Annotation",
+      "releaseShown": "PDF Annotator v1.5 release 8",
+      "versionCode": "2025032400",
+      "versionLinesShown": [
+        "PDF Annotator v1.5 release 8",
+        "2025032400"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 93
+    },
+    {
+      "component": "mod_quiz",
+      "displayName": "Questionário",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 98
+    },
+    {
+      "component": "mod_resource",
+      "displayName": "Arquivo",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 102
+    },
+    {
+      "component": "mod_scorm",
+      "displayName": "Pacote SCORM",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 106
+    },
+    {
+      "component": "mod_survey",
+      "displayName": "Pesquisa de avaliação",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 110
+    },
+    {
+      "component": "mod_url",
+      "displayName": "URL",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 114
+    },
+    {
+      "component": "mod_vpl",
+      "displayName": "Laboratório de Programação Virtual",
+      "releaseShown": "4.2.5",
+      "versionCode": "2024110512",
+      "versionLinesShown": [
+        "4.2.5",
+        "2024110512"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 118
+    },
+    {
+      "component": "mod_wiki",
+      "displayName": "Wiki",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 123
+    },
+    {
+      "component": "mod_workshop",
+      "displayName": "Laboratório de Avaliação",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 127
+    },
+    {
+      "component": "assignsubmission_comments",
+      "displayName": "Comentários sobre o envio",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 132
+    },
+    {
+      "component": "assignsubmission_file",
+      "displayName": "Envio de arquivos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 136
+    },
+    {
+      "component": "assignsubmission_onlinetext",
+      "displayName": "Envio de texto online",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 140
+    },
+    {
+      "component": "assignfeedback_comments",
+      "displayName": "Comentários de feedback",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 145
+    },
+    {
+      "component": "assignfeedback_editpdf",
+      "displayName": "Anotar PDF",
+      "releaseShown": null,
+      "versionCode": "2022112801",
+      "versionLinesShown": [
+        "2022112801"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 149
+    },
+    {
+      "component": "assignfeedback_file",
+      "displayName": "Arquivo de feedback",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 153
+    },
+    {
+      "component": "assignfeedback_offline",
+      "displayName": "Planilha de notas offline",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 157
+    },
+    {
+      "component": "assignment_offline",
+      "displayName": "Offline",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 162
+    },
+    {
+      "component": "assignment_online",
+      "displayName": "Online",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 166
+    },
+    {
+      "component": "assignment_upload",
+      "displayName": "Upload",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 170
+    },
+    {
+      "component": "assignment_uploadsingle",
+      "displayName": "Upload de arquivo único",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 174
+    },
+    {
+      "component": "booktool_exportimscp",
+      "displayName": "Exportar livro para IMS CP",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 179
+    },
+    {
+      "component": "booktool_importhtml",
+      "displayName": "Importação de capítulo do livro",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 183
+    },
+    {
+      "component": "booktool_print",
+      "displayName": "Impressão do livro",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 187
+    },
+    {
+      "component": "datafield_checkbox",
+      "displayName": "Caixas de seleção",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 192
+    },
+    {
+      "component": "datafield_date",
+      "displayName": "Data",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 195
+    },
+    {
+      "component": "datafield_file",
+      "displayName": "Arquivo",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 198
+    },
+    {
+      "component": "datafield_latlong",
+      "displayName": "Coordenadas (latitude/longitude)",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 201
+    },
+    {
+      "component": "datafield_menu",
+      "displayName": "Menu",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 204
+    },
+    {
+      "component": "datafield_multimenu",
+      "displayName": "Menu de seleção múltipla",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 207
+    },
+    {
+      "component": "datafield_number",
+      "displayName": "Número",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 211
+    },
+    {
+      "component": "datafield_picture",
+      "displayName": "Imagem",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 214
+    },
+    {
+      "component": "datafield_radiobutton",
+      "displayName": "Botões de opção",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 217
+    },
+    {
+      "component": "datafield_text",
+      "displayName": "Texto curto",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 220
+    },
+    {
+      "component": "datafield_textarea",
+      "displayName": "Área de texto",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 223
+    },
+    {
+      "component": "datafield_url",
+      "displayName": "URL",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 226
+    },
+    {
+      "component": "datapreset_imagegallery",
+      "displayName": "Galeria de imagens",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 230
+    },
+    {
+      "component": "datapreset_journal",
+      "displayName": "Diário",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 234
+    },
+    {
+      "component": "datapreset_proposals",
+      "displayName": "Propostas",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 238
+    },
+    {
+      "component": "datapreset_resources",
+      "displayName": "Recursos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 242
+    },
+    {
+      "component": "forumreport_summary",
+      "displayName": "Relatório de resumo do fórum",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 247
+    },
+    {
+      "component": "ltiservice_basicoutcomes",
+      "displayName": "Serviço de Resultados Básicos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 254
+    },
+    {
+      "component": "ltiservice_gradebookservices",
+      "displayName": "Serviços de Tarefa e Nota LTI",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 257
+    },
+    {
+      "component": "ltiservice_memberships",
+      "displayName": "Serviço LTI de fornecimento de nomes e papel",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 260
+    },
+    {
+      "component": "ltiservice_profile",
+      "displayName": "Ferramenta Consumer Profile Service LTI",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [
+        "ltiservice_toolproxy",
+        "ltiservice_toolsettings"
+      ],
+      "sourceLine": 263
+    },
+    {
+      "component": "ltiservice_toolproxy",
+      "displayName": "Ferramento de Serviço Proxy",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [
+        "ltiservice_toolsettings"
+      ],
+      "sourceLine": 267
+    },
+    {
+      "component": "ltiservice_toolsettings",
+      "displayName": "Configurações da Ferramenta de Serviço",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 271
+    },
+    {
+      "component": "quiz_grading",
+      "displayName": "Avaliação Manual",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 275
+    },
+    {
+      "component": "quiz_overview",
+      "displayName": "Notas",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 279
+    },
+    {
+      "component": "quiz_responses",
+      "displayName": "Respostas",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 283
+    },
+    {
+      "component": "quiz_statistics",
+      "displayName": "Estatísticas",
+      "releaseShown": null,
+      "versionCode": "2022112804",
+      "versionLinesShown": [
+        "2022112804"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 287
+    },
+    {
+      "component": "quizaccess_delaybetweenattempts",
+      "displayName": "Intervalo entre tentativas",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 292
+    },
+    {
+      "component": "quizaccess_ipaddress",
+      "displayName": "Regra de acesso por endereço de IP",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 295
+    },
+    {
+      "component": "quizaccess_numattempts",
+      "displayName": "Regra de acesso por número de tentativas",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 298
+    },
+    {
+      "component": "quizaccess_offlineattempts",
+      "displayName": "Regras de acesso para tentativas offline",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 301
+    },
+    {
+      "component": "quizaccess_openclosedate",
+      "displayName": "Regra de acesso por data de abertura e fechamento",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 304
+    },
+    {
+      "component": "quizaccess_password",
+      "displayName": "Regra de acesso por senha",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 307
+    },
+    {
+      "component": "quizaccess_seb",
+      "displayName": "Regras de acesso do Safe Exam Browser",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 310
+    },
+    {
+      "component": "quizaccess_securewindow",
+      "displayName": "Regra de acesso ao questionário por segurança JavaScript",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 313
+    },
+    {
+      "component": "quizaccess_timelimit",
+      "displayName": "Regra de acesso ao questionário por limite de tempo",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 316
+    },
+    {
+      "component": "scormreport_basic",
+      "displayName": "Relatório básico",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 320
+    },
+    {
+      "component": "scormreport_graphs",
+      "displayName": "Relatório gráfico",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 324
+    },
+    {
+      "component": "scormreport_interactions",
+      "displayName": "Relatório de interações",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 328
+    },
+    {
+      "component": "scormreport_objectives",
+      "displayName": "Relatório de objetivos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 332
+    },
+    {
+      "component": "workshopform_accumulative",
+      "displayName": "Nota acumulativa",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 337
+    },
+    {
+      "component": "workshopform_comments",
+      "displayName": "Comentários",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 340
+    },
+    {
+      "component": "workshopform_numerrors",
+      "displayName": "Número de erros",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 343
+    },
+    {
+      "component": "workshopform_rubric",
+      "displayName": "Rubrica",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 346
+    },
+    {
+      "component": "workshopallocation_manual",
+      "displayName": "Alocação manual",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 350
+    },
+    {
+      "component": "workshopallocation_random",
+      "displayName": "Alocação aleatória",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [
+        "workshopallocation_scheduled"
+      ],
+      "sourceLine": 353
+    },
+    {
+      "component": "workshopallocation_scheduled",
+      "displayName": "Alocação programada",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 357
+    },
+    {
+      "component": "workshopeval_best",
+      "displayName": "Comparação com a melhor avaliação",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 361
+    },
+    {
+      "component": "block_accessreview",
+      "displayName": "Revisão de acessibilidade",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 365
+    },
+    {
+      "component": "block_activity_modules",
+      "displayName": "Atividades",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 369
+    },
+    {
+      "component": "block_activity_results",
+      "displayName": "Resultados de atividade",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 373
+    },
+    {
+      "component": "block_admin_bookmarks",
+      "displayName": "Favoritos do administrador",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 377
+    },
+    {
+      "component": "block_badges",
+      "displayName": "Últimos emblemas",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 381
+    },
+    {
+      "component": "block_blog_menu",
+      "displayName": "Menu do blog",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 385
+    },
+    {
+      "component": "block_blog_recent",
+      "displayName": "Entradas recentes do blog",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 389
+    },
+    {
+      "component": "block_blog_tags",
+      "displayName": "Tags do blog",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 393
+    },
+    {
+      "component": "block_calendar_month",
+      "displayName": "Calendário",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 397
+    },
+    {
+      "component": "block_calendar_upcoming",
+      "displayName": "Próximos eventos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 401
+    },
+    {
+      "component": "block_comments",
+      "displayName": "Comentários",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 405
+    },
+    {
+      "component": "block_completion_progress",
+      "displayName": "Progresso de Conclusão",
+      "releaseShown": "Version for Moodle 4.1 onwards",
+      "versionCode": "2023110100",
+      "versionLinesShown": [
+        "Version for Moodle 4.1 onwards",
+        "2023110100"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 409
+    },
+    {
+      "component": "block_completionstatus",
+      "displayName": "Estado da conclusão do curso",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 414
+    },
+    {
+      "component": "block_course_list",
+      "displayName": "Cursos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 418
+    },
+    {
+      "component": "block_course_summary",
+      "displayName": "Resumo do curso ou site",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 422
+    },
+    {
+      "component": "block_feedback",
+      "displayName": "Feedback",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 426
+    },
+    {
+      "component": "block_globalsearch",
+      "displayName": "Busca global",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 430
+    },
+    {
+      "component": "block_glossary_random",
+      "displayName": "Entrada aleatória do glossário",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 434
+    },
+    {
+      "component": "block_html",
+      "displayName": "HTML",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 438
+    },
+    {
+      "component": "block_login",
+      "displayName": "Acesso",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 442
+    },
+    {
+      "component": "block_lp",
+      "displayName": "Planos de aprendizagem",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 446
+    },
+    {
+      "component": "block_mentees",
+      "displayName": "Mentorandos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 450
+    },
+    {
+      "component": "block_mnet_hosts",
+      "displayName": "Servidores da rede",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 454
+    },
+    {
+      "component": "block_myoverview",
+      "displayName": "Resumo dos cursos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 458
+    },
+    {
+      "component": "block_myprofile",
+      "displayName": "Usuário logado",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 462
+    },
+    {
+      "component": "block_navigation",
+      "displayName": "Navegação",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 466
+    },
+    {
+      "component": "block_news_items",
+      "displayName": "Últimos avisos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 470
+    },
+    {
+      "component": "block_online_users",
+      "displayName": "Usuários Online",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 474
+    },
+    {
+      "component": "block_private_files",
+      "displayName": "Arquivos privados",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 478
+    },
+    {
+      "component": "block_recent_activity",
+      "displayName": "Atividade recente",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 482
+    },
+    {
+      "component": "block_recentlyaccessedcourses",
+      "displayName": "Cursos acessados recentemente",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 486
+    },
+    {
+      "component": "block_recentlyaccesseditems",
+      "displayName": "Itens acessados recentemente",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 490
+    },
+    {
+      "component": "block_rss_client",
+      "displayName": "Alimentadores RSS remotos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 494
+    },
+    {
+      "component": "block_search_forums",
+      "displayName": "Pesquisar nos fóruns",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 498
+    },
+    {
+      "component": "block_section_links",
+      "displayName": "Links das seções",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 502
+    },
+    {
+      "component": "block_selfcompletion",
+      "displayName": "Auto-completar",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 506
+    },
+    {
+      "component": "block_settings",
+      "displayName": "Administração",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 510
+    },
+    {
+      "component": "block_site_main_menu",
+      "displayName": "Menu principal",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 514
+    },
+    {
+      "component": "block_social_activities",
+      "displayName": "Atividades sociais",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 518
+    },
+    {
+      "component": "block_starredcourses",
+      "displayName": "Cursos favoritos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 522
+    },
+    {
+      "component": "block_tag_flickr",
+      "displayName": "Flickr",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 526
+    },
+    {
+      "component": "block_tag_youtube",
+      "displayName": "YouTube",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 530
+    },
+    {
+      "component": "block_tags",
+      "displayName": "Tags",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 534
+    },
+    {
+      "component": "block_timeline",
+      "displayName": "Linha do tempo",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 538
+    },
+    {
+      "component": "block_xp",
+      "displayName": "Level Up XP",
+      "releaseShown": "3.17.1",
+      "versionCode": "2024100301",
+      "versionLinesShown": [
+        "3.17.1",
+        "2024100301"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 542
+    },
+    {
+      "component": "qtype_calculated",
+      "displayName": "Calculado",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "qtype_calculatedmulti",
+        "qtype_calculatedsimple"
+      ],
+      "sourceLine": 548
+    },
+    {
+      "component": "qtype_calculatedmulti",
+      "displayName": "Múltipla escolha calculada",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 553
+    },
+    {
+      "component": "qtype_calculatedsimple",
+      "displayName": "Cálculo simples",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 557
+    },
+    {
+      "component": "qtype_coderunner",
+      "displayName": "CodeRunner",
+      "releaseShown": "5.5.0",
+      "versionCode": "2025010200",
+      "versionLinesShown": [
+        "5.5.0",
+        "2025010200"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 561
+    },
+    {
+      "component": "qtype_ddimageortext",
+      "displayName": "Arrastar e soltar na imagem",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "qtype_ddmarker"
+      ],
+      "sourceLine": 566
+    },
+    {
+      "component": "qtype_ddmarker",
+      "displayName": "Arrastar e soltar nos marcadores",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 571
+    },
+    {
+      "component": "qtype_ddwtos",
+      "displayName": "Arrastar e soltar sobre o texto",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 575
+    },
+    {
+      "component": "qtype_description",
+      "displayName": "Descrição",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 579
+    },
+    {
+      "component": "qtype_essay",
+      "displayName": "Dissertação",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 583
+    },
+    {
+      "component": "qtype_gapselect",
+      "displayName": "Selecionar as palavras que faltam",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "qtype_ddimageortext",
+        "qtype_ddmarker",
+        "qtype_ddwtos"
+      ],
+      "sourceLine": 587
+    },
+    {
+      "component": "qtype_match",
+      "displayName": "Associação",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "qtype_randomsamatch"
+      ],
+      "sourceLine": 592
+    },
+    {
+      "component": "qtype_missingtype",
+      "displayName": "Espaço reservado de tipo de questão ausente",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 597
+    },
+    {
+      "component": "qtype_multianswer",
+      "displayName": "Respostas embutidas (cloze)",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 601
+    },
+    {
+      "component": "qtype_multichoice",
+      "displayName": "Múltipla escolha",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "qtype_calculatedmulti",
+        "qtype_multianswer"
+      ],
+      "sourceLine": 605
+    },
+    {
+      "component": "qtype_numerical",
+      "displayName": "Numérico",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "qtype_calculated",
+        "qtype_calculatedmulti",
+        "qtype_calculatedsimple",
+        "qtype_multianswer"
+      ],
+      "sourceLine": 610
+    },
+    {
+      "component": "qtype_random",
+      "displayName": "Aleatório",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 615
+    },
+    {
+      "component": "qtype_randomsamatch",
+      "displayName": "Associação de resposta curta aleatória",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 619
+    },
+    {
+      "component": "qtype_shortanswer",
+      "displayName": "resposta curta",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "qtype_multianswer",
+        "qtype_randomsamatch"
+      ],
+      "sourceLine": 623
+    },
+    {
+      "component": "qtype_truefalse",
+      "displayName": "Verdadeiro/Falso",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 628
+    },
+    {
+      "component": "qbank_bulkmove",
+      "displayName": "Mover questões em massa",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 633
+    },
+    {
+      "component": "qbank_columnsortorder",
+      "displayName": "Ordem de classificação da coluna",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 637
+    },
+    {
+      "component": "qbank_comment",
+      "displayName": "Comentários de questão",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 641
+    },
+    {
+      "component": "qbank_customfields",
+      "displayName": "Campos personalizados de questão",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 645
+    },
+    {
+      "component": "qbank_deletequestion",
+      "displayName": "Excluir questão",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 649
+    },
+    {
+      "component": "qbank_editquestion",
+      "displayName": "Editar questões",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 653
+    },
+    {
+      "component": "qbank_exportquestions",
+      "displayName": "Exportar questões",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 657
+    },
+    {
+      "component": "qbank_exporttoxml",
+      "displayName": "Exportar paraXML",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 661
+    },
+    {
+      "component": "qbank_history",
+      "displayName": "Histórico da questão",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 665
+    },
+    {
+      "component": "qbank_importquestions",
+      "displayName": "Importar questões",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 669
+    },
+    {
+      "component": "qbank_managecategories",
+      "displayName": "Gerenciar categorias",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 673
+    },
+    {
+      "component": "qbank_previewquestion",
+      "displayName": "Ver prévia da questão",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 677
+    },
+    {
+      "component": "qbank_statistics",
+      "displayName": "Estatísticas de questão",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 681
+    },
+    {
+      "component": "qbank_tagquestion",
+      "displayName": "Questões de etiqueta",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 685
+    },
+    {
+      "component": "qbank_usage",
+      "displayName": "Uso da questão",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 689
+    },
+    {
+      "component": "qbank_viewcreator",
+      "displayName": "Ver autor",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 693
+    },
+    {
+      "component": "qbank_viewquestionname",
+      "displayName": "Ver nome da questão",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 697
+    },
+    {
+      "component": "qbank_viewquestiontext",
+      "displayName": "Ver texto da questão",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 701
+    },
+    {
+      "component": "qbank_viewquestiontype",
+      "displayName": "Ver tipo de questão",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 705
+    },
+    {
+      "component": "qbehaviour_adaptive",
+      "displayName": "Modo adaptativo",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "qbehaviour_adaptivenopenalty"
+      ],
+      "sourceLine": 710
+    },
+    {
+      "component": "qbehaviour_adaptive_adapted_for_coderunner",
+      "displayName": "Adaptive adapted for coderunner",
+      "releaseShown": "1.4.4",
+      "versionCode": "2025012500",
+      "versionLinesShown": [
+        "1.4.4",
+        "2025012500"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [
+        "qtype_coderunner"
+      ],
+      "sourceLine": 715
+    },
+    {
+      "component": "qbehaviour_adaptivenopenalty",
+      "displayName": "Modo adapatativo (sem penalidade)",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 721
+    },
+    {
+      "component": "qbehaviour_deferredcbm",
+      "displayName": "Feedback adiado com CBM",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "qbehaviour_immediatecbm"
+      ],
+      "sourceLine": 725
+    },
+    {
+      "component": "qbehaviour_deferredfeedback",
+      "displayName": "Feedback adiado",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "qbehaviour_deferredcbm"
+      ],
+      "sourceLine": 730
+    },
+    {
+      "component": "qbehaviour_immediatecbm",
+      "displayName": "Feedback imediato com CBM",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 735
+    },
+    {
+      "component": "qbehaviour_immediatefeedback",
+      "displayName": "Feedback imediato",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "qbehaviour_immediatecbm"
+      ],
+      "sourceLine": 739
+    },
+    {
+      "component": "qbehaviour_informationitem",
+      "displayName": "Comportamento de itens de informação",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 744
+    },
+    {
+      "component": "qbehaviour_interactive",
+      "displayName": "Interativo com multiplas tentativas",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "qbehaviour_interactivecountback"
+      ],
+      "sourceLine": 748
+    },
+    {
+      "component": "qbehaviour_interactivecountback",
+      "displayName": "Interativo com múltiplas tentativas (crédito para primeiras)",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 753
+    },
+    {
+      "component": "qbehaviour_manualgraded",
+      "displayName": "Avaliada manualmente",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 757
+    },
+    {
+      "component": "qbehaviour_missing",
+      "displayName": "Comportamento não encontrado",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 761
+    },
+    {
+      "component": "qformat_aiken",
+      "displayName": "Formato Aiken",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 766
+    },
+    {
+      "component": "qformat_blackboard_six",
+      "displayName": "Blackboard",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 770
+    },
+    {
+      "component": "qformat_gift",
+      "displayName": "Formato GIFT",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 774
+    },
+    {
+      "component": "qformat_missingword",
+      "displayName": "Formato Missing word",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 778
+    },
+    {
+      "component": "qformat_multianswer",
+      "displayName": "Respostas incorporadas (Cloze)",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 782
+    },
+    {
+      "component": "qformat_xhtml",
+      "displayName": "Formato XHTML",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 786
+    },
+    {
+      "component": "qformat_xml",
+      "displayName": "Formato Moodle XML",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 790
+    },
+    {
+      "component": "filter_activitynames",
+      "displayName": "Link automático de nomes de atividades",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 795
+    },
+    {
+      "component": "filter_algebra",
+      "displayName": "Notação algébrica",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 799
+    },
+    {
+      "component": "filter_data",
+      "displayName": "Desabilitar links automáticos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 803
+    },
+    {
+      "component": "filter_displayh5p",
+      "displayName": "Exibir H5P",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 807
+    },
+    {
+      "component": "filter_emailprotect",
+      "displayName": "Proteção de e-mail",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 811
+    },
+    {
+      "component": "filter_emoticon",
+      "displayName": "Exibir emoticons como imagens",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 815
+    },
+    {
+      "component": "filter_glossary",
+      "displayName": "Links automáticos para o glossário",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 819
+    },
+    {
+      "component": "filter_mathjaxloader",
+      "displayName": "MatjhJax",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 823
+    },
+    {
+      "component": "filter_mediaplugin",
+      "displayName": "Plugins multimídia",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 827
+    },
+    {
+      "component": "filter_multilang",
+      "displayName": "Conteúdo multi-idioma",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 831
+    },
+    {
+      "component": "filter_tex",
+      "displayName": "Notação TeX",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 835
+    },
+    {
+      "component": "filter_tidy",
+      "displayName": "HTML tidy",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 839
+    },
+    {
+      "component": "filter_urltolink",
+      "displayName": "Converter URLs em links e imagens",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 843
+    },
+    {
+      "component": "editor_atto",
+      "displayName": "Editor de HTML atto",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 848
+    },
+    {
+      "component": "editor_textarea",
+      "displayName": "Área de texto simples",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 852
+    },
+    {
+      "component": "editor_tiny",
+      "displayName": "Editor TinyMCE",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 856
+    },
+    {
+      "component": "editor_tinymce",
+      "displayName": "Editor de HTML TinyMCE (legado)",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 860
+    },
+    {
+      "component": "atto_accessibilitychecker",
+      "displayName": "Verificador de acessibilidade:",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 865
+    },
+    {
+      "component": "atto_accessibilityhelper",
+      "displayName": "Ajuda para a leitura de tela",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 869
+    },
+    {
+      "component": "atto_align",
+      "displayName": "Alinhar o texto",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 873
+    },
+    {
+      "component": "atto_backcolor",
+      "displayName": "Cor de fundo",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 877
+    },
+    {
+      "component": "atto_bold",
+      "displayName": "Negrito",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 881
+    },
+    {
+      "component": "atto_charmap",
+      "displayName": "Inserir caractere",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 885
+    },
+    {
+      "component": "atto_clear",
+      "displayName": "Limpar formatação",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 889
+    },
+    {
+      "component": "atto_collapse",
+      "displayName": "Mostrar/ocultar botões avançados",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 893
+    },
+    {
+      "component": "atto_emojipicker",
+      "displayName": "Seletor Emoji",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 897
+    },
+    {
+      "component": "atto_emoticon",
+      "displayName": "Emoticon",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 901
+    },
+    {
+      "component": "atto_equation",
+      "displayName": "Editor de equações",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 905
+    },
+    {
+      "component": "atto_fontcolor",
+      "displayName": "Cor da fonte",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 909
+    },
+    {
+      "component": "atto_h5p",
+      "displayName": "Inserir H5P",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 913
+    },
+    {
+      "component": "atto_html",
+      "displayName": "HTML",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 917
+    },
+    {
+      "component": "atto_image",
+      "displayName": "Inserir ou editar Imagem",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 921
+    },
+    {
+      "component": "atto_indent",
+      "displayName": "Indentar",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 925
+    },
+    {
+      "component": "atto_italic",
+      "displayName": "Itálico",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 929
+    },
+    {
+      "component": "atto_link",
+      "displayName": "Link",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 933
+    },
+    {
+      "component": "atto_managefiles",
+      "displayName": "Gerenciar arquivos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 937
+    },
+    {
+      "component": "atto_media",
+      "displayName": "Inserir ou editar um arquivo de áudio/vídeo",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 941
+    },
+    {
+      "component": "atto_noautolink",
+      "displayName": "Prevenir link automátco",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 945
+    },
+    {
+      "component": "atto_orderedlist",
+      "displayName": "Lista ordenada",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 949
+    },
+    {
+      "component": "atto_recordrtc",
+      "displayName": "RecordRTC",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 953
+    },
+    {
+      "component": "atto_rtl",
+      "displayName": "Direita para a esquerda / Esquerda para a direita",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 957
+    },
+    {
+      "component": "atto_strike",
+      "displayName": "Riscar através",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 961
+    },
+    {
+      "component": "atto_subscript",
+      "displayName": "Subscrito",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 965
+    },
+    {
+      "component": "atto_superscript",
+      "displayName": "Superescrito",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 969
+    },
+    {
+      "component": "atto_table",
+      "displayName": "Tabela",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 973
+    },
+    {
+      "component": "atto_title",
+      "displayName": "Estilos de parágrafos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 977
+    },
+    {
+      "component": "atto_underline",
+      "displayName": "Sublinhado",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 981
+    },
+    {
+      "component": "atto_undo",
+      "displayName": "Desfazer/Refazer",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 985
+    },
+    {
+      "component": "atto_unorderedlist",
+      "displayName": "Lista não ordenada",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 989
+    },
+    {
+      "component": "tiny_accessibilitychecker",
+      "displayName": "Verificador de acessibilidade",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 994
+    },
+    {
+      "component": "tiny_autosave",
+      "displayName": "Tiny salvamento automático",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 998
+    },
+    {
+      "component": "tiny_equation",
+      "displayName": "Tiny editor de equações",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1002
+    },
+    {
+      "component": "tiny_h5p",
+      "displayName": "Tiny inserir H5P",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1006
+    },
+    {
+      "component": "tiny_link",
+      "displayName": "Link Tiny",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1010
+    },
+    {
+      "component": "tiny_media",
+      "displayName": "Tiny inserir mídia",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1014
+    },
+    {
+      "component": "tiny_recordrtc",
+      "displayName": "Tiny RecordRTC",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1018
+    },
+    {
+      "component": "tinymce_ctrlhelp",
+      "displayName": "CTRL + botão direito para ajuda",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1023
+    },
+    {
+      "component": "tinymce_managefiles",
+      "displayName": "Gerenciar arquivos incorporados",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1027
+    },
+    {
+      "component": "tinymce_moodleemoticon",
+      "displayName": "Inserir emoticon",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1031
+    },
+    {
+      "component": "tinymce_moodleimage",
+      "displayName": "Inserir imagem",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1035
+    },
+    {
+      "component": "tinymce_moodlemedia",
+      "displayName": "Insira a mídia",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1039
+    },
+    {
+      "component": "tinymce_moodlenolink",
+      "displayName": "Impedir vinculação automática",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1043
+    },
+    {
+      "component": "tinymce_pdw",
+      "displayName": "Expandir/contrair barra de ferramentas",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1047
+    },
+    {
+      "component": "tinymce_spellchecker",
+      "displayName": "Corretor ortográfico legado",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1051
+    },
+    {
+      "component": "tinymce_wrap",
+      "displayName": "Embrulhe",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1055
+    },
+    {
+      "component": "enrol_category",
+      "displayName": "Inscrições em categorias",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1060
+    },
+    {
+      "component": "enrol_cohort",
+      "displayName": "Sincronização de coorte",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1064
+    },
+    {
+      "component": "enrol_database",
+      "displayName": "Banco de Dados Externo",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1068
+    },
+    {
+      "component": "enrol_fee",
+      "displayName": "Inscrição mediante pagamento",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1072
+    },
+    {
+      "component": "enrol_flatfile",
+      "displayName": "Arquivo simples (CSV)",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1076
+    },
+    {
+      "component": "enrol_guest",
+      "displayName": "Acesso como visitante",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1080
+    },
+    {
+      "component": "enrol_imsenterprise",
+      "displayName": "Arquivo IMS Enterprise",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1084
+    },
+    {
+      "component": "enrol_ldap",
+      "displayName": "Inscrições LDAP",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1088
+    },
+    {
+      "component": "enrol_lti",
+      "displayName": "Publicar como ferramenta LTI",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1092
+    },
+    {
+      "component": "enrol_manual",
+      "displayName": "Inscrições manuais",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1096
+    },
+    {
+      "component": "enrol_meta",
+      "displayName": "Curso meta link",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1100
+    },
+    {
+      "component": "enrol_mnet",
+      "displayName": "Inscrições remotas MNet",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1104
+    },
+    {
+      "component": "enrol_paypal",
+      "displayName": "PayPal",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1108
+    },
+    {
+      "component": "enrol_self",
+      "displayName": "Autoinscrição",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1112
+    },
+    {
+      "component": "auth_cas",
+      "displayName": "Usar um servidor (SSO) CAS",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1117
+    },
+    {
+      "component": "auth_db",
+      "displayName": "Banco de dados externo",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1121
+    },
+    {
+      "component": "auth_email",
+      "displayName": "Auto-cadastro por email",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1125
+    },
+    {
+      "component": "auth_ldap",
+      "displayName": "LDAP",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [
+        "auth_cas"
+      ],
+      "sourceLine": 1129
+    },
+    {
+      "component": "auth_lti",
+      "displayName": "LTI",
+      "releaseShown": null,
+      "versionCode": "2022112801",
+      "versionLinesShown": [
+        "2022112801"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [
+        "enrol_lti"
+      ],
+      "sourceLine": 1134
+    },
+    {
+      "component": "auth_manual",
+      "displayName": "Contas manuais",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1139
+    },
+    {
+      "component": "auth_mnet",
+      "displayName": "Autenticação MNet",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1143
+    },
+    {
+      "component": "auth_nologin",
+      "displayName": "Nenhum login",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1147
+    },
+    {
+      "component": "auth_none",
+      "displayName": "Nenhuma autenticação",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1151
+    },
+    {
+      "component": "auth_oauth2",
+      "displayName": "OAuth 2",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1155
+    },
+    {
+      "component": "auth_shibboleth",
+      "displayName": "Shibboleth",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1159
+    },
+    {
+      "component": "auth_webservice",
+      "displayName": "Autenticação do web service",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1163
+    },
+    {
+      "component": "tool_admin_presets",
+      "displayName": "Predefinições de administrador do site",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1168
+    },
+    {
+      "component": "tool_analytics",
+      "displayName": "Modelos analíticos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1172
+    },
+    {
+      "component": "tool_availabilityconditions",
+      "displayName": "Disponibilizar gestão de condição",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1176
+    },
+    {
+      "component": "tool_behat",
+      "displayName": "Testes de aceitação",
+      "releaseShown": null,
+      "versionCode": "2022112802",
+      "versionLinesShown": [
+        "2022112802"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1180
+    },
+    {
+      "component": "tool_brickfield",
+      "displayName": "Kit de ferramentas de acessibilidade",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "block_accessreview"
+      ],
+      "sourceLine": 1184
+    },
+    {
+      "component": "tool_capability",
+      "displayName": "Relatório de capability",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1189
+    },
+    {
+      "component": "tool_certificate",
+      "displayName": "Gerenciador de certificados",
+      "releaseShown": "4.5.3",
+      "versionCode": "2025031800",
+      "versionLinesShown": [
+        "4.5.3",
+        "2025031800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [
+        "mod_coursecertificate"
+      ],
+      "sourceLine": 1193
+    },
+    {
+      "component": "tool_cohortroles",
+      "displayName": "Gerenciamento de papéis do coortes",
+      "releaseShown": null,
+      "versionCode": "2022112801",
+      "versionLinesShown": [
+        "2022112801"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1199
+    },
+    {
+      "component": "tool_componentlibrary",
+      "displayName": "Biblioteca de componentes de UI",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1203
+    },
+    {
+      "component": "tool_customlang",
+      "displayName": "Personalização de idioma",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1207
+    },
+    {
+      "component": "tool_dataprivacy",
+      "displayName": "Dados privados",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1211
+    },
+    {
+      "component": "tool_dbtransfer",
+      "displayName": "Transferência de banco de dados",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1215
+    },
+    {
+      "component": "tool_filetypes",
+      "displayName": "Tipos de arquivos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1219
+    },
+    {
+      "component": "tool_generator",
+      "displayName": "Gerador de dados para desenvolvimento",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1223
+    },
+    {
+      "component": "tool_httpsreplace",
+      "displayName": "Ferramenta de conversão HTTPS",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1227
+    },
+    {
+      "component": "tool_innodb",
+      "displayName": "Converter para InnoDB",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1231
+    },
+    {
+      "component": "tool_installaddon",
+      "displayName": "Instalador de plugin",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1235
+    },
+    {
+      "component": "tool_langimport",
+      "displayName": "Pacotes de idiomas",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1239
+    },
+    {
+      "component": "tool_licensemanager",
+      "displayName": "Gerenciador de licenças",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1243
+    },
+    {
+      "component": "tool_log",
+      "displayName": "Gerenciador de local de armazenamento de log",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1247
+    },
+    {
+      "component": "tool_lp",
+      "displayName": "Planos de aprendizagem",
+      "releaseShown": null,
+      "versionCode": "2022112801",
+      "versionLinesShown": [
+        "2022112801"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "block_lp",
+        "tool_cohortroles",
+        "tool_lpimportcsv",
+        "tool_lpmigrate",
+        "report_competency"
+      ],
+      "sourceLine": 1251
+    },
+    {
+      "component": "tool_lpimportcsv",
+      "displayName": "Importar estrutura de competência",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1256
+    },
+    {
+      "component": "tool_lpmigrate",
+      "displayName": "Ferramenta de migração de competências",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1260
+    },
+    {
+      "component": "tool_messageinbound",
+      "displayName": "Configuração de entrada de mensagens",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1264
+    },
+    {
+      "component": "tool_mobile",
+      "displayName": "Ferramentas do Moodle App",
+      "releaseShown": null,
+      "versionCode": "2022112801",
+      "versionLinesShown": [
+        "2022112801"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1268
+    },
+    {
+      "component": "tool_monitor",
+      "displayName": "Monitor de eventos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1272
+    },
+    {
+      "component": "tool_moodlenet",
+      "displayName": "MoodleNet",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1276
+    },
+    {
+      "component": "tool_multilangupgrade",
+      "displayName": "Atualização multi-lingua",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1280
+    },
+    {
+      "component": "tool_oauth2",
+      "displayName": "Serviços OAuth 2",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1284
+    },
+    {
+      "component": "tool_phpunit",
+      "displayName": "Testes do PHPUnit",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1288
+    },
+    {
+      "component": "tool_policy",
+      "displayName": "Políticas",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1292
+    },
+    {
+      "component": "tool_profiling",
+      "displayName": "Profiling é executado",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1296
+    },
+    {
+      "component": "tool_recyclebin",
+      "displayName": "Lixeira",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1300
+    },
+    {
+      "component": "tool_replace",
+      "displayName": "Buscar e substituir no DB",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1304
+    },
+    {
+      "component": "tool_spamcleaner",
+      "displayName": "Spam cleaner",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1308
+    },
+    {
+      "component": "tool_task",
+      "displayName": "Configuração de tarefa agendada",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1312
+    },
+    {
+      "component": "tool_templatelibrary",
+      "displayName": "Biblioteca de templates",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1316
+    },
+    {
+      "component": "tool_unsuproles",
+      "displayName": "Atribuições de papel não suportadas",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1320
+    },
+    {
+      "component": "tool_uploadcourse",
+      "displayName": "Carregamento de cursos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1324
+    },
+    {
+      "component": "tool_uploaduser",
+      "displayName": "Upload de usuário",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1328
+    },
+    {
+      "component": "tool_usertours",
+      "displayName": "Demonstrações ao usuário",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1332
+    },
+    {
+      "component": "tool_xmldb",
+      "displayName": "Editor XMLDB",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1336
+    },
+    {
+      "component": "certificateelement_border",
+      "displayName": "Borda",
+      "releaseShown": "4.5.3",
+      "versionCode": "2025031800",
+      "versionLinesShown": [
+        "4.5.3",
+        "2025031800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 1341
+    },
+    {
+      "component": "certificateelement_code",
+      "displayName": "Código",
+      "releaseShown": "4.5.3",
+      "versionCode": "2025031800",
+      "versionLinesShown": [
+        "4.5.3",
+        "2025031800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 1346
+    },
+    {
+      "component": "certificateelement_date",
+      "displayName": "Data",
+      "releaseShown": "4.5.3",
+      "versionCode": "2025031800",
+      "versionLinesShown": [
+        "4.5.3",
+        "2025031800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 1351
+    },
+    {
+      "component": "certificateelement_digitalsignature",
+      "displayName": "Assinatura digital",
+      "releaseShown": "4.5.3",
+      "versionCode": "2025031800",
+      "versionLinesShown": [
+        "4.5.3",
+        "2025031800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 1356
+    },
+    {
+      "component": "certificateelement_image",
+      "displayName": "Imagem",
+      "releaseShown": "4.5.3",
+      "versionCode": "2025031800",
+      "versionLinesShown": [
+        "4.5.3",
+        "2025031800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 1361
+    },
+    {
+      "component": "certificateelement_program",
+      "displayName": "Campos dinâmicos",
+      "releaseShown": "4.5.3",
+      "versionCode": "2025031800",
+      "versionLinesShown": [
+        "4.5.3",
+        "2025031800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 1366
+    },
+    {
+      "component": "certificateelement_text",
+      "displayName": "Texto",
+      "releaseShown": "4.5.3",
+      "versionCode": "2025031800",
+      "versionLinesShown": [
+        "4.5.3",
+        "2025031800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 1371
+    },
+    {
+      "component": "certificateelement_userfield",
+      "displayName": "Campo de usuário",
+      "releaseShown": "4.5.3",
+      "versionCode": "2025031800",
+      "versionLinesShown": [
+        "4.5.3",
+        "2025031800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 1376
+    },
+    {
+      "component": "certificateelement_userpicture",
+      "displayName": "Foto do usuário",
+      "releaseShown": "4.5.3",
+      "versionCode": "2025031800",
+      "versionLinesShown": [
+        "4.5.3",
+        "2025031800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 1381
+    },
+    {
+      "component": "logstore_database",
+      "displayName": "Log em base de dados externa",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1387
+    },
+    {
+      "component": "logstore_legacy",
+      "displayName": "Log legado",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1391
+    },
+    {
+      "component": "logstore_standard",
+      "displayName": "Log padrão",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1395
+    },
+    {
+      "component": "antivirus_clamav",
+      "displayName": "Antivírus ClamAV",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1400
+    },
+    {
+      "component": "availability_completion",
+      "displayName": "Restrição devido a conclusão da atividade",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1405
+    },
+    {
+      "component": "availability_date",
+      "displayName": "Restrição devido a data",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1409
+    },
+    {
+      "component": "availability_grade",
+      "displayName": "Restrição devido às notas",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1413
+    },
+    {
+      "component": "availability_group",
+      "displayName": "Restrição por grupo",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1417
+    },
+    {
+      "component": "availability_grouping",
+      "displayName": "Restrições por agrupamento",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1421
+    },
+    {
+      "component": "availability_profile",
+      "displayName": "Restrição devido a perfil",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1425
+    },
+    {
+      "component": "calendartype_gregorian",
+      "displayName": "Tipo de calendário gregoriano",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1430
+    },
+    {
+      "component": "customfield_checkbox",
+      "displayName": "Caixa de seleção",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1434
+    },
+    {
+      "component": "customfield_date",
+      "displayName": "Data e hora",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1438
+    },
+    {
+      "component": "customfield_select",
+      "displayName": "Menu suspenso",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1442
+    },
+    {
+      "component": "customfield_text",
+      "displayName": "Texto curto",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1446
+    },
+    {
+      "component": "customfield_textarea",
+      "displayName": "Área de texto",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1450
+    },
+    {
+      "component": "message_airnotifier",
+      "displayName": "Móvel",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1455
+    },
+    {
+      "component": "message_email",
+      "displayName": "Email",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1459
+    },
+    {
+      "component": "message_popup",
+      "displayName": "Web",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1463
+    },
+    {
+      "component": "media_html5audio",
+      "displayName": "Áudio HTML5",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1468
+    },
+    {
+      "component": "media_html5video",
+      "displayName": "Vídeo HTML5",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1472
+    },
+    {
+      "component": "media_videojs",
+      "displayName": "Player do VideoJS",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1476
+    },
+    {
+      "component": "media_vimeo",
+      "displayName": "Vimeo",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1480
+    },
+    {
+      "component": "media_youtube",
+      "displayName": "YouTube",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1484
+    },
+    {
+      "component": "format_buttons",
+      "displayName": "Formato de curso com botões",
+      "releaseShown": "4.x",
+      "versionCode": "2022020801",
+      "versionLinesShown": [
+        "4.x",
+        "2022020801"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 1489
+    },
+    {
+      "component": "format_cards",
+      "displayName": "Formato de cartões",
+      "releaseShown": "v1.5.1",
+      "versionCode": "2025042200",
+      "versionLinesShown": [
+        "v1.5.1",
+        "2025042200"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 1494
+    },
+    {
+      "component": "format_singleactivity",
+      "displayName": "Formato de atividade única",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1499
+    },
+    {
+      "component": "format_social",
+      "displayName": "Formato Social",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1503
+    },
+    {
+      "component": "format_topics",
+      "displayName": "Formato Tópicos",
+      "releaseShown": null,
+      "versionCode": "2022112801",
+      "versionLinesShown": [
+        "2022112801"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "format_cards"
+      ],
+      "sourceLine": 1507
+    },
+    {
+      "component": "format_weeks",
+      "displayName": "Formato Semanal",
+      "releaseShown": null,
+      "versionCode": "2022112801",
+      "versionLinesShown": [
+        "2022112801"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1512
+    },
+    {
+      "component": "dataformat_csv",
+      "displayName": "Valores Separados Por Virgula (.csv)",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1517
+    },
+    {
+      "component": "dataformat_excel",
+      "displayName": "Microsoft Excel (.xlsx)",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1521
+    },
+    {
+      "component": "dataformat_html",
+      "displayName": "Tabela HTML",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1525
+    },
+    {
+      "component": "dataformat_json",
+      "displayName": "Javascript Object Notation (.json)",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1529
+    },
+    {
+      "component": "dataformat_ods",
+      "displayName": "OpenDocument (.ods)",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1533
+    },
+    {
+      "component": "dataformat_pdf",
+      "displayName": "Formato de documento portável (.pdf)",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1537
+    },
+    {
+      "component": "profilefield_checkbox",
+      "displayName": "Caixa de seleção",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1542
+    },
+    {
+      "component": "profilefield_datetime",
+      "displayName": "Data/hora",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1546
+    },
+    {
+      "component": "profilefield_menu",
+      "displayName": "Menu de opções",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1550
+    },
+    {
+      "component": "profilefield_social",
+      "displayName": "Social",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1554
+    },
+    {
+      "component": "profilefield_text",
+      "displayName": "Campo de uma linha de texto",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1558
+    },
+    {
+      "component": "profilefield_textarea",
+      "displayName": "Área de texto",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1562
+    },
+    {
+      "component": "report_backups",
+      "displayName": "Relatório de Backups",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1567
+    },
+    {
+      "component": "report_competency",
+      "displayName": "Distribuição de competências",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1571
+    },
+    {
+      "component": "report_completion",
+      "displayName": "Conclusão do curso",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [
+        "block_completionstatus"
+      ],
+      "sourceLine": 1575
+    },
+    {
+      "component": "report_configlog",
+      "displayName": "Alterações de configurações",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1579
+    },
+    {
+      "component": "report_courseoverview",
+      "displayName": "Visão geral do curso",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1583
+    },
+    {
+      "component": "report_eventlist",
+      "displayName": "Lista de eventos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1587
+    },
+    {
+      "component": "report_infectedfiles",
+      "displayName": "Arquivos infectados",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1591
+    },
+    {
+      "component": "report_insights",
+      "displayName": "Insights",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1595
+    },
+    {
+      "component": "report_log",
+      "displayName": "Logs",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1599
+    },
+    {
+      "component": "report_loglive",
+      "displayName": "Logs ativos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1603
+    },
+    {
+      "component": "report_outline",
+      "displayName": "Atividade do curso",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1607
+    },
+    {
+      "component": "report_participation",
+      "displayName": "Participação do curso",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1611
+    },
+    {
+      "component": "report_performance",
+      "displayName": "Descrição geral do desempenho",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1615
+    },
+    {
+      "component": "report_progress",
+      "displayName": "Conclusão de atividades",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1619
+    },
+    {
+      "component": "report_questioninstances",
+      "displayName": "Instâncias de questões",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1623
+    },
+    {
+      "component": "report_security",
+      "displayName": "Verificações de segurança",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1627
+    },
+    {
+      "component": "report_stats",
+      "displayName": "Estatísticas",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1631
+    },
+    {
+      "component": "report_status",
+      "displayName": "Estado do sistema",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1635
+    },
+    {
+      "component": "report_usersessions",
+      "displayName": "Relatório de sessões do usuário",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1639
+    },
+    {
+      "component": "gradeexport_ods",
+      "displayName": "Planilha ODS - Open Document",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1646
+    },
+    {
+      "component": "gradeexport_txt",
+      "displayName": "Arquivo de texto",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1650
+    },
+    {
+      "component": "gradeexport_xls",
+      "displayName": "Planilha Excel",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1654
+    },
+    {
+      "component": "gradeexport_xml",
+      "displayName": "Arquivo XML",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1658
+    },
+    {
+      "component": "gradeimport_csv",
+      "displayName": "Arquivo CSV",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [
+        "gradeimport_direct"
+      ],
+      "sourceLine": 1663
+    },
+    {
+      "component": "gradeimport_direct",
+      "displayName": "Colar de planilha",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1667
+    },
+    {
+      "component": "gradeimport_xml",
+      "displayName": "Arquivo XML",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1671
+    },
+    {
+      "component": "gradereport_grader",
+      "displayName": "Relatório de notas",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1676
+    },
+    {
+      "component": "gradereport_history",
+      "displayName": "Histórico de notas",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1680
+    },
+    {
+      "component": "gradereport_outcomes",
+      "displayName": "Relatório de resultados",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1684
+    },
+    {
+      "component": "gradereport_overview",
+      "displayName": "Relatório geral",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1688
+    },
+    {
+      "component": "gradereport_singleview",
+      "displayName": "Visão única",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1692
+    },
+    {
+      "component": "gradereport_summary",
+      "displayName": "Resumo de notas",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1696
+    },
+    {
+      "component": "gradereport_user",
+      "displayName": "Relatório do usuário",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1700
+    },
+    {
+      "component": "gradingform_guide",
+      "displayName": "Guia de avaliação",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1705
+    },
+    {
+      "component": "gradingform_rubric",
+      "displayName": "Rubrica",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1709
+    },
+    {
+      "component": "mlbackend_php",
+      "displayName": "Backend PHP de aprendizado de máquina",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1714
+    },
+    {
+      "component": "mlbackend_python",
+      "displayName": "Backend Python de aprendizado de máquina",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1717
+    },
+    {
+      "component": "mnetservice_enrol",
+      "displayName": "Serviço de inscrição remota",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1722
+    },
+    {
+      "component": "webservice_rest",
+      "displayName": "Protocolo REST",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [
+        "tool_mobile"
+      ],
+      "sourceLine": 1727
+    },
+    {
+      "component": "webservice_soap",
+      "displayName": "Protocolo SOAP",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1732
+    },
+    {
+      "component": "repository_areafiles",
+      "displayName": "Arquivos incorporados",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1737
+    },
+    {
+      "component": "repository_contentbank",
+      "displayName": "Banco de conteúdo",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1741
+    },
+    {
+      "component": "repository_coursefiles",
+      "displayName": "Arquivos de curso legados",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1745
+    },
+    {
+      "component": "repository_dropbox",
+      "displayName": "Dropbox",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1749
+    },
+    {
+      "component": "repository_equella",
+      "displayName": "Repositório EQUELLA",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1753
+    },
+    {
+      "component": "repository_filesystem",
+      "displayName": "Sistema de arquivos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1757
+    },
+    {
+      "component": "repository_flickr",
+      "displayName": "Flickr",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1761
+    },
+    {
+      "component": "repository_flickr_public",
+      "displayName": "Flickr público",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1765
+    },
+    {
+      "component": "repository_googledocs",
+      "displayName": "Google Drive",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1769
+    },
+    {
+      "component": "repository_local",
+      "displayName": "Arquivos do servidor",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1773
+    },
+    {
+      "component": "repository_merlot",
+      "displayName": "Merlot.org",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1777
+    },
+    {
+      "component": "repository_nextcloud",
+      "displayName": "Nextcloud",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1781
+    },
+    {
+      "component": "repository_onedrive",
+      "displayName": "Microsoft OneDrive",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1785
+    },
+    {
+      "component": "repository_recent",
+      "displayName": "Arquivos recentes",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1789
+    },
+    {
+      "component": "repository_s3",
+      "displayName": "Amazon S3",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1793
+    },
+    {
+      "component": "repository_upload",
+      "displayName": "Enviar um arquivo",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1797
+    },
+    {
+      "component": "repository_url",
+      "displayName": "Utilizar uma URL",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1801
+    },
+    {
+      "component": "repository_user",
+      "displayName": "Arquivos privados",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1805
+    },
+    {
+      "component": "repository_webdav",
+      "displayName": "Repositório WebDAV",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1809
+    },
+    {
+      "component": "repository_wikimedia",
+      "displayName": "Wikimedia",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1813
+    },
+    {
+      "component": "repository_youtube",
+      "displayName": "Vídeos Youtube",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1817
+    },
+    {
+      "component": "portfolio_download",
+      "displayName": "Baixar arquivo",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1822
+    },
+    {
+      "component": "portfolio_flickr",
+      "displayName": "Flickr.com",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1826
+    },
+    {
+      "component": "portfolio_googledocs",
+      "displayName": "Google Drive",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1830
+    },
+    {
+      "component": "portfolio_mahara",
+      "displayName": "Mahara ePortfolio",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1834
+    },
+    {
+      "component": "search_simpledb",
+      "displayName": "Busca simples",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1839
+    },
+    {
+      "component": "search_solr",
+      "displayName": "Solr",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1843
+    },
+    {
+      "component": "cachestore_apcu",
+      "displayName": "Cache de usuário APC (APCu)",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1850
+    },
+    {
+      "component": "cachestore_file",
+      "displayName": "Cache em arquivo (filesystem)",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1854
+    },
+    {
+      "component": "cachestore_memcached",
+      "displayName": "Memcached",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1857
+    },
+    {
+      "component": "cachestore_mongodb",
+      "displayName": "MongoDB",
+      "releaseShown": null,
+      "versionCode": "2022112801",
+      "versionLinesShown": [
+        "2022112801"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1861
+    },
+    {
+      "component": "cachestore_redis",
+      "displayName": "Redis",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1865
+    },
+    {
+      "component": "cachestore_session",
+      "displayName": "Cache de sessão",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1869
+    },
+    {
+      "component": "cachestore_static",
+      "displayName": "Cache de solicitação estática",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1872
+    },
+    {
+      "component": "cachelock_file",
+      "displayName": "Bloqueio de arquivos",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1876
+    },
+    {
+      "component": "fileconverter_googledrive",
+      "displayName": "Google Drive",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1880
+    },
+    {
+      "component": "fileconverter_unoconv",
+      "displayName": "Unoconv",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Desabilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1884
+    },
+    {
+      "component": "contenttype_h5p",
+      "displayName": "H5P",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1889
+    },
+    {
+      "component": "theme_boost",
+      "displayName": "Boost",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [
+        "theme_classic"
+      ],
+      "sourceLine": 1894
+    },
+    {
+      "component": "theme_classic",
+      "displayName": "Clássico",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": null,
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1898
+    },
+    {
+      "component": "theme_lambda",
+      "displayName": "lambda",
+      "releaseShown": "1.98.40",
+      "versionCode": "2023010340",
+      "versionLinesShown": [
+        "1.98.40",
+        "2023010340"
+      ],
+      "availabilityShown": null,
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 1902
+    },
+    {
+      "component": "local_wsgetroles",
+      "displayName": "Webservice get roles",
+      "releaseShown": "v0.9.0.2",
+      "versionCode": "2023042402",
+      "versionLinesShown": [
+        "v0.9.0.2",
+        "2023042402"
+      ],
+      "availabilityShown": null,
+      "additional": true,
+      "requiredByShown": [],
+      "sourceLine": 1908
+    },
+    {
+      "component": "h5plib_v124",
+      "displayName": "Framework H5P v1.24",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1914
+    },
+    {
+      "component": "paygw_paypal",
+      "displayName": "PayPal",
+      "releaseShown": null,
+      "versionCode": "2022112800",
+      "versionLinesShown": [
+        "2022112800"
+      ],
+      "availabilityShown": "Habilitado",
+      "additional": false,
+      "requiredByShown": [],
+      "sourceLine": 1919
+    }
+  ]
+}

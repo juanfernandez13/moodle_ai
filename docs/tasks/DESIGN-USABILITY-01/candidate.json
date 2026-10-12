@@ -1,0 +1,787 @@
+{
+  "algorithm": "sha256",
+  "revision": "c5ea136f3b7fec3192069d593560c5faa220e7bb62318c9a89939da4246cf18d",
+  "scope": "Arquivos do novo projeto candidatos ao primeiro commit, excluindo o registro mutável desta tarefa e seus relatórios.",
+  "files": [
+    {
+      "path": ".agents/skills/code-review/SKILL.md",
+      "sha256": "9e6d1b00c31e10a002ac3e5fb49014c9589166f668c62996e80a36d23ca21e70"
+    },
+    {
+      "path": ".agents/skills/code-review/agents/openai.yaml",
+      "sha256": "3f72329747a916ac8ab2b4004490c79e1be6774a8a83e5b258d6ddc7e866abfe"
+    },
+    {
+      "path": ".agents/skills/codebase-design/DEEPENING.md",
+      "sha256": "a67260cb384580b60430486edeb47a6e656ea5f8a42b7196b24461459031f00c"
+    },
+    {
+      "path": ".agents/skills/codebase-design/DESIGN-IT-TWICE.md",
+      "sha256": "b6d23731a6feea1293cc97e08f983e9fdf48b99275d5d306c93738f06bcdce92"
+    },
+    {
+      "path": ".agents/skills/codebase-design/SKILL.md",
+      "sha256": "362b0bec828219d9f4b08ca7c466164e67253bdd817359258e60d2e9c5692a8f"
+    },
+    {
+      "path": ".agents/skills/codebase-design/agents/openai.yaml",
+      "sha256": "967df5c80a2a00e8fea9ce0e7914fb57114c93d16baa3b7743347a4dfeed61fc"
+    },
+    {
+      "path": ".agents/skills/domain-modeling/ADR-FORMAT.md",
+      "sha256": "b7021c31a1c2485b07356a8110fd1fd1ae4facbab3e210983789f425f867d95b"
+    },
+    {
+      "path": ".agents/skills/domain-modeling/GLOSSARY-FORMAT.md",
+      "sha256": "61fa9f6f9231070461dd4f7d4cfad377c33013c1e5668e1e6c0a8e4500944b3b"
+    },
+    {
+      "path": ".agents/skills/domain-modeling/SKILL.md",
+      "sha256": "b62d997256cc073e123d4303da8e9db00db0e28de9739660ca3e55ab76e09cdb"
+    },
+    {
+      "path": ".agents/skills/domain-modeling/agents/openai.yaml",
+      "sha256": "ce496c77c77a090877bff10f198c9770fb52e23088351350ea0826380f948ff8"
+    },
+    {
+      "path": ".agents/skills/frontend-design/LICENSE.txt",
+      "sha256": "eb3d7b5485466acbd81f2b496f595ab637d2792e268206b27d99e793bdb67549"
+    },
+    {
+      "path": ".agents/skills/frontend-design/SKILL.md",
+      "sha256": "b8009ae690dfa69edc7f08bb8715f32db8817112cfa4388741dbaf876c237df8"
+    },
+    {
+      "path": ".agents/skills/grill-with-docs/SKILL.md",
+      "sha256": "abc0fa7948db18b5fb0e1cc1c522ac5ff47d874e2da1e5df60619d79be11f38b"
+    },
+    {
+      "path": ".agents/skills/grill-with-docs/agents/openai.yaml",
+      "sha256": "81e6af95559517a292767439da8f46a468b4d88a6773a3316d511a428eb16ff3"
+    },
+    {
+      "path": ".agents/skills/grilling/SKILL.md",
+      "sha256": "26d225ea8a36f4acacbe267e789cfb97d73964412f4243dd4b65b6cb806ddebc"
+    },
+    {
+      "path": ".agents/skills/grilling/agents/openai.yaml",
+      "sha256": "ad75163922ff8263acdd25ebc37420e8fcf1fccb93483fd5742e9bd26f5c45f6"
+    },
+    {
+      "path": ".agents/skills/implement-spec/SKILL.md",
+      "sha256": "5bdaaf884b02b24db432241bcc32250bfee6149c45c743a2a1fef6b416837cfa"
+    },
+    {
+      "path": ".agents/skills/implement-spec/agents/openai.yaml",
+      "sha256": "143db4aaaee1dfee7db6da5dab41501fb3852be498fb719dd52f1e21f29a383f"
+    },
+    {
+      "path": ".agents/skills/implement/SKILL.md",
+      "sha256": "83042ad79e3d7ce616124bf59a38a5ebe79417adb36bedfc4e6223aab783be8c"
+    },
+    {
+      "path": ".agents/skills/implement/agents/openai.yaml",
+      "sha256": "8494f83602c58f8ab33d047d0516cdb90b8c29e6d564de0cef810daaca378bcb"
+    },
+    {
+      "path": ".agents/skills/project-loop/SKILL.md",
+      "sha256": "9f779b2e39f7488e98a3add98a532786cc9e783fc78b4d477a7d4b3746696662"
+    },
+    {
+      "path": ".agents/skills/project-loop/assets/task.json",
+      "sha256": "267a2d7cba82fc19c328e5a5483774cea181259376e577d09a25c6deed7bd332"
+    },
+    {
+      "path": ".agents/skills/project-loop/references/roles.md",
+      "sha256": "3cee762630d91206cc4fef3773ff3c67ed75301d86d7151a9b625ce3fd2762f0"
+    },
+    {
+      "path": ".agents/skills/project-loop/references/skill-routing.md",
+      "sha256": "48958a95ed89f2184cf03bdee5a57d9c9ed6ea8a969dee03882d62704b10dde7"
+    },
+    {
+      "path": ".agents/skills/project-loop/scripts/task-state.mjs",
+      "sha256": "79741e16f8786ebe39f3dc70aacd59217e0c21cdd6462f320e7522e6b8d0b8e8"
+    },
+    {
+      "path": ".agents/skills/project-loop/scripts/task-state.test.mjs",
+      "sha256": "13616e5d18cf561eee4ca1e7421cd8ad6eac91f35fcecb397a2eefa010aeb998"
+    },
+    {
+      "path": ".agents/skills/prototype/LOGIC.md",
+      "sha256": "8d7e31de7ce73b8e62f207e3f3ecbd90a7a54fdc728f8965f5f0739976f9959a"
+    },
+    {
+      "path": ".agents/skills/prototype/SKILL.md",
+      "sha256": "f74ae01f4fc454d3a4ef21271920f1706e626271e715dda0559e489f45c792c3"
+    },
+    {
+      "path": ".agents/skills/prototype/UI.md",
+      "sha256": "5ea83263ba72174c9055d58045f053d6577c0db6802c1e15bd1468dd16f78a0b"
+    },
+    {
+      "path": ".agents/skills/prototype/agents/openai.yaml",
+      "sha256": "cc1ce1ceaba1442c431dc76abb84b271ad72ecb94dcefee53130df742dc11787"
+    },
+    {
+      "path": ".agents/skills/setup-matt-pocock-skills/SKILL.md",
+      "sha256": "5dcf60b4265d52423cd83b8f0aef466f93b624152bbb9d2450b41ed80f7d0e6d"
+    },
+    {
+      "path": ".agents/skills/setup-matt-pocock-skills/agents/openai.yaml",
+      "sha256": "53d0bf3786862a1cb5013ca78f12013b166d0819823dae0d3f9eb13eee2acdf2"
+    },
+    {
+      "path": ".agents/skills/setup-matt-pocock-skills/domain.md",
+      "sha256": "20ee347cfcb4bd2266a8b747c11ca6c3dec85ff4cc38319de88cc3cadc12c80b"
+    },
+    {
+      "path": ".agents/skills/setup-matt-pocock-skills/issue-tracker-github.md",
+      "sha256": "aa933ecccc415f7b51681075879439a6616ba1bf9a8cf91dbee536ff1625ecac"
+    },
+    {
+      "path": ".agents/skills/setup-matt-pocock-skills/issue-tracker-gitlab.md",
+      "sha256": "ce09c41e2cfd2a4cd751c9f0557e8c9acd07b035b6fca45268ab350e3343bc77"
+    },
+    {
+      "path": ".agents/skills/setup-matt-pocock-skills/issue-tracker-local.md",
+      "sha256": "a604b658f0730eae3107671b09323ed8382bd546e82dc3bedc265bccbeb35021"
+    },
+    {
+      "path": ".agents/skills/setup-matt-pocock-skills/triage-labels.md",
+      "sha256": "713abcdd778059289bc4ed8278d14787f719707d429da716ae814e69a727843c"
+    },
+    {
+      "path": ".agents/skills/tdd/SKILL.md",
+      "sha256": "969583080caf842ae86a53501a0091eced13fd89cad65d3aa75c09112318ff33"
+    },
+    {
+      "path": ".agents/skills/tdd/agents/openai.yaml",
+      "sha256": "f8e2afc1fbcd6a6e1178c30f290ca9f2286c949a0b74b8b68fd14f198b78ebac"
+    },
+    {
+      "path": ".agents/skills/tdd/mocking.md",
+      "sha256": "73a10b6a26b56197c738a764c1e4205af98c74553f4a713795997f6bc35b917d"
+    },
+    {
+      "path": ".agents/skills/tdd/tests.md",
+      "sha256": "0b401f98bd3684d2fea6440d6946afcf8f5f68ac6a65599dd7a2b90dd9f02eb5"
+    },
+    {
+      "path": ".agents/skills/to-spec/SKILL.md",
+      "sha256": "c73a2250beac0479e384f5466e834bb54ce6e30b7f8705e9999ba840d9d59b36"
+    },
+    {
+      "path": ".agents/skills/to-spec/agents/openai.yaml",
+      "sha256": "55037139831219743dda1f716fe69eab3366e922529f69cc988fea3b1d34c74a"
+    },
+    {
+      "path": ".agents/skills/to-tickets/SKILL.md",
+      "sha256": "b8eb6dca1085e85220b0f5990ed787ebf8a924844d090689f1073b06367e2f7a"
+    },
+    {
+      "path": ".agents/skills/to-tickets/agents/openai.yaml",
+      "sha256": "e396b8caaf6cdd95c94cf707a7ca2fa5c3a04b37ae5d4301b5b360a7ff7a34cb"
+    },
+    {
+      "path": ".agents/skills/writing-for-agents/SKILL-MECHANICS.md",
+      "sha256": "86f112c08d785cc224c13dcda75c0724b74bd62622cc61d4b7ab3dbbaf37f6fc"
+    },
+    {
+      "path": ".agents/skills/writing-for-agents/SKILL.md",
+      "sha256": "1c0c4ebf2d221917591144f0ced4fe46dae13301cb3d6d93fc88ecf0dda6aed2"
+    },
+    {
+      "path": ".agents/skills/writing-for-agents/agents/openai.yaml",
+      "sha256": "486c388ed1babac6ea25001147b41d3ff6c8892b0128ae1b0bef8feea6363428"
+    },
+    {
+      "path": ".codex/config.toml",
+      "sha256": "fb6e131979612e2bbe30ab91d6cf3419df552bf768a0dba7e99337601ef1a757"
+    },
+    {
+      "path": ".editorconfig",
+      "sha256": "0f7e3172ca76132de8b11abfae22518d7f4adee23b647c4eb7a0c692031141c2"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "e3ac31e8669a11dd0c9e58f305ec3fe18e0c2d2baa53552b8b055fb244d636b9"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "bafc90346e3aa7580b8eb433293d54e9b7d598f122aa8a0c5f72aa8215f31301"
+    },
+    {
+      "path": "GLOSSARY.md",
+      "sha256": "c6d0bc6cf9838ca1d4ab8c795bf0e3223744bf790f36f5fe426aa3bcba94e851"
+    },
+    {
+      "path": "README.md",
+      "sha256": "d433f7f86d0c35e7f1c2ff28188530b013f54a61f534531c210500ac9d6b2f8d"
+    },
+    {
+      "path": "design-system.html",
+      "sha256": "e325bd64436d73bdf49b61c1fdad00e8e24cccffded4674eed7070ddbbecce6d"
+    },
+    {
+      "path": "docs/AGENT_LOOP.md",
+      "sha256": "7237953c4d5a4b6f06c67811df0b286b6adaf31b846295210285a4e83e280590"
+    },
+    {
+      "path": "docs/AGENT_WORKFLOW.md",
+      "sha256": "064ba588e9987601836397c843ca6a6b648a27c4e99f70ba3150e82ea669bbb4"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "6a157529d976ca115f60f4f5da592cffff974457cf71f190e96bb7d6e4698357"
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "sha256": "7da4e32cfa1437f9df5d5016fe47cc83785ce7ad4ba16beb93b5e67c444a0446"
+    },
+    {
+      "path": "docs/BUILDER_PIPELINE_PLAN.md",
+      "sha256": "7dd3d35d93c26b0738598635985ea1bcc187fa4cf82ff927056c1f0fca62eb69"
+    },
+    {
+      "path": "docs/DESIGN_BRIEF.md",
+      "sha256": "f3e3b3801a0f0288f4b15e405b23766160ed80b4d5ff67ce431922f4c0bb0b33"
+    },
+    {
+      "path": "docs/MOODLE_REFERENCE_PLUGIN_INVENTORY.json",
+      "sha256": "6ce94d9abc724a38af6194c516bbd90b8d74ca00d4fc47dbd7a4ae9c93a629e7"
+    },
+    {
+      "path": "docs/NATURE_REFERENCES.md",
+      "sha256": "4b605db69e9ce60fbd0cb65666591949845081df43b31356592fb20e187df6f2"
+    },
+    {
+      "path": "docs/PIPELINE.md",
+      "sha256": "155cb0313a505bce2b4326ed1e9dabb70b01380043176952a0c856ab7b4ead00"
+    },
+    {
+      "path": "docs/PLANNING_READINESS.md",
+      "sha256": "7cfec881619bd798c240586a915dd87a258de426090d7554d5789bc4136d65eb"
+    },
+    {
+      "path": "docs/PRD.md",
+      "sha256": "4e997df30c0ed47bd70b326cf60995e0339dbb4f0800a5e4841c4db2b1339ba8"
+    },
+    {
+      "path": "docs/SCREEN_FLOW.md",
+      "sha256": "017c876dc3a5de081595b985782654efaa8282707daa09a9a2b1a3ec9f8aeab5"
+    },
+    {
+      "path": "docs/SKILLS_AND_MCP.md",
+      "sha256": "96572cc71148f96fa62b5f2777b9d504c0fb505b1833b66ed2c8504d6eb5cbab"
+    },
+    {
+      "path": "docs/STUDENTS_DESIGN_REVIEW.md",
+      "sha256": "a9ec3a295cab1de39331c211a692a4a06a65adaf46a086afe6c9a8126c2df1a6"
+    },
+    {
+      "path": "docs/USABILITY_REVIEW.md",
+      "sha256": "b6a8d95df66459babe1f8348e325a818ca60e29d02c46a2db561f7b97511d5f0"
+    },
+    {
+      "path": "docs/UX_REVIEW_IMPORT.md",
+      "sha256": "7dea5cce74116a0dd844ca84615e384faf6725de12138544d72879a0dd3c9ce5"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v2/README.md",
+      "sha256": "24486e0b50a9634cb15daf1656b546dbbee81344f0b95ea5c059e1f88a4538f3"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v2/app.js",
+      "sha256": "42170d730e8c8e775118ea75bed988fd21dfd9e4263736e118c1118e1c808cb4"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v2/index.html",
+      "sha256": "7169f75285b53e11a2e2f9bc98daa564ba773bb0886b2a05146cbc9203b5a292"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v2/owl.js",
+      "sha256": "448ed8f4859436b35263b9b9633d43730dc7312d49c1c659f39a5c40acbe6c47"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v2/samples/curso-exemplo.docx",
+      "sha256": "4ab896d779943054711843aa25d0e3230d5dde62f5e645e51e63991416311270"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v2/screenshots/design-system.jpg",
+      "sha256": "728fe6381e8a1ddd0075af70bbbcacefcb4058a5fce001aaa8426edc771a771d"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v2/screenshots/desktop.jpg",
+      "sha256": "ab9b44866828ce4ba6e0d13eae2cfcdf66dda8437cefb31e2e13c7a989e5e619"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v2/screenshots/mobile.jpg",
+      "sha256": "7071b3602b8e1be6d74aeba2fd7ea6c5fddcef92f77510d57e13275d3911d2bc"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v2/styles.css",
+      "sha256": "8a947986bcc2403ab8327d638e78676cd076db3e634cb6ce0a7e4ce88051c853"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v2/vendor/LICENSE.three.txt",
+      "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v2/vendor/three.browser.js",
+      "sha256": "48a72b659ea420d53106960d0327328da1b91ba63e281da9dd40ed3e08349fda"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v3/README.md",
+      "sha256": "00d64ce66aa71dad54233d6bee76b7b43c2822d6eb19127a1cd9287d732f08d3"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v3/app.js",
+      "sha256": "d6019c2faa90e9e5f9702c97060debeba779df1d25497ad9ff2c4ed4252143c3"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v3/field.js",
+      "sha256": "3528327e0b7a3405cbb23ae9fd1e20ec582789aa197f40b9034b7027f44ceb59"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v3/fonts/Nunito-Variable.ttf",
+      "sha256": "bb55a5ca5c2042335b3991af27c4d0705d0ef41cac6164ac737fd8f2a1e85207"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v3/fonts/OFL.txt",
+      "sha256": "580df76c95a1ec5ab878ceb25bb3d85c6a076804e9c970c8c6972aea775fdf65"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v3/index.html",
+      "sha256": "a1e43f8515d88b6638d27cad39933606e38282020a38558845fd4250fd80b899"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v3/owl.js",
+      "sha256": "ac0b59365d82f1608a19a501deea99ddbdd61f093ad16ba9c2046c589a369eae"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v3/screenshots/design-system.jpg",
+      "sha256": "acfe6b216c096adedb505d8a1e4a2515b59640f5a27fbc8f361dbe928afb7126"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v3/screenshots/desktop-dark.jpg",
+      "sha256": "e437458ae130fcdea627aa64602bc1b7b91a0a3707958ca68be90e9d029b7b0a"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v3/screenshots/desktop-light.jpg",
+      "sha256": "271444d6fa9b03408c1570127e52b7c13cb922e3b2739467db7d998b5fa11750"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v3/screenshots/dots-dark.jpg",
+      "sha256": "d1a38328f7398dd0dbce7ed5bbf3c61788e33aaf213728fff11d7cd7e773f291"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v3/screenshots/mobile-dark.jpg",
+      "sha256": "6f52d5a5328966980402692f6af9ecfca63f0222138f8d68de1c97b58d918ba9"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v3/styles.css",
+      "sha256": "5fe10423f88687663c6825fd56a6a4ad62fc5b001fe5c248b96904e0e526ae53"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v3/system-overrides.css",
+      "sha256": "f69be3c344c913bf62665298ddf53922fa546a2dd147aac610169c6247dd70e7"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/.gitignore",
+      "sha256": "4d56952b0fb13bf8f9b6c13a6d4c34a075bac3af447636a1df4335d7576e2f97"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/README.md",
+      "sha256": "84fbb6c4f8e4ea08139656d9cdfd971f5f260331120cf6e160b376bde109e59a"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/app.js",
+      "sha256": "e8d77f6d36a6175a037666977d597b72575a5f32068bb979d5adebaa3f4335a2"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/assets/ASSET_SOURCE.md",
+      "sha256": "79bed92a558e751c303e80b101e1dff0799dcf2cf1413d3567d248fca0158b9e"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/assets/PROMPTS.md",
+      "sha256": "e15dc4ac51fec3ac16726e79c7e19ee52d5856c8467400871b6575d15e0bd1d4"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/assets/brand-owl-plain.svg",
+      "sha256": "b0c0ae95aa65a72421ece3bdcb680f34d3ecf88b3cd9119bbb200646cf78c3cb"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/assets/brand-owl.svg",
+      "sha256": "d22f4cb7cf1a5d4e60668b6b14cd0691a1a7be118edf340dfd3a824ef28a7504"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/assets/meadow-day.png",
+      "sha256": "6cf9ed3008017eb347fffe9f80c5765eb34a596a55e2357ee404204351dfb496"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/assets/meadow-dusk.png",
+      "sha256": "49a4499621b52dc65b779e8c10ffa690b7d18f7d6ca6c7afbf546d1061f191d7"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/assets/moodle-mark.svg",
+      "sha256": "a16e54c7a4f21a4f012d6688b0fe16fe2361fb4b8aa299044ef1b7fbf432b2b4"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/controls.css",
+      "sha256": "cc7e695043b528d304acc8a324b4cd9cf7517b55852d6e5ce4c8c8cf42b8607a"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/controls.js",
+      "sha256": "76bc352fd12e28b35da160df1dd68403d7ed04abe2fb772942900e67ad9f5d67"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/file-list.css",
+      "sha256": "07692a8868e09323ba5fbe448f62503a2e04da613fb2593a6d4992e01aece166"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/index.html",
+      "sha256": "c91a2daa04d5f6d8f4a5205c9afb0d73ab4c73133ed05e04892f8dbac1595ff3"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/motion.js",
+      "sha256": "502d4aea5bf17b20a2dc7100be11a3a96dc5afcb0ec003949f3880a34a31140f"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/owl.js",
+      "sha256": "f30ef3115356d58a4f4b7640c0322d62b1d75badc21d113e190aa2496b10adbb"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/package-lock.json",
+      "sha256": "772f4766cc273030e1268836f4cbb4e5001eab9bfc9a041d528fb044d3c68b8e"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/package.json",
+      "sha256": "8a6a0c23f2d28776c895575062ce4eb3b8151074ebc387fbabe5e6e6b4f9e031"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/prompt.js",
+      "sha256": "88a1c68e3a58b7838c40029e501a87859634ecab34663c7c3480b1932e17ccf1"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/samples/matriz-exemplo.docx",
+      "sha256": "1684afaa27017d4af924dd011c62eadb65bf29cebd74019bea423eb144f65b3f"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/samples/planejamento-exemplo.docx",
+      "sha256": "f93399cc92b0e43a14e779e82fd55e3e13ce8a8fa1988215245271e83418c887"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/samples/planejamento-exemplo.json",
+      "sha256": "68fd6c1ff736f0e9b1f7727ec288a829a664ce978c61df4d347379ca4726b6e7"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/samples/quiz-exemplo.docx",
+      "sha256": "feeb4ddfe6618e8ce58ef30cea0b978ea9c0477564f603729785418580d34176"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/samples/tarefa-exemplo.docx",
+      "sha256": "11ecfbae7d615c68d190540ee6f44c21a2b7588f90183ea3ccda78a0c5a68bfd"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/scenery.js",
+      "sha256": "e3e5b16c6ce09830c4de89a6684fc581fe9aae2be9a9c0810a982e85a61de14c"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/brand-owl-icon-review.jpg",
+      "sha256": "163450a68195c3225888029b7cbe3913f58db9d6900739437f7f4844784664cd"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/catalog-calendar-dark.jpg",
+      "sha256": "23901870de42f8aebd01264a03e6c8a176c692b2337628226dfd33a42fc705c3"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/controls-datepicker-desktop.jpg",
+      "sha256": "d9f780c9c9f7acae890b723d1b7517d93bc710256e8112d1e0f00cc620d92281"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/controls-dropdown-desktop.jpg",
+      "sha256": "c4e29a503d72317675bf9cfc6c940b1cad2eb61cc15f40d6cb927b49953f742c"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/controls-editor-desktop.jpg",
+      "sha256": "9278eb8148f640449b8a08901c6dee5ed654fa0084f37b0a80e8abd17bf8aa1b"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/controls-editor-mobile.jpg",
+      "sha256": "c7fb00d0d5d10767a00f1a8094e26c11d983764a999e53cfb7f2653d232ed4e4"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/controls-file-list.jpg",
+      "sha256": "72939b0e81827d3709ddef71139640d00fb89dd44e6acc5f03832c06024daeeb"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/controls-file-mobile.jpg",
+      "sha256": "23ddb96a425b532a41bbf837907b89051f50ff9cdac767d4277141b4799f4da5"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/controls-final-dark.jpg",
+      "sha256": "b825bf46a3e0999fd4ac32fb23895517612c722ee91d0095981a552b84270c63"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/controls-final-mobile.jpg",
+      "sha256": "4233832073da13a6980b33edb06565e2c1c08289fcc40837af3a9eddf89f3556"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/course-date-visible.png",
+      "sha256": "4dff49ccba5d6f6051b11cfe3d3426c13fad084fa45bdf53cc9f5491dc800064"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/desktop-dark-hover.jpg",
+      "sha256": "36638cd3a59016672d13a6635517564901be563fcbf0241d3dd763249402cbb5"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/desktop-light.jpg",
+      "sha256": "5c5b71e1e39416e6e1f076a632df590e663bc927981cf9591a4fa0c8651fc4c0"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/fireflies-after-idle.png",
+      "sha256": "f1c2a66b16c2c10497f0de5a1304a491fadcaa2bdf7a2ec44febe35b11b399c9"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/fireflies-after-pointer-move.png",
+      "sha256": "9bd774a7efe2f11ba7f5533b27a6cf69ed717bc7e80259a819868f3d85c6e22f"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/fireflies-before-idle.png",
+      "sha256": "a2649ff6f2f9cbd9ce4ce8c9263a3badb8c7a6f507c04658684bcd528a24ba80"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/fireflies-final-after-idle.png",
+      "sha256": "4c37a8f347140f78ad5cff4d3287ef1e692d6ceb44b838c81cb04c2c9f270d3f"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/fireflies-final-before-idle.png",
+      "sha256": "c787a1e9b06a086e4b20df3a6b259e078c8247f22a8e775d69e0c0f15803ba61"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/header-options-desktop.jpg",
+      "sha256": "4ee44329323146fb85e268da634627f0c4a575ca69802c15dabfec90d5b6517e"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/header-options-mobile.jpg",
+      "sha256": "791b0ab3c95494fa7320defaf4942436ac3182cf695ef8ff2f618f35237d9eb9"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/mobile-calendar.jpg",
+      "sha256": "6852abfcb94cf77f88e9308422791580d8ab367e2c9bd34bf73141243ee948ce"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/mobile-dark.jpg",
+      "sha256": "a95aa0068755209a01b3ec22a2eb4b18b050c8bd43dfaa8e4ac46ee1ebfe62f5"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/mobile-light.jpg",
+      "sha256": "7e81ce3a18e223f78c5b9f7f7678c929a7cb358dd4bf1fd545d39c093e13d25d"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/nature-glass-dark.jpg",
+      "sha256": "6b3b1fa4cf9812475d6a4436f5ee6e8b9f1d7d30543c2f05df8b5a5ce4268213"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/nature-glass-light.jpg",
+      "sha256": "268eb97bf8ee5d8696dfc82c12bbbc14a4285119289e92df128dd98820872adf"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/nature-glass-mobile.jpg",
+      "sha256": "735c1f6d7c9df24525e384cbf99dc6e846c285f208c1967eea9396512351af31"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/nature-review-draft-light.jpg",
+      "sha256": "42f36f0d93359176f1aa7185d6ff37565d500d4948a5e524d48ca8813af33bb9"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/nature-review-draft.jpg",
+      "sha256": "127aa7abeda600e79847aa3d6d9bc9202c5513830ee2dcdda425809e26a9f8cd"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/screen-flow-board.png",
+      "sha256": "c58a0fe940f54cfdc891660b9e3dec35d5017af619790b23a15b4363c0bca770"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/screen-flow-mobile-details.png",
+      "sha256": "dc6ccde61507235d51e245de90c7a961529959d063b67cc24265476f216bacb7"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/simple-rows-320-light.jpg",
+      "sha256": "2ddf69f714cc2b55d06fd60bf67f9ef2402e399fc973e2a2bce0444233f52a31"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/simple-rows-desktop-light.jpg",
+      "sha256": "d25e6b207c1c096d5c2aaca362f668fef594ca43929209ed9e0537146a1f27b5"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/simple-rows-desktop.jpg",
+      "sha256": "b5ea16e5e28ac7296519d1703a68389f2e3c1cef0684a1a4133047141015d9b5"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/simple-rows-mobile.jpg",
+      "sha256": "11beae0962df73bd8757fbfd1861e13bac4959159f4abbde80fd0714550f4db0"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/students-batch-final-desktop.png",
+      "sha256": "42c51ab8310684ca642ea53a12e61fb9712f619f20f6db26db8b4df3773cdefc"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/students-batch-mobile.png",
+      "sha256": "0e45968cb4349b7fafb649ae96f1d8788136fa268f50de60c03368e81e7f9d15"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/students-batch-review-desktop.jpg",
+      "sha256": "a996c51682cc6a154206472a9a1bdf786866b10b4e5c1505c98ffe756e9d7934"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/students-batch-upload.jpg",
+      "sha256": "87e6792970834c8cf11529d1f7b8074ff056f6cd0bde2ab549beb992489227ac"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/students-mobile-edit.png",
+      "sha256": "7c60cd16e9a856bf86b6d69934567af311f4993a636ef5bad1b3353dea93dfee"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/ux-import-desktop-light.jpg",
+      "sha256": "be1b3e0d02c39cd2d11be7d1b4949e13b9b12eb3e94eb86cd361e9ec84a84921"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/ux-import-desktop.jpg",
+      "sha256": "f97422a793c08bfa1a69ecaf3ed9fa1293d51c8915c8ee885825d267a348be27"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/ux-import-mobile-light.jpg",
+      "sha256": "44d863133fdd5d49084bf9ff9ae62ceb9604ff9fd2843ec74c279482b8c7d8a3"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/ux-reading-start.jpg",
+      "sha256": "e25f9bf1af002dd804d5ee070772cd6f8766e7426f3712e14caab18856a34674"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/visible-tasks-quizzes-desktop.jpg",
+      "sha256": "3e831d0eaa1ef017996bc51f85f6475f688bc03edbb5912bc721108115f9669d"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/screenshots/visible-tasks-quizzes-mobile.jpg",
+      "sha256": "89ce234d2a7b9d414031e1e7362535f25c65f027acb058815f406bb5499b3563"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/students.css",
+      "sha256": "7f6eaeb69880b99e7af0f8585c867a0f25e7eaba10f1d6ce84bc49fbfd1fbbc2"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/students.js",
+      "sha256": "32fcad42a6179051bc86c0e406d617ef64af3134d230bb1a4c6c49be6a0ecf21"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/styles.css",
+      "sha256": "24f31cb14dea6ec5a40c7668caf40e2015e38d0d37e87e47386c0a9c628700d0"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/system-overrides.css",
+      "sha256": "e4d103fffb70e16103b608382e353ff32b79f1c80dcb905e2a1e74c4b37906a1"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/tailwind.css",
+      "sha256": "d88b99cf76753fd7586268ef492f130edc0b813fc9119a29e223039e2e234c16"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/tailwind.input.css",
+      "sha256": "87362f36f9d301350c160bbf08c909b659e3ca72ba5c13e4d6b24548fdd26baa"
+    },
+    {
+      "path": "docs/design-proposals/glass-owl-v4/uploads.js",
+      "sha256": "86a248a8b8aea2613580e4cafdaac3a132f48730073cce51a96758aff0409ac1"
+    },
+    {
+      "path": "docs/design-proposals/upload-3d-v1.png",
+      "sha256": "0c890536c7aec31ddc21e31760392965972f993c677c060726f5b34a1cc5ca40"
+    },
+    {
+      "path": "docs/design-proposals/upload-3d-v1.prompt.txt",
+      "sha256": "1724affa95d22685c01b756ab2fc5e87a4208c39c8ed592ea445de6697aa1012"
+    },
+    {
+      "path": "docs/screen-flow.css",
+      "sha256": "23f7f0dc53fb8175b488d1cec7d6853b5ee2aba6fe4d56d6de8f8d4d310dd9c8"
+    },
+    {
+      "path": "docs/screen-flow.html",
+      "sha256": "970811ef481e41ac60055a7fba466f59cccc86bd9edccbe35c94e5b21624f2f8"
+    },
+    {
+      "path": "docs/screen-flow.js",
+      "sha256": "0a1bb0e4deecf7e8cf8f7a856a68c5469384ffb4383544214591e494c00a5a8f"
+    },
+    {
+      "path": "docs/tasks/BUILDER-IMAGES-02/verification.md",
+      "sha256": "2443219ca5b9a08aade1a60c285b5820be2532c3cd242078b013d0ac8fd03d3d"
+    },
+    {
+      "path": "docs/tasks/BUILDER-PLAN-01.json",
+      "sha256": "46ed93f4e151f5966ac302bff288ea9560262bdbb8569e36d75e7e6d39dae233"
+    },
+    {
+      "path": "docs/tasks/BUILDER-PLAN-01/candidate.json",
+      "sha256": "0263b75637efffabb2ad900cbb457382864da0a231bfac9ccb114580544238ae"
+    },
+    {
+      "path": "docs/tasks/BUILDER-PLAN-01/context.md",
+      "sha256": "aa42f5735a5f018f9a30d7043940e0f4633d1667f6f6f3d6aa8b4134e5945874"
+    },
+    {
+      "path": "docs/tasks/BUILDER-PLAN-01/integration.md",
+      "sha256": "8706a02fc9959a3901dc8d53ff24fd1414c7b97d83896b236bfa2e502dff70da"
+    },
+    {
+      "path": "docs/tasks/BUILDER-PLAN-01/review-quality-original.md",
+      "sha256": "eedae6dd1ef3b98c5b453dba60ca499eb5db764b326eee9f69837ede4dc45810"
+    },
+    {
+      "path": "docs/tasks/BUILDER-PLAN-01/review-quality.md",
+      "sha256": "6de2731c8d543c0a53087c336caaf880c0684258179d635d4e7fa8547e5c3f70"
+    },
+    {
+      "path": "docs/tasks/BUILDER-PLAN-01/review-spec-original.md",
+      "sha256": "3155c3ffc60df0c8a5354e5b0e04014856f4f387324803621a704fb8468432d2"
+    },
+    {
+      "path": "docs/tasks/BUILDER-PLAN-01/review-spec.md",
+      "sha256": "61c5425c6bb820d357e60529fd6414ba9c92444c6ff072e5164f95495eaf6b36"
+    },
+    {
+      "path": "docs/tasks/BUILDER-PLAN-01/verification.md",
+      "sha256": "33c74a6434636733178ef02d63eac16c9e3a778935c0440f88d79de30aab27f2"
+    },
+    {
+      "path": "docs/tasks/PIPELINE-01.json",
+      "sha256": "aada8023c59df8d4f34f6deeb9579d29c995be37d1fceec7b0681c1da8a84af4"
+    },
+    {
+      "path": "docs/tasks/PIPELINE-01/review-quality.md",
+      "sha256": "db9b72be49d12723efe20b2980e9f0035c04d1757bb2eb73f739d05b5915d109"
+    },
+    {
+      "path": "docs/tasks/PIPELINE-01/review-spec.md",
+      "sha256": "ddfc58844ccfac44ded693330b0f38f4d00379b932786db12e4def2319e1a1c0"
+    },
+    {
+      "path": "docs/tasks/PIPELINE-01/verification.md",
+      "sha256": "c8f39cdac6407ae4fa0e024ac1c754a32814b5ec17fc6f7f7b9700d8cef90173"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "9b74ece3c9d6b13c09f8c749ee9a7c033a4ed0276919ed1e1623f88e3fa2f0f0"
+    },
+    {
+      "path": "package.json",
+      "sha256": "291181e09aa3d64ee3d4a235f1b2f8270d92b6e64414bbf4c1988c38e66f18a5"
+    },
+    {
+      "path": "skills-lock.json",
+      "sha256": "1814f40a7524bea8e8a37f8cee89bc39d755a2004efd9d67bb3e29c3adbf62dc"
+    }
+  ]
+}

@@ -1,0 +1,624 @@
+{
+  "schemaVersion": 1,
+  "id": "DESIGN-USABILITY-01",
+  "goal": "Verificar a navegação do protótipo, concluir cadastro em lote e interação dos vagalumes, entregar mapa visual e Mermaid das telas, ampliar o uso de Tailwind e registrar lacunas antes do primeiro commit local.",
+  "spec": [
+    "docs/PRD.md",
+    "docs/DESIGN_BRIEF.md",
+    "docs/STUDENTS_DESIGN_REVIEW.md",
+    "docs/SCREEN_FLOW.md"
+  ],
+  "status": "integrated",
+  "revision": "c5ea136f3b7fec3192069d593560c5faa220e7bb62318c9a89939da4246cf18d",
+  "contextEvidence": "docs/tasks/DESIGN-USABILITY-01/context.md",
+  "owners": [
+    {
+      "agent": "/root",
+      "writePaths": [
+        "design-system.html",
+        "package.json",
+        "docs/DESIGN_BRIEF.md",
+        "docs/design-proposals/glass-owl-v4/tailwind.input.css",
+        "docs/design-proposals/glass-owl-v4/tailwind.css",
+        "docs/USABILITY_REVIEW.md",
+        "docs/tasks/DESIGN-USABILITY-01/",
+        "docs/tasks/DESIGN-USABILITY-01.json",
+        "docs/design-proposals/glass-owl-v4/index.html",
+        "docs/design-proposals/glass-owl-v4/app.js",
+        "docs/design-proposals/glass-owl-v4/styles.css",
+        "docs/design-proposals/glass-owl-v4/system-overrides.css",
+        "docs/design-proposals/glass-owl-v4/README.md",
+        "README.md"
+      ]
+    },
+    {
+      "agent": "/root/file_list_refinement",
+      "writePaths": [
+        "docs/design-proposals/glass-owl-v4/students.js",
+        "docs/design-proposals/glass-owl-v4/students.css"
+      ]
+    },
+    {
+      "agent": "/root/soft_landscape",
+      "writePaths": [
+        "docs/design-proposals/glass-owl-v4/scenery.js"
+      ]
+    },
+    {
+      "agent": "/root/screen_flow_plan",
+      "writePaths": [
+        "docs/SCREEN_FLOW.md",
+        "docs/PLANNING_READINESS.md"
+      ]
+    },
+    {
+      "agent": "/root/visual_flow_board",
+      "writePaths": [
+        "docs/screen-flow.html",
+        "docs/screen-flow.css",
+        "docs/screen-flow.js"
+      ]
+    }
+  ],
+  "acceptance": [
+    {
+      "id": "A1",
+      "text": "O protótipo demonstra planilha, revisão editável com bloqueios, cursos de destino e download explícito de CSV fictício; preserva dados ao voltar.",
+      "revision": "c5ea136f3b7fec3192069d593560c5faa220e7bb62318c9a89939da4246cf18d",
+      "evidence": [
+        "docs/tasks/DESIGN-USABILITY-01/verification.md",
+        "docs/tasks/DESIGN-USABILITY-01/candidate.json"
+      ]
+    },
+    {
+      "id": "A2",
+      "text": "Marca minimalista e botões arredondados mantêm a mascote aprovada; atração discreta dos vagalumes responde à inatividade e respeita preferências de movimento e fundo.",
+      "revision": "c5ea136f3b7fec3192069d593560c5faa220e7bb62318c9a89939da4246cf18d",
+      "evidence": [
+        "docs/tasks/DESIGN-USABILITY-01/verification.md",
+        "docs/tasks/DESIGN-USABILITY-01/candidate.json"
+      ]
+    },
+    {
+      "id": "A3",
+      "text": "O relatório registra tarefas de curso/alunos/datas, teclado e tela estreita, distinguindo inspeção do agente de pesquisa com pessoas e limites do protótipo.",
+      "revision": "c5ea136f3b7fec3192069d593560c5faa220e7bb62318c9a89939da4246cf18d",
+      "evidence": [
+        "docs/tasks/DESIGN-USABILITY-01/verification.md",
+        "docs/tasks/DESIGN-USABILITY-01/candidate.json"
+      ]
+    },
+    {
+      "id": "A4",
+      "text": "Mapa visual com telas, setas, zoom e deslocamento, Mermaid e inventário usam os mesmos IDs, distinguem demo, MVP proposto e futuro e podem ser encontrados no design system.",
+      "revision": "c5ea136f3b7fec3192069d593560c5faa220e7bb62318c9a89939da4246cf18d",
+      "evidence": [
+        "docs/tasks/DESIGN-USABILITY-01/verification.md",
+        "docs/tasks/DESIGN-USABILITY-01/candidate.json"
+      ]
+    },
+    {
+      "id": "A6",
+      "text": "Tailwind compilado localmente controla agrupamentos, espaçamentos e controles do protótipo e do quadro, com fontes explícitas e comando na raiz; mantém vidro, paisagem e responsividade sem iniciar a aplicação.",
+      "revision": "c5ea136f3b7fec3192069d593560c5faa220e7bb62318c9a89939da4246cf18d",
+      "evidence": [
+        "docs/tasks/DESIGN-USABILITY-01/verification.md",
+        "docs/tasks/DESIGN-USABILITY-01/candidate.json"
+      ]
+    },
+    {
+      "id": "A5",
+      "text": "Prontidão documenta decisões pendentes e inconsistências sem iniciar implementação; o commit local inclui planejamento e protótipos, sem dependências, segredos ou índice CodeGraph.",
+      "revision": "c5ea136f3b7fec3192069d593560c5faa220e7bb62318c9a89939da4246cf18d",
+      "evidence": [
+        "docs/tasks/DESIGN-USABILITY-01/verification.md",
+        "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+        "docs/tasks/DESIGN-USABILITY-01/integration.md"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "syntax-links",
+      "required": true,
+      "status": "passed",
+      "revision": "c5ea136f3b7fec3192069d593560c5faa220e7bb62318c9a89939da4246cf18d",
+      "evidence": "docs/tasks/DESIGN-USABILITY-01/verification.md"
+    },
+    {
+      "id": "browser-tasks",
+      "required": true,
+      "status": "passed",
+      "revision": "c5ea136f3b7fec3192069d593560c5faa220e7bb62318c9a89939da4246cf18d",
+      "evidence": "docs/tasks/DESIGN-USABILITY-01/verification.md"
+    },
+    {
+      "id": "commit-audit",
+      "required": true,
+      "status": "passed",
+      "revision": "c5ea136f3b7fec3192069d593560c5faa220e7bb62318c9a89939da4246cf18d",
+      "evidence": "docs/tasks/DESIGN-USABILITY-01/verification.md"
+    },
+    {
+      "id": "tailwind-build",
+      "required": true,
+      "status": "passed",
+      "revision": "c5ea136f3b7fec3192069d593560c5faa220e7bb62318c9a89939da4246cf18d",
+      "evidence": "docs/tasks/DESIGN-USABILITY-01/verification.md"
+    }
+  ],
+  "reviews": [
+    {
+      "axis": "spec",
+      "agent": "/root/usability_spec_review",
+      "status": "passed",
+      "revision": "c5ea136f3b7fec3192069d593560c5faa220e7bb62318c9a89939da4246cf18d",
+      "evidence": "docs/tasks/DESIGN-USABILITY-01/review-spec-final.md"
+    },
+    {
+      "axis": "quality",
+      "agent": "/root/usability_quality_review",
+      "status": "passed",
+      "revision": "c5ea136f3b7fec3192069d593560c5faa220e7bb62318c9a89939da4246cf18d",
+      "evidence": "docs/tasks/DESIGN-USABILITY-01/review-quality-final.md"
+    }
+  ],
+  "budget": {
+    "maxCorrections": 2,
+    "corrections": 2
+  },
+  "integration": {
+    "revision": "c5ea136f3b7fec3192069d593560c5faa220e7bb62318c9a89939da4246cf18d",
+    "evidence": "docs/tasks/DESIGN-USABILITY-01/integration.md"
+  },
+  "history": [
+    {
+      "from": "planned",
+      "to": "executing",
+      "requestedTo": "executing",
+      "at": "2026-10-12T13:38:00.326Z",
+      "revision": null,
+      "reason": "",
+      "evidence": {
+        "checks": [],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "executing",
+      "to": "verifying",
+      "requestedTo": "verifying",
+      "at": "2026-10-12T13:51:30.627Z",
+      "revision": "80510dbb82be153505bae0ceb5276a6391430588e549010836a6d4210c45f235",
+      "reason": "",
+      "evidence": {
+        "checks": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md"
+        ],
+        "reviews": [],
+        "acceptance": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json"
+        ]
+      }
+    },
+    {
+      "from": "verifying",
+      "to": "reviewing",
+      "requestedTo": "reviewing",
+      "at": "2026-10-12T13:51:30.779Z",
+      "revision": "80510dbb82be153505bae0ceb5276a6391430588e549010836a6d4210c45f235",
+      "reason": "",
+      "evidence": {
+        "checks": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md"
+        ],
+        "reviews": [],
+        "acceptance": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json"
+        ]
+      }
+    },
+    {
+      "from": "reviewing",
+      "to": "verifying",
+      "requestedTo": "verifying",
+      "at": "2026-10-12T13:54:26.292Z",
+      "revision": "80510dbb82be153505bae0ceb5276a6391430588e549010836a6d4210c45f235",
+      "reason": "",
+      "evidence": {
+        "checks": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md"
+        ],
+        "reviews": [],
+        "acceptance": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json"
+        ]
+      }
+    },
+    {
+      "from": "verifying",
+      "to": "reviewing",
+      "requestedTo": "reviewing",
+      "at": "2026-10-12T13:54:26.775Z",
+      "revision": "61f87e366576dc691a9e2bd958b05a383e4dd4a916ba14412b32d53b11747beb",
+      "reason": "",
+      "evidence": {
+        "checks": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md"
+        ],
+        "reviews": [],
+        "acceptance": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json"
+        ]
+      }
+    },
+    {
+      "from": "reviewing",
+      "to": "needs-fix",
+      "requestedTo": "needs-fix",
+      "at": "2026-10-12T13:57:14.419Z",
+      "revision": "61f87e366576dc691a9e2bd958b05a383e4dd4a916ba14412b32d53b11747beb",
+      "reason": "Q1: painel de detalhes mobile exige semantica nao modal e retorno de foco no breakpoint",
+      "evidence": {
+        "checks": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md"
+        ],
+        "reviews": [
+          "docs/tasks/DESIGN-USABILITY-01/review-spec-original.md",
+          "docs/tasks/DESIGN-USABILITY-01/review-quality-original.md"
+        ],
+        "acceptance": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json"
+        ]
+      }
+    },
+    {
+      "from": "needs-fix",
+      "to": "executing",
+      "requestedTo": "executing",
+      "at": "2026-10-12T13:57:14.567Z",
+      "revision": "61f87e366576dc691a9e2bd958b05a383e4dd4a916ba14412b32d53b11747beb",
+      "reason": "",
+      "evidence": {
+        "checks": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md"
+        ],
+        "reviews": [
+          "docs/tasks/DESIGN-USABILITY-01/review-spec-original.md",
+          "docs/tasks/DESIGN-USABILITY-01/review-quality-original.md"
+        ],
+        "acceptance": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json"
+        ]
+      }
+    },
+    {
+      "from": "executing",
+      "to": "verifying",
+      "requestedTo": "verifying",
+      "at": "2026-10-12T14:13:31.797Z",
+      "revision": "bf243fa80560e6048710c590ba633c802ba3fd18d9d22b5b49c4c9622d9291b5",
+      "reason": "",
+      "evidence": {
+        "checks": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md"
+        ],
+        "reviews": [],
+        "acceptance": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json"
+        ]
+      }
+    },
+    {
+      "from": "verifying",
+      "to": "reviewing",
+      "requestedTo": "reviewing",
+      "at": "2026-10-12T14:13:31.898Z",
+      "revision": "bf243fa80560e6048710c590ba633c802ba3fd18d9d22b5b49c4c9622d9291b5",
+      "reason": "",
+      "evidence": {
+        "checks": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md"
+        ],
+        "reviews": [],
+        "acceptance": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json"
+        ]
+      }
+    },
+    {
+      "from": "reviewing",
+      "to": "needs-fix",
+      "requestedTo": "needs-fix",
+      "at": "2026-10-12T14:16:23.375Z",
+      "revision": "bf243fa80560e6048710c590ba633c802ba3fd18d9d22b5b49c4c9622d9291b5",
+      "reason": "Q1: origem de foco pode estar conectada mas oculta depois de Quadro para Lista",
+      "evidence": {
+        "checks": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md"
+        ],
+        "reviews": [
+          "docs/tasks/DESIGN-USABILITY-01/review-spec-tailwind.md",
+          "docs/tasks/DESIGN-USABILITY-01/review-quality-tailwind.md"
+        ],
+        "acceptance": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json"
+        ]
+      }
+    },
+    {
+      "from": "needs-fix",
+      "to": "executing",
+      "requestedTo": "executing",
+      "at": "2026-10-12T14:16:23.467Z",
+      "revision": "bf243fa80560e6048710c590ba633c802ba3fd18d9d22b5b49c4c9622d9291b5",
+      "reason": "",
+      "evidence": {
+        "checks": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md"
+        ],
+        "reviews": [
+          "docs/tasks/DESIGN-USABILITY-01/review-spec-tailwind.md",
+          "docs/tasks/DESIGN-USABILITY-01/review-quality-tailwind.md"
+        ],
+        "acceptance": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json"
+        ]
+      }
+    },
+    {
+      "from": "executing",
+      "to": "verifying",
+      "requestedTo": "verifying",
+      "at": "2026-10-12T14:19:34.319Z",
+      "revision": "c5ea136f3b7fec3192069d593560c5faa220e7bb62318c9a89939da4246cf18d",
+      "reason": "",
+      "evidence": {
+        "checks": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md"
+        ],
+        "reviews": [],
+        "acceptance": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json"
+        ]
+      }
+    },
+    {
+      "from": "verifying",
+      "to": "reviewing",
+      "requestedTo": "reviewing",
+      "at": "2026-10-12T14:19:34.424Z",
+      "revision": "c5ea136f3b7fec3192069d593560c5faa220e7bb62318c9a89939da4246cf18d",
+      "reason": "",
+      "evidence": {
+        "checks": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md"
+        ],
+        "reviews": [],
+        "acceptance": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json"
+        ]
+      }
+    },
+    {
+      "from": "reviewing",
+      "to": "accepted",
+      "requestedTo": "accepted",
+      "at": "2026-10-12T14:20:55.846Z",
+      "revision": "c5ea136f3b7fec3192069d593560c5faa220e7bb62318c9a89939da4246cf18d",
+      "reason": "",
+      "evidence": {
+        "checks": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md"
+        ],
+        "reviews": [
+          "docs/tasks/DESIGN-USABILITY-01/review-spec-final.md",
+          "docs/tasks/DESIGN-USABILITY-01/review-quality-final.md"
+        ],
+        "acceptance": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json"
+        ]
+      }
+    },
+    {
+      "from": "accepted",
+      "to": "integrated",
+      "requestedTo": "integrated",
+      "at": "2026-10-12T14:21:45.823Z",
+      "revision": "c5ea136f3b7fec3192069d593560c5faa220e7bb62318c9a89939da4246cf18d",
+      "reason": "",
+      "evidence": {
+        "checks": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md"
+        ],
+        "reviews": [
+          "docs/tasks/DESIGN-USABILITY-01/review-spec-final.md",
+          "docs/tasks/DESIGN-USABILITY-01/review-quality-final.md"
+        ],
+        "acceptance": [
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/verification.md",
+          "docs/tasks/DESIGN-USABILITY-01/candidate.json",
+          "docs/tasks/DESIGN-USABILITY-01/integration.md"
+        ]
+      }
+    }
+  ]
+}

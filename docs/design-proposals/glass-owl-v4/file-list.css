@@ -1,0 +1,101 @@
+/* File rows share the prototype palette and leave the glass panel untouched. */
+.file-selection-summary {
+  margin: 12px 0 6px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+.file-selection-summary:empty {
+  margin: 0;
+  min-height: 0;
+}
+.upload-files {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 7px;
+}
+.upload-files .uploaded-file {
+  display: grid;
+  grid-template-columns: 23px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 11px;
+  padding: 8px 6px 8px 12px;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: var(--field);
+}
+.upload-files .uploaded-file-icon {
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.upload-files .uploaded-file-details {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+.upload-files .upload-name {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.upload-files .uploaded-file-metadata {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.3;
+}
+.upload-files .file-extension {
+  border: 1px solid var(--divider);
+  border-radius: 4px;
+  padding: 1px 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+.upload-files .uploaded-file-metadata small {
+  font-size: 11px;
+}
+.upload-files .remove-material {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: var(--muted);
+  background: transparent;
+}
+.upload-files .remove-material:hover {
+  color: var(--ink);
+  background: var(--hover);
+}
+.upload-files .remove-material:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+.upload-files .remove-material .icon {
+  width: 16px;
+  height: 16px;
+}
+@media (max-width: 420px) {
+  .upload-files .uploaded-file {
+    grid-template-columns: 20px minmax(0, 1fr) 44px;
+    gap: 8px;
+    padding-left: 9px;
+  }
+  .upload-files .uploaded-file-icon {
+    width: 20px;
+    height: 20px;
+  }
+}

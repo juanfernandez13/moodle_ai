@@ -1,0 +1,15 @@
+{
+  "name": "moodle-ai",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Planejamento e ferramentas da aplicação genérica de preparação de cursos Moodle",
+  "scripts": {
+    "design:css": "npm --prefix docs/design-proposals/glass-owl-v4 run build:css",
+    "codegraph:init": "codegraph init .",
+    "codegraph:status": "codegraph status",
+    "codegraph:serve": "codegraph serve --mcp"
+  },
+  "devDependencies": {
+    "@colbymchenry/codegraph": "1.6.2"
+  }
+}

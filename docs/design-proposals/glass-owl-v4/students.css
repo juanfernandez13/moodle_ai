@@ -1,0 +1,101 @@
+[data-view="students"] main { width:min(1040px,100%); }
+#panel-students { min-width:0; }
+#panel-students .student-journey { margin:0 0 22px; }
+#panel-students .student-journey ol { gap:18px; }
+#panel-students h2 { font-size:18px; letter-spacing:-.3px; }
+#panel-students button { min-height:44px; }
+#panel-students .primary, #panel-students .secondary { border-radius:999px; }
+#panel-students .primary:disabled { opacity:.55; cursor:default; box-shadow:none; }
+#panel-students :focus-visible, #student-moodle-dialog :focus-visible { outline:2px solid var(--green); outline-offset:2px; }
+.student-drop { width:100%; min-height:176px; padding:24px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; border:1px dashed var(--field-border); border-radius:18px; color:var(--ink); background:var(--soft); }
+.student-drop .icon { width:25px; height:25px; color:var(--green); }
+.student-drop strong { font-size:16px; }
+.student-drop span { color:var(--muted); font-size:13px; }
+.student-drop:hover, .student-drop.drag-over { background:var(--hover); border-color:var(--green); }
+.student-drop[aria-invalid=true] { border-color:var(--error); }
+.student-selection { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--divider); }
+.student-selection > div { flex:1; min-width:0; display:grid; gap:2px; }
+.student-selection strong { font-size:13px; overflow-wrap:anywhere; }
+.student-selection span { color:var(--muted); font-size:12px; }
+.student-selection > .icon { color:var(--green); }
+.student-selection .text-button { flex:0 0 auto; }
+.student-prototype-note, .student-helper { color:var(--muted); font-size:12px; line-height:1.55; }
+.student-prototype-note { margin:15px 0 0; }
+.student-courses { padding:0 0 20px; border-bottom:1px solid var(--divider); }
+.student-courses > p { color:var(--muted); font-size:13px; margin:8px 0 12px; }
+.student-courses ul { list-style:none; padding:0; margin:0 0 9px; display:grid; gap:7px; }
+.student-courses li { display:flex; align-items:start; gap:10px; }
+.student-course-copy { flex:1; min-width:0; }
+.student-course-remove { padding:10px 12px; border-radius:999px; color:var(--muted); background:transparent; font-size:12px; }
+.student-course-remove:hover { background:var(--hover); color:var(--ink); }
+#student-course-form { display:flex; align-items:start; gap:10px; }
+#student-course-name { min-width:0; flex:1; }
+#student-course-form .secondary { font-size:12px; white-space:nowrap; }
+.student-courses input { border-radius:12px; padding:10px 12px; font-size:13px; min-height:44px; }
+.student-courses .student-helper { margin-bottom:0; }
+.student-list-heading { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8px 18px; margin:23px 0 12px; }
+.student-list-heading p { margin:0; color:var(--muted); font-size:12px; }
+.student-table-wrap { max-width:100%; overflow-x:auto; border:1px solid var(--glass-border); border-radius:14px; background:var(--field); }
+.student-table { width:100%; min-width:860px; border-collapse:collapse; table-layout:fixed; }
+.student-table thead th { font-size:12px; font-weight:800; text-align:left; padding:12px 7px; border-bottom:1px solid var(--divider); }
+.student-table thead th:first-child { width:40px; }
+.student-table thead th:nth-child(2) { width:16%; }
+.student-table thead th:nth-child(3) { width:12%; }
+.student-table thead th:nth-child(4) { width:13%; }
+.student-table thead th:nth-child(5) { width:23%; }
+.student-table thead th:nth-child(6) { width:13%; }
+.student-table tbody th, .student-table tbody td { border-top:1px solid var(--divider); padding:9px 5px; vertical-align:top; }
+.student-table tbody .student-row-number { color:var(--muted); font-size:12px; font-weight:700; padding-top:22px; }
+.student-table input:not([type=radio]) { width:100%; min-width:0; min-height:44px; border-radius:8px; padding:9px 7px; background:transparent; border-color:transparent; font-size:12px; }
+.student-table input:not([type=radio]):hover { border-color:var(--field-border); }
+.student-table input:not([type=radio]):focus { background:var(--field); border-color:var(--green); }
+#panel-students input[aria-invalid=true] { border-color:var(--error); }
+.student-cell-label { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+.student-field-error { color:var(--error); font-size:11px; line-height:1.4; margin:4px 2px 0; overflow-wrap:anywhere; }
+.student-role { display:grid; gap:5px; padding:5px 3px; margin:0; border:0; min-width:0; }
+.student-role-choice { display:flex; align-items:center; gap:6px; font-size:11px; cursor:pointer; min-height:26px; }
+.student-role-choice input[type=radio] { appearance:auto; accent-color:var(--green); flex:0 0 16px; width:16px; height:16px; min-height:16px; margin:0; padding:0; }
+.student-issues { margin:16px 0 0; padding:12px 14px; border-left:2px solid var(--error); background:var(--soft); border-radius:0 10px 10px 0; color:var(--error); font-size:12px; }
+.student-issues strong { font-weight:800; }
+.student-issues ul { margin:5px 0 0; padding:0; list-style:none; }
+#panel-students .student-issue-link { text-align:left; padding:6px 0; min-height:44px; color:inherit; background:transparent; font-size:12px; line-height:1.5; }
+.student-issue-link:hover { text-decoration:underline; }
+.student-download-list { list-style:none; padding:0; margin:14px 0 0; }
+.student-download-list > li { display:flex; align-items:center; justify-content:space-between; gap:20px; border-bottom:1px solid var(--divider); padding:16px 0; }
+.student-download-copy { min-width:0; display:grid; gap:4px; }
+.student-download-copy strong { font-size:15px; }
+.student-download-copy span, .student-download-copy small { color:var(--muted); font-size:12px; overflow-wrap:anywhere; }
+.student-download-actions { display:flex; flex-wrap:wrap; gap:8px; flex:0 0 auto; }
+.student-download-actions button { font-size:12px; padding:10px 14px; }
+.student-send-steps { list-style:none; margin:20px 0; padding:0; counter-reset:send-step; }
+.student-send-steps li { counter-increment:send-step; display:grid; grid-template-columns:26px minmax(0,1fr); column-gap:10px; padding:13px 0; border-bottom:1px solid var(--divider); }
+.student-send-steps li::before { content:counter(send-step); grid-row:1 / 3; display:grid; place-items:center; align-self:start; width:25px; height:25px; border:1px solid var(--field-border); border-radius:50%; font-size:11px; color:var(--green); }
+.student-send-steps strong { font-size:14px; }
+.student-send-steps span { color:var(--muted); font-size:12px; margin-top:3px; }
+@media (max-width:600px) {
+  #panel-students .student-journey ol { justify-content:space-between; gap:9px; }
+  #panel-students .student-journey li + li::before { display:none; }
+  #panel-students .panel-help { margin-bottom:19px; }
+  .student-drop { min-height:154px; padding:20px 15px; }
+  .student-drop span { text-align:center; }
+  #student-course-form { flex-direction:column; }
+  #student-course-name, #student-course-form .secondary { width:100%; }
+  .student-course-remove { padding-inline:8px; }
+  .student-table-wrap { overflow:visible; border:0; border-radius:0; background:transparent; }
+  .student-table, .student-table tbody { display:block; min-width:0; width:100%; }
+  .student-table thead { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+  .student-table tbody tr { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px; border-top:1px solid var(--divider); padding:17px 0; }
+  .student-table tbody th, .student-table tbody td { display:block; border:0; padding:0; min-width:0; }
+  .student-table tbody .student-row-number { grid-column:1 / -1; padding:0; text-align:left; font-size:12px; }
+  .student-row-number::before { content:'Linha '; }
+  .student-table tbody td:nth-child(5) { grid-column:1 / -1; }
+  .student-cell-label { position:static; display:block; width:auto; height:auto; margin:0 0 5px; overflow:visible; clip:auto; white-space:normal; font-size:12px; font-weight:800; }
+  .student-table input:not([type=radio]) { background:var(--field); border-color:var(--field-border); padding:10px; border-radius:10px; font-size:13px; }
+  .student-role { gap:2px; padding:0; }
+  .student-role-choice { min-height:44px; font-size:12px; }
+  .student-download-list > li { align-items:stretch; flex-direction:column; gap:12px; }
+  .student-download-actions { flex-direction:column; }
+  .student-download-actions button { width:100%; }
+  #panel-students .panel-bottom { align-items:stretch; }
+  #panel-students .panel-bottom > button { width:100%; }
+}

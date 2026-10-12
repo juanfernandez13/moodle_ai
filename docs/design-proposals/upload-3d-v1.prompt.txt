@@ -1,0 +1,24 @@
+Generation mode: built-in imagegen.
+Purpose: visual proposal for the upload screen; this is not an implemented app.
+Selected file and UI states are fictional examples.
+
+Use case: ui-mockup.
+Asset type: high fidelity desktop web app design proposal, a complete clean screenshot, NOT a browser photo or a device mockup.
+Primary request: design an extremely easy, simple Portuguese course-preparation app for Moodle. One initial screen makes uploading a lesson-planning DOCX and beginning processing immediately understandable. The user wants education-related 3D illustration and the airy floating-panel depth of a creative design editor like Figma. Audience is teachers and pedagogical staff.
+Composition: landscape desktop screenshot roughly 1536x1024. An off-white/light-gray spacious workspace; small app header with an abstract book mark and the exact name "Moodle AI". No account avatar, fake navigation, dashboard charts, analytics or subscription features. Center one substantial floating white workspace panel with rounded corners, fine borders and a soft realistic layered shadow. Its left third contains a beautifully rendered educational still life: an open book, a small stack of books, a pencil and two floating blank lesson sheets, soft tactile clay and subtly glossy 3D materials with believable studio lighting. These objects feel thoughtfully crafted and mature, approachable for teachers. They should occupy a tasteful, finite illustration area, leaving the upload workflow as the main focus. Its right two thirds contain clear Portuguese UI.
+Typography: elegant contemporary readable sans-serif, excellent hierarchy, sentence case, calm restrained typesetting, text crisp enough to read. A neutral light foundation with one saturated blue action accent and harmonious gentle color on the educational objects. No decorative gradients, neon, excessive glassmorphism, fake graphs, purple glow or tiny illegible labels.
+Exact UI text:
+Page heading: "Prepare seu curso para o Moodle"
+Supporting sentence: "Envie seu planejamento. Depois, revise as aulas e atividades antes de exportar."
+Prominent dashed upload target with simple upload icon:
+"Arraste seu planejamento aqui"
+"ou escolha um arquivo do computador"
+Button: "Selecionar arquivo"
+Helper: "Planejamento em formato .docx"
+Beneath the upload target show one clearly selected fictional file row, with a DOCX document icon and filename: "Planejamento de Ciências.docx". A small check and the label "Arquivo selecionado", plus a discreet remove icon.
+Optional materials control: "Adicionar materiais de apoio" with the qualifier "Opcional". Do not show fictional size limits.
+One prominent wide blue primary button: "Iniciar processamento", with a restrained rightward arrow icon.
+Under it: "Você confere o conteúdo antes de gerar o pacote."
+Outside the main panel at the bottom, a quiet three-step flow: "Enviar" then "Revisar" then "Exportar".
+Constraints: demonstrate the selected-file state as a visual proposal; no claim that content is already processed or verified. Keep every requested text correctly spelled in Brazilian Portuguese. Full flat web screenshot only; no external watermark. Buttons and spacing must look plausible to implement. Let the educational 3D objects and floating panel depth provide personality while the actual file-upload action stays obvious.
+

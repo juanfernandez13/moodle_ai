@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "EXAMPLE",
+  "goal": "Replace this example with one demonstrable project change.",
+  "spec": ["docs/PRD.md"],
+  "status": "planned",
+  "revision": null,
+  "contextEvidence": null,
+  "owners": [{ "agent": "executor-domain", "writePaths": ["src/domain/"] }],
+  "acceptance": [
+    { "id": "A1", "text": "Replace with an observable acceptance criterion.", "revision": null, "evidence": [] }
+  ],
+  "checks": [
+    { "id": "behavior-check", "required": true, "status": "pending", "revision": null, "evidence": null }
+  ],
+  "reviews": [
+    { "axis": "spec", "agent": "reviewer-spec", "status": "pending", "revision": null, "evidence": null },
+    { "axis": "quality", "agent": "reviewer-quality", "status": "pending", "revision": null, "evidence": null }
+  ],
+  "budget": { "maxCorrections": 2, "corrections": 0 },
+  "integration": { "revision": null, "evidence": null },
+  "history": []
+}

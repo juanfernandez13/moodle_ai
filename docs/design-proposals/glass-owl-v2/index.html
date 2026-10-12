@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#eef6f1">
+  <title>Moodle AI · Proposta de vidro</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='16' fill='%2326764f'/%3E%3Cpath d='m8 19 16-8 16 8-16 8Zm6 7v8q10 7 20 0v-8' fill='none' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="vendor/three.browser.js"></script>
+  <script defer src="app.js"></script>
+  <script defer src="owl.js"></script>
+</head>
+<body>
+  <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-cap" viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5-10-5Zm4 3v5c4 3 8 3 12 0v-5M22 9v7"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m-5 5 5-5 5 5M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8l-5-5Zm0 0v6h5M9 13h6m-6 4h4"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m7 7-5 5 5 5m10-10 5 5-5 5M14 4l-4 16"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2m1-15a3 3 0 0 1 0 6m3 9v-2a6 6 0 0 0-3-5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 4 12 8-12 8V4Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6c-3-2-7-2-10-1v14c3-1 7-1 10 1m0-14c3-2 7-2 10-1v14c-3-1-7-1-10 1V6Z"/></symbol>
+  </svg>
+
+  <div class="workspace">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="Moodle AI, início da proposta">
+        <span class="brand-mark"><svg class="icon"><use href="#i-cap"/></svg></span>
+        <span>Moodle<span class="brand-ai"> AI</span></span>
+      </a>
+      <button class="motion-toggle glass" id="motion-toggle" type="button" aria-pressed="false">
+        <svg class="icon"><use href="#i-pause"/></svg><span>Pausar animação</span>
+      </button>
+    </header>
+
+    <div class="scene-wrap" aria-hidden="true">
+      <div class="scene-glow"></div>
+      <div id="owl-scene"></div>
+      <svg class="owl-fallback" viewBox="0 0 200 230"><ellipse cx="100" cy="211" rx="49" ry="9" fill="#b6c9bc" opacity=".3"/><ellipse cx="100" cy="143" rx="59" ry="67" fill="#83b795"/><ellipse cx="100" cy="150" rx="34" ry="49" fill="#edf1d8"/><ellipse cx="100" cy="93" rx="64" ry="55" fill="#83b795"/><circle cx="74" cy="94" r="24" fill="#fbf8e8"/><circle cx="126" cy="94" r="24" fill="#fbf8e8"/><circle cx="77" cy="97" r="10" fill="#254a39"/><circle cx="123" cy="97" r="10" fill="#254a39"/><circle cx="80" cy="93" r="3" fill="white"/><circle cx="126" cy="93" r="3" fill="white"/><path d="m90 116 10 16 10-16" fill="#e7bf69"/><path d="M63 38h74v24H63Z" fill="#34584a"/><path d="m36 33 65-24 65 24-65 23Z" fill="#274d3c"/><path d="m162 34 3 49" stroke="#e7bf69" stroke-width="5" stroke-linecap="round"/></svg>
+      <div class="owl-shadow"></div>
+    </div>
+
+    <main class="content">
+      <div class="intro">
+        <h1>Prepare seu<br>próximo curso.</h1>
+        <p>Comece com seu material.<br>A gente ajuda a organizar o restante.</p>
+      </div>
+
+      <div class="entry-options" role="tablist" aria-label="Como você quer começar?">
+        <button class="entry glass active" id="tab-files" role="tab" aria-selected="true" aria-controls="panel-files" tabindex="0" type="button" data-mode="files">
+          <span class="entry-icon"><svg class="icon"><use href="#i-upload"/></svg></span>
+          <span><span class="entry-title">Enviar arquivos</span><span class="entry-caption">Seu material vira um curso</span></span>
+          <span class="selected-dot" aria-hidden="true"></span>
+        </button>
+        <button class="entry glass" id="tab-json" role="tab" aria-selected="false" aria-controls="panel-json" tabindex="-1" type="button" data-mode="json">
+          <span class="entry-icon"><svg class="icon"><use href="#i-code"/></svg></span>
+          <span><span class="entry-title">JSON manual</span><span class="entry-caption">Traga a estrutura pronta</span></span>
+          <span class="selected-dot" aria-hidden="true"></span>
+        </button>
+        <button class="entry glass" id="tab-students" role="tab" aria-selected="false" aria-controls="panel-students" tabindex="-1" type="button" data-mode="students">
+          <span class="entry-icon"><svg class="icon"><use href="#i-users"/></svg></span>
+          <span><span class="entry-title">Cadastrar alunos</span><span class="entry-caption">Prepare sua turma</span></span>
+          <span class="selected-dot" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <section class="surface glass" id="panel-files" role="tabpanel" aria-labelledby="tab-files" tabindex="0">
+        <div class="panel-heading"><h2>O que vamos ensinar?</h2><span class="format-tag">.docx</span></div>
+        <input id="document-input" class="file-input" type="file" accept=".docx" tabindex="-1" aria-label="Escolher documento principal">
+        <button class="dropzone" id="dropzone" type="button" aria-describedby="file-hint file-error">
+          <span class="upload-orbit"><svg class="icon"><use href="#i-upload"/></svg></span>
+          <span class="drop-title" id="drop-title">Solte seu documento aqui</span>
+          <span class="drop-description" id="drop-description">ou clique para escolher um arquivo</span>
+        </button>
+        <div class="file-meta" id="file-meta" hidden><span id="file-size"></span><button class="text-button" id="remove-file" type="button">Remover</button></div>
+        <p class="input-error" id="file-error" role="alert" hidden></p>
+        <div class="attachments-row">
+          <button class="text-button attachments-button" id="add-materials" type="button"><svg class="icon"><use href="#i-plus"/></svg>Adicionar materiais de apoio</button>
+          <span class="optional">opcional</span>
+          <input id="materials-input" class="file-input" type="file" multiple tabindex="-1" aria-label="Escolher materiais de apoio">
+        </div>
+        <ul class="materials" id="materials-list" aria-label="Materiais selecionados" hidden></ul>
+        <div class="panel-bottom">
+          <p id="file-hint">Você revisa tudo<br>antes de exportar.</p>
+          <button class="primary" id="start-processing" type="button"><span>Iniciar processamento</span><svg class="icon"><use href="#i-book"/></svg></button>
+        </div>
+      </section>
+
+      <section class="surface glass" id="panel-json" role="tabpanel" aria-labelledby="tab-json" tabindex="0" hidden>
+        <div class="panel-heading"><h2>Seu curso, do seu jeito.</h2><button class="text-button" id="load-example" type="button">Usar exemplo</button></div>
+        <label class="field-label" for="json-input">Cole ou escreva seu JSON</label>
+        <textarea id="json-input" spellcheck="false" placeholder='{"title": "Meu curso", "sections": []}' aria-describedby="json-hint json-error"></textarea>
+        <p class="input-error" id="json-error" role="alert" hidden></p>
+        <div class="panel-bottom"><p id="json-hint">Uma estrutura pronta<br>também pode ser o início.</p><button class="primary" id="review-json" type="button">Revisar JSON<svg class="icon"><use href="#i-code"/></svg></button></div>
+      </section>
+
+      <section class="surface glass" id="panel-students" role="tabpanel" aria-labelledby="tab-students" tabindex="0" hidden>
+        <div class="panel-heading"><h2>Uma turma começa com pessoas.</h2><span class="format-tag">Alunos</span></div>
+        <form id="student-form">
+          <div class="student-fields">
+            <div><label class="field-label" for="student-name">Nome completo</label><input id="student-name" name="studentName" autocomplete="off" placeholder="Nome do aluno" required maxlength="120"></div>
+            <div><label class="field-label" for="student-email">E-mail</label><input id="student-email" name="studentEmail" type="email" autocomplete="off" placeholder="aluno@exemplo.com" required maxlength="254"></div>
+          </div>
+          <div class="student-note"><span class="entry-icon"><svg class="icon"><use href="#i-users"/></svg></span><p>Organize os alunos para o cadastro.<br>Confira os dados antes de continuar.</p></div>
+          <div class="panel-bottom"><p>Explore o fluxo<br>com dados fictícios.</p><button class="primary" type="submit">Pré-visualizar cadastro<svg class="icon"><use href="#i-users"/></svg></button></div>
+        </form>
+      </section>
+      <footer class="prototype-note"><span class="prototype-dot"></span>Proposta interativa de design. Sem envio de dados.</footer>
+    </main>
+  </div>
+
+  <dialog id="preview-dialog" aria-labelledby="preview-title" aria-describedby="preview-description">
+    <button class="close-dialog" id="close-dialog" type="button" aria-label="Fechar prévia" autofocus><svg class="icon"><use href="#i-x"/></svg></button>
+    <span class="dialog-icon"><svg class="icon"><use id="preview-icon" href="#i-book"/></svg></span>
+    <h2 id="preview-title"></h2>
+    <p id="preview-description"></p>
+    <div id="preview-body"></div>
+    <button class="primary dialog-return" id="dialog-return" type="button">Voltar à área de trabalho</button>
+  </dialog>
+</body>
+</html>

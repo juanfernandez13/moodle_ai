@@ -1,0 +1,20 @@
+{
+  "revision": "sha256:036ee62813d129e2a870bf91ba7a0e151df82837b14a87c2c9fcb44bbf46ab2b",
+  "files": [
+    {
+      "path": "docs/BUILDER_PIPELINE_PLAN.md",
+      "sha256": "4fe603ee2ba130aa3d0f125c78c50fb15e0ad6452de57933bc1ce6f2c6938655",
+      "lines": 269,
+      "words": 4696
+    },
+    {
+      "path": "GLOSSARY.md",
+      "sha256": "c6d0bc6cf9838ca1d4ab8c795bf0e3223744bf790f36f5fe426aa3bcba94e851",
+      "lines": 69,
+      "words": 406
+    }
+  ],
+  "missing_links": [],
+  "fences": "balanced",
+  "digest_rule": "sha256 of UTF-8 json.dumps(files, sort_keys=True, separators=(',', ':')), file order preserved; per-file hash uses raw bytes; lines/words use raw.decode('utf-8-sig').splitlines()/split()"
+}

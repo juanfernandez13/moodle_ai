@@ -1,0 +1,10 @@
+[mcp_servers.codegraph]
+command = "C:/Users/juanp/AppData/Local/nodejs/node.exe"
+args = ["C:/Users/juanp/Projetos/Moodle/Moodle-AI/node_modules/@colbymchenry/codegraph/npm-shim.js", "serve", "--mcp"]
+cwd = "C:/Users/juanp/Projetos/Moodle/Moodle-AI"
+startup_timeout_sec = 30
+tool_timeout_sec = 60
+
+[mcp_servers.codegraph.env]
+CODEGRAPH_TELEMETRY = "0"
+CODEGRAPH_NO_DOWNLOAD = "1"

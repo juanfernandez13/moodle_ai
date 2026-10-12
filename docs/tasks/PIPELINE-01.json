@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "PIPELINE-01",
+  "goal": "Revisar e acordar o pipeline de desenvolvimento antes de liberar a implementação da aplicação.",
+  "spec": ["docs/PIPELINE.md", "docs/AGENT_WORKFLOW.md", "docs/AGENT_LOOP.md"],
+  "status": "planned",
+  "revision": "sha256:155CB0313A505BCE2B4326ED1E9DABB70B01380043176952A0C856AB7B4EAD00",
+  "contextEvidence": null,
+  "owners": [{ "agent": "/root", "writePaths": ["docs/PIPELINE.md"] }],
+  "acceptance": [
+    { "id": "A1", "text": "Etapas de planejamento e liberação explícita aparecem antes de implementação; nenhum recurso do app é iniciado.", "revision": "sha256:155CB0313A505BCE2B4326ED1E9DABB70B01380043176952A0C856AB7B4EAD00", "evidence": ["docs/tasks/PIPELINE-01/review-spec.md"] },
+    { "id": "A2", "text": "Papéis, propriedade de arquivos, revisões independentes, evidências e limite de correções estão definidos.", "revision": "sha256:155CB0313A505BCE2B4326ED1E9DABB70B01380043176952A0C856AB7B4EAD00", "evidence": ["docs/tasks/PIPELINE-01/review-spec.md", "docs/tasks/PIPELINE-01/review-quality.md"] },
+    { "id": "A3", "text": "Instalação de skills e teste direto MCP são distinguidos de workflows executados, conexão ativa e resultados da aplicação.", "revision": "sha256:155CB0313A505BCE2B4326ED1E9DABB70B01380043176952A0C856AB7B4EAD00", "evidence": ["docs/tasks/PIPELINE-01/review-spec.md", "docs/tasks/PIPELINE-01/review-quality.md"] }
+  ],
+  "checks": [
+    { "id": "document-inspection", "required": true, "status": "passed", "revision": "sha256:155CB0313A505BCE2B4326ED1E9DABB70B01380043176952A0C856AB7B4EAD00", "evidence": "docs/tasks/PIPELINE-01/verification.md" }
+  ],
+  "reviews": [
+    { "axis": "spec", "agent": "/root/quality_review", "status": "passed", "revision": "sha256:155CB0313A505BCE2B4326ED1E9DABB70B01380043176952A0C856AB7B4EAD00", "evidence": "docs/tasks/PIPELINE-01/review-spec.md" },
+    { "axis": "quality", "agent": "/root/architecture", "status": "passed", "revision": "sha256:155CB0313A505BCE2B4326ED1E9DABB70B01380043176952A0C856AB7B4EAD00", "evidence": "docs/tasks/PIPELINE-01/review-quality.md" }
+  ],
+  "budget": { "maxCorrections": 2, "corrections": 0 },
+  "integration": { "revision": null, "evidence": null },
+  "history": []
+}

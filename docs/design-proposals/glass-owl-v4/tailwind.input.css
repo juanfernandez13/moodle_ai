@@ -1,0 +1,36 @@
+/* Explicit sources keep the prototype build independent of application files. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+@source "./index.html";
+@source "./app.js";
+@source "./controls.js";
+@source "./uploads.js";
+@source "./students.js";
+@source "../../../design-system.html";
+@source "../../screen-flow.html";
+@source "../../screen-flow.js";
+
+@theme {
+  --default-transition-duration: 300ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Shared control behavior also covers buttons created by the calendar and uploads. */
+@layer components {
+  :where(button, a, input, textarea, select, summary, .choice, .date-field) {
+    @apply transition duration-300 ease-out;
+  }
+}
+
+:root { --motion-duration: 300ms; }
+@keyframes panel-enter {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+[role="tabpanel"]:not([hidden]), dialog[open] {
+  animation: panel-enter var(--motion-duration) var(--ease-out);
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}

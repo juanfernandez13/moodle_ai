@@ -1,0 +1,13 @@
+{
+  "name": "moodle-ai-design-v4",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Build local do CSS do protótipo visual, separado da aplicação",
+  "scripts": {
+    "build:css": "tailwindcss -i ./tailwind.input.css -o ./tailwind.css --minify"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "4.3.3",
+    "tailwindcss": "4.3.3"
+  }
+}
