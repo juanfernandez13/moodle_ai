@@ -204,7 +204,7 @@ function issueFocusProbe(
         .map((element) => wrap(element as Element)),
   } as unknown as Document;
   const source = readFileSync(
-    new URL("../../app/page.tsx", import.meta.url),
+    new URL("../../src/client/features/course/hooks/use-course-navigation.ts", import.meta.url),
     "utf8",
   );
   const ast = ts.createSourceFile(
@@ -350,7 +350,7 @@ test("actual metadata labels focus their own fields rather than the first course
   const project = createProject();
   project.draft.metadata.startDate = "2026-10-12T09:00:00-03:00";
   const source = readFileSync(
-    new URL("../../app/page.tsx", import.meta.url),
+    new URL("../../src/client/features/course/editor/course-metadata-panel.tsx", import.meta.url),
     "utf8",
   );
   const ast = ts.createSourceFile(
