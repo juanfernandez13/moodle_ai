@@ -1,0 +1,52 @@
+.frame {
+  position: relative;
+  width: 110px;
+  height: 118px;
+  flex: 0 0 110px;
+  pointer-events: none;
+  overflow: hidden;
+  contain: layout paint;
+}
+
+.surface {
+  position: absolute;
+  inset: 0;
+}
+
+.surface canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.fallback {
+  position: absolute;
+  width: 79px;
+  height: 79px;
+  top: 19px;
+  left: 17px;
+  object-fit: contain;
+}
+
+.frame[data-owl-state="ready"] .fallback {
+  visibility: hidden;
+}
+
+.frame:not([data-owl-state="ready"]) .surface {
+  visibility: hidden;
+}
+
+@media (max-width: 600px) {
+  .frame {
+    width: 88px;
+    height: 100px;
+    flex-basis: 88px;
+  }
+
+  .fallback {
+    width: 64px;
+    height: 64px;
+    top: 17px;
+    left: 13px;
+  }
+}
