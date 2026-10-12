@@ -1,0 +1,103 @@
+{
+  "owner": "owl_3d",
+  "scope": [
+    "src/visual/owl/**",
+    "public/three-owl/**",
+    "tests/visual/**"
+  ],
+  "component": "src/visual/owl/Owl3D.tsx",
+  "api": "default Owl3D({paused?:boolean,theme?:light|dark,className?:string})",
+  "sourceModel": "docs/design-proposals/glass-owl-v4/owl.js",
+  "sourceModelSha256": "f30ef3115356d58a4f4b7640c0322d62b1d75badc21d113e190aa2496b10adbb",
+  "library": "Three.js r186 (vendored local MIT)",
+  "newDependencies": [],
+  "checks": {
+    "scopedTypecheck": "passed",
+    "scopedLint": "passed",
+    "tests": "5 passed / 0 failed",
+    "integratedBrowser": "pending root integration QA",
+    "globalLint": "passed"
+  },
+  "files": [
+    {
+      "path": "public/three-owl/ASSET_SOURCE.md",
+      "sha256": "9c01dcb121aef0ffa0e867da66b7b9cb889aed57df0610907fa3e039c328a24d",
+      "bytes": 3183
+    },
+    {
+      "path": "public/three-owl/brand-owl.svg",
+      "sha256": "d22f4cb7cf1a5d4e60668b6b14cd0691a1a7be118edf340dfd3a824ef28a7504",
+      "bytes": 732
+    },
+    {
+      "path": "public/three-owl/LICENSE.three.txt",
+      "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+      "bytes": 1081
+    },
+    {
+      "path": "public/three-owl/moodle-mark.svg",
+      "sha256": "a16e54c7a4f21a4f012d6688b0fe16fe2361fb4b8aa299044ef1b7fbf432b2b4",
+      "bytes": 853
+    },
+    {
+      "path": "public/three-owl/three.browser.js",
+      "sha256": "48a72b659ea420d53106960d0327328da1b91ba63e281da9dd40ed3e08349fda",
+      "bytes": 2197213
+    },
+    {
+      "path": "src/visual/owl/load-three.ts",
+      "sha256": "ba7c2aedd4f1e5338e53a003a11ac5471133843bd3652716f424bea715db90a6",
+      "bytes": 1136
+    },
+    {
+      "path": "src/visual/owl/model.ts",
+      "sha256": "2fa303780ab308144778594ec54e85bcfadf85e57ea567e9acfc975fc7771027",
+      "bytes": 9170
+    },
+    {
+      "path": "src/visual/owl/motion.ts",
+      "sha256": "87a081d2f1bc7580eff95b0087287300a93bd445242b593366d7dffdac85ff14",
+      "bytes": 1737
+    },
+    {
+      "path": "src/visual/owl/Owl3D.module.css",
+      "sha256": "5f6be545d953684567103eb2ae254567b0673a2907e8bfc12eaec1cda195c28a",
+      "bytes": 720
+    },
+    {
+      "path": "src/visual/owl/Owl3D.tsx",
+      "sha256": "8b64db17c41bf13bc95e66cb50663d62a1d9f41e37efa93bca9607ff92e89ebb",
+      "bytes": 2036
+    },
+    {
+      "path": "src/visual/owl/resources.ts",
+      "sha256": "7968871175f959737a62c46aa3b52f64eed4e017752c296bc9a14be055fee3d5",
+      "bytes": 688
+    },
+    {
+      "path": "src/visual/owl/runtime.ts",
+      "sha256": "689a5322758e4d8844766957e9f02d50ec92ea96e61acf724c212f0e2d191b57",
+      "bytes": 7099
+    },
+    {
+      "path": "src/visual/owl/three-types.ts",
+      "sha256": "0a5a5601e0ae41b11ade2dcc541f0efb6ebc0db246f3339571c221ea4e309dad",
+      "bytes": 3869
+    },
+    {
+      "path": "tests/visual/checks.txt",
+      "sha256": "d3e499d2a56367c9ad4dfbe0891f9961de58c5d2e9821cc01ca42f52e7f19b76",
+      "bytes": 1347
+    },
+    {
+      "path": "tests/visual/motion.test.ts",
+      "sha256": "bbcaf26f9defc0a46f93f8c1f59ec259ab7cba0b5f6de4e5da358b85f51084bd",
+      "bytes": 2393
+    },
+    {
+      "path": "tests/visual/runtime.test.ts",
+      "sha256": "7ffa3e9d9e387d1898ddc4aa438395e92b3563bad5f4a36fbbe9a8822d91301a",
+      "bytes": 9596
+    }
+  ]
+}
