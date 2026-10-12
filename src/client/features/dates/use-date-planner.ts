@@ -2,8 +2,16 @@
 import { useRef, useState } from "react";
 import { z } from "zod";
 import { buildDatePlan, previewDatePlan } from "../../../domain/dates/index.ts";
-import type { DatePlanInput, DateTarget, DatePlan } from "../../../domain/dates/index.ts";
-import { useMoodle, moodlePost, issuesMessage } from "../../components/moodle-connection.tsx";
+import type {
+  DatePlanInput,
+  DateTarget,
+  DatePlan,
+} from "../../../domain/dates/index.ts";
+import {
+  useMoodle,
+  moodlePost,
+  issuesMessage,
+} from "../../components/moodle-connection.tsx";
 import { dateTargets } from "./helpers.ts";
 import type { DatePane, DateOperationResult } from "./types.ts";
 
@@ -25,7 +33,6 @@ export function useDatePlanner() {
   const [error, setError] = useState("");
   const [pane, setPane] = useState<DatePane>("plan");
   const [page, setPage] = useState(0);
-  const moodle = useMoodle();
   const [courseId, setCourseId] = useState(0);
   const [busy, setBusy] = useState(false);
   const [moodlePreview, setMoodlePreview] = useState<{
@@ -36,9 +43,42 @@ export function useDatePlanner() {
   const [results, setResults] = useState<DateOperationResult[]>([]);
   const [unknownResult, setUnknownResult] = useState(false);
   const revision = useRef(0);
+  const sessionGeneration = useRef(0);
+  const currentPreview = useRef<typeof moodlePreview>(null);
+  const remoteTargets = useRef(false);
+  const unknown = useRef(false);
+  const confirming = useRef(false);
+  const renderedSession = sessionGeneration.current;
+  const moodle = useMoodle({
+    onSessionChange() {
+      sessionGeneration.current++;
+      revision.current++;
+      currentPreview.current = null;
+      setMoodlePreview(null);
+      setCourseId(0);
+      setBusy(false);
+      setError("");
+      if (remoteTargets.current) {
+        remoteTargets.current = false;
+        setTargetsText("");
+        setPreview(null);
+      }
+      if (confirming.current) unknown.current = true;
+      setUnknownResult(unknown.current);
+      if (unknown.current) {
+        setError(
+          "Há uma alteração anterior sem resultado confirmado. Confira as datas no Moodle de origem antes de repetir.",
+        );
+      } else {
+        setResults([]);
+        setPane("connection");
+      }
+    },
+  });
   function change(field: keyof DatePlanInput, value: string | number) {
     revision.current++;
     setPreview(null);
+    currentPreview.current = null;
     setMoodlePreview(null);
     setError("");
     setInput((previous) => ({ ...previous, [field]: value }));
@@ -59,6 +99,7 @@ export function useDatePlanner() {
       if (expected !== revision.current)
         throw new Error("O planejamento mudou. Simule novamente.");
       setPreview(next);
+      currentPreview.current = null;
       setMoodlePreview(null);
       setPage(0);
       setPane("preview");
@@ -71,7 +112,15 @@ export function useDatePlanner() {
     }
   }
   async function previewMoodleDates() {
+    if (
+      !courseId ||
+      renderedSession !== sessionGeneration.current ||
+      unknown.current ||
+      confirming.current
+    )
+      return;
     const expected = revision.current;
+    const expectedSession = sessionGeneration.current;
     setBusy(true);
     setError("");
     try {
@@ -79,6 +128,7 @@ export function useDatePlanner() {
         courseId,
         input,
       });
+      if (expectedSession !== sessionGeneration.current) return;
       const parsed = z
         .object({
           ok: z.literal(true),
@@ -98,24 +148,36 @@ export function useDatePlanner() {
         );
       if (expected !== revision.current)
         throw new Error("O planejamento mudou. Confira novamente.");
-      setMoodlePreview({
+      const next = {
         previewId: parsed.previewId,
         hash: parsed.hash,
         plan: calculated.plan,
-      });
+      };
+      currentPreview.current = next;
+      setMoodlePreview(next);
       setPage(0);
       setPane("preview");
     } catch (failure) {
+      if (expectedSession !== sessionGeneration.current) return;
       setError(
         failure instanceof Error ? failure.message : "A prévia Moodle falhou.",
       );
     } finally {
-      setBusy(false);
+      if (expectedSession === sessionGeneration.current) setBusy(false);
     }
   }
   async function confirmDates() {
-    if (!moodlePreview) return;
+    if (
+      !moodlePreview ||
+      currentPreview.current !== moodlePreview ||
+      unknown.current ||
+      confirming.current
+    )
+      return;
     const approved = moodlePreview;
+    const expectedSession = sessionGeneration.current;
+    currentPreview.current = null;
+    confirming.current = true;
     setMoodlePreview(null);
     setBusy(true);
     setPane("result");
@@ -126,6 +188,7 @@ export function useDatePlanner() {
         expectedHash: approved.hash,
         confirmation: true,
       });
+      if (expectedSession !== sessionGeneration.current) return;
       const parsed = z
         .object({
           ok: z.literal(true),
@@ -142,20 +205,26 @@ export function useDatePlanner() {
       setResults(parsed.results);
       setPage(0);
       setPane("result");
-      setUnknownResult(
-        parsed.results.some((entry) => entry.status === "unknown"),
+      unknown.current ||= parsed.results.some(
+        (entry) => entry.status === "unknown",
       );
+      setUnknownResult(unknown.current);
     } catch (failure) {
+      if (expectedSession !== sessionGeneration.current) return;
+      unknown.current = true;
       setUnknownResult(true);
       setError(
         `${failure instanceof Error ? failure.message : "O resultado é desconhecido."} Confira as datas atuais no Moodle antes de repetir.`,
       );
     } finally {
-      setBusy(false);
+      confirming.current = false;
+      if (expectedSession === sessionGeneration.current) setBusy(false);
     }
   }
   async function readTargets() {
+    if (!courseId || renderedSession !== sessionGeneration.current) return;
     const expected = revision.current;
+    const expectedSession = sessionGeneration.current;
     setBusy(true);
     setError("");
     try {
@@ -163,6 +232,7 @@ export function useDatePlanner() {
         cache: "no-store",
       });
       const value: unknown = await response.json();
+      if (expectedSession !== sessionGeneration.current) return;
       const parsed = z
         .object({ ok: z.literal(true), targets: z.array(z.unknown()) })
         .safeParse(value);
@@ -182,26 +252,31 @@ export function useDatePlanner() {
           "O curso ou plano mudou durante a leitura. Leia novamente.",
         );
       change("unitCount", count);
+      remoteTargets.current = true;
       setTargetsText(JSON.stringify(targets, null, 2));
     } catch (failure) {
+      if (expectedSession !== sessionGeneration.current) return;
       setError(
         failure instanceof Error
           ? failure.message
           : "Não foi possível ler o curso.",
       );
     } finally {
-      setBusy(false);
+      if (expectedSession === sessionGeneration.current) setBusy(false);
     }
   }
   function changeTargets(value: string) {
+    remoteTargets.current = false;
     revision.current++;
     setPreview(null);
+    currentPreview.current = null;
     setMoodlePreview(null);
     setError("");
     setTargetsText(value);
   }
   function selectCourse(value: number) {
     revision.current++;
+    currentPreview.current = null;
     setMoodlePreview(null);
     setResults([]);
     setCourseId(value);
@@ -227,7 +302,7 @@ export function useDatePlanner() {
     simulate,
     previewMoodleDates,
     confirmDates,
-    readTargets
+    readTargets,
   };
 }
 export type DatePlanner = ReturnType<typeof useDatePlanner>;
