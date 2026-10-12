@@ -1,0 +1,16 @@
+Interactive background checks (2026-10-12)
+
+node --test tests/visual-background/field.test.ts tests/visual-background/runtime.test.ts
+Exit 0: 7 passed, 0 failed, 0 skipped.
+
+node node_modules/typescript/bin/tsc --noEmit --incremental false --strict --noUncheckedIndexedAccess --exactOptionalPropertyTypes --target ES2023 --module ESNext --moduleResolution Bundler --jsx react-jsx --lib ES2023,DOM,DOM.Iterable --skipLibCheck --allowImportingTsExtensions next-env.d.ts src/visual/background/field.ts src/visual/background/runtime.ts src/visual/background/InteractiveBackground.tsx tests/visual-background/field.test.ts tests/visual-background/runtime.test.ts
+Exit 0: no diagnostics.
+
+node node_modules/eslint/bin/eslint.js src/visual/background tests/visual-background --max-warnings 0
+Exit 0: no diagnostics (first test candidate).
+
+node node_modules/eslint/bin/eslint.js src app tests --max-warnings 0
+Exit 0: no diagnostics (final background candidate).
+
+Canvas drawing/event scheduling simulated. Browser visual verification and
+physical-device performance remain integrated gates. No dependency added.
