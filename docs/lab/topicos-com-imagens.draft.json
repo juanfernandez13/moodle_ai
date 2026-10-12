@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "id": "course-fixture-1",
+  "revision": 0,
+  "metadata": {
+    "fullName": "Matemática ilustrada",
+    "shortName": "MAT-IMG",
+    "summary": "",
+    "organization": "topics"
+  },
+  "sections": [
+    {
+      "id": "section-fixture-2",
+      "title": "Figuras",
+      "summary": "Observe esta figura.\n\nEla acompanha o texto.\n\nElemento\tRepresentação\nQuadrado\t",
+      "summaryBlocks": [
+        {
+          "id": "block-fixture-4",
+          "kind": "text",
+          "text": "Observe esta figura."
+        },
+        {
+          "id": "block-fixture-5",
+          "kind": "image",
+          "attachmentId": "media-fixture-e3ad22be4936",
+          "alt": "Um quadrado fictício"
+        },
+        {
+          "id": "block-fixture-6",
+          "kind": "text",
+          "text": "Ela acompanha o texto."
+        },
+        {
+          "id": "block-fixture-11",
+          "kind": "table",
+          "rows": [
+            [
+              {
+                "blocks": [
+                  {
+                    "id": "block-fixture-7",
+                    "kind": "text",
+                    "text": "Elemento"
+                  }
+                ]
+              },
+              {
+                "blocks": [
+                  {
+                    "id": "block-fixture-8",
+                    "kind": "text",
+                    "text": "Representação"
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                "blocks": [
+                  {
+                    "id": "block-fixture-9",
+                    "kind": "text",
+                    "text": "Quadrado"
+                  }
+                ]
+              },
+              {
+                "blocks": [
+                  {
+                    "id": "block-fixture-10",
+                    "kind": "image",
+                    "attachmentId": "media-fixture-e3ad22be4936",
+                    "alt": "Quadrado na tabela"
+                  }
+                ]
+              }
+            ]
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "activity-fixture-3",
+          "title": "Verificação",
+          "description": "",
+          "attachmentIds": [],
+          "type": "quiz",
+          "settings": {
+            "maxGrade": 10,
+            "attempts": 2,
+            "shuffleQuestions": false
+          },
+          "questions": [
+            {
+              "id": "question-fixture-4",
+              "statement": "Quantos lados tem a figura?",
+              "feedback": "",
+              "statementBlocks": [
+                {
+                  "id": "block-fixture-16",
+                  "kind": "text",
+                  "text": "Quantos lados tem a figura?"
+                },
+                {
+                  "id": "block-fixture-17",
+                  "kind": "image",
+                  "attachmentId": "media-fixture-e3ad22be4936",
+                  "alt": "Figura da questão"
+                }
+              ],
+              "type": "multiple-choice",
+              "options": [
+                {
+                  "id": "option-fixture-5",
+                  "text": "Quatro",
+                  "fraction": 1,
+                  "feedback": "",
+                  "textBlocks": [
+                    {
+                      "id": "block-fixture-18",
+                      "kind": "text",
+                      "text": "Quatro"
+                    }
+                  ]
+                },
+                {
+                  "id": "option-fixture-6",
+                  "text": "Cinco",
+                  "fraction": 0,
+                  "feedback": "",
+                  "textBlocks": [
+                    {
+                      "id": "block-fixture-19",
+                      "kind": "text",
+                      "text": "Cinco"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "attachments": [
+    {
+      "id": "media-fixture-e3ad22be4936",
+      "name": "figure.png",
+      "size": 380,
+      "mediaType": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+{
+  "command": "npm ci --ignore-scripts --offline",
+  "exitCode": 0
+}

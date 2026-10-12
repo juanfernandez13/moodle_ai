@@ -1,0 +1,7 @@
+services:
+  webserver:
+    image: moodlehq/moodle-php-apache@sha256:13be2641be8883e79fd1e97374d0df759d80c81cce8331f3e85035923b7f4576
+  db:
+    image: postgres@sha256:4689940c683801b4ab839ab3b0a0a3555a5fe425371422310944e89eca7d8068
+  mailpit:
+    image: axllent/mailpit@sha256:105bcbd657cc2af01132504d74849545e6e778a4e79990c0f1e6f58455369394

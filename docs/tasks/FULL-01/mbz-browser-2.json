@@ -1,0 +1,10 @@
+{
+  "candidate": "sha256:54d88e51f1d98d838ce4bd4120031758676e360cf7d05e565d740da97207af8a",
+  "flow": "actual browser MBZ download after confirmed revision1",
+  "filename": "moodle-course-source-1-1.mbz",
+  "bytes": 10454,
+  "sha256": "32bfb04c9e9c3933b658fc34fbf2138651eb87b4334a8f64044fcd3f59c5bcb5",
+  "archiveFiles": 126,
+  "modules": 9,
+  "usersEmpty": true
+}

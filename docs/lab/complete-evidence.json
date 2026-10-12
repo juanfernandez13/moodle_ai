@@ -1,0 +1,13 @@
+{
+  "source": "planejamento-completo.docx",
+  "importHTTPStatus": 200,
+  "provider": "offline",
+  "activities": 9,
+  "questionTypes": [
+    "essay",
+    "matching",
+    "multiple-choice"
+  ],
+  "artifactSha256": "6498e8ff42d0f27a38c138b98cdfc837419189bbf7bd7c8b76bf4f4b4520f030",
+  "reviewChanges": []
+}

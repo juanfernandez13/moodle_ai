@@ -1,0 +1,8 @@
+services:
+  webserver:
+    volumes:
+      - moodle-ai-lab-code:/var/www/html
+volumes:
+  moodle-ai-lab-code:
+    external: true
+    name: moodle-ai-lab-code

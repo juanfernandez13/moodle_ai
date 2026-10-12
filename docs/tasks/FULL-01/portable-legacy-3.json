@@ -1,0 +1,12 @@
+{
+  "candidate": "sha256:3d3c7883e7ac3566794af4cd1174c6dcab2581cea1840d881c933f11d1bf34e0",
+  "originalBrowserDownload": "portable-browser-1.json",
+  "filename": "MAT-IMG.moodleai",
+  "bytes": 4877,
+  "sha256": "32cfa196a4c66c2c2f764f62f1ce1114cd3422ca9c2aa05a0af345075b98665a",
+  "title": "Matemática ilustrada",
+  "legacyIdentity": "legacy-course-source-1-1",
+  "assets": 1,
+  "sources": 1,
+  "roundtrip": "draft, IDs, preset, source/media bytes and provenance deepEqual"
+}

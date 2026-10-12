@@ -1,0 +1,26 @@
+{
+  "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+  "previousRevision": "sha256:3d3c7883e7ac3566794af4cd1174c6dcab2581cea1840d881c933f11d1bf34e0",
+  "delta": [
+    {
+      "path": "docs/specs/FULL-01-application.md",
+      "before": "97c1775e180578b7ed3ffaafb92500f3ae66170739f9547737c0b29dd233ed4d",
+      "after": "a4121b58c91840675bee6e237e773feb121d4e07ed4b3df22b13b1601666c7bd"
+    }
+  ],
+  "identicalFiles": 198,
+  "totalFiles": 199,
+  "productChanged": false,
+  "correctionCount": 2,
+  "method": "The only changed candidate file is FULL-01-application.md, F7 verification method. All executable code, tests, fixtures, dependency inputs, assets and lab snapshots are byte-identical to pin3; actual check3/browser3/HTTP3/portable3 results are reused explicitly, not relabeled as fresh executions.",
+  "checks": [
+    "docs/tasks/FULL-01/check-3.exit.json",
+    "docs/tasks/FULL-01/check-3.log",
+    "docs/tasks/FULL-01/clean-install-2.exit.json",
+    "docs/tasks/FULL-01/verification-3.json"
+  ],
+  "browser": "docs/tasks/FULL-01/browser.md",
+  "http": "docs/tasks/FULL-01/http-final-3.json",
+  "portable": "docs/tasks/FULL-01/portable-legacy-3.json",
+  "limitation": "IAB CUA browser capabilities advertise only visibility and viewport(width,height,reset); no documented media emulation. No shell headless, OS preference mutation or hidden browser state modification used."
+}

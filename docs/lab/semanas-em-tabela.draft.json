@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "id": "course-fixture-1",
+  "revision": 1,
+  "metadata": {
+    "fullName": "Oficina semanal",
+    "shortName": "OFS-02",
+    "summary": "",
+    "organization": "weeks",
+    "startDate": "2026-10-12T00:00:00Z"
+  },
+  "sections": [
+    {
+      "id": "section-fixture-2",
+      "title": "Conversa inicial",
+      "summary": "",
+      "activities": [
+        {
+          "id": "activity-fixture-3",
+          "title": "Apresentação da turma",
+          "description": "Apresente uma ideia fictícia para o estudo.",
+          "attachmentIds": [],
+          "descriptionBlocks": [
+            {
+              "id": "block-fixture-9",
+              "kind": "text",
+              "text": "Apresente uma ideia fictícia para o estudo."
+            }
+          ],
+          "type": "forum",
+          "settings": {
+            "discussionMode": "general"
+          }
+        }
+      ]
+    },
+    {
+      "id": "section-fixture-4",
+      "title": "Prática",
+      "summary": "Experimente uma leitura em voz alta.",
+      "summaryBlocks": [
+        {
+          "id": "block-fixture-11",
+          "kind": "text",
+          "text": "Experimente uma leitura em voz alta."
+        }
+      ],
+      "activities": []
+    }
+  ],
+  "attachments": []
+}

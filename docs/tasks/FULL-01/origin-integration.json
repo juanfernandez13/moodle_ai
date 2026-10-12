@@ -1,0 +1,8 @@
+{
+  "candidateObserved": "sha256:54d88e51f1d98d838ce4bd4120031758676e360cf7d05e565d740da97207af8a",
+  "before": {
+    "browserAndHttp": "Origin127.0.0.1:3210 gives403 interpret/login; localhost:3210 passes guard."
+  },
+  "guard": "Canonical explicit Origin, matching Host, loopback aliases at3210 only, forwarded headers ignored.",
+  "note": "Actual Next runtime must be retested after the next production build. No paid provider calls or IFCE access."
+}

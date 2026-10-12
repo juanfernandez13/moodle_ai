@@ -1,78 +1,87 @@
 # Moodle AI
 
-Moodle-AI é o nome provisório de uma nova aplicação para professores e equipes pedagógicas prepararem cursos Moodle com auxílio de IA. O primeiro MVP transforma um planejamento DOCX suportado ou uma criação manual em um curso editável, validado e exportável como `.mbz`.
+Aplicação local para preparar cursos: documentos ou criação manual → proposta revisável → editor → validação → backup Moodle .mbz. Projetos portáteis .moodleai preservam fontes, bytes dos anexos, IDs e presets.
 
-Esta pasta contém o planejamento, catálogo visual e a primeira ferramenta executável: validação de rascunhos por CLI. O início foi autorizado em 12/10/2026. [Spec V01](docs/specs/V01-course-to-mbz.md), [tickets](docs/tickets/README.md) e [registro V01-01](docs/tasks/V01-01.json) mostram escopo e evidências. O projeto [CourseGen-AI](../CourseGen-AI/README.md) é referência técnica independente; não é alterado por esta implementação.
+Nunca acessar, usar ou testar o Moodle do IFCE. A referência pública https://ifmoodle.vercel.app/ orienta somente a interface. Testes Moodle usam exclusivamente localhost:3211 com cursos, contas e arquivos fictícios. CourseGen-AI permanece referência somente leitura. [FULL-01](docs/tasks/FULL-01.json) é a autoridade do aceite da aplicação; [C01](docs/tasks/C01.json) registra o contrato integrado.
 
-## Executar o primeiro ticket
+## Executar
 
-Requer Node 24 e npm. Dependências locais fixadas no lockfile; nenhuma chave de IA é necessária.
+Node **24** e npm. Dependências fixadas no lockfile. Manual, exemplos e perfis offline não precisam de chave.
 
 ```powershell
 npm ci
+npm run dev
+```
+
+Abrir http://127.0.0.1:3210. Dados, conteúdo, configurações e questões são divididos em painéis; uma questão/bloco/verbete por vez e tabelas paginadas evitam páginas longas. Tema claro/escuro, fundo opcional e navegação móvel mantêm acesso às ferramentas.
+
+A coruja procedural 3D aparece junto ao título da entrada. A biblioteca Three.js é local e tem licença/fonte documentadas; o cenário é controlado separadamente por Fundo. Movimento reduzido, invisibilidade e pausa suspendem a animação; falha de WebGL conserva uma imagem acessível.
+
+O cenário interativo conserva as fotos locais em três camadas com parallax, luz, vegetação e partículas em Canvas2D. Ele reage ao ponteiro atrás da interface, mantendo o formulário imóvel. Fundo desliga animação/eventos; aba oculta, ausência de viewport e movimento reduzido também suspendem o loop. Não há novos assets, dependências ou carregamento externo.
+
+```powershell
 npm run check
 npm run demo
 npm run validate:draft -- tests/fixtures/course-valid.json
-node dist/cli/validate-draft.js tests/fixtures/course-valid.json
+npm run build
+npm start
 ```
 
-A fixture válida contém uma seção, seis atividades (dois fóruns, duas tarefas e dois quizzes) e três referências de anexos. O validador confere schema, identidade, referências, questões, datas e categorias de avaliação; a CLI imprime contagens/pendências e não o conteúdo completo. Saídas: 0 válido; 1 JSON/contrato/regra inválida; 2 uso/arquivo/limite de 1 MiB. A validação não confirma bytes dos anexos.
+check executa typecheck, lint sem warnings, testes Node, build Next e build da CLI. demo valida a fixture anterior sem IA; não inicia a web. CLI: 0 válido, 1 JSON/contrato inválido, 2 uso/arquivo/limite de 1 MiB, sem imprimir conteúdo pessoal bruto.
 
-V01-01 inicia o projeto. Geração MBZ, Moodle Lab, editor, importação e persistência ainda são tickets próprios; o primeiro comando não produz um curso restaurado nem comprova compatibilidade. A UI continuará usando Next/TypeScript/Tailwind e a direção visual existente.
+## Curso e persistência
 
-## Documentos para desenvolver
+Seis módulos: fórum, tarefa, quiz, chat, wiki e glossário; várias atividades do mesmo tipo na unidade. Questões: múltipla escolha, associação e resposta discursiva. Reordenação conserva IDs e referências. Metadados, datas, notas, anexos, texto, imagens e tabelas são editáveis. Conteúdo não executa HTML. Presets são explícitos, sem convenções institucionais silenciosas.
 
-| Documento | Decisão que orienta |
+Conferência fica vinculada à revisão atual; edição invalida o aceite, pendências levam ao campo/questão e impedem gerar pacote inválido. IndexedDB salva com transação e revisão esperada; outra aba não sobrescreve versão nova silenciosamente. A cópia portátil valida versão, paths, quantidade, limites e hashes antes de substituir o projeto. Exportar somente JSON não incorpora bytes.
+
+Cada projeto tem identidade própria, independente dos IDs do curso importado. Dois documentos com IDs internos iguais podem ser salvos separadamente. Arquivos portáteis anteriores continuam legíveis; a migração do armazenamento mantém o registro anterior. Formulários apresentam horários em UTC sem alterar timestamps originais até a edição.
+
+WebMCP é opcional: consultas/validação/propostas usam os mesmos comandos por ID e revisão; propostas exigem revisão na interface. A edição manual funciona sem essa API.
+
+## Documentos e IA
+
+DOCX por tópicos e semanal usam perfis delimitados: Disciplina:, Código:, Tópico 1:/Semana 1:, Tarefa: e configurações explícitas. A prévia mostra origem e pendências antes de aplicar. Documento fora do perfil recebe diagnóstico, sem virar exemplo. TXT/PDF com texto recebem revisão; PDF escaneado ou com imagens não preserváveis é bloqueado com diagnóstico, sem OCR/conversão silenciosa. Transformações DOCX não suportadas também exigem revisão.
+
+Fixtures fictícias: tests/fixtures/import/topicos-com-imagens.docx, semanas-em-tabela.docx e docs/examples/planejamento-completo.docx. O último contém nove atividades numa unidade, dois fóruns, duas tarefas, dois quizzes e três tipos de questão. Regenerar com node scripts/create-full-planning.mjs.
+
+OpenAI e Gemini têm adaptadores HTTP reais, formato estruturado e validação comum. Testes cobrem sucesso, resposta inválida/parcial, erro, timeout, limites e cancelamento com transporte simulado. Não foi feita chamada paga com chave real. Chave/modelo são explícitos, transitórios em memória, fora de logs/projetos/arquivos. Nenhuma troca automática de provedor.
+
+| Operação | Limites |
 | --- | --- |
-| [PRD](docs/PRD.md) | Problema, público, MVP, requisitos e critérios de aceite. |
-| [Pipeline](docs/PIPELINE.md) | Preparação, liberação da implementação, tarefas, verificações e revisões. |
-| [Arquitetura](docs/ARCHITECTURE.md) | Modelo do curso, módulos, diagramas Mermaid e decisões com alternativas. |
-| [Design](docs/DESIGN_BRIEF.md) | Direção visual, tokens e duas propostas de organização do editor. |
-| [Design system em HTML](design-system.html) | Catálogo visual interativo para avaliar cores, tipografia, componentes e editor. |
-| [Quadro visual de telas](docs/screen-flow.html) e [Mermaid](docs/SCREEN_FLOW.md) | Navegação, decisões, erros e retornos, com distinção entre demo, MVP e futuro. |
-| [Avaliação de usabilidade](docs/USABILITY_REVIEW.md) | Tarefas observadas no protótipo, problemas encontrados e roteiro para teste com professores. |
-| [Prontidão do planejamento](docs/PLANNING_READINESS.md) | Gates e divergências a resolver antes da primeira implementação e da demonstração. |
-| [Backlog](docs/BACKLOG.md) | Entregas demonstráveis, dependências e verificação. |
-| [Trabalho com subagentes](docs/AGENT_WORKFLOW.md) | Responsabilidade por arquivos, integração e revisão independente. |
-| [Loop de agentes](docs/AGENT_LOOP.md) | Skill local de coordenação, papéis, evidências e controle executável de estado. |
-| [Skills e CodeGraph MCP](docs/SKILLS_AND_MCP.md) | Seleção de ferramentas, momento de uso e estado da integração. |
-| [Instruções dos agentes](AGENTS.md) | Regras curtas que devem acompanhar o código. |
+| Importação | 10 arquivos, 10 MiB/arquivo, 20 MiB total; 300 mil caracteres, 200 páginas PDF, 500 assets |
+| Exportação | 16 MiB/anexo, 64 MiB total, 96 MiB expandido |
+| Portátil | 25 MiB compactados, 64 MiB expandidos |
+| Alunos | 8 MiB por CSV/XLS/XLSX, 10 mil linhas |
 
-## O que torna o produto genérico
+Bytes reais do corpo são limitados mesmo sem Content-Length.
 
-O curso terá um modelo comum para Moodle. Três escolhas serão separadas: como interpretar um documento, quais convenções pedagógicas aplicar e quais recursos o exportador Moodle suporta. Dois documentos de estruturas diferentes, um por tópicos e outro semanal, testarão essa separação.
+As rotas de importação e interpretação exigem origem correspondente à aplicação e o Content-Type correto, antes de ler documentos ou utilizar uma chave de provedor.
 
-O produto anunciará os formatos e a compatibilidade efetivamente testados. Um backup gerado não comprova sozinho que todos os recursos foram restaurados; a demonstração deverá comparar o curso restaurado com o planejamento esperado.
+## Alunos e datas
 
-## Sequência inicial
+Alunos: CSV/XLS/XLSX → selecionar planilha/mapear colunas → editar/revisar duplicados → prévia vinculada ao hash → CSV. Valores originais e identidade das linhas são mantidos; fórmulas e valores que executariam fórmula em CSV recebem diagnóstico e não são alterados silenciosamente.
 
-O usuário liberou execução/criação nesta conversa em 12/10/2026. A instrução substitui o bloqueio anterior; o [processo local](docs/PIPELINE.md) coordena spec, contratos, tickets, checks e revisões.
+Datas: cronograma explícito → alvos/restrições atuais → antes/depois → plano vinculado ao hash. Condições que não são datas são preservadas. Edição invalida a prévia; montar/reabrir uma página nunca envia uma operação.
 
-1. Revisar as propostas de PRD, arquitetura e design; fechar versão Moodle alvo, detalhes dos dois perfis de documento e prazo.
-2. Preparar o projeto e as ferramentas locais, com scripts de verificação e dependências fixadas em lockfile.
-3. Demonstrar um curso sintético até a exportação, preservando as regras úteis do gerador legado atrás de um adapter.
-4. Adicionar editor, anexos reais e interpretação por IA em entregas pequenas.
-5. Comprovar o fluxo genérico com dois exemplos e restauração em Moodle de teste.
-
-O contrato de validação é a primeira implementação; demais decisões seguem a spec/backlog. As 13 skills de Matt Pocock e `frontend-design` estão instaladas em `.agents/skills`, com origem e hashes em `skills-lock.json`. Esta execução usa `project-loop` local e não afirma ter executado todos os workflows upstream. CodeGraph 1.6.2 continua ferramenta local; MCP não estava disponível e sua consulta de status não abriu o banco nesta execução, então foi usada inspeção de arquivos.
-
-O grafo precisa de nova sincronização antes de analisar o código acrescentado. Os diagramas Mermaid descrevem arquitetura e navegação planejadas. Consulte [o registro das ferramentas](docs/SKILLS_AND_MCP.md) para comandos e limitações.
-
-## Ferramentas locais
+O adaptador está restrito a **http://localhost:3211** com perfil **moodle-4.1.17-lab-ops-v1**. Sem configuração, revisão/exportação local continuam disponíveis. Sessão em memória com TTL e cookie opaco httpOnly, proteção de origem e transporte limitado à origem fixa; credenciais/cookies/sesskey nunca vão para portátil.
 
 ```powershell
-npm ci
-npm run codegraph:init
-npm run codegraph:status
+$env:MOODLE_URL='http://localhost:3211'
+$env:MOODLE_CAPABILITY_PROFILE='moodle-4.1.17-lab-ops-v1'
+npm run dev
 ```
 
-O `package.json` contém a CLI/domínio TypeScript e os scripts de verificação, além das ferramentas existentes. Scripts Next e dependências de UI serão definidos no ticket do editor; nenhuma aplicação web é iniciada por `npm run demo`.
+Cadastro mostra opções/defaults Moodle efetivos antes da confirmação, com resultado por linha. Datas relêem o curso, recusam deriva, preservam outros campos e conferem o resultado. Prévia é consumida uma vez; timeout após envio retorna estado desconhecido, sem retry cego. Aplicação parcial é explícita; reinício do servidor exige novo login.
 
-Os protótipos usam Tailwind CSS 4.3.3 compilado localmente. Para instalar suas dependências e atualizar o CSS compartilhado:
+## Compatibilidade e evidências
 
-```powershell
-npm --prefix docs/design-proposals/glass-owl-v4 ci
-npm run design:css
-```
+Perfil moodle-4.1-core-v1 restaurado no **Moodle 4.1.17 (Build: 20250317)** local: nove atividades, quatro questões, seis ocorrências de imagens, notas/datas/referências e hashes dos bytes preservados. Dois DOCX também foram restaurados. Outras versões/plugins, inclusive 4.1.17+ /20250321, não foram comprovados. [Laboratório](docs/lab/README.md) documenta fontes/imagens fixadas, comandos, snapshots e correções.
 
-O cabeçalho da prévia e a estrutura do quadro de telas usam utilities; vidro, cenário e conexões mantêm CSS específico. As fontes do build são explícitas, sem Preflight nem carregamento de Tailwind em runtime. Isso prepara o design, sem criar a aplicação.
+Glossário exige informação de usuário ativa somente para seu conteúdo editorial. O aviso aparece antes de baixar; users.xml está vazio, autoria é anônima, sem contas/matrículas/submissões. Contagens após restauração: usuários 2→2 e inscrições 0→0. Esses snapshots antecedem os testes separados de cadastro/datas.
+
+## Planejamento e Git
+
+[PRD](docs/PRD.md), [arquitetura](docs/ARCHITECTURE.md), [design](docs/DESIGN_BRIEF.md), [plano ampliado](docs/BUILDER_PIPELINE_PLAN.md), [backlog](docs/BACKLOG.md) e [tickets](docs/tickets/README.md) preservam requisitos/histórico. Specs: [FULL-01](docs/specs/FULL-01-application.md) e [OPS-01](docs/specs/OPS-01-moodle-adapter.md).
+
+Subagentes/worktrees por funcionalidade, candidato congelado por hash, checks reais e dois eixos independentes de revisão antes do merge local main. docs/tasks distingue execução, verificação, aceite e integração. project-loop e frontend-design locais foram usados; não se afirma invocação de todos os workflows upstream. CodeGraph MCP indisponível, inspeção local realizada; grafo precisa sincronização após integração. Publicação/licença seguem decisão do mantenedor.

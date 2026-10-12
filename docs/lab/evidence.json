@@ -1,0 +1,64 @@
+{
+  "environment": {
+    "origin": "http://localhost:3211",
+    "release": "4.1.17 (Build: 20250317)",
+    "version": "2022112817",
+    "moodleCommit": "b05bd11a84259e9669db576020b7a4392282bb67",
+    "dockerCommit": "f4c2324d32fb74d7753264381f0a9b418b6034b2",
+    "referencePatchVerified": false
+  },
+  "restore": {
+    "exitCode": 0,
+    "courseId": 4,
+    "artifactSha256": "ce3001d713bcc80180ede6274a442a06561aaaca73394f58e76694efd808ab74",
+    "activities": 9,
+    "questions": 4,
+    "files": 10,
+    "imageOccurrences": 6,
+    "semanticCheckExitCode": 0,
+    "countsBefore": {
+      "users": 2,
+      "userEnrolments": 0
+    },
+    "countsAfter": {
+      "users": 2,
+      "userEnrolments": 0
+    },
+    "glossaryRender": {
+      "entry": "Revisão",
+      "imageLoaded": true,
+      "naturalWidth": 1,
+      "fixtureImageWidth": 1,
+      "authorId": 0
+    }
+  },
+  "imports": [
+    {
+      "fixture": "topicos-com-imagens.docx",
+      "artifactSha256": "a8855b840ea23a49a64b1dbe0f4cb86be0add820922604387542c80cf715c121",
+      "courseId": 5,
+      "semanticCheckExitCode": 0,
+      "activities": 1,
+      "questions": 1,
+      "imageOccurrences": 3,
+      "fileDestinations": 2,
+      "reviewChanges": []
+    },
+    {
+      "fixture": "semanas-em-tabela.docx",
+      "artifactSha256": "2f0ce3252cb8ff930482e65f3e478082e0339ad73c46aedadb2887bd1d71dbe5",
+      "courseId": 6,
+      "semanticCheckExitCode": 0,
+      "activities": 1,
+      "sections": 2,
+      "reviewChanges": [
+        {
+          "path": "metadata.startDate",
+          "value": "2026-10-12T00:00:00Z",
+          "source": "revisão explícita da fixture; ausente no DOCX, sem default do importador"
+        }
+      ]
+    }
+  ],
+  "note": "Snapshots anteriores aos testes de alteração de datas/cadastro. Somente cursos, arquivos e contas fictícios. Aviso core Unknown setting: questionbank ainda emitido pelo CLI, apesar de não existir no pacote; restauração e conferência semântica concluíram."
+}

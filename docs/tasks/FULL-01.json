@@ -1,0 +1,677 @@
+{
+  "schemaVersion": 1,
+  "id": "FULL-01",
+  "goal": "Implementar e verificar aplicação Moodle-AI completa localmente por funcionalidades",
+  "spec": [
+    "docs/specs/FULL-01-application.md",
+    "docs/BUILDER_PIPELINE_PLAN.md",
+    "docs/specs/OPS-01-moodle-adapter.md",
+    "docs/specs/BG01-interactive-background.md"
+  ],
+  "status": "accepted",
+  "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+  "contextEvidence": "docs/tasks/FULL-01/context.md",
+  "owners": [
+    {
+      "agent": "/root/export_discovery",
+      "writePaths": [
+        "src/domain/course",
+        "tests/domain",
+        "src/server/export",
+        "tests/export",
+        "tests/fixtures/export",
+        "app/api/export"
+      ]
+    },
+    {
+      "agent": "/root/import_ai_discovery",
+      "writePaths": [
+        "src/server/import/documents.ts",
+        "src/server/import/index.ts",
+        "src/server/import/offline.ts",
+        "src/server/import/providers.ts",
+        "src/server/import/types.ts",
+        "tests/import/documents.test.ts",
+        "tests/import/import.test.ts",
+        "tests/import/pdf.test.ts",
+        "tests/import/providers.test.ts",
+        "tests/import/routes.test.ts",
+        "tests/import/tdd-evidence.txt",
+        "tests/fixtures/import",
+        "app/api/import",
+        "app/api/interpret"
+      ]
+    },
+    {
+      "agent": "/root/project_context",
+      "writePaths": [
+        "app/page.tsx",
+        "app/layout.tsx",
+        "app/globals.css",
+        "app/cadastro-lote",
+        "app/datas",
+        "src/client",
+        "tests/client",
+        "public/ASSET_SOURCE.md",
+        "public/brand-owl.svg",
+        "public/favicon.svg",
+        "public/fonts/Nunito-Variable.ttf",
+        "public/fonts/OFL.txt",
+        "public/LANDSCAPE_SOURCE.md",
+        "public/meadow-day.png",
+        "public/meadow-dusk.png",
+        "public/moodle-mark.svg"
+      ]
+    },
+    {
+      "agent": "/root",
+      "writePaths": [
+        "package.json",
+        "package-lock.json",
+        "tsconfig.json",
+        "tsconfig.build.json",
+        "eslint.config.mjs",
+        "next.config.ts",
+        "next-env.d.ts",
+        "postcss.config.mjs",
+        "scripts",
+        "src/shared",
+        "tests/shared",
+        "src/domain/students",
+        "src/domain/dates",
+        "tests/students",
+        "tests/dates",
+        "src/server/students",
+        "app/api/students",
+        "README.md",
+        "docs/specs/FULL-01-application.md",
+        "docs/tasks/FULL-01.json",
+        "docs/tasks/FULL-01",
+        "docs/lab",
+        "docs/specs/OPS-01-moodle-adapter.md",
+        "docs/examples",
+        "docs/BACKLOG.md",
+        "docs/tickets/README.md",
+        ".gitignore",
+        "docs/specs/BG01-interactive-background.md",
+        "src/server/import/request-policy.ts",
+        "src/server/moodle/api.ts",
+        "tests/import/delivery.json",
+        "tests/moodle/delivery-manifest.json"
+      ]
+    },
+    {
+      "agent": "/root/moodle_operations",
+      "writePaths": [
+        "src/server/moodle/client.ts",
+        "src/server/moodle/dates.ts",
+        "src/server/moodle/enrolments.ts",
+        "src/server/moodle/forms.ts",
+        "src/server/moodle/http.ts",
+        "src/server/moodle/students.ts",
+        "tests/moodle/api.test.ts",
+        "tests/moodle/client.test.ts",
+        "tests/moodle/dates.test.ts",
+        "tests/moodle/enrolments.test.ts",
+        "tests/moodle/fixtures.ts",
+        "tests/moodle/forms.test.ts",
+        "tests/moodle/http.test.ts",
+        "tests/moodle/lab-database-evidence.json",
+        "tests/moodle/lab-evidence.json",
+        "tests/moodle/lab-fixture.php",
+        "tests/moodle/lab-integration.mjs",
+        "tests/moodle/q2-lab-readback.json",
+        "tests/moodle/students.test.ts",
+        "tests/moodle/tdd-evidence.txt",
+        "app/api/moodle"
+      ]
+    },
+    {
+      "agent": "/root/owl_3d",
+      "writePaths": [
+        "src/visual/owl",
+        "public/three-owl",
+        "tests/visual",
+        "src/visual/background",
+        "tests/visual-background",
+        "public/interactive-background"
+      ]
+    }
+  ],
+  "acceptance": [
+    {
+      "id": "F1",
+      "text": "Aceite F1 de FULL-01-application.md",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": [
+        "docs/tasks/FULL-01/verification-4.json",
+        "docs/tasks/FULL-01/browser-4.md",
+        "docs/tasks/FULL-01/review-spec.md",
+        "docs/tasks/FULL-01/review-quality.md"
+      ]
+    },
+    {
+      "id": "F2",
+      "text": "Aceite F2 de FULL-01-application.md",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": [
+        "docs/tasks/FULL-01/verification-4.json",
+        "docs/tasks/FULL-01/browser-4.md",
+        "docs/tasks/FULL-01/review-spec.md",
+        "docs/tasks/FULL-01/review-quality.md"
+      ]
+    },
+    {
+      "id": "F3",
+      "text": "Aceite F3 de FULL-01-application.md",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": [
+        "docs/tasks/FULL-01/verification-4.json",
+        "docs/tasks/FULL-01/browser-4.md",
+        "docs/tasks/FULL-01/review-spec.md",
+        "docs/tasks/FULL-01/review-quality.md"
+      ]
+    },
+    {
+      "id": "F4",
+      "text": "Aceite F4 de FULL-01-application.md",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": [
+        "docs/tasks/FULL-01/verification-4.json",
+        "docs/tasks/FULL-01/browser-4.md",
+        "docs/tasks/FULL-01/review-spec.md",
+        "docs/tasks/FULL-01/review-quality.md"
+      ]
+    },
+    {
+      "id": "F5",
+      "text": "Aceite F5 de FULL-01-application.md",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": [
+        "docs/tasks/FULL-01/verification-4.json",
+        "docs/tasks/FULL-01/browser-4.md",
+        "docs/tasks/FULL-01/review-spec.md",
+        "docs/tasks/FULL-01/review-quality.md"
+      ]
+    },
+    {
+      "id": "F6",
+      "text": "Aceite F6 de FULL-01-application.md",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": [
+        "docs/tasks/FULL-01/verification-4.json",
+        "docs/tasks/FULL-01/browser-4.md",
+        "docs/tasks/FULL-01/review-spec.md",
+        "docs/tasks/FULL-01/review-quality.md"
+      ]
+    },
+    {
+      "id": "F7",
+      "text": "Aceite F7 de FULL-01-application.md",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": [
+        "docs/tasks/FULL-01/verification-4.json",
+        "docs/tasks/FULL-01/browser-4.md",
+        "docs/tasks/FULL-01/review-spec.md",
+        "docs/tasks/FULL-01/review-quality.md"
+      ]
+    },
+    {
+      "id": "F8",
+      "text": "Aceite F8 de FULL-01-application.md",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": [
+        "docs/tasks/FULL-01/verification-4.json",
+        "docs/tasks/FULL-01/browser-4.md",
+        "docs/tasks/FULL-01/review-spec.md",
+        "docs/tasks/FULL-01/review-quality.md"
+      ]
+    },
+    {
+      "id": "F9",
+      "text": "Aceite F9: modelo3D real compacto e seguro na interface",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": [
+        "docs/tasks/FULL-01/verification-4.json",
+        "docs/tasks/FULL-01/browser-4.md",
+        "docs/tasks/FULL-01/review-spec.md",
+        "docs/tasks/FULL-01/review-quality.md"
+      ]
+    },
+    {
+      "id": "F10",
+      "text": "F10: cenário interativo atrás do formulário, ligado por Fundo e com lifecycle acessível.",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": [
+        "docs/tasks/FULL-01/verification-4.json",
+        "docs/tasks/FULL-01/browser-4.md",
+        "docs/tasks/FULL-01/review-spec.md",
+        "docs/tasks/FULL-01/review-quality.md"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "clean-install",
+      "required": true,
+      "status": "passed",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": "docs/tasks/FULL-01/verification-4.json"
+    },
+    {
+      "id": "typecheck-lint-tests-build",
+      "required": true,
+      "status": "passed",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": "docs/tasks/FULL-01/verification-4.json"
+    },
+    {
+      "id": "browser-flow",
+      "required": true,
+      "status": "passed",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": "docs/tasks/FULL-01/browser-4.md"
+    },
+    {
+      "id": "archive-semantic",
+      "required": true,
+      "status": "passed",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": "docs/tasks/FULL-01/verification-4.json"
+    },
+    {
+      "id": "import-provider-fixtures",
+      "required": true,
+      "status": "passed",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": "docs/tasks/FULL-01/verification-4.json"
+    },
+    {
+      "id": "portable-storage",
+      "required": true,
+      "status": "passed",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": "docs/tasks/FULL-01/verification-4.json"
+    },
+    {
+      "id": "students-dates",
+      "required": true,
+      "status": "passed",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": "docs/tasks/FULL-01/verification-4.json"
+    },
+    {
+      "id": "moodle-lab",
+      "required": true,
+      "status": "passed",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": "docs/tasks/FULL-01/verification-4.json"
+    },
+    {
+      "id": "owl-3d",
+      "required": true,
+      "status": "passed",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": "docs/tasks/FULL-01/verification-4.json"
+    },
+    {
+      "id": "interactive-background",
+      "required": true,
+      "status": "passed",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": "docs/tasks/FULL-01/verification-4.json"
+    }
+  ],
+  "reviews": [
+    {
+      "axis": "spec",
+      "agent": "/root/contract_review_spec",
+      "status": "passed",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": "docs/tasks/FULL-01/review-spec.md"
+    },
+    {
+      "axis": "quality",
+      "agent": "/root/contract_review_quality",
+      "status": "passed",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "evidence": "docs/tasks/FULL-01/review-quality.md"
+    }
+  ],
+  "budget": {
+    "maxCorrections": 2,
+    "corrections": 2
+  },
+  "integration": {
+    "revision": null,
+    "evidence": null
+  },
+  "history": [
+    {
+      "from": "planned",
+      "to": "executing",
+      "requestedTo": "executing",
+      "at": "2026-10-12T16:31:28.926Z",
+      "revision": null,
+      "reason": "Coordenação consolidada; contrato e propriedade definidos antes da execução paralela, autorização Git recebida posteriormente.",
+      "evidence": {
+        "checks": [],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "executing",
+      "to": "verifying",
+      "requestedTo": "verifying",
+      "at": "2026-10-12T17:52:37.069Z",
+      "revision": "sha256:98da4c329b360a5a3b78b4a08cf08d26ecb415ec543d35e6f9bfa464caa6f8c6",
+      "reason": "Candidato completo congelado; todas as frentes e hashes por funcionalidade registrados.",
+      "evidence": {
+        "checks": [],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "verifying",
+      "to": "needs-fix",
+      "requestedTo": "needs-fix",
+      "at": "2026-10-12T17:58:31.804Z",
+      "revision": "sha256:98da4c329b360a5a3b78b4a08cf08d26ecb415ec543d35e6f9bfa464caa6f8c6",
+      "reason": "Revisões independentes reproduziram: Origin/Content-Type da IA; perda de valores repetidos no fingerprint/readback das datas; referência mutável no save; timestamps com offset exibidos incorretamente como UTC; tabela de100linhas sem paginação. Relatórios review-spec-1/review-quality-1. Candidato98da rejeitado, sem integração.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/FULL-01/clean-install.exit.json",
+          "docs/tasks/FULL-01/check-1.exit.json"
+        ],
+        "reviews": [
+          "docs/tasks/FULL-01/review-spec-1.md",
+          "docs/tasks/FULL-01/review-quality-1.md"
+        ],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "needs-fix",
+      "to": "executing",
+      "requestedTo": "executing",
+      "at": "2026-10-12T17:58:31.814Z",
+      "revision": "sha256:98da4c329b360a5a3b78b4a08cf08d26ecb415ec543d35e6f9bfa464caa6f8c6",
+      "reason": "Correção1 atribuída aos respectivos autores; checks e reviews invalidados.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/FULL-01/clean-install.exit.json",
+          "docs/tasks/FULL-01/check-1.exit.json"
+        ],
+        "reviews": [
+          "docs/tasks/FULL-01/review-spec-1.md",
+          "docs/tasks/FULL-01/review-quality-1.md"
+        ],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "executing",
+      "to": "verifying",
+      "requestedTo": "verifying",
+      "at": "2026-10-12T18:18:14.663Z",
+      "revision": "sha256:54d88e51f1d98d838ce4bd4120031758676e360cf7d05e565d740da97207af8a",
+      "reason": "Candidato completo congelado; todas as frentes e hashes por funcionalidade registrados.",
+      "evidence": {
+        "checks": [],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "verifying",
+      "to": "needs-fix",
+      "requestedTo": "needs-fix",
+      "at": "2026-10-12T18:41:35.858Z",
+      "revision": "sha256:54d88e51f1d98d838ce4bd4120031758676e360cf7d05e565d740da97207af8a",
+      "reason": "S3/F2: encaminhar uma pendência de Nota máxima ou Fechamento foca Título da atividade. Revisor reproduziu a função e os controles reais. Pin2 rejeitado; sem integração.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/FULL-01/clean-install-2.exit.json",
+          "docs/tasks/FULL-01/check-2.exit.json"
+        ],
+        "reviews": [
+          "docs/tasks/FULL-01/review-spec-2.md"
+        ],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "needs-fix",
+      "to": "executing",
+      "requestedTo": "executing",
+      "at": "2026-10-12T18:41:35.865Z",
+      "revision": "sha256:54d88e51f1d98d838ce4bd4120031758676e360cf7d05e565d740da97207af8a",
+      "reason": "Correção2 atribuída ao autor UI; checks/reviews invalidados. Sem mudar escopo, orçamento máximo de duas correções mantido.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/FULL-01/clean-install-2.exit.json",
+          "docs/tasks/FULL-01/check-2.exit.json"
+        ],
+        "reviews": [
+          "docs/tasks/FULL-01/review-spec-2.md"
+        ],
+        "acceptance": []
+      }
+    },
+    {
+      "event": "user-scope-extension",
+      "at": "2026-10-12T18:44:57.430Z",
+      "reason": "Pedido explícito posterior: e cade o fundo interativo? F10/BG01 e nono recorte adicionados; orçamento corrections2 preservado."
+    },
+    {
+      "event": "executor-handoff",
+      "at": "2026-10-12T18:50:31.156Z",
+      "reason": "Root corrigiu integração real da origem no Next durante correção2 em execução; autores de import/OPS inativos. Handoff limitado a request-policy/api e respectivos manifests; reviewers permanecem independentes."
+    },
+    {
+      "from": "executing",
+      "to": "verifying",
+      "requestedTo": "verifying",
+      "at": "2026-10-12T18:51:01.313Z",
+      "revision": "sha256:3d3c7883e7ac3566794af4cd1174c6dcab2581cea1840d881c933f11d1bf34e0",
+      "reason": "Candidato completo congelado; todas as frentes e hashes por funcionalidade registrados.",
+      "evidence": {
+        "checks": [],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "verifying",
+      "to": "reviewing",
+      "requestedTo": "reviewing",
+      "at": "2026-10-12T19:01:19.091Z",
+      "revision": "sha256:3d3c7883e7ac3566794af4cd1174c6dcab2581cea1840d881c933f11d1bf34e0",
+      "reason": "249 testes/typecheck/lint/build, HTTP real local, QA de interface e snapshots de laboratório inspecionados; fonte199/199 íntegra. Aguardando decisão independente nos dois eixos.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/browser.md",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json"
+        ],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "reviewing",
+      "to": "replan",
+      "requestedTo": "replan",
+      "at": "2026-10-12T19:09:13.170Z",
+      "revision": "sha256:3d3c7883e7ac3566794af4cd1174c6dcab2581cea1840d881c933f11d1bf34e0",
+      "reason": "Revisor spec confirmou ausência de defeito funcional, mas método literal F7 exige emulação de preferência reduzida indisponível no CUA/IAB. Headless por shell não é permitido. Replanejar apenas método de evidência; comportamento reduzido continua obrigatório e orçamento2/2 preservado.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/browser.md",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json"
+        ],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "replan",
+      "to": "planned",
+      "requestedTo": "planned",
+      "at": "2026-10-12T19:09:13.176Z",
+      "revision": "sha256:3d3c7883e7ac3566794af4cd1174c6dcab2581cea1840d881c933f11d1bf34e0",
+      "reason": "Plano F7 adequado às capacidades documentadas: navegador para fluxos/layout/teclado/temas; runtime real com media query simulada para reduced/hidden/offscreen, com limite de composição visual explícito.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/browser.md",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json",
+          "docs/tasks/FULL-01/verification-3.json"
+        ],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "planned",
+      "to": "executing",
+      "requestedTo": "executing",
+      "at": "2026-10-12T19:09:13.180Z",
+      "revision": null,
+      "reason": "Alteração documental única; código/fixtures/dependências/assets permanecem byte-idênticos ao pin3 verificado.",
+      "evidence": {
+        "checks": [],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "executing",
+      "to": "verifying",
+      "requestedTo": "verifying",
+      "at": "2026-10-12T19:09:13.344Z",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "reason": "Novo pin documental congelado; exatamente198/199 arquivos iguais ao pin3, único delta métodoF7. Sem terceiro ciclo de correção, orçamento2/2 mantido.",
+      "evidence": {
+        "checks": [],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "verifying",
+      "to": "reviewing",
+      "requestedTo": "reviewing",
+      "at": "2026-10-12T19:09:13.349Z",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "reason": "Ponte198 arquivos idênticos conferida, único delta de plano F7 e limitações explícitos; pedir novos pareceres independentes no pin4. Nenhuma execução ou emulação nova inventada.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json"
+        ],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "reviewing",
+      "to": "accepted",
+      "requestedTo": "accepted",
+      "at": "2026-10-12T19:12:37.623Z",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "reason": "Checks reais e dois pareceres independentes aprovados no mesmo snapshot; evidências e limitações inspecionadas pelo coordenador.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json"
+        ],
+        "reviews": [
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md"
+        ],
+        "acceptance": [
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md"
+        ]
+      }
+    }
+  ]
+}
