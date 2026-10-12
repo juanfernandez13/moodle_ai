@@ -1,6 +1,6 @@
 # Plano da pipeline do Moodle Builder
 
-**Proposta de 12 de outubro de 2026. Estado: planejamento, sem implementação da aplicação.**
+**Plano de 12 de outubro de 2026. Estado: execução inicial liberada; versão completa ainda em construção.** [Spec V01](specs/V01-course-to-mbz.md) e [tickets](tickets/README.md) distinguem bootstrap, primeiro MVP e expansão.
 
 A nova versão será um builder de cursos Moodle com assistência de IA, preservando o trabalho já atendido pelo CourseGen-AI: preparação de disciplinas, arquivos MBZ, cadastro em lote e manutenção de datas. A prioridade técnica é tornar o curso editado, o curso exportado e o curso restaurado semanticamente equivalentes. A IA propõe conteúdo; regras de código validam; a pessoa revisa; o exportador traduz para o Moodle.
 
@@ -21,7 +21,7 @@ As mudanças propostas em relação aos documentos anteriores são:
 | Confiança no MBZ | Restauração no final da demonstração | Laboratório desde a primeira exportação e regressão contínua |
 | Automação por agentes | Processo de desenvolvimento | Também ferramentas WebMCP opcionais dentro da aplicação |
 
-Os documentos existentes permanecem como base; as decisões aprovadas deste plano deverão ser reconciliadas neles antes da implementação. A direção visual segue na outra conversa. A orientação de [AGENTS.md](../AGENTS.md) de não iniciar código continua aplicável.
+Os documentos existentes permanecem como base; PRD, backlog e arquitetura agora distinguem primeiro MVP de versão completa e registram persistência no navegador/portabilidade. A direção visual existente é preservada. O usuário liberou a execução nesta conversa em 12/10/2026; [AGENTS.md](../AGENTS.md) foi atualizado. Decisões de provedores, laboratório e configurações de paridade ainda serão fechadas nas etapas correspondentes.
 
 ## Escopo antigo a preservar e melhorar
 
@@ -42,7 +42,7 @@ O inventário considera código existente, capacidade exposta e lacunas. Existê
 | Ajustar datas de turmas existentes | Calendário/cadência, simulação e aplicação por turma | Mostrar antes/depois; edição invalida a simulação; preservar configurações e relatar resultado parcial |
 | Sugestões de turmas e catálogo | Núcleos `sugestaoTurmas.js` e `moodle/catalogo.js` com testes | Avaliar integração: não foram encontrados consumidores na UI/rotas durante o inventário; não anunciar fluxo pronto |
 
-Referências do inventário: [instruções do legado](../../CourseGen-AI/AGENTS.md), [editor manual](../../CourseGen-AI/ui/app/components/BuilderStep.tsx), [exportador](../../CourseGen-AI/ui/server/mbzGenerator/index.js), [cadastro](../../CourseGen-AI/ui/server/alunos.js) e [armazenamento de arquivos](../../CourseGen-AI/ui/app/lib/fileStore.ts). O núcleo existente será incorporado à nova aplicação quando a execução for liberada; a pasta CourseGen-AI permanece referência.
+Referências do inventário: [instruções do legado](../../CourseGen-AI/AGENTS.md), [editor manual](../../CourseGen-AI/ui/app/components/BuilderStep.tsx), [exportador](../../CourseGen-AI/ui/server/mbzGenerator/index.js), [cadastro](../../CourseGen-AI/ui/server/alunos.js) e [armazenamento de arquivos](../../CourseGen-AI/ui/app/lib/fileStore.ts). O núcleo existente será incorporado à nova aplicação na execução agora liberada; a pasta CourseGen-AI permanece referência.
 
 A questão associativa V/F do legado é exportada como `match`, não como o tipo Moodle `truefalse`. A paridade deve declarar esse mapeamento, junto de `multichoice` e `essay`, e conferir fórmulas/textos e feedback das fontes. Adicionar outro tipo requer capacidade e fixture próprias. Fonte: [builders de questões](../../CourseGen-AI/ui/server/mbzGenerator/builders.js).
 

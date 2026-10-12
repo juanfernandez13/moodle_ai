@@ -91,7 +91,7 @@ node .agents/skills/project-loop/scripts/task-state.mjs transition docs/tasks/<i
 
 O padrão permite duas correções. Um terceiro pedido de correção encaminha para `replan`. Replanejar não zera o contador automaticamente. O orquestrador também controla tempo e custo pelo host; o script não mede tokens, tempo de execução ou a veracidade dos relatórios.
 
-O helper rejeita transições fora de ordem, checks e aprovações de outra revisão, evidência de aceite ausente, identidade do executor como revisor, contextos de revisão iguais e caminhos de escrita sobrepostos entre executores. Ele verifica o registro; o orquestrador ainda confere os arquivos, as identidades reais, os comandos e os resultados. Nesta configuração não houve execução de subagentes nem aprovação independente de uma fatia do produto.
+O helper rejeita transições fora de ordem, checks e aprovações de outra revisão, evidência de aceite ausente, identidade do executor como revisor, contextos de revisão iguais e caminhos de escrita sobrepostos entre executores. Ele verifica o registro; o orquestrador ainda confere os arquivos, as identidades reais, os comandos e os resultados. Na configuração inicial do helper, anterior ao início de 12/10/2026, não houve execução de subagentes nem aprovação de uma fatia do produto. A primeira execução e suas revisões são acompanhadas em docs/tasks/V01-01.json.
 
 ## Skills e evolução
 

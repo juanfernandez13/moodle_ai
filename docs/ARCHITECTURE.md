@@ -1,4 +1,12 @@
-# Arquitetura proposta para Moodle AI
+# Arquitetura do Moodle AI
+
+## Decisões de bootstrap — 12/10/2026
+
+Implementação local liberada. A [spec V01](specs/V01-course-to-mbz.md) fixa o primeiro contrato e `validateDraft(unknown)`. O módulo de domínio é puro e portável; a CLI Node é o primeiro consumidor. Next/TypeScript/Tailwind continuam previstos para o editor, inicializado no ticket V02-01, sem API ou serviço separado.
+
+No contrato executável, `CourseDraft.attachments` contém `AttachmentRef[]` e atividades possuem `attachmentIds[]`. A associação continua por ID estável; o diagrama conceitual abaixo representa a relação, e a spec registra os campos concretos. Bytes disponíveis e capacidade de exportação são verificações adicionais ao schema. O contrato inicial admite fórum/tarefa/quiz e questão de múltipla escolha de resposta única, sem defaults pedagógicos. Os demais tipos e settings dependem de expansão coordenada e fixtures.
+
+Persistência de projetos no navegador e cópia portátil completa com bytes/presets são decisões da versão completa; bootstrap não implementa armazenamento. O restante deste documento orienta o MVP e evoluções; capacidades propostas não se tornam suporte pela existência do contrato.
 
 Moodle AI é o nome provisório de uma nova aplicação para professores e equipes prepararem cursos para Moodle com assistência de IA. O MVP concentra o fluxo documento DOCX → extração → revisão visual → backup MBZ. Documentos organizados por tópicos e por semanas fazem parte da entrega, com dois perfis de importação e fixtures distintas. O curso precisa preservar várias atividades do mesmo tipo na mesma seção.
 
@@ -277,7 +285,7 @@ Os caminhos descrevem a implementação proposta. Não pressupõem que fonte, de
 
 ### ADR 003 Reaproveitar o gerador através de adapter
 
-**Contexto:** o núcleo contém conhecimento e testes de referências Moodle; reescrever XML consumiria o prazo do hackathon. **Decisão proposta:** incorporar o núcleo à nova pasta, preservando testes e traduzindo o domínio para seu formato de entrada. **Alternativa:** reconstruir todo o gerador ou acoplar o novo editor diretamente ao formato legado. **Tradeoff:** somente a fase inicial V01–V04 pode rejeitar mais de uma atividade do mesmo tipo por seção, com erro claro; `array[0]` e qualquer truncamento silencioso são proibidos. Em V05, o core incorporado precisa alocar IDs e escrever referências para cada atividade e questão, exportando pelo menos dois quizzes, duas tarefas e dois fóruns na mesma seção. Também precisa retirar a obrigatoriedade de categorias, avaliação final, controle de faltas e blocos predefinidos. V06 restaura e confere os resultados; V07 permanece bloqueado até esse aceite. O adapter sozinho não resolve cardinalidade e inserções incondicionais internas.
+**Contexto:** o núcleo contém conhecimento e testes de referências Moodle; reescrever XML consumiria o prazo do hackathon. **Decisão proposta:** incorporar o núcleo à nova pasta, preservando testes e traduzindo o domínio para seu formato de entrada. **Alternativa:** reconstruir todo o gerador ou acoplar o novo editor diretamente ao formato legado. **Tradeoff atualizado na spec V01:** rejeitar capacidades ainda ausentes com erro claro durante o desenvolvimento; `array[0]` e qualquer truncamento silencioso são proibidos. Essa rejeição não conclui o aceite de exportação da fixture de seis atividades em V01-02. O core incorporado precisa alocar IDs e escrever referências para cada atividade/questão e retirar a obrigatoriedade de categorias, avaliação final, controle de faltas e blocos predefinidos. V05 amplia a prova aos documentos por tópicos e semanas; V06 restaura ambos e confere os resultados; V07 permanece bloqueado até esses aceites. O adapter sozinho não resolve cardinalidade e inserções incondicionais internas.
 
 ### ADR 004 Perfis separados de documento pedagogia e Moodle
 
@@ -299,7 +307,7 @@ Os caminhos descrevem a implementação proposta. Não pressupõem que fonte, de
 
 Em V05, o modelo de exportação precisa representar cada atividade e questão com IDs próprios. Descritores, writers, sequências de seção, banco de questões, notas e referências de arquivos devem consumir o mesmo mapa de IDs. A migração também extrai regras pedagógicas e retira defaults obrigatórios; seções opcionais não podem deixar referências pendentes. Testes verificam a contagem e a integridade de todas as atividades, e V06 verifica seu conteúdo após restauração.
 
-Cada etapa mantém uma saída revisável. V01–V04 permitem verificar a integração inicial; não constituem o MVP entregue. A extração automática e a criação manual devem produzir o mesmo contrato. A revisão precisa mostrar tudo que será exportado. A compatibilidade não pode esconder atividades ou inventar regras pedagógicas. Se V05 ou V06 falharem, a restrição provisória de multiplicidade não pode ser apresentada como escopo final nem liberar V07.
+Cada etapa mantém uma saída revisável. V01–V04 permitem verificar a integração inicial; não constituem o MVP entregue. A extração automática e a criação manual devem produzir o mesmo contrato. A revisão precisa mostrar tudo que será exportado. A compatibilidade não pode esconder atividades ou inventar regras pedagógicas. Uma capacidade rejeitada permanece pendência do aceite afetado; falha de V05 ou V06 não libera V07.
 
 ## Evidências de restauração
 

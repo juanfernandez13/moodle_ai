@@ -1,0 +1,379 @@
+{
+  "schemaVersion": 1,
+  "id": "V01-01",
+  "goal": "Instalar, validar rascunho fictício e obter diagnósticos por CLI sem IA",
+  "spec": [
+    "docs/specs/V01-course-to-mbz.md",
+    "docs/tickets/V01-01-bootstrap-validation.md"
+  ],
+  "status": "integrated",
+  "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+  "contextEvidence": "docs/tasks/V01-01/context.md",
+  "owners": [
+    {
+      "writePaths": [
+        "src/domain/course",
+        "tests/domain",
+        "tests/fixtures"
+      ],
+      "agent": "/root/domain_executor"
+    },
+    {
+      "writePaths": [
+        "src/cli",
+        "tests/cli",
+        "package.json",
+        "package-lock.json",
+        "tsconfig.json",
+        "tsconfig.build.json",
+        "eslint.config.mjs",
+        "AGENTS.md",
+        "README.md",
+        "docs/specs",
+        "docs/tickets",
+        "docs/agents",
+        "docs/PRD.md",
+        "docs/ARCHITECTURE.md",
+        "docs/BACKLOG.md",
+        "docs/PIPELINE.md",
+        "docs/PLANNING_READINESS.md",
+        "docs/BUILDER_PIPELINE_PLAN.md",
+        "docs/SKILLS_AND_MCP.md",
+        "docs/AGENT_LOOP.md"
+      ],
+      "agent": "/root"
+    }
+  ],
+  "acceptance": [
+    {
+      "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+      "evidence": [
+        "docs/tasks/V01-01/checks-2.md",
+        "docs/tasks/V01-01/review-spec.md",
+        "docs/tasks/V01-01/review-quality.md"
+      ],
+      "text": "Aceite A1 de docs/specs/V01-course-to-mbz.md",
+      "id": "A1"
+    },
+    {
+      "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+      "evidence": [
+        "docs/tasks/V01-01/checks-2.md",
+        "docs/tasks/V01-01/review-spec.md",
+        "docs/tasks/V01-01/review-quality.md"
+      ],
+      "text": "Aceite A2 de docs/specs/V01-course-to-mbz.md",
+      "id": "A2"
+    },
+    {
+      "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+      "evidence": [
+        "docs/tasks/V01-01/checks-2.md",
+        "docs/tasks/V01-01/review-spec.md",
+        "docs/tasks/V01-01/review-quality.md"
+      ],
+      "text": "Aceite A3 de docs/specs/V01-course-to-mbz.md",
+      "id": "A3"
+    },
+    {
+      "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+      "evidence": [
+        "docs/tasks/V01-01/checks-2.md",
+        "docs/tasks/V01-01/review-spec.md",
+        "docs/tasks/V01-01/review-quality.md"
+      ],
+      "text": "Aceite A4 de docs/specs/V01-course-to-mbz.md",
+      "id": "A4"
+    },
+    {
+      "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+      "evidence": [
+        "docs/tasks/V01-01/checks-2.md",
+        "docs/tasks/V01-01/review-spec.md",
+        "docs/tasks/V01-01/review-quality.md"
+      ],
+      "text": "Aceite A5 de docs/specs/V01-course-to-mbz.md",
+      "id": "A5"
+    },
+    {
+      "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+      "evidence": [
+        "docs/tasks/V01-01/checks-2.md",
+        "docs/tasks/V01-01/review-spec.md",
+        "docs/tasks/V01-01/review-quality.md"
+      ],
+      "text": "Aceite A6 de docs/specs/V01-course-to-mbz.md",
+      "id": "A6"
+    },
+    {
+      "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+      "evidence": [
+        "docs/tasks/V01-01/checks-2.md",
+        "docs/tasks/V01-01/review-spec.md",
+        "docs/tasks/V01-01/review-quality.md"
+      ],
+      "text": "Aceite A7 de docs/specs/V01-course-to-mbz.md",
+      "id": "A7"
+    },
+    {
+      "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+      "evidence": [
+        "docs/tasks/V01-01/checks-2.md",
+        "docs/tasks/V01-01/review-spec.md",
+        "docs/tasks/V01-01/review-quality.md"
+      ],
+      "text": "Aceite A8 de docs/specs/V01-course-to-mbz.md",
+      "id": "A8"
+    }
+  ],
+  "checks": [
+    {
+      "required": true,
+      "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+      "status": "passed",
+      "evidence": "docs/tasks/V01-01/checks-2.md",
+      "id": "bootstrap-checks"
+    },
+    {
+      "required": true,
+      "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+      "status": "passed",
+      "evidence": "docs/tasks/V01-01/checks-2.md",
+      "id": "cli-demo-built"
+    },
+    {
+      "required": true,
+      "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+      "status": "passed",
+      "evidence": "docs/tasks/V01-01/checks-2.md",
+      "id": "docs-contract-inspection"
+    }
+  ],
+  "reviews": [
+    {
+      "axis": "spec",
+      "agent": "/root/review_spec",
+      "status": "passed",
+      "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+      "evidence": "docs/tasks/V01-01/review-spec.md"
+    },
+    {
+      "axis": "quality",
+      "agent": "/root/review_quality",
+      "status": "passed",
+      "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+      "evidence": "docs/tasks/V01-01/review-quality.md"
+    }
+  ],
+  "budget": {
+    "maxCorrections": 2,
+    "corrections": 1
+  },
+  "integration": {
+    "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+    "evidence": "docs/tasks/V01-01/integration.md"
+  },
+  "history": [
+    {
+      "from": "planned",
+      "to": "executing",
+      "requestedTo": "executing",
+      "at": "2026-10-12T14:56:26.323Z",
+      "revision": null,
+      "reason": "Contrato V01-01 e propriedade fixados; autorização recebida nesta conversa.",
+      "evidence": {
+        "checks": [],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "executing",
+      "to": "verifying",
+      "requestedTo": "verifying",
+      "at": "2026-10-12T15:08:48.808Z",
+      "revision": "sha256:cb482fca072b05dab0a6ec2ae1b418c89f48f2eda466a7d70491ae46259057c6",
+      "reason": "Candidato congelado por hashes; npm ci/check/demo/compilado e inspeção documental executados.",
+      "evidence": {
+        "checks": [],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "verifying",
+      "to": "reviewing",
+      "requestedTo": "reviewing",
+      "at": "2026-10-12T15:08:48.931Z",
+      "revision": "sha256:cb482fca072b05dab0a6ec2ae1b418c89f48f2eda466a7d70491ae46259057c6",
+      "reason": "Checks concluídos; revisores independentes recebem mesmo manifesto e evidências.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/V01-01/checks.md",
+          "docs/tasks/V01-01/checks.md",
+          "docs/tasks/V01-01/checks.md"
+        ],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "reviewing",
+      "to": "needs-fix",
+      "requestedTo": "needs-fix",
+      "at": "2026-10-12T15:11:26.338Z",
+      "revision": "sha256:cb482fca072b05dab0a6ec2ae1b418c89f48f2eda466a7d70491ae46259057c6",
+      "reason": "A4: Date.parse perde frações submilissegundo; ver review-quality-1.md",
+      "evidence": {
+        "checks": [
+          "docs/tasks/V01-01/checks.md",
+          "docs/tasks/V01-01/checks.md",
+          "docs/tasks/V01-01/checks.md"
+        ],
+        "reviews": [
+          "docs/tasks/V01-01/review-quality-1.md"
+        ],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "needs-fix",
+      "to": "executing",
+      "requestedTo": "executing",
+      "at": "2026-10-12T15:11:26.433Z",
+      "revision": "sha256:cb482fca072b05dab0a6ec2ae1b418c89f48f2eda466a7d70491ae46259057c6",
+      "reason": "Executor corrige comparação precisa sem alterar contrato; nova regressão e novo digest obrigatórios.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/V01-01/checks.md",
+          "docs/tasks/V01-01/checks.md",
+          "docs/tasks/V01-01/checks.md"
+        ],
+        "reviews": [
+          "docs/tasks/V01-01/review-quality-1.md"
+        ],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "executing",
+      "to": "verifying",
+      "requestedTo": "verifying",
+      "at": "2026-10-12T15:15:18.414Z",
+      "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+      "reason": "Correção A4 congelada; checks completos repetidos sem alterar contrato.",
+      "evidence": {
+        "checks": [],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "verifying",
+      "to": "reviewing",
+      "requestedTo": "reviewing",
+      "at": "2026-10-12T15:15:18.416Z",
+      "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+      "reason": "107 testes, build, CLI e manifesto passaram; duas revisões independentes requeridas.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/checks-2.md"
+        ],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "reviewing",
+      "to": "accepted",
+      "requestedTo": "accepted",
+      "at": "2026-10-12T15:17:22.680Z",
+      "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+      "reason": "A1–A8 satisfeitos; checks e duas revisões independentes aprovam o mesmo digest.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/checks-2.md"
+        ],
+        "reviews": [
+          "docs/tasks/V01-01/review-spec.md",
+          "docs/tasks/V01-01/review-quality.md"
+        ],
+        "acceptance": [
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/review-spec.md",
+          "docs/tasks/V01-01/review-quality.md",
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/review-spec.md",
+          "docs/tasks/V01-01/review-quality.md",
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/review-spec.md",
+          "docs/tasks/V01-01/review-quality.md",
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/review-spec.md",
+          "docs/tasks/V01-01/review-quality.md",
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/review-spec.md",
+          "docs/tasks/V01-01/review-quality.md",
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/review-spec.md",
+          "docs/tasks/V01-01/review-quality.md",
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/review-spec.md",
+          "docs/tasks/V01-01/review-quality.md",
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/review-spec.md",
+          "docs/tasks/V01-01/review-quality.md"
+        ]
+      }
+    },
+    {
+      "from": "accepted",
+      "to": "integrated",
+      "requestedTo": "integrated",
+      "at": "2026-10-12T15:19:45.430Z",
+      "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+      "reason": "Destino preserva candidato aceito; npm ci/check/demo/equivalência passaram, guardião confirmou hashes e fatos.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/checks-2.md"
+        ],
+        "reviews": [
+          "docs/tasks/V01-01/review-spec.md",
+          "docs/tasks/V01-01/review-quality.md"
+        ],
+        "acceptance": [
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/review-spec.md",
+          "docs/tasks/V01-01/review-quality.md",
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/review-spec.md",
+          "docs/tasks/V01-01/review-quality.md",
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/review-spec.md",
+          "docs/tasks/V01-01/review-quality.md",
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/review-spec.md",
+          "docs/tasks/V01-01/review-quality.md",
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/review-spec.md",
+          "docs/tasks/V01-01/review-quality.md",
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/review-spec.md",
+          "docs/tasks/V01-01/review-quality.md",
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/review-spec.md",
+          "docs/tasks/V01-01/review-quality.md",
+          "docs/tasks/V01-01/checks-2.md",
+          "docs/tasks/V01-01/review-spec.md",
+          "docs/tasks/V01-01/review-quality.md"
+        ]
+      }
+    }
+  ]
+}

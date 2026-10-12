@@ -1,6 +1,8 @@
 # Backlog da v2
 
-Nome provisório: **Moodle-AI**. Planejamento para um hackathon solo; a data e a duração ainda não foram definidas. Os itens abaixo estão propostos, sem implementação iniciada.
+Nome provisório: **Moodle-AI**. Execução inicial liberada em 12/10/2026. Data e duração do hackathon ainda não definidas; não há promessa de prazo. [Spec V01](specs/V01-course-to-mbz.md) e [tickets](tickets/README.md) detalham o início. V01-01 entrega bootstrap/validação; o aceite de V01 exige também o MBZ. O registro [V01-01](tasks/V01-01.json) é a autoridade de estado.
+
+V01–V07 representam o primeiro MVP. O [plano ampliado](BUILDER_PIPELINE_PLAN.md) conserva o escopo da versão completa: portabilidade com bytes/presets, imagens incorporadas, seis módulos/três tipos de questão, dois provedores reais, WebMCP, cadastro e datas. F01–F03 são entregas posteriores à primeira demonstração e obrigatórias na paridade da versão completa; a ordenação não as exclui.
 
 O MVP atende professores e equipes que criam cursos Moodle: DOCX ou criação manual → `CourseDraft` → editor visual → validação → `.mbz`. O CourseGen-AI é referência de regras já aprendidas, especialmente exportação; não é o local de implementação da v2.
 

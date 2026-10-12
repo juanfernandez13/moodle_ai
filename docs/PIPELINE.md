@@ -1,6 +1,6 @@
 # Pipeline de desenvolvimento do Moodle AI
 
-**Estado atual: planejamento.** A implementação da aplicação não está liberada. A orientação do usuário é fechar o pipeline antes de iniciar código. O HTML existente é uma referência visual; sua revisão no navegador e aprovação ainda estão pendentes.
+**Estado atual: execução inicial liberada em 12/10/2026.** O usuário pediu para iniciar execução/criação e confirmou o Moodle-AI nesta conversa. Essa instrução substitui o bloqueio anterior. [V01](specs/V01-course-to-mbz.md) fixa a primeira spec; [tickets locais](tickets/README.md) e [registro V01-01](tasks/V01-01.json) acompanham a execução. O HTML de planejamento continua referência visual, distinto do futuro editor.
 
 Este documento é a visão de entrada do processo. [AGENT_WORKFLOW.md](AGENT_WORKFLOW.md) define responsabilidades e verificações; [AGENT_LOOP.md](AGENT_LOOP.md) descreve o registro de tarefas e suas transições. A [skill local project-loop](../.agents/skills/project-loop/SKILL.md) orienta a coordenação pelo host, sem executar agentes automaticamente.
 
@@ -8,14 +8,14 @@ Este documento é a visão de entrada do processo. [AGENT_WORKFLOW.md](AGENT_WOR
 
 | Etapa | Trabalho e skills | Artefato para revisar | Condição para avançar |
 | --- | --- | --- | --- |
-| 1. Configurar o processo | `setup-matt-pocock-skills`: escolher acompanhamento de tarefas e localização dos documentos de domínio. | `docs/agents/issue-tracker.md` e `docs/agents/domain.md`, conforme o fluxo da skill. | Configuração apresentada ao usuário e confirmada. Nenhum tracker externo é criado por inferência. |
+| 1. Configurar o processo | `project-loop` local: acompanhamento em Markdown e task JSON; domínio único com glossário e arquitetura existentes. | `docs/agents/issue-tracker.md` e `docs/agents/domain.md`. | Configuração local reversível conforme o início autorizado. Nenhum tracker externo é criado por inferência; workflows upstream só quando invocados. |
 | 2. Fechar produto | `grill-with-docs` e `domain-modeling`: resolver decisões que mudam escopo, linguagem e comportamento. | PRD revisado, glossário e decisões registradas. | Público, duas estruturas DOCX, compatibilidade Moodle e limites do MVP definidos. |
-| 3. Especificar a primeira entrega | `to-spec` e `codebase-design`: definir comportamento observável, interfaces públicas, falhas e alternativas. | Especificação da primeira fatia e ADRs pertinentes. | Contratos compartilhados e pontos de teste apresentados e acordados. |
+| 3. Especificar a primeira entrega | Integrador detalha V01 no `project-loop`, usando comportamento/contrato do planejamento. | `docs/specs/V01-course-to-mbz.md`. | Interface pública e aceites fixados antes de execução; decisões de rotina seguem o início autorizado. |
 | 4. Aprovar a direção visual | `frontend-design`: avaliar o catálogo e a jornada de edição. | `design-system.html` e `DESIGN_BRIEF.md`. | Decisões de design registradas; notas no HTML são locais, sem envio automático ao chat. |
-| 5. Dividir o trabalho | `to-tickets`: derivar entregas pequenas demonstráveis. | Tickets no acompanhamento escolhido e contratos de tarefa. | Aceites, dependências, verificações e responsável por cada caminho definidos. |
-| 6. Autorizar a primeira execução | Integrador apresenta a tarefa pronta e suas decisões. | Contrato da fatia selecionada, sem checks fictícios. | Usuário libera o início da implementação. A instrução atual mantém esta etapa pendente. |
+| 5. Dividir o trabalho | Integrador deriva entregas locais no `project-loop`; não afirma execução de `to-tickets` upstream. | Um Markdown por ticket e contratos de tarefa. | Aceites, dependências, verificações e responsável por cada caminho definidos. |
+| 6. Iniciar execução | Implementar a tarefa pronta, sem checks fictícios. | Contrato V01-01. | Liberação já recebida; nova confirmação não é necessária para implementação local. |
 
-As skills já estão instaladas. Esses workflows de preparação ainda não foram executados integralmente. Os documentos atuais são propostas; nomes e datas de arquivos não constituem aprovação.
+As skills já estão instaladas. Esta execução usa o loop local; não afirma execução integral do setup/entrevista/publicação upstream. A spec V01 delimita decisões do bootstrap; decisões do restante do produto continuam identificadas como propostas.
 
 ```mermaid
 flowchart TD
