@@ -1482,7 +1482,8 @@ th {
   .topbar {
     flex-direction: column;
     align-items: stretch;
-    gap: 13px;
+    gap: 8px;
+    padding: 10px 0 12px;
   }
   .brand {
     align-self: flex-start;
@@ -1490,12 +1491,16 @@ th {
   }
   .header-actions {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
     width: 100%;
   }
   .header-action {
-    font-size: 12px;
-    padding: 8px 10px;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 11px;
+    padding: 5px 4px;
+    min-height: 48px;
   }
   .entry-panel {
     margin-top: 0;
@@ -1504,7 +1509,7 @@ th {
   .journey {
     justify-content: space-between;
     gap: 8px;
-    padding: 16px 20px;
+    padding: 10px 12px;
     font-size: 11px;
   }
   .journey li {
@@ -1545,7 +1550,7 @@ th {
   }
   .upload-row {
     grid-template-columns: 24px minmax(0, 1fr);
-    gap: 12px;
+    gap: 6px 10px;
   }
   .upload-row .file-button {
     grid-column: 2;
@@ -1563,10 +1568,10 @@ th {
     font-size: 10px;
   }
   .planning-group {
-    padding: 12px 10px;
+    padding: 8px 8px;
   }
   .upload-group:not(.planning-group) {
-    padding: 12px 10px;
+    padding: 8px 8px;
   }
   .upload-copy p {
     font-size: 11px;
