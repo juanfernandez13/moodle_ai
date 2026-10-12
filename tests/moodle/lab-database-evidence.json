@@ -1,0 +1,21 @@
+{
+  "origin": "http://localhost:3211",
+  "fixturePreparation": {
+    "courseId": 4,
+    "shortName": "FULL-01_2",
+    "manualId": 13,
+    "roleId": 5,
+    "roleShortName": "student",
+    "createdFixture": true,
+    "userCount": 2,
+    "enrolmentCount": 0
+  },
+  "readback": {
+    "rows": [
+      {"username": "lab-test-ops-9d23bbd9-one", "updated": true, "manualEnrolments": 1, "roles": ["student"]},
+      {"username": "lab-test-ops-9d23bbd9-two", "updated": true, "manualEnrolments": 1, "roles": ["student"]}
+    ]
+  },
+  "command": "Get-Content -Raw tests/moodle/lab-fixture.php | docker exec -i -e MOODLE_LAB_OPERATION=readback -e MOODLE_LAB_PREFIX=lab-test-ops-9d23bbd9 moodle-ai-lab-linux-webserver-1 php",
+  "exitCode": 0
+}

@@ -1,0 +1,165 @@
+{
+  "task": "OPS-01",
+  "executor": "moodle_operations",
+  "candidateSha256": "a1f2dcaf9e15df55b905cf52bedb194e0960f0c2055c24321ded940ceb2dda48",
+  "excluded": [
+    "tests/moodle/delivery-manifest.json"
+  ],
+  "entries": [
+    {
+      "path": "app/api/moodle/course/route.ts",
+      "bytes": 258,
+      "sha256": "55c7aec9a3ec802eb86f5132140b37d1b63514e5bc2105b6f2aad70c58bdc229"
+    },
+    {
+      "path": "app/api/moodle/courses/route.ts",
+      "bytes": 259,
+      "sha256": "630b835b13086df70a027b9cb4119bda0f743a4f9fc9be83cf407d225223d911"
+    },
+    {
+      "path": "app/api/moodle/dates/confirm/route.ts",
+      "bytes": 268,
+      "sha256": "88754c652093b2b98d6c3c9280bf3daf9dc24b3e55fe135d90482b0032015416"
+    },
+    {
+      "path": "app/api/moodle/dates/preview/route.ts",
+      "bytes": 268,
+      "sha256": "c59ee477b6a5b11ba9544d9d18645f842be1d5a4d2b9e8ce0f2923b664eb29b1"
+    },
+    {
+      "path": "app/api/moodle/login/route.ts",
+      "bytes": 258,
+      "sha256": "7702709d91a288dcfa2ae1fb0f520cb4cdfbf9df3545f1ab58b1c14a6db1f74a"
+    },
+    {
+      "path": "app/api/moodle/logout/route.ts",
+      "bytes": 259,
+      "sha256": "38a12557eb357a26e7b54d828071d6ed2d6648e916015e4a4fa466c09be9bd10"
+    },
+    {
+      "path": "app/api/moodle/status/route.ts",
+      "bytes": 258,
+      "sha256": "b8e91895567ea1e1ae6c1f776240f457c4ee0f6d2e367ee5f8ef8e81f403239b"
+    },
+    {
+      "path": "app/api/moodle/students/confirm/route.ts",
+      "bytes": 271,
+      "sha256": "1b670a36cfe8a0333c60347bdad11cb28b18d6dade391cab891da3c146559958"
+    },
+    {
+      "path": "app/api/moodle/students/preview/route.ts",
+      "bytes": 271,
+      "sha256": "6fbf0b623afc263078656641c5f9c79ae6fd5da6843576a858e339ae2ace474b"
+    },
+    {
+      "path": "src/server/moodle/api.ts",
+      "bytes": 14039,
+      "sha256": "8017aab5ce6b1187313971808012d5fd5bd0ca9ed0c1a2fa5e5f64014eac06b3"
+    },
+    {
+      "path": "src/server/moodle/client.ts",
+      "bytes": 4019,
+      "sha256": "aed5200abb445f7fef7e8162bb78e7c5027fb4575cf9a4d08637b08cbc1eb86e"
+    },
+    {
+      "path": "src/server/moodle/dates.ts",
+      "bytes": 15286,
+      "sha256": "9af9b013bc440c45d650e8830875b1af0587b7cde190d49942620fc6ab6cb159"
+    },
+    {
+      "path": "src/server/moodle/enrolments.ts",
+      "bytes": 4048,
+      "sha256": "f22a90aed57c47fc9d27a1580a115227de73c50386173ddbfabf99e071de252a"
+    },
+    {
+      "path": "src/server/moodle/forms.ts",
+      "bytes": 4483,
+      "sha256": "75bd7d1e3466cedc2eec71d9980c51fb8bab2d8cb54dc788bffa01001abd98ff"
+    },
+    {
+      "path": "src/server/moodle/http.ts",
+      "bytes": 8058,
+      "sha256": "84add178fec678248b58fcb5977388958383333a8e7b202d9e2d99aae73479fd"
+    },
+    {
+      "path": "src/server/moodle/students.ts",
+      "bytes": 10123,
+      "sha256": "78421bf3fdcc6eed94858a41233863acb41df660fd00bd39c4b20c4d8816fc17"
+    },
+    {
+      "path": "tests/moodle/api.test.ts",
+      "bytes": 7280,
+      "sha256": "57e8700c5296169a1a27b90a1e5bbdbd3065a6fad7cbb70a94a085eb1ecad242"
+    },
+    {
+      "path": "tests/moodle/client.test.ts",
+      "bytes": 1043,
+      "sha256": "04a3ccb50fa016949a11e6ddd633f5a47edf244b0f50e272fefa3b1f7bb91dfc"
+    },
+    {
+      "path": "tests/moodle/dates.test.ts",
+      "bytes": 9835,
+      "sha256": "ce5001b056db60c91ff3cbdbf633a656b47097b97b668d6054342a990d44ca85"
+    },
+    {
+      "path": "tests/moodle/enrolments.test.ts",
+      "bytes": 2568,
+      "sha256": "40630973a031e1491cc6107bee98dce6b63dd6474bbb621b92abca528fb9aa89"
+    },
+    {
+      "path": "tests/moodle/fixtures.ts",
+      "bytes": 6676,
+      "sha256": "57d20bd1ae779b73343bc75a556fee6d3702da34b756636e7692d1003c6530f6"
+    },
+    {
+      "path": "tests/moodle/forms.test.ts",
+      "bytes": 1127,
+      "sha256": "2a4c27c41c045342eebf325885c404e7b32c7ccac8d5a4e00bb6315b3978927f"
+    },
+    {
+      "path": "tests/moodle/http.test.ts",
+      "bytes": 2790,
+      "sha256": "1d38de081dbf68819ee68c9e2f433df22e8c83e8cdf527626963368d65256a24"
+    },
+    {
+      "path": "tests/moodle/lab-database-evidence.json",
+      "bytes": 731,
+      "sha256": "dabccd2ed66f43e441657d038d93bcff1ade34422738b384c41fa041893a6a1a"
+    },
+    {
+      "path": "tests/moodle/lab-evidence.json",
+      "bytes": 1464,
+      "sha256": "078d29cb964763163c68206644b758d21c4d952f504772df9401ef4eae44f902"
+    },
+    {
+      "path": "tests/moodle/lab-fixture.php",
+      "bytes": 3051,
+      "sha256": "8e59f1c0cf72a15457b66fa0c77b1eae2e239210bdf2e0b31dde291730c1f2d3"
+    },
+    {
+      "path": "tests/moodle/lab-integration.mjs",
+      "bytes": 6204,
+      "sha256": "fd45748d06f555c06fd5f57a39f59779c8a6f3b436626fb15f766326be458723"
+    },
+    {
+      "path": "tests/moodle/q2-lab-readback.json",
+      "bytes": 2479,
+      "sha256": "a30f0c33dd699aa48e46bffe09abd9b3bafc39599360a92c0d6500c6e3ceda68"
+    },
+    {
+      "path": "tests/moodle/students.test.ts",
+      "bytes": 2540,
+      "sha256": "0ecba6dab2a90076e8bac68ae3409b20f20596ab4eb8908a4cc8300455542799"
+    },
+    {
+      "path": "tests/moodle/tdd-evidence.txt",
+      "bytes": 7475,
+      "sha256": "77987cecc4bca0f06c1f229674e9149c663e118d370baf669b73ef36433ac300"
+    }
+  ],
+  "integrationCorrection": {
+    "executor": "/root",
+    "finding": "Next internal localhost URL differs from matching public loopback Host/Origin; shared bounded alias guard added in correction2.",
+    "sharedDependency": "src/shared/request-origin.ts"
+  }
+}

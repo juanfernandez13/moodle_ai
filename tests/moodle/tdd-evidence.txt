@@ -1,0 +1,53 @@
+OPS-01 / executor moodle_operations / 2026-10-12
+Source: isolated wt-operations snapshot; permitted src/server/moodle, app/api/moodle, tests/moodle.
+Seams agreed in dispatch: simulated Moodle HTTP, public route controller, separate real laboratory readback.
+No CodeGraph MCP in executor context; source/spec/local inspection used. Root owns task record and independent reviews.
+
+Observed red -> green commands (all commands actually executed):
+1. node --test tests/moodle/http.test.ts: initial RED ERR_MODULE_NOT_FOUND http.ts; then GREEN 1/1.
+2. node --test tests/moodle/forms.test.ts: initial RED ERR_MODULE_NOT_FOUND forms.ts; then GREEN 1/1.
+3. node --test tests/moodle/client.test.ts: initial RED ERR_MODULE_NOT_FOUND client.ts. The first fixture used an invalid hyphenated fake sesskey; corrected to Moodle's alphanumeric format; GREEN 1/1.
+4. node --test tests/moodle/students.test.ts: initial RED ERR_MODULE_NOT_FOUND students.ts; then GREEN 1/1 (stale hash before HTTP).
+5. node --test tests/moodle/dates.test.ts: initial RED ERR_MODULE_NOT_FOUND dates.ts. Fixture initially omitted actual Moodle form identifiers and nested list wrapper; corrected; GREEN 1/1 (preview with unknown access condition preserved).
+6. node --test tests/moodle/api.test.ts: initial RED ERR_MODULE_NOT_FOUND api.ts; then GREEN 1/1 (Origin blocked before HTTP).
+7. HTTP stalled stream deadline: RED actual hung instead of uncertain-timeout; response/fetch deadline races added; GREEN 2/2 http tests.
+8. Logout without an invented JSON body: RED HTTP422 instead of200; optional empty body supported with Origin check; GREEN 2/2 api tests.
+9. Real Moodle quiz GET regenerated Safe Exam Browser filemanager draft IDs: dates confirm falsely reported drift before POST. Regression RED moodle_state_changed, then normalized that documented volatile draft field; GREEN 2/2 dates tests.
+10. Unrepresentable Moodle date year: RED missing expected rejection; preview validates date choices/buttons before confirming; GREEN 3/3 dates tests.
+11. Real forum form action was relative modedit.php: diagnostic HTTP404 /modedit.php. Regression RED partial=true instead of false; actions resolved against editing page under the fixed Moodle origin; GREEN 4/4 dates tests.
+12. Actual Moodle pending preview status: RED synthesized reviewed status instead of controlled pending status; table rows/username presence now read from #uupreview; GREEN 2/2 student tests.
+13. Real create upload form rejected uuupdatetype=1 together with uutype=0. Database inspection showed no synthetic users had been created. Fixture reproducing Moodle validation: RED unknown instead of created; create now uses uuupdatetype=0, update uses1, no existing password change. GREEN 6/6 api tests. A returned confirmation form is a controlled per-row error, never raw HTML.
+
+Additional contract/failure coverage was added and passed (not claimed as independent red/green cycles): response streamed cap, private cookies/307, server-only target gate, strict body/schema, TTL, foreign session, consumed confirmation, timeout unknown/no retry, date drift/no POST, partial/error/not_applied, actual timezone/DST projection, missing repository, unsafe enrol role, explicit enrol permission/defaults.
+
+Real integration is deliberately separate from npm test:
+node tests/moodle/lab-integration.mjs (explicit fictional-course4-only flag and transient environment credentials) EXIT0.
+Output tests/moodle/lab-evidence.json, completed 2026-10-12T17:27:04.881Z.
+Only http://localhost:3211, official Moodle4.1.17 Build20250317, course4 FULL-01_2.
+Two synthetic users only: lab-test-ops-9d23bbd9-one/two. Preview created0; create2; repeat409; existing-user error2; update2; manual student enrol2; dates7/7 applied, partialfalse, native dates/access conditions and other nonvolatile form fields re-read.
+Fixture prep: explicit PHP script tests/moodle/lab-fixture.php, course4 only, real role shortname/archetype student. Created manual instance13 role5; before student run userCount2 enrolmentCount0.
+Database readback script EXIT0: each same synthetic user updated, exactly1 manual enrolment, roles=[student]. Evidence tests/moodle/lab-database-evidence.json.
+An earlier date attempt was explicitly partial: section applied1/forum unknown1/rest not_applied5 due to relative action bug. No rollback was claimed; fresh preview/state were used after fixing it. Later real runs applied7/7.
+No IFCE/production endpoint accessed. Product config refuses any Moodle origin other than http://localhost:3211. No real users, credential files, .env writes, passwords/cookies/sesskeys in outputs.
+
+Final gates on the delivered files:
+- node --test tests/moodle/*.test.ts: EXIT0, 24/24 pass.
+- npm run typecheck: EXIT0.
+- npm exec -- eslint src/server/moodle app/api/moodle tests/moodle --max-warnings 0: EXIT0.
+- npm test: EXIT0, 200/200 pass on this worktree snapshot.
+- npm run build: sandbox attempt failed in SWC Windows canonicalization with access denied; authorized rerun outside sandbox EXIT0. Next production build included all nine /api/moodle routes; build:cli EXIT0.
+Root will verify/review the merged candidate; this executor report is not independent approval.
+
+FULL-01 correction cycle1 / independent review Q2 / 2026-10-12
+Rejected global candidate: sha256:98da4c329b360a5a3b78b4a08cf08d26ecb415ec543d35e6f9bfa464caa6f8c6.
+Read the independent quality report at work/moodle-full/docs/tasks/FULL-01/review-quality.md; only assigned OPS paths edited.
+Two public regressions were added before correcting semantic():
+- Earlier repeated tags[] value changed original->changed while last remained fixed: RED missing expected moodle_state_changed rejection; the old code sent3 POSTs. GREEN refuses the entire confirmation before any POST.
+- Repeated tags[] first/last lost first on readback: RED submitted all3 targets instead of stopping after1; the old fingerprint declared all applied. GREEN counts={applied:0,error:0,unknown:1,not_applied:2}, partialtrue, exactly1 POST.
+semantic() now retains all successful field pairs, normalizes each retained value, and uses stable name sorting which preserves values and their order within a repeated field. It retains the existing volatile SEB/filepicker/itemid/draftfile rules.
+Additional passing regressions: preserve three ordered repeated values through POST/readback with volatile SEB draft IDs; swapping earlier values while final value stays fixed also blocks all POSTs.
+The stricter readback exposed an optional-date checkbox shape: enabling it previously overwrote hidden0 with1. Browser semantics require hidden0 followed by checked1. RED counts2applied/1unknown; writeDate now appends the checked value when enabling the unchecked checkbox, preserving hidden0. GREEN3applied. No other field rewriting or API contract change.
+Correction gates observed: dates13/13, OPS29/29, complete worktree suite205/205, typecheck EXIT0, scoped ESLint EXIT0.
+Real laboratory recheck: same existing course4 schedule, seven targets applied/read back, counts7applied/0error/0unknown/0not_applied, partialfalse; tests/moodle/q2-lab-readback.json includes the exact dates.ts source SHA256. No new users, enrol methods or remote Moodle operation in this correction.
+Correction production build: npm run build (authorized outside-sandbox Windows build) EXIT0; all nine /api/moodle routes and build:cli completed.
+Correction delivery is frozen for root independent re-review; executor success is not independent approval.
