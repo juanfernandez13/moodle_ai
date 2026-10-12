@@ -1,0 +1,29 @@
+{
+  "fullName": "Curso de paridade fictício",
+  "shortName": "FULL-01",
+  "userSections": 1,
+  "activities": 9,
+  "moduleCounts": {
+    "forum": 2,
+    "assign": 2,
+    "quiz": 2,
+    "chat": 1,
+    "wiki": 1,
+    "glossary": 1
+  },
+  "questionTypes": {
+    "multichoice": 2,
+    "match": 1,
+    "essay": 1
+  },
+  "maxGrades": {
+    "assignment-1": 10,
+    "assignment-2": 100,
+    "quiz-1": 10,
+    "quiz-2": 100
+  },
+  "imageOccurrences": 6,
+  "chatAndTask": true,
+  "gradeCategories": ["Tarefas", "Quizzes"],
+  "restorationMode": "new-empty-course"
+}
