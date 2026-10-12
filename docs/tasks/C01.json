@@ -5,7 +5,7 @@
   "spec": [
     "docs/specs/FULL-01-application.md"
   ],
-  "status": "accepted",
+  "status": "integrated",
   "revision": "sha256:de3007dfe7b205e936f89645e48495a45dc9d3592458367095c59f42cd289512",
   "contextEvidence": "docs/tasks/C01/context.md",
   "owners": [
@@ -69,8 +69,8 @@
     "corrections": 0
   },
   "integration": {
-    "revision": null,
-    "evidence": null
+    "revision": "sha256:de3007dfe7b205e936f89645e48495a45dc9d3592458367095c59f42cd289512",
+    "evidence": "docs/tasks/C01/integration.json"
   },
   "history": [
     {
@@ -121,6 +121,31 @@
       "at": "2026-10-12T17:14:16.778Z",
       "revision": "sha256:de3007dfe7b205e936f89645e48495a45dc9d3592458367095c59f42cd289512",
       "reason": "Dois revisores independentes aprovaram o mesmo snapshot; checks e critérios verificados.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/C01/check.log"
+        ],
+        "reviews": [
+          "docs/tasks/C01/review-spec.md",
+          "docs/tasks/C01/review-quality.md"
+        ],
+        "acceptance": [
+          "docs/tasks/C01/check.log",
+          "docs/tasks/C01/review-spec.md",
+          "docs/tasks/C01/review-quality.md",
+          "docs/tasks/C01/check.log",
+          "docs/tasks/C01/review-spec.md",
+          "docs/tasks/C01/review-quality.md"
+        ]
+      }
+    },
+    {
+      "from": "accepted",
+      "to": "integrated",
+      "requestedTo": "integrated",
+      "at": "2026-10-12T17:14:55.725Z",
+      "revision": "sha256:de3007dfe7b205e936f89645e48495a45dc9d3592458367095c59f42cd289512",
+      "reason": "Merge local na main com os sete hashes do candidato reconferidos no destino.",
       "evidence": {
         "checks": [
           "docs/tasks/C01/check.log"
