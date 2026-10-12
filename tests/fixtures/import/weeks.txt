@@ -1,0 +1,13 @@
+Disciplina: Oficina de leitura
+Código: LEI-02
+Resumo: Planejamento fictício semanal.
+Semana 1: Primeira leitura
+Leia o texto indicado.
+Fórum: Conversa sobre leitura
+Discussão: single
+Compartilhe uma interpretação.
+Semana 2: Reescrita
+Tarefa: Texto revisado
+Nota: 20
+Envio: text
+Reescreva seu primeiro texto.
