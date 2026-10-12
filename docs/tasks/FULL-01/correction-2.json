@@ -1,0 +1,7 @@
+{
+  "candidate": "sha256:54d88e51f1d98d838ce4bd4120031758676e360cf7d05e565d740da97207af8a",
+  "finding": "Map canonical issue path to the actual control, retaining panel/row selection.",
+  "owner": "/root/project_context",
+  "sourceFrozenSnapshot": "work/candidates/54d88e51f1d98d838ce4bd4120031758676e360cf7d05e565d740da97207af8a",
+  "remoteAccess": "local fictitious lab only"
+}

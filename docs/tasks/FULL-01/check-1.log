@@ -1,0 +1,287 @@
+
+> moodle-ai@0.0.0 check
+> npm run typecheck && npm run lint && npm test && npm run build
+
+
+> moodle-ai@0.0.0 typecheck
+> tsc --noEmit
+
+
+> moodle-ai@0.0.0 lint
+> eslint src app tests --max-warnings 0
+
+
+> moodle-ai@0.0.0 test
+> node scripts/test.mjs
+
+✔ CLI explains usage and returns 2 when no JSON file is supplied (1158.7717ms)
+✔ CLI validates a synthetic JSON and prints counts without echoing course contents (1500.5264ms)
+✔ malformed JSON returns 1 with a useful diagnosis and no source text in logs (1283.8089ms)
+✔ unreadable file and directory return 2 without leaking filesystem exceptions (914.9312ms)
+✔ JSON beyond the 1 MiB limit returns 2 before syntax validation (373.1373ms)
+✔ a valid JSON exactly at the 1 MiB limit is accepted (350.3781ms)
+✔ CLI rejects course-invalid-version.json with a localized issue and preserves the file (407.8878ms)
+✔ CLI rejects course-invalid-duplicate-id.json with a localized issue and preserves the file (356.4497ms)
+✔ CLI rejects course-invalid-internal-field.json with a localized issue and preserves the file (368.4628ms)
+✔ a nested content issue selects the correct block and stable entity rather than a hidden field (16.3338ms)
+✔ reordering across the five-item page boundary keeps the moved activity and its data (97.4892ms)
+✔ commands preserve identity when reordering and increment one revision atomically (255.4583ms)
+✔ stale and partially invalid command batches do not change the draft (84.6086ms)
+✔ IndexedDB persistence carries bytes and refuses an older tab overwrite (64.5301ms)
+✔ portable restores attachments, source bytes and custom presets (116.0563ms)
+✔ portable rejects corrupt bytes and unsafe archive paths before replacing data (58.4083ms)
+✔ portable refuses missing attachment bytes instead of presenting a complete copy (4.3631ms)
+✔ two IndexedDB tabs race atomically and preserve exactly one accepted revision (11.9504ms)
+✔ invalid attachment edits cannot overwrite the previously saved project (15.4502ms)
+✔ portable rejects unknown versions, private manifest fields and trailing entries (182.097ms)
+✔ the import pipeline preserves per-field sources, provider, model and prompt through portable and IndexedDB (704.6416ms)
+✔ user and preset origins follow entity IDs through reordering, while old projects remain valid (420.8838ms)
+✔ WebMCP proposals preserve the course until reviewed and reject stale or private fields (54.9545ms)
+✔ WebMCP refuses ambiguous repeated activity edits and empty edits (1.3836ms)
+✔ optional async registration tolerates StrictMode and resumes without duplicate tools (3.5813ms)
+✔ cadência explícita respeita fuso e seção não recebe fechamento (84.7503ms)
+✔ calendário inexistente e alvo fora das unidades impedem plano (3.0438ms)
+✔ restrições por direção são atualizadas preservando ordem e condições não relacionadas (3.4293ms)
+✔ editar plano invalida hash da prévia e prévia não altera entradas (190.0046ms)
+✔ expansão aditiva aceita seis módulos, três questões e imagem em tabela (68.4071ms)
+✔ blocos rich content referenciam anexos e IDs são únicos globalmente (3.7079ms)
+✔ questões/entradas/blocos são estritos e rejeitam HTML arbitrário (6.903ms)
+✔ aceita seis atividades e devolve uma cópia validada sem alterar a entrada (232.1462ms)
+✔ rejeita versão desconhecida no campo schemaVersion (6.8184ms)
+✔ rejeita campo interno em raiz sem ecoar seu valor (6.0297ms)
+✔ rejeita campo interno em metadata sem ecoar seu valor (2.5874ms)
+✔ rejeita campo interno em sections[0] sem ecoar seu valor (4.3553ms)
+✔ rejeita campo interno em sections[0].activities[0] sem ecoar seu valor (5.34ms)
+✔ rejeita campo interno em sections[0].activities[0].settings sem ecoar seu valor (4.1425ms)
+✔ rejeita campo interno em sections[0].activities[2] sem ecoar seu valor (2.5826ms)
+✔ rejeita campo interno em sections[0].activities[2].settings sem ecoar seu valor (3.5888ms)
+✔ rejeita campo interno em sections[0].activities[2].schedule sem ecoar seu valor (2.6993ms)
+✔ rejeita campo interno em sections[0].activities[4] sem ecoar seu valor (2.8561ms)
+✔ rejeita campo interno em sections[0].activities[4].settings sem ecoar seu valor (2.6441ms)
+✔ rejeita campo interno em sections[0].activities[4].questions[0] sem ecoar seu valor (2.0037ms)
+✔ rejeita campo interno em sections[0].activities[4].questions[0].options[0] sem ecoar seu valor (2.5716ms)
+✔ rejeita campo interno em attachments[0] sem ecoar seu valor (1.9405ms)
+✔ rejeita campo interno em gradebook sem ecoar seu valor (2.4845ms)
+✔ rejeita campo interno em gradebook.categories[0] sem ecoar seu valor (38.573ms)
+✔ valida formato e comprimento de id (14.8717ms)
+✔ valida formato e comprimento de metadata.fullName (6.9662ms)
+✔ valida formato e comprimento de metadata.shortName (3.9152ms)
+✔ valida formato e comprimento de metadata.summary (2.3774ms)
+✔ valida formato e comprimento de sections[0].id (2.1717ms)
+✔ valida formato e comprimento de sections[0].title (5.8779ms)
+✔ valida formato e comprimento de sections[0].summary (41.972ms)
+✔ valida formato e comprimento de sections[0].activities[0].id (4.9307ms)
+✔ valida formato e comprimento de sections[0].activities[0].title (5.2984ms)
+✔ valida formato e comprimento de sections[0].activities[0].description (2.1292ms)
+✔ valida formato e comprimento de sections[0].activities[0].attachmentIds[0] (1.8439ms)
+✔ valida formato e comprimento de sections[0].activities[4].questions[0].id (1.5751ms)
+✔ valida formato e comprimento de sections[0].activities[4].questions[0].statement (5.3713ms)
+✔ valida formato e comprimento de sections[0].activities[4].questions[0].feedback (1.8365ms)
+✔ valida formato e comprimento de sections[0].activities[4].questions[0].options[0].id (2.2084ms)
+✔ valida formato e comprimento de sections[0].activities[4].questions[0].options[0].text (5.1035ms)
+✔ valida formato e comprimento de sections[0].activities[4].questions[0].options[0].feedback (3.9636ms)
+✔ valida formato e comprimento de attachments[0].id (1.6547ms)
+✔ valida formato e comprimento de attachments[0].name (63.9781ms)
+✔ valida formato e comprimento de attachments[0].mediaType (25.3958ms)
+✔ valida formato e comprimento de gradebook.categories[0].id (5.7142ms)
+✔ valida formato e comprimento de gradebook.categories[0].name (3.9952ms)
+✔ valida formato e comprimento de gradebook.categories[0].activityIds[0] (1.5078ms)
+✔ valida restrição numérica ou tipo conhecido 1 em revision (1.7831ms)
+✔ valida restrição numérica ou tipo conhecido 2 em revision (1.9749ms)
+✔ valida restrição numérica ou tipo conhecido 3 em attachments[0].size (1.4688ms)
+✔ valida restrição numérica ou tipo conhecido 4 em attachments[0].size (1.7132ms)
+✔ valida restrição numérica ou tipo conhecido 5 em sections[0].activities[2].settings.maxGrade (1.6037ms)
+✔ valida restrição numérica ou tipo conhecido 6 em sections[0].activities[4].settings.maxGrade (1.6803ms)
+✔ valida restrição numérica ou tipo conhecido 7 em sections[0].activities[4].settings.attempts (1.7763ms)
+✔ valida restrição numérica ou tipo conhecido 8 em sections[0].activities[4].settings.attempts (5.2426ms)
+✔ valida restrição numérica ou tipo conhecido 9 em sections[0].activities[4].settings.attempts (1.8838ms)
+✔ valida restrição numérica ou tipo conhecido 10 em sections[0].activities[4].settings.shuffleQuestions (5.6628ms)
+✔ valida restrição numérica ou tipo conhecido 11 em sections[0].activities[4].questions[0].options[0].fraction (5.994ms)
+✔ valida restrição numérica ou tipo conhecido 12 em sections[0].activities[4].questions[0].options[0].fraction (2.0601ms)
+✔ valida restrição numérica ou tipo conhecido 13 em gradebook.categories[0].weight (4.566ms)
+✔ valida restrição numérica ou tipo conhecido 14 em gradebook.categories[0].weight (4.8384ms)
+✔ valida restrição numérica ou tipo conhecido 15 em sections[0].activities[0].type (7.9019ms)
+✔ valida restrição numérica ou tipo conhecido 16 em sections[0].activities[4].questions[0].type (24.0945ms)
+✔ valida restrição numérica ou tipo conhecido 17 em metadata.organization (3.332ms)
+✔ valida restrição numérica ou tipo conhecido 18 em sections[0].activities[0].settings.discussionMode (1.7259ms)
+✔ valida restrição numérica ou tipo conhecido 19 em sections[0].activities[2].settings.submissionMode (1.7095ms)
+✔ rejeita valores raiz não estruturados e campos obrigatórios ausentes (2.4733ms)
+✔ não normaliza nomes e não acrescenta gradebook, datas ou defaults pedagógicos (3.4887ms)
+✔ aplica limite de coleção 1 em sections (5.4019ms)
+✔ aplica limite de coleção 2 em sections (22.8802ms)
+✔ aplica limite de coleção 3 em sections[0].activities (3.7113ms)
+✔ aplica limite de coleção 4 em sections[0].activities[4].questions (29.7147ms)
+✔ aplica limite de coleção 5 em sections[0].activities[4].questions (20.1518ms)
+✔ aplica limite de coleção 6 em sections[0].activities[4].questions[0].options (3.5349ms)
+✔ aplica limite de coleção 7 em sections[0].activities[4].questions[0].options (3.4134ms)
+✔ aplica limite de coleção 8 em attachments (5.7794ms)
+✔ aplica limite de coleção 9 em sections[0].activities[0].attachmentIds (6.0405ms)
+✔ aplica limite de coleção 10 em gradebook.categories (2.3255ms)
+✔ aplica limite de coleção 11 em gradebook.categories (14.0606ms)
+✔ aplica limite de coleção 12 em gradebook.categories[0].activityIds (1.7825ms)
+✔ aplica limite de coleção 13 em gradebook.categories[0].activityIds (2.4753ms)
+✔ aceita os limites inclusivos sem truncar dados (254.5864ms)
+✔ rejeita ID global duplicado em sections[0].id (1.9563ms)
+✔ rejeita ID global duplicado em sections[0].activities[0].id (1.4647ms)
+✔ rejeita ID global duplicado em sections[0].activities[1].id (4.9222ms)
+✔ rejeita ID global duplicado em sections[0].activities[4].questions[0].id (1.4676ms)
+✔ rejeita ID global duplicado em sections[0].activities[4].questions[0].options[1].id (1.6915ms)
+✔ rejeita ID global duplicado em attachments[0].id (2.0124ms)
+✔ rejeita ID global duplicado em attachments[1].id (1.7215ms)
+✔ rejeita ID global duplicado em gradebook.categories[0].id (2.1557ms)
+✔ rejeita referência de anexo inexistente sem incluir o ID na mensagem (2.6913ms)
+✔ rejeita referência de anexo repetida na mesma atividade (2.4832ms)
+✔ reordenação preserva IDs e associações por ID em todas as listas (2.3106ms)
+✔ datas usam timestamp ISO 8601 com fuso e rejeitam datas inexistentes (13.0953ms)
+✔ abertura deve preceder ou coincidir com fechamento comparando o instante e o fuso (2.8174ms)
+✔ ordem de datas preserva frações inferiores a milissegundo, igualdade e fusos (14.0378ms)
+✔ schedule presente deve informar abertura e/ou fechamento (1.6291ms)
+✔ questão de resposta única exige exatamente uma fração 1 e todas as demais 0 (5.7369ms)
+✔ categoria deve apontar para atividade existente sem ecoar ID desconhecido (1.4506ms)
+✔ atividade pertence a no máximo uma categoria e aparece apenas uma vez nela (1.7996ms)
+✔ fórum não pertence a categorias de notas (1.7009ms)
+✔ pesos somam 100 com tolerância 0,000001 sem exigir categoria para toda atividade (2.4186ms)
+✔ fixture course-invalid-version.json é rejeitada com diagnóstico localizado (1.7604ms)
+✔ fixture course-invalid-duplicate-id.json é rejeitada com diagnóstico localizado (1.2527ms)
+✔ fixture course-invalid-internal-field.json é rejeitada com diagnóstico localizado (1.5283ms)
+✔ MBZ público preserva seis atividades, metadados, notas, referências e bytes sem IA (239.301ms)
+✔ exportação revalida e bloqueia arquivo ausente, divergente e erro do resolver sem vazar exceção (24.1494ms)
+✔ cancelamento durante resolução não aguarda adapter bloqueado (19.3388ms)
+✔ fixture independente completa preserva três questões, imagens em seis destinos e chat junto de tarefa (145.2311ms)
+✔ perfil bloqueia precisão perdida, XML inválido, arquivos grandes e nomes de diretório (32.1618ms)
+✔ exports concorrentes, anexos clonados e fechamento isolado preservam relações (73.2512ms)
+✔ versão de módulos seleciona restauração moderna de question_reference no Moodle 4.1 (32.8249ms)
+✔ entradas editoriais do glossário ativam só userinfo necessário e não incluem contas (46.0278ms)
+✔ rota pública exporta multipart com revisão/hash e download seguro (486.2638ms)
+✔ rota bloqueia JSON inválido, arquivo ausente, campo desconhecido e draft duplicado (143.6801ms)
+✔ rota aplica teto total pelo helper mesmo antes de interpretar multipart (2.8701ms)
+✔ DOCX preserva a ordem de três ocorrências, tabela e imagem da questão com bytes deduplicados (271.6519ms)
+✔ segunda estrutura DOCX usa metadados em tabela e organização semanal (192.6181ms)
+✔ origem de metadados em tabela aponta para o bloco efetivamente mostrado na prévia (42.6621ms)
+✔ imagem ausente e imagem externa bloqueiam sem acesso à URL (91.2676ms)
+✔ arquivo inválido, XML malformado e UTF-8 inválido recebem diagnóstico controlado (18.4132ms)
+✔ perfil por tópicos conserva metadados, duas seções e atividades explícitas (209.7105ms)
+✔ perfil semanal conserva organização e texto de uma estrutura diferente (52.3218ms)
+✔ documento sem perfil reconhecível não vira exemplo e conserva prévia (6.0565ms)
+✔ provider sem chave tem diagnóstico útil e não usa fallback offline (5.6899ms)
+✔ configuração obrigatória ausente não recebe nota inventada (11.3327ms)
+✔ perfil divergente e entradas desconhecidas são rejeitados (41.6308ms)
+✔ metadados conflitantes não sobrescrevem silenciosamente a primeira origem (12.8966ms)
+✔ feedback das alternativas vincula o rótulo e a continuação à alternativa correta (9.7515ms)
+✔ datas, pontuação, pares, configurações discursivas e conceitos têm origem real (26.2441ms)
+✔ continuação de par associativo conserva o enunciado inicial no conteúdo ordenado (4.5658ms)
+✔ PDF com texto selecionável conserva fonte e gera proposta com aviso de leitura (1903.8955ms)
+✔ PDF escaneado e PDF com figuras exigem diagnóstico (44.8736ms)
+✔ openai: transporte simulado, mesmo contrato e credencial somente no header (128.6105ms)
+✔ openai: resposta parseável ainda precisa do domínio e da origem (45.6526ms)
+✔ openai: erros HTTP são sanitizados e não fazem nova chamada ou fallback (60.9713ms)
+✔ gemini: transporte simulado, mesmo contrato e credencial somente no header (12.5661ms)
+✔ gemini: resposta parseável ainda precisa do domínio e da origem (28.5208ms)
+✔ gemini: erros HTTP são sanitizados e não fazem nova chamada ou fallback (46.3634ms)
+✔ recusa, truncamento e resposta vazia dos dois providers são controlados (53.5518ms)
+✔ cancelamento e prazo encerrado preservam diagnóstico sem conteúdo bruto (27.0001ms)
+✔ origem de um campo inexistente é rejeitada mesmo quando o bloco existe (13.5223ms)
+✔ rotas multipart e JSON retornam o mesmo curso e arquivos portáteis (209.9844ms)
+✔ multipart rejeita campo interno, configuração repetida e arquivo faltante (85.2467ms)
+✔ limite do corpo é aplicado antes de ler arquivos e JSON malformado é sanitizado (7.6241ms)
+✔ rota não aplica fallback para provedor sem chave (24.847ms)
+✔ public Moodle routes reject cross origin login before making an external request (24.0505ms)
+✔ student confirmation consumes the reviewed preview once even after an uncertain timeout (298.5862ms)
+✔ date confirmation rejects another session and consumes preview on course drift (187.2828ms)
+✔ unconfigured and remote Moodle configurations disclose setup issues without authentication or network access (5.2034ms)
+✔ strict schema, actual body limit, unknown session and expired sessions fail closed (8.2596ms)
+✔ logout disconnects an anonymous or expired session without requiring an invented JSON body (1.2269ms)
+✔ login starts on the real login form and verifies authentication without exposing Moodle cookies (82.4975ms)
+✔ dates preview reads current Moodle forms and preserves unknown access conditions without sending changes (160.8971ms)
+✔ a changed course is refused before sending any target (46.9004ms)
+✔ partial rejection stops later targets and preserves unrelated Moodle settings (47.3639ms)
+✔ a timeout after a date POST is unknown and later targets are not sent (61.1436ms)
+✔ native quiz selectors express instants in the actual Moodle timezone across summer time (46.6183ms)
+✔ relative Moodle form actions resolve against the current editing page (41.0085ms)
+✔ preview rejects a year the Moodle date selector cannot represent before any mutation (15.8856ms)
+✔ Moodle regenerating an empty Safe Exam Browser draft is not course drift (37.8549ms)
+✔ student preview shows real enrol role and refuses missing/manual teacher defaults before upload (230.9668ms)
+✔ form preserves ordered successful fields and select/checkbox rules without executing HTML (30.0124ms)
+✔ Moodle HTTP never follows a redirect or sends cookies to another origin (87.8509ms)
+✔ HTTP caps actual streamed bytes even with a small declared content length (17.9704ms)
+✔ same origin redirects keep intermediate Moodle cookies private and preserve 307 method (52.0846ms)
+✔ Moodle deadline covers a stalled streamed response after a POST and reports uncertain state (31.6901ms)
+✔ student preview rejects an unreviewed hash before contacting Moodle (16.2147ms)
+✔ missing Moodle upload repository is diagnosed without a numeric fallback or file upload (28.3433ms)
+✔ preview includes controlled pending status from the actual Moodle preview table without creating users (21.7139ms)
+✔ leitura conserva bytes e SHA256 conhecido (119.7427ms)
+✔ não normaliza caminho que tenta sair do pacote (11.5769ms)
+✔ arquivo e expansão total têm limites antes de retornar bytes (10.8485ms)
+✔ arquivo corrompido não entrega resultado parcial (1.3918ms)
+✔ quantidade de entradas é limitada (4.4937ms)
+✔ nomes duplicados no diretório central são rejeitados (4.3382ms)
+✔ CRC corrompido impede entrega mesmo quando tamanho e caminho são válidos (4.1092ms)
+✔ JSON grande sem Content-Length é barrado pelo corpo real (154.7425ms)
+✔ JSON malformado não ecoa entrada no diagnóstico (1.5056ms)
+✔ JSON e multipart reais pequenos são lidos sem alteração (44.949ms)
+✔ xlsx preserva texto, seleciona aba e recusa mapeamento ausente (149.9267ms)
+✔ xls preserva texto, seleciona aba e recusa mapeamento ausente (37.9522ms)
+✔ erros de formato/tamanho nunca viram registros de exemplo (2.0236ms)
+✔ CSV preserva campos com aspas, separador e linhas internas (6.6871ms)
+✔ mapeamento preserva linha original e valida após edição (15.9809ms)
+✔ duplicatas e campo obrigatório impedem CSV (2.1781ms)
+✔ prévia é vinculada a linhas/opções e não altera valores exportados (30.6303ms)
+✔ CSV suspeito exige correção explícita em vez de mudar o nome (1.987ms)
+✔ CSV rejeita aspas encerradas seguidas de texto e cabeçalhos duplicados (4.001ms)
+✔ planilha sem cabeçalho exige mapeamento e preserva primeiro aluno (7.2723ms)
+ℹ tests 215
+ℹ suites 0
+ℹ pass 215
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7003.7047
+
+> moodle-ai@0.0.0 build
+> next build && npm run build:cli
+
+▲ Next.js 16.4.0 (Turbopack)
+✓ Running next.config.ts took 76ms
+- Experiments (use with caution):
+  · proxyClientMaxBodySize: "90mb"
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 2.2s
+  Running TypeScript ...
+  Finished TypeScript in 7.7s ...
+  Collecting page data using 15 workers ...
+  Generating static pages using 15 workers (0/9) ...
+  Generating static pages using 15 workers (2/9) 
+  Generating static pages using 15 workers (4/9) 
+  Generating static pages using 15 workers (6/9) 
+✓ Generating static pages using 15 workers (9/9) in 1076ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /api/export
+├ ƒ /api/import
+├ ƒ /api/interpret
+├ ƒ /api/moodle/course
+├ ƒ /api/moodle/courses
+├ ƒ /api/moodle/dates/confirm
+├ ƒ /api/moodle/dates/preview
+├ ƒ /api/moodle/login
+├ ƒ /api/moodle/logout
+├ ƒ /api/moodle/status
+├ ƒ /api/moodle/students/confirm
+├ ƒ /api/moodle/students/preview
+├ ƒ /api/students/parse
+├ ○ /cadastro-lote
+└ ○ /datas
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+> moodle-ai@0.0.0 build:cli
+> tsc -p tsconfig.build.json
+

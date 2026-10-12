@@ -1,6 +1,8 @@
 # Backlog da v2
 
-Nome provisório: **Moodle-AI**. Execução inicial liberada em 12/10/2026. Data e duração do hackathon ainda não definidas; não há promessa de prazo. [Spec V01](specs/V01-course-to-mbz.md) e [tickets](tickets/README.md) detalham o início. V01-01 entrega bootstrap/validação; o aceite de V01 exige também o MBZ. O registro [V01-01](tasks/V01-01.json) é a autoridade de estado.
+Nome provisório: **Moodle-AI**. Execução inicial liberada em 12/10/2026. Data e duração do hackathon ainda não definidas; não há promessa de prazo. [Spec V01](specs/V01-course-to-mbz.md) e [tickets](tickets/README.md) detalham o início. O registro [V01-01](tasks/V01-01.json) preserva o aceite inicial; [FULL-01](tasks/FULL-01.json) registra implementação, verificações e integração da expansão.
+
+Implementação local atual: criação/editor, seis módulos/três questões, importação de três DOCX fictícios e dois perfis, providers testados por HTTP simulado, cópia portátil/IndexedDB com origem dos campos, MBZ restaurado e adaptadores de cadastro/datas verificados no laboratório. Aceite definitivo e hashes estão em FULL-01. Publicação, chamada paga de IA e outras versões Moodle permanecem fora da prova atual. Nunca acessar ou testar Moodle do IFCE; somente `localhost:3211` fictício.
 
 V01–V07 representam o primeiro MVP. O [plano ampliado](BUILDER_PIPELINE_PLAN.md) conserva o escopo da versão completa: portabilidade com bytes/presets, imagens incorporadas, seis módulos/três tipos de questão, dois provedores reais, WebMCP, cadastro e datas. F01–F03 são entregas posteriores à primeira demonstração e obrigatórias na paridade da versão completa; a ordenação não as exclui.
 

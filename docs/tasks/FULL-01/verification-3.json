@@ -1,0 +1,38 @@
+{
+  "revision": "sha256:3d3c7883e7ac3566794af4cd1174c6dcab2581cea1840d881c933f11d1bf34e0",
+  "filesVerified": 199,
+  "dependencyInputs": [
+    {
+      "path": "package.json",
+      "sha256": "90f3ba3905db7caca4a67da96a3f1c246bc9124dc72ee816bacbaf60db82a3e7"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "b5d8ed3d704d5b13913fe997b24cbb3492e1795819b7afa44597d074626b1994"
+    }
+  ],
+  "cleanInstall": {
+    "command": "npm ci --ignore-scripts --offline",
+    "exitCode": 0,
+    "evidence": "docs/tasks/FULL-01/clean-install-2.log",
+    "reuseReason": "Exact package.json/package-lock.json hashes unchanged from pin2; no new dependency installation claimed."
+  },
+  "global": {
+    "revision": "sha256:3d3c7883e7ac3566794af4cd1174c6dcab2581cea1840d881c933f11d1bf34e0",
+    "exitCode": 0,
+    "command": "npm run check",
+    "tests": 249,
+    "passed": 249,
+    "failed": 0
+  },
+  "browser": "docs/tasks/FULL-01/browser.md",
+  "http": "docs/tasks/FULL-01/http-final-3.json",
+  "portable": "docs/tasks/FULL-01/portable-legacy-3.json",
+  "lab": [
+    "docs/lab/restored-full.json",
+    "docs/lab/restored-topicos.json",
+    "docs/lab/restored-semanas.json",
+    "docs/lab/complete-restored.json",
+    "tests/moodle/q2-lab-readback.json"
+  ]
+}

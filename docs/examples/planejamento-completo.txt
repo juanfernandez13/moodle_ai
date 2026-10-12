@@ -1,0 +1,64 @@
+Disciplina: Curso completo fictício
+Código: DEMO-COMPLETO
+Início do curso: 2026-10-12T00:00:00Z
+Carga horária: 40
+Professor: Professor de demonstração
+Semestre: 2026.2
+Turma: Turma fictícia
+Resumo: Planejamento de demonstração com seis módulos e três tipos de questão.
+Tópico 1: Preparação e revisão
+Fórum: Apresentações
+Discussão: geral
+Descrição: Apresente seus objetivos de estudo.
+Fórum: Discussão orientada
+Discussão: única
+Descrição: Compare duas estratégias de revisão.
+Tarefa: Plano de estudo
+Nota: 10
+Envio: arquivo
+Descrição: Entregue um plano de estudo fictício.
+Abre: 2026-10-12T08:00:00-03:00
+Fecha: 2026-10-18T23:59:00-03:00
+Tarefa: Reflexão
+Nota: 100
+Envio: ambos
+Descrição: Registre uma reflexão sobre seu processo.
+Quiz: Verificação inicial
+Nota: 10
+Tentativas: 2
+Embaralhar: não
+Questão MC: Qual prática ajuda a revisar?
+Pontuação: 1
+Feedback: A revisão ativa favorece a prática.
+Alternativa correta: Recuperar o conteúdo de memória
+Feedback: Você identificou uma prática ativa.
+Alternativa: Apenas reler sem pausa
+Quiz: Verificação final
+Nota: 100
+Tentativas: 1
+Embaralhar: sim
+Questão associativa: Associe as práticas aos objetivos.
+Pontuação: 2
+Par: Revisar => Consolidar
+Par: Planejar => Organizar
+Questão discursiva: Descreva sua estratégia de estudo.
+Pontuação: 3
+Formato da resposta: editor
+Resposta obrigatória: sim
+Linhas: 15
+Anexos permitidos: 1
+Chat: Conversa de revisão
+Repetição: semanal
+Reter dias: 30
+Sessão: 2026-10-19T12:00:00Z
+Descrição: Converse sobre o planejamento fictício.
+Wiki: Estratégias da turma
+Modo: colaborativo
+Página inicial: Estratégias
+Descrição: Construa uma lista de estratégias.
+Glossário: Termos do curso
+Duplicatas: não
+Aprovação: sim
+Entradas por página: 20
+Conceito: Revisão
+Definição: Retomar um conteúdo com intenção de consolidar a aprendizagem.

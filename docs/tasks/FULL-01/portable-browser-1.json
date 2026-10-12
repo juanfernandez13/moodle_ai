@@ -1,0 +1,13 @@
+{
+  "candidate": "sha256:98da4c329b360a5a3b78b4a08cf08d26ecb415ec543d35e6f9bfa464caa6f8c6",
+  "downloadedByBrowser": true,
+  "filename": "MAT-IMG.moodleai",
+  "sha256": "32cfa196a4c66c2c2f764f62f1ce1114cd3422ca9c2aa05a0af345075b98665a",
+  "bytes": 4877,
+  "hashedEntries": 5,
+  "courseId": "course-source-1-1",
+  "assets": 1,
+  "sources": 1,
+  "provenanceProvider": "offline",
+  "oldWorkspaceIdentity": true
+}

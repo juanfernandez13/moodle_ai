@@ -1,0 +1,61 @@
+{
+  "revision": "sha256:3d3c7883e7ac3566794af4cd1174c6dcab2581cea1840d881c933f11d1bf34e0",
+  "runtime": "actual Next production HTTP, fixed local lab, offline provider only",
+  "results": [
+    {
+      "route": "interpret",
+      "origin": "http://127.0.0.1:3210",
+      "status": 200,
+      "activities": 9
+    },
+    {
+      "route": "import",
+      "fixture": "topicos-com-imagens",
+      "status": 200,
+      "sections": 1,
+      "assets": 1
+    },
+    {
+      "route": "import",
+      "fixture": "semanas-em-tabela",
+      "status": 200,
+      "sections": 2,
+      "assets": 0
+    },
+    {
+      "route": "interpret-rejected",
+      "suppliedOrigin": "https://evil.invalid",
+      "status": 403
+    },
+    {
+      "route": "interpret-rejected",
+      "suppliedOrigin": "http://evil.invalid",
+      "status": 403
+    },
+    {
+      "route": "interpret-rejected",
+      "suppliedOrigin": "missing",
+      "status": 403
+    },
+    {
+      "route": "interpret-rejected",
+      "suppliedOrigin": "null",
+      "status": 403
+    },
+    {
+      "route": "interpret-rejected",
+      "suppliedOrigin": "http://localhost:3210",
+      "status": 403
+    },
+    {
+      "route": "interpret-content-type",
+      "status": 415
+    },
+    {
+      "route": "moodle-login-and-courses",
+      "status": 200,
+      "courseCount": 6,
+      "lab": "http://localhost:3211"
+    }
+  ]
+}

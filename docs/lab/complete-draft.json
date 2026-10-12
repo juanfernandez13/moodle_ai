@@ -1,0 +1,316 @@
+{
+  "schemaVersion": 1,
+  "id": "course-source-1-1",
+  "revision": 0,
+  "metadata": {
+    "fullName": "Curso completo fictício",
+    "shortName": "DEMO-COMPLETO",
+    "summary": "Planejamento de demonstração com seis módulos e três tipos de questão.",
+    "organization": "topics",
+    "startDate": "2026-10-12T00:00:00Z",
+    "summaryBlocks": [
+      {
+        "id": "block-source-1-8",
+        "kind": "text",
+        "text": "Planejamento de demonstração com seis módulos e três tipos de questão."
+      }
+    ],
+    "teacher": {
+      "name": "Professor de demonstração"
+    },
+    "workloadHours": 40,
+    "semester": "2026.2",
+    "className": "Turma fictícia"
+  },
+  "sections": [
+    {
+      "id": "section-source-1-2",
+      "title": "Preparação e revisão",
+      "summary": "",
+      "activities": [
+        {
+          "id": "activity-source-1-3",
+          "title": "Apresentações",
+          "description": "Apresente seus objetivos de estudo.",
+          "attachmentIds": [],
+          "descriptionBlocks": [
+            {
+              "id": "block-source-1-12",
+              "kind": "text",
+              "text": "Apresente seus objetivos de estudo."
+            }
+          ],
+          "type": "forum",
+          "settings": {
+            "discussionMode": "general"
+          }
+        },
+        {
+          "id": "activity-source-1-4",
+          "title": "Discussão orientada",
+          "description": "Compare duas estratégias de revisão.",
+          "attachmentIds": [],
+          "descriptionBlocks": [
+            {
+              "id": "block-source-1-15",
+              "kind": "text",
+              "text": "Compare duas estratégias de revisão."
+            }
+          ],
+          "type": "forum",
+          "settings": {
+            "discussionMode": "single"
+          }
+        },
+        {
+          "id": "activity-source-1-5",
+          "title": "Plano de estudo",
+          "description": "Entregue um plano de estudo fictício.",
+          "attachmentIds": [],
+          "schedule": {
+            "opensAt": "2026-10-12T08:00:00-03:00",
+            "closesAt": "2026-10-18T23:59:00-03:00"
+          },
+          "descriptionBlocks": [
+            {
+              "id": "block-source-1-19",
+              "kind": "text",
+              "text": "Entregue um plano de estudo fictício."
+            }
+          ],
+          "type": "assignment",
+          "settings": {
+            "maxGrade": 10,
+            "submissionMode": "file"
+          }
+        },
+        {
+          "id": "activity-source-1-6",
+          "title": "Reflexão",
+          "description": "Registre uma reflexão sobre seu processo.",
+          "attachmentIds": [],
+          "descriptionBlocks": [
+            {
+              "id": "block-source-1-25",
+              "kind": "text",
+              "text": "Registre uma reflexão sobre seu processo."
+            }
+          ],
+          "type": "assignment",
+          "settings": {
+            "maxGrade": 100,
+            "submissionMode": "both"
+          }
+        },
+        {
+          "id": "activity-source-1-7",
+          "title": "Verificação inicial",
+          "description": "",
+          "attachmentIds": [],
+          "type": "quiz",
+          "settings": {
+            "maxGrade": 10,
+            "attempts": 2,
+            "shuffleQuestions": false
+          },
+          "questions": [
+            {
+              "id": "question-source-1-8",
+              "statement": "Qual prática ajuda a revisar?",
+              "feedback": "A revisão ativa favorece a prática.",
+              "maxMark": 1,
+              "statementBlocks": [
+                {
+                  "id": "block-source-1-30",
+                  "kind": "text",
+                  "text": "Qual prática ajuda a revisar?"
+                }
+              ],
+              "feedbackBlocks": [
+                {
+                  "id": "block-source-1-32",
+                  "kind": "text",
+                  "text": "A revisão ativa favorece a prática."
+                }
+              ],
+              "type": "multiple-choice",
+              "options": [
+                {
+                  "id": "option-source-1-9",
+                  "text": "Recuperar o conteúdo de memória",
+                  "fraction": 1,
+                  "feedback": "Você identificou uma prática ativa.",
+                  "textBlocks": [
+                    {
+                      "id": "block-source-1-33",
+                      "kind": "text",
+                      "text": "Recuperar o conteúdo de memória"
+                    }
+                  ],
+                  "feedbackBlocks": [
+                    {
+                      "id": "block-source-1-34",
+                      "kind": "text",
+                      "text": "Você identificou uma prática ativa."
+                    }
+                  ]
+                },
+                {
+                  "id": "option-source-1-10",
+                  "text": "Apenas reler sem pausa",
+                  "fraction": 0,
+                  "feedback": "",
+                  "textBlocks": [
+                    {
+                      "id": "block-source-1-35",
+                      "kind": "text",
+                      "text": "Apenas reler sem pausa"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "activity-source-1-11",
+          "title": "Verificação final",
+          "description": "",
+          "attachmentIds": [],
+          "type": "quiz",
+          "settings": {
+            "maxGrade": 100,
+            "attempts": 1,
+            "shuffleQuestions": true
+          },
+          "questions": [
+            {
+              "id": "question-source-1-12",
+              "statement": "Associe as práticas aos objetivos.",
+              "feedback": "",
+              "maxMark": 2,
+              "statementBlocks": [
+                {
+                  "id": "block-source-1-40",
+                  "kind": "text",
+                  "text": "Associe as práticas aos objetivos."
+                }
+              ],
+              "type": "matching",
+              "pairs": [
+                {
+                  "id": "pair-source-1-13",
+                  "statement": "Revisar",
+                  "answer": "Consolidar",
+                  "statementBlocks": [
+                    {
+                      "id": "block-source-1-42",
+                      "kind": "text",
+                      "text": "Revisar"
+                    }
+                  ]
+                },
+                {
+                  "id": "pair-source-1-14",
+                  "statement": "Planejar",
+                  "answer": "Organizar",
+                  "statementBlocks": [
+                    {
+                      "id": "block-source-1-43",
+                      "kind": "text",
+                      "text": "Planejar"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "question-source-1-15",
+              "statement": "Descreva sua estratégia de estudo.",
+              "feedback": "",
+              "maxMark": 3,
+              "statementBlocks": [
+                {
+                  "id": "block-source-1-44",
+                  "kind": "text",
+                  "text": "Descreva sua estratégia de estudo."
+                }
+              ],
+              "type": "essay",
+              "settings": {
+                "responseFormat": "editor",
+                "responseRequired": true,
+                "responseLines": 15,
+                "attachments": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "activity-source-1-16",
+          "title": "Conversa de revisão",
+          "description": "Converse sobre o planejamento fictício.",
+          "attachmentIds": [],
+          "descriptionBlocks": [
+            {
+              "id": "block-source-1-54",
+              "kind": "text",
+              "text": "Converse sobre o planejamento fictício."
+            }
+          ],
+          "type": "chat",
+          "settings": {
+            "sessionAt": "2026-10-19T12:00:00Z",
+            "repeat": "weekly",
+            "keepDays": 30
+          }
+        },
+        {
+          "id": "activity-source-1-17",
+          "title": "Estratégias da turma",
+          "description": "Construa uma lista de estratégias.",
+          "attachmentIds": [],
+          "descriptionBlocks": [
+            {
+              "id": "block-source-1-58",
+              "kind": "text",
+              "text": "Construa uma lista de estratégias."
+            }
+          ],
+          "type": "wiki",
+          "settings": {
+            "mode": "collaborative",
+            "firstPageTitle": "Estratégias"
+          }
+        },
+        {
+          "id": "activity-source-1-18",
+          "title": "Termos do curso",
+          "description": "",
+          "attachmentIds": [],
+          "type": "glossary",
+          "settings": {
+            "allowDuplicates": false,
+            "requireApproval": true,
+            "entriesPerPage": 20
+          },
+          "entries": [
+            {
+              "id": "entry-source-1-19",
+              "concept": "Revisão",
+              "definition": "Retomar um conteúdo com intenção de consolidar a aprendizagem.",
+              "definitionBlocks": [
+                {
+                  "id": "block-source-1-64",
+                  "kind": "text",
+                  "text": "Retomar um conteúdo com intenção de consolidar a aprendizagem."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "attachments": []
+}

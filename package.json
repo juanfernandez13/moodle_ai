@@ -3,13 +3,18 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Preparação de cursos Moodle com contrato validado e exportação planejada",
-  "engines": { "node": ">=24.0.0 <25" },
+  "description": "Preparação, revisão e exportação de cursos Moodle com documentos e arquivos preservados",
+  "engines": {
+    "node": ">=24.0.0 <25"
+  },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src tests --max-warnings 0",
-    "test": "node --test tests/domain/*.test.ts tests/cli/*.test.ts",
-    "build": "tsc -p tsconfig.build.json",
+    "lint": "eslint src app tests --max-warnings 0",
+    "test": "node scripts/test.mjs",
+    "dev": "next dev --hostname 127.0.0.1 --port 3210",
+    "start": "next start --hostname 127.0.0.1 --port 3210",
+    "build:cli": "tsc -p tsconfig.build.json",
+    "build": "next build && npm run build:cli",
     "check": "npm run typecheck && npm run lint && npm test && npm run build",
     "validate:draft": "node src/cli/validate-draft.ts",
     "demo": "npm run validate:draft -- tests/fixtures/course-valid.json",
@@ -20,10 +25,29 @@
   },
   "devDependencies": {
     "@colbymchenry/codegraph": "1.6.2",
+    "@tailwindcss/postcss": "4.3.3",
     "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@types/tar-stream": "3.1.5",
     "eslint": "10.12.0",
+    "fake-indexeddb": "6.2.5",
+    "tailwindcss": "4.3.3",
     "typescript": "5.9.3",
     "typescript-eslint": "8.71.1"
   },
-  "dependencies": { "zod": "4.6.6" }
+  "dependencies": {
+    "cheerio": "1.2.0",
+    "fast-xml-parser": "5.11.2",
+    "jszip": "3.10.2",
+    "lucide-react": "1.55.0",
+    "mammoth": "1.13.0",
+    "next": "16.4.0",
+    "pdfjs-dist": "6.4.299",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "tar-stream": "3.2.2",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
+    "zod": "4.6.6"
+  }
 }

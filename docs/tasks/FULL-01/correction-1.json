@@ -1,0 +1,11 @@
+{
+  "candidate": "sha256:98da4c329b360a5a3b78b4a08cf08d26ecb415ec543d35e6f9bfa464caa6f8c6",
+  "findings": [
+    "AI route Origin and JSON Content-Type",
+    "Dates multi-valued form fidelity",
+    "Save snapshot before await",
+    "UTC timestamp conversion",
+    "Rich tables pagination"
+  ],
+  "remoteAccess": "local fictitious lab only"
+}
