@@ -1,0 +1,17 @@
+FULL-01 extensão aditiva — evidência de execução, 12/10/2026
+
+Interface observada: validateDraft(unknown).
+1. tests/domain/expanded-draft.test.ts escrito antes de ampliar schema/rules.
+2. Primeiro run: dependência zod ausente. Não conta como RED comportamental.
+3. Após npm install do integrador: node --test tests/domain/expanded-draft.test.ts
+   exit1, 2 falhas reais: expansão retorna false em vez de true; duplicate_id/image
+   reference ainda não são diagnosticados pelo domínio antigo.
+4. Schema e regras ampliados; correção de parêntese em compilação.
+5. node --test tests/domain/*.test.ts: exit0, 101/101 testes passam.
+   Inclui 98 regressões da validação v1 e 3 testes da expansão.
+
+Os dois comportamentos novos foram implementados em um ciclo agrupado.
+O terceiro teste (campo html desconhecido) já passava pela rejeição estrutural
+antiga; foi mantido como regressão após a extensão.
+Os testes v1 que conhecem a fixture MCQ ganharam narrowing explícito da união;
+seus aceites e valores esperados foram preservados.

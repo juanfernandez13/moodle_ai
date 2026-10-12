@@ -1,0 +1,138 @@
+
+> moodle-ai@0.0.0 check
+> npm run typecheck && npm run lint && npm test && npm run build
+
+
+> moodle-ai@0.0.0 typecheck
+> tsc --noEmit
+
+
+> moodle-ai@0.0.0 lint
+> eslint src tests --max-warnings 0
+
+
+> moodle-ai@0.0.0 test
+> node --test tests/domain/*.test.ts tests/cli/*.test.ts
+
+✔ CLI explains usage and returns 2 when no JSON file is supplied (790.0578ms)
+✔ CLI validates a synthetic JSON and prints counts without echoing course contents (663.3917ms)
+✔ malformed JSON returns 1 with a useful diagnosis and no source text in logs (518.5673ms)
+✔ unreadable file and directory return 2 without leaking filesystem exceptions (963.8274ms)
+✔ JSON beyond the 1 MiB limit returns 2 before syntax validation (489.944ms)
+✔ a valid JSON exactly at the 1 MiB limit is accepted (527.7719ms)
+✔ CLI rejects course-invalid-version.json with a localized issue and preserves the file (552.0534ms)
+✔ CLI rejects course-invalid-duplicate-id.json with a localized issue and preserves the file (632.4133ms)
+✔ CLI rejects course-invalid-internal-field.json with a localized issue and preserves the file (743.3614ms)
+✔ expansão aditiva aceita seis módulos, três questões e imagem em tabela (54.826ms)
+✔ blocos rich content referenciam anexos e IDs são únicos globalmente (4.7987ms)
+✔ questões/entradas/blocos são estritos e rejeitam HTML arbitrário (6.0399ms)
+✔ aceita seis atividades e devolve uma cópia validada sem alterar a entrada (46.9805ms)
+✔ rejeita versão desconhecida no campo schemaVersion (5.3773ms)
+✔ rejeita campo interno em raiz sem ecoar seu valor (3.254ms)
+✔ rejeita campo interno em metadata sem ecoar seu valor (2.6872ms)
+✔ rejeita campo interno em sections[0] sem ecoar seu valor (3.5692ms)
+✔ rejeita campo interno em sections[0].activities[0] sem ecoar seu valor (3.0629ms)
+✔ rejeita campo interno em sections[0].activities[0].settings sem ecoar seu valor (3.2717ms)
+✔ rejeita campo interno em sections[0].activities[2] sem ecoar seu valor (3.6397ms)
+✔ rejeita campo interno em sections[0].activities[2].settings sem ecoar seu valor (2.5864ms)
+✔ rejeita campo interno em sections[0].activities[2].schedule sem ecoar seu valor (2.7648ms)
+✔ rejeita campo interno em sections[0].activities[4] sem ecoar seu valor (2.1472ms)
+✔ rejeita campo interno em sections[0].activities[4].settings sem ecoar seu valor (2.823ms)
+✔ rejeita campo interno em sections[0].activities[4].questions[0] sem ecoar seu valor (1.8528ms)
+✔ rejeita campo interno em sections[0].activities[4].questions[0].options[0] sem ecoar seu valor (4.3683ms)
+✔ rejeita campo interno em attachments[0] sem ecoar seu valor (3.0435ms)
+✔ rejeita campo interno em gradebook sem ecoar seu valor (2.5391ms)
+✔ rejeita campo interno em gradebook.categories[0] sem ecoar seu valor (2.2687ms)
+✔ valida formato e comprimento de id (14.0438ms)
+✔ valida formato e comprimento de metadata.fullName (4.2271ms)
+✔ valida formato e comprimento de metadata.shortName (7.3972ms)
+✔ valida formato e comprimento de metadata.summary (2.867ms)
+✔ valida formato e comprimento de sections[0].id (2.1118ms)
+✔ valida formato e comprimento de sections[0].title (5.7382ms)
+✔ valida formato e comprimento de sections[0].summary (2.1834ms)
+✔ valida formato e comprimento de sections[0].activities[0].id (2.4827ms)
+✔ valida formato e comprimento de sections[0].activities[0].title (4.1361ms)
+✔ valida formato e comprimento de sections[0].activities[0].description (2.0181ms)
+✔ valida formato e comprimento de sections[0].activities[0].attachmentIds[0] (2.1951ms)
+✔ valida formato e comprimento de sections[0].activities[4].questions[0].id (1.6845ms)
+✔ valida formato e comprimento de sections[0].activities[4].questions[0].statement (4.8245ms)
+✔ valida formato e comprimento de sections[0].activities[4].questions[0].feedback (1.7611ms)
+✔ valida formato e comprimento de sections[0].activities[4].questions[0].options[0].id (2.0216ms)
+✔ valida formato e comprimento de sections[0].activities[4].questions[0].options[0].text (5.6112ms)
+✔ valida formato e comprimento de sections[0].activities[4].questions[0].options[0].feedback (2.3643ms)
+✔ valida formato e comprimento de attachments[0].id (2.1454ms)
+✔ valida formato e comprimento de attachments[0].name (4.0626ms)
+✔ valida formato e comprimento de attachments[0].mediaType (6.0644ms)
+✔ valida formato e comprimento de gradebook.categories[0].id (1.8275ms)
+✔ valida formato e comprimento de gradebook.categories[0].name (3.7795ms)
+✔ valida formato e comprimento de gradebook.categories[0].activityIds[0] (2.0405ms)
+✔ valida restrição numérica ou tipo conhecido 1 em revision (2.186ms)
+✔ valida restrição numérica ou tipo conhecido 2 em revision (2.4174ms)
+✔ valida restrição numérica ou tipo conhecido 3 em attachments[0].size (1.9817ms)
+✔ valida restrição numérica ou tipo conhecido 4 em attachments[0].size (1.7987ms)
+✔ valida restrição numérica ou tipo conhecido 5 em sections[0].activities[2].settings.maxGrade (2.376ms)
+✔ valida restrição numérica ou tipo conhecido 6 em sections[0].activities[4].settings.maxGrade (1.7137ms)
+✔ valida restrição numérica ou tipo conhecido 7 em sections[0].activities[4].settings.attempts (1.7406ms)
+✔ valida restrição numérica ou tipo conhecido 8 em sections[0].activities[4].settings.attempts (1.6512ms)
+✔ valida restrição numérica ou tipo conhecido 9 em sections[0].activities[4].settings.attempts (1.8462ms)
+✔ valida restrição numérica ou tipo conhecido 10 em sections[0].activities[4].settings.shuffleQuestions (2.0627ms)
+✔ valida restrição numérica ou tipo conhecido 11 em sections[0].activities[4].questions[0].options[0].fraction (2.4601ms)
+✔ valida restrição numérica ou tipo conhecido 12 em sections[0].activities[4].questions[0].options[0].fraction (1.7867ms)
+✔ valida restrição numérica ou tipo conhecido 13 em gradebook.categories[0].weight (1.9555ms)
+✔ valida restrição numérica ou tipo conhecido 14 em gradebook.categories[0].weight (2.2637ms)
+✔ valida restrição numérica ou tipo conhecido 15 em sections[0].activities[0].type (1.635ms)
+✔ valida restrição numérica ou tipo conhecido 16 em sections[0].activities[4].questions[0].type (2.8761ms)
+✔ valida restrição numérica ou tipo conhecido 17 em metadata.organization (1.4783ms)
+✔ valida restrição numérica ou tipo conhecido 18 em sections[0].activities[0].settings.discussionMode (2.2423ms)
+✔ valida restrição numérica ou tipo conhecido 19 em sections[0].activities[2].settings.submissionMode (1.9319ms)
+✔ rejeita valores raiz não estruturados e campos obrigatórios ausentes (2.9325ms)
+✔ não normaliza nomes e não acrescenta gradebook, datas ou defaults pedagógicos (2.2202ms)
+✔ aplica limite de coleção 1 em sections (1.6311ms)
+✔ aplica limite de coleção 2 em sections (18.7079ms)
+✔ aplica limite de coleção 3 em sections[0].activities (5.6381ms)
+✔ aplica limite de coleção 4 em sections[0].activities[4].questions (1.6572ms)
+✔ aplica limite de coleção 5 em sections[0].activities[4].questions (5.7093ms)
+✔ aplica limite de coleção 6 em sections[0].activities[4].questions[0].options (2.3483ms)
+✔ aplica limite de coleção 7 em sections[0].activities[4].questions[0].options (3.1083ms)
+✔ aplica limite de coleção 8 em attachments (4.7992ms)
+✔ aplica limite de coleção 9 em sections[0].activities[0].attachmentIds (2.5172ms)
+✔ aplica limite de coleção 10 em gradebook.categories (1.4271ms)
+✔ aplica limite de coleção 11 em gradebook.categories (2.6132ms)
+✔ aplica limite de coleção 12 em gradebook.categories[0].activityIds (2.0112ms)
+✔ aplica limite de coleção 13 em gradebook.categories[0].activityIds (1.9237ms)
+✔ aceita os limites inclusivos sem truncar dados (48.6559ms)
+✔ rejeita ID global duplicado em sections[0].id (2.7952ms)
+✔ rejeita ID global duplicado em sections[0].activities[0].id (1.7589ms)
+✔ rejeita ID global duplicado em sections[0].activities[1].id (1.2746ms)
+✔ rejeita ID global duplicado em sections[0].activities[4].questions[0].id (1.1757ms)
+✔ rejeita ID global duplicado em sections[0].activities[4].questions[0].options[1].id (1.887ms)
+✔ rejeita ID global duplicado em attachments[0].id (1.7405ms)
+✔ rejeita ID global duplicado em attachments[1].id (1.9452ms)
+✔ rejeita ID global duplicado em gradebook.categories[0].id (2.5518ms)
+✔ rejeita referência de anexo inexistente sem incluir o ID na mensagem (1.7526ms)
+✔ rejeita referência de anexo repetida na mesma atividade (1.5773ms)
+✔ reordenação preserva IDs e associações por ID em todas as listas (3.1494ms)
+✔ datas usam timestamp ISO 8601 com fuso e rejeitam datas inexistentes (14.6093ms)
+✔ abertura deve preceder ou coincidir com fechamento comparando o instante e o fuso (2.1798ms)
+✔ ordem de datas preserva frações inferiores a milissegundo, igualdade e fusos (14.0207ms)
+✔ schedule presente deve informar abertura e/ou fechamento (1.3735ms)
+✔ questão de resposta única exige exatamente uma fração 1 e todas as demais 0 (8.2447ms)
+✔ categoria deve apontar para atividade existente sem ecoar ID desconhecido (2.235ms)
+✔ atividade pertence a no máximo uma categoria e aparece apenas uma vez nela (2.0224ms)
+✔ fórum não pertence a categorias de notas (1.7016ms)
+✔ pesos somam 100 com tolerância 0,000001 sem exigir categoria para toda atividade (4.2902ms)
+✔ fixture course-invalid-version.json é rejeitada com diagnóstico localizado (4.4694ms)
+✔ fixture course-invalid-duplicate-id.json é rejeitada com diagnóstico localizado (1.9674ms)
+✔ fixture course-invalid-internal-field.json é rejeitada com diagnóstico localizado (15.8099ms)
+ℹ tests 110
+ℹ suites 0
+ℹ pass 110
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6142.2135
+
+> moodle-ai@0.0.0 build
+> tsc -p tsconfig.build.json
+

@@ -34,7 +34,7 @@ function firstQuiz(input: CourseDraft) {
 
 function firstQuestion(input: CourseDraft) {
   const question = firstQuiz(input).questions[0];
-  assert.ok(question);
+  assert.ok(question?.type === 'multiple-choice');
   return question;
 }
 
@@ -271,7 +271,7 @@ test('reordenação preserva IDs e associações por ID em todas as listas', () 
       type: activity.type,
       attachmentIds: [...activity.attachmentIds].sort(),
       questions: activity.type === 'quiz' ? Object.fromEntries(activity.questions.map((question) => [question.id,
-        Object.fromEntries(question.options.map((option) => [option.id, option.fraction]))])) : undefined,
+        question.type === 'multiple-choice' ? Object.fromEntries(question.options.map((option) => [option.id, option.fraction])) : {}])) : undefined,
     }])));
   }
   const before = bindings(input);
@@ -282,7 +282,7 @@ test('reordenação preserva IDs e associações por ID em todas as listas', () 
       activity.attachmentIds.reverse();
       if (activity.type === 'quiz') {
         activity.questions.reverse();
-        for (const question of activity.questions) question.options.reverse();
+        for (const question of activity.questions) { assert.ok(question.type === 'multiple-choice'); question.options.reverse(); }
       }
     }
   }
