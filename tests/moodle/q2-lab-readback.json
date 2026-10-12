@@ -1,0 +1,95 @@
+{
+  "review": "FULL-01/Q2",
+  "origin": "http://localhost:3211",
+  "courseId": 4,
+  "moodleVersion": "4.1.17 Build20250317",
+  "sourceSha256": "9af9b013bc440c45d650e8830875b1af0587b7cde190d49942620fc6ab6cb159",
+  "counts": {
+    "applied": 7,
+    "error": 0,
+    "unknown": 0,
+    "not_applied": 0
+  },
+  "partial": false,
+  "results": [
+    {
+      "id": "section:6",
+      "title": "Primeiro tópico",
+      "status": "applied",
+      "message": "Datas aplicadas e conferidas por releitura no Moodle."
+    },
+    {
+      "id": "module:15",
+      "title": "Apresentações",
+      "status": "applied",
+      "message": "Datas aplicadas e conferidas por releitura no Moodle."
+    },
+    {
+      "id": "module:16",
+      "title": "Discussão do tópico",
+      "status": "applied",
+      "message": "Datas aplicadas e conferidas por releitura no Moodle."
+    },
+    {
+      "id": "module:17",
+      "title": "Plano de estudo",
+      "status": "applied",
+      "message": "Datas aplicadas e conferidas por releitura no Moodle."
+    },
+    {
+      "id": "module:18",
+      "title": "Reflexão final",
+      "status": "applied",
+      "message": "Datas aplicadas e conferidas por releitura no Moodle."
+    },
+    {
+      "id": "module:19",
+      "title": "Verificação inicial",
+      "status": "applied",
+      "message": "Datas aplicadas e conferidas por releitura no Moodle."
+    },
+    {
+      "id": "module:20",
+      "title": "Verificação final",
+      "status": "applied",
+      "message": "Datas aplicadas e conferidas por releitura no Moodle."
+    }
+  ],
+  "readback": [
+    {
+      "id": "section:6",
+      "opensAt": "2026-10-12T11:00:00.000Z"
+    },
+    {
+      "id": "module:15",
+      "opensAt": "2026-10-12T11:00:00.000Z",
+      "closesAt": "2026-10-18T21:00:00.000Z"
+    },
+    {
+      "id": "module:16",
+      "opensAt": "2026-10-12T11:00:00.000Z",
+      "closesAt": "2026-10-18T21:00:00.000Z"
+    },
+    {
+      "id": "module:17",
+      "opensAt": "2026-10-12T11:00:00.000Z",
+      "closesAt": "2026-10-18T21:00:00.000Z"
+    },
+    {
+      "id": "module:18",
+      "opensAt": "2026-10-12T11:00:00.000Z",
+      "closesAt": "2026-10-18T21:00:00.000Z"
+    },
+    {
+      "id": "module:19",
+      "opensAt": "2026-10-12T11:00:00.000Z",
+      "closesAt": "2026-10-18T21:00:00.000Z"
+    },
+    {
+      "id": "module:20",
+      "opensAt": "2026-10-12T11:00:00.000Z",
+      "closesAt": "2026-10-18T21:00:00.000Z"
+    }
+  ],
+  "completedAt": "2026-10-12T18:05:04.784Z"
+}

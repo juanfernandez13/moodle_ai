@@ -1,0 +1,59 @@
+{
+  "origin": "http://localhost:3211",
+  "moodleVersion": "4.1.17 Build 20250317",
+  "profile": "moodle-4.1.17-lab-ops-v1",
+  "courseId": 4,
+  "tests": [
+    {
+      "test": "real login/status/catalogue",
+      "passed": true
+    },
+    {
+      "test": "Moodle draft preview creates no users",
+      "passed": true
+    },
+    {
+      "test": "two fictional users created and observed by independent admin page; retry refused",
+      "counts": {
+        "created": 2,
+        "updated": 0,
+        "error": 0,
+        "unknown": 0
+      },
+      "passed": true
+    },
+    {
+      "test": "Moodle existing-user error is explicit per row",
+      "counts": {
+        "created": 0,
+        "updated": 0,
+        "error": 2,
+        "unknown": 0
+      },
+      "passed": true
+    },
+    {
+      "test": "two fictional users updated and manually enrolled as student",
+      "counts": {
+        "created": 0,
+        "updated": 2,
+        "error": 0,
+        "unknown": 0
+      },
+      "passed": true,
+      "databaseReadback": "Run lab-fixture.php readback with report.syntheticPrefix."
+    },
+    {
+      "test": "seven section/forum/assignment/quiz targets applied and independently re-read; cutoff and other fields preserved",
+      "counts": {
+        "applied": 7,
+        "error": 0,
+        "unknown": 0,
+        "not_applied": 0
+      },
+      "passed": true
+    }
+  ],
+  "syntheticPrefix": "lab-test-ops-9d23bbd9",
+  "completedAt": "2026-10-12T17:27:04.881Z"
+}
