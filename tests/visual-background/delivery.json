@@ -1,0 +1,77 @@
+{
+  "owner": "owl_3d (background F10)",
+  "scope": [
+    "src/visual/background/**",
+    "tests/visual-background/**"
+  ],
+  "component": "src/visual/background/InteractiveBackground.tsx",
+  "api": "default InteractiveBackground({enabled:boolean,theme:light|dark})",
+  "material": "Existing local meadow photographs + three depth layers + transparent Canvas2D",
+  "newDependencies": [],
+  "newAssets": [],
+  "checks": {
+    "scopedTypecheck": "passed",
+    "globalLint": "passed",
+    "tests": "7 passed / 0 failed",
+    "integratedBrowser": "pending root integration QA"
+  },
+  "readonlyDependencies": [
+    {
+      "path": "public/meadow-day.png",
+      "sha256": "6cf9ed3008017eb347fffe9f80c5765eb34a596a55e2357ee404204351dfb496",
+      "ownership": "read-only dependency; UI owner"
+    },
+    {
+      "path": "public/meadow-dusk.png",
+      "sha256": "49a4499621b52dc65b779e8c10ffa690b7d18f7d6ca6c7afbf546d1061f191d7",
+      "ownership": "read-only dependency; UI owner"
+    },
+    {
+      "path": "public/LANDSCAPE_SOURCE.md",
+      "sha256": "e15dc4ac51fec3ac16726e79c7e19ee52d5856c8467400871b6575d15e0bd1d4",
+      "ownership": "read-only dependency; UI owner"
+    }
+  ],
+  "files": [
+    {
+      "path": "src/visual/background/field.ts",
+      "sha256": "4256a9f96fe773c0f95c0e764e16e80408b98453eec67667e34810b5dab738e0",
+      "bytes": 4316
+    },
+    {
+      "path": "src/visual/background/InteractiveBackground.module.css",
+      "sha256": "441672d36401e11a88c8b76664dcf70c7843f8680753901fa5087d5ea623d790",
+      "bytes": 1787
+    },
+    {
+      "path": "src/visual/background/InteractiveBackground.tsx",
+      "sha256": "c742c625a0099cb28d104cf53e0b7dc3fa7e40a46dfd8fe984f161cffa85e79c",
+      "bytes": 1803
+    },
+    {
+      "path": "src/visual/background/README.md",
+      "sha256": "a571aee14a04186569b037817352650431004c79f54f402059305bc9a353f357",
+      "bytes": 2353
+    },
+    {
+      "path": "src/visual/background/runtime.ts",
+      "sha256": "89124c6663860c7580676206cdbec3635b870f144ebb9ae7941339a1a76803f5",
+      "bytes": 6869
+    },
+    {
+      "path": "tests/visual-background/checks.txt",
+      "sha256": "7634f606d6b466b1ed5824443f7e50cde853a6f423928102cc7780477e6269eb",
+      "bytes": 1106
+    },
+    {
+      "path": "tests/visual-background/field.test.ts",
+      "sha256": "93d8a8cf1214c630d1d82f5304cd9efb423decdb5bea8bfee7c1273019c332b2",
+      "bytes": 1691
+    },
+    {
+      "path": "tests/visual-background/runtime.test.ts",
+      "sha256": "43d23bf876a34b8615423022524fe40166775d5a95dcb78c4b6b6a2b2284e028",
+      "bytes": 8268
+    }
+  ]
+}
