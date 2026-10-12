@@ -1,9 +1,11 @@
 # Mascote procedural local
 
-O componente `src/visual/owl/Owl3D.tsx` adapta o modelo aprovado em
-`docs/design-proposals/glass-owl-v4/owl.js`. As geometrias de corpo, peito,
-asas, olhos verdes, bico, capelo e cordão são procedurais. Não há modelo
-externo baixado ou carregamento por CDN.
+O componente `src/visual/owl/Owl3D.tsx` partiu do modelo em
+`docs/design-proposals/glass-owl-v4/owl.js`. A revisão de 12/10/2026 em
+`src/visual/owl/model.ts` suaviza o corpo, as asas, as orelhas e o bico,
+aproxima os olhos menores dos discos de rosto creme e usa materiais
+foscos. Capelo, cordão e olhos verdes permanecem. As geometrias são
+procedurais; não há modelo externo baixado ou carregamento por CDN.
 
 ## Three.js
 
@@ -18,10 +20,14 @@ externo baixado ou carregamento por CDN.
 
 ## Marca e fallback
 
-`brand-owl.svg` é a marca vetorial original do protótipo v4, copiada sem
-alteração de `docs/design-proposals/glass-owl-v4/assets/brand-owl.svg`.
-Ela aparece no HTML inicial e permanece visível quando WebGL ou o
-carregamento local não está disponível.
+`brand-owl.svg` foi redesenhado localmente em 12/10/2026 para acompanhar
+a coruja castanha e creme do modelo: capelo escuro, discos do rosto
+suaves, olhos verde-musgo menores e bico arredondado. Usa formas SVG
+originais desta aplicação. A cópia em `public/brand-owl.svg` mantém a
+mesma identidade no cabeçalho. O fallback aparece no HTML inicial e
+permanece visível quando WebGL ou o carregamento local não está disponível.
+O ícone da barriga incorpora as formas e cores do `moodle-mark.svg`
+local, com escala e posição adaptadas à barriga; sua atribuição segue abaixo.
 
 `moodle-mark.svg` é uma cópia sem alteração do ícone local do protótipo,
 usado somente como textura transparente no peito. Contém o primeiro e
@@ -35,8 +41,14 @@ as demais letras foram removidas e o viewBox é `0 73 345 238`.
 - SHA-256 do ícone local: `a16e54c7a4f21a4f012d6688b0fe16fe2361fb4b8aa299044ef1b7fbf432b2b4`.
 - Condições da marca: https://github.com/moodle/moodle/blob/f20534726a59a4b64d168bc4a70fc9518251613e/TRADEMARK.txt
 
-Não houve nova obtenção de assets para esta integração. Os hashes completos
-do componente e dos assets estão em `tests/visual/delivery.json`.
+Não houve nova obtenção de assets para esta revisão. Os hashes em
+`tests/visual/delivery.json` registram a entrega histórica anterior e não
+validam o modelo ou o fallback refinados. O hash SHA-256 atual do fallback
+está registrado abaixo; a conferência visual da revisão pertence ao gate
+da aplicação integrada.
+
+- SHA-256 de `public/three-owl/brand-owl.svg` e `public/brand-owl.svg`:
+  `f08e80cbabd0c7470ffdaada2ada2f950df72e2dc0178110249bdb025d51bc63`.
 
 ## Integração
 
