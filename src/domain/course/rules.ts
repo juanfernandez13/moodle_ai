@@ -1,4 +1,4 @@
-import type { CourseDraft, Activity } from './schema.ts';
+import type { CourseDraft, Activity, ContentBlock, InlineBlock } from './schema.ts';
 import type { ValidationIssue } from './validate-draft.ts';
 
 function isAfter(opensAt: string, closesAt: string): boolean {
@@ -31,13 +31,26 @@ export function validateDomainRules(draft: CourseDraft): ValidationIssue[] {
   }
 
   registerId(draft.id, 'id');
+  function inspectBlocks(blocks: readonly (ContentBlock | InlineBlock)[] | undefined, path: string): void {
+    blocks?.forEach((block, index) => {
+      const blockPath = `${path}[${index}]`;
+      registerId(block.id, `${blockPath}.id`);
+      if (block.kind === 'image' && !attachmentIds.has(block.attachmentId)) {
+        add('missing_attachment', `${blockPath}.attachmentId`, 'A imagem deve apontar para um anexo declarado no rascunho.');
+      }
+      if (block.kind === 'table') block.rows.forEach((row, rowIndex) => row.forEach((cell, cellIndex) => inspectBlocks(cell.blocks, `${blockPath}.rows[${rowIndex}][${cellIndex}].blocks`)));
+    });
+  }
+  inspectBlocks(draft.metadata.summaryBlocks, 'metadata.summaryBlocks');
   draft.sections.forEach((section, sectionIndex) => {
     const sectionPath = `sections[${sectionIndex}]`;
     registerId(section.id, `${sectionPath}.id`);
+    inspectBlocks(section.summaryBlocks, `${sectionPath}.summaryBlocks`);
     section.activities.forEach((activity, activityIndex) => {
       const activityPath = `${sectionPath}.activities[${activityIndex}]`;
       registerId(activity.id, `${activityPath}.id`);
       activitiesById.set(activity.id, activity);
+      inspectBlocks(activity.descriptionBlocks, `${activityPath}.descriptionBlocks`);
       const schedule = activity.schedule;
       if (schedule?.opensAt !== undefined && schedule.closesAt !== undefined &&
         isAfter(schedule.opensAt, schedule.closesAt)) {
@@ -59,16 +72,28 @@ export function validateDomainRules(draft: CourseDraft): ValidationIssue[] {
         activity.questions.forEach((question, questionIndex) => {
           const questionPath = `${activityPath}.questions[${questionIndex}]`;
           registerId(question.id, `${questionPath}.id`);
-          if (question.options.filter((option) => option.fraction === 1).length !== 1 ||
-            question.options.some((option) => option.fraction !== 0 && option.fraction !== 1)) {
+          inspectBlocks(question.statementBlocks, `${questionPath}.statementBlocks`);
+          inspectBlocks(question.feedbackBlocks, `${questionPath}.feedbackBlocks`);
+          if (question.type === 'multiple-choice' && (question.options.filter((option) => option.fraction === 1).length !== 1 ||
+            question.options.some((option) => option.fraction !== 0 && option.fraction !== 1))) {
             add('invalid_single_choice', `${questionPath}.options`,
               'A questão deve ter exatamente uma alternativa com fração 1 e todas as demais com fração 0.');
           }
-          question.options.forEach((option, optionIndex) => {
+          if (question.type === 'multiple-choice') question.options.forEach((option, optionIndex) => {
             registerId(option.id, `${questionPath}.options[${optionIndex}].id`);
+            inspectBlocks(option.textBlocks, `${questionPath}.options[${optionIndex}].textBlocks`);
+            inspectBlocks(option.feedbackBlocks, `${questionPath}.options[${optionIndex}].feedbackBlocks`);
+          });
+          if (question.type === 'matching') question.pairs.forEach((pair, pairIndex) => {
+            registerId(pair.id, `${questionPath}.pairs[${pairIndex}].id`);
+            inspectBlocks(pair.statementBlocks, `${questionPath}.pairs[${pairIndex}].statementBlocks`);
           });
         });
       }
+      if (activity.type === 'glossary') activity.entries.forEach((entry, entryIndex) => {
+        registerId(entry.id, `${activityPath}.entries[${entryIndex}].id`);
+        inspectBlocks(entry.definitionBlocks, `${activityPath}.entries[${entryIndex}].definitionBlocks`);
+      });
     });
   });
   draft.attachments.forEach((attachment, index) => registerId(attachment.id, `attachments[${index}].id`));
@@ -83,7 +108,8 @@ export function validateDomainRules(draft: CourseDraft): ValidationIssue[] {
         add('missing_activity', path,
           'A referência deve apontar para uma atividade declarada no rascunho.');
       }
-      if (activitiesById.get(id)?.type === 'forum') {
+      const activityType = activitiesById.get(id)?.type;
+      if (activityType !== undefined && activityType !== 'assignment' && activityType !== 'quiz') {
         add('ungradable_activity', path, 'A categoria de notas só pode referenciar tarefas e quizzes.');
       }
       if (categoryActivities.has(id)) {

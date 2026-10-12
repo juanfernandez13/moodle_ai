@@ -1,0 +1,34 @@
+{
+  "base": "64526fa7208179204666abc4d2939c3838edb0a8",
+  "revision": "sha256:de3007dfe7b205e936f89645e48495a45dc9d3592458367095c59f42cd289512",
+  "files": [
+    {
+      "path": "src/domain/course/index.ts",
+      "sha256": "e6406bbeab4469dbedd860e07e202878c007c66b6071a143723a34513d5568df"
+    },
+    {
+      "path": "src/domain/course/schema.ts",
+      "sha256": "04e78d307f47d2e64df0e5f8e372926cafae47f4050d1d4d66fef921932296ab"
+    },
+    {
+      "path": "src/domain/course/rules.ts",
+      "sha256": "4d0004ab64b732a322a31a7bbb60c9b5a51cf77f01f54d88a191f76f25d0f4d3"
+    },
+    {
+      "path": "src/domain/course/validate-draft.ts",
+      "sha256": "a20ffa47e85f99d71a73ebac05f7dfa6374177c4d2236e761c66251b29e4722d"
+    },
+    {
+      "path": "tests/domain/validate-draft.test.ts",
+      "sha256": "1711c591a6f9c6839f19fa60fc5acf681d74c120328029550332b1f597af7e20"
+    },
+    {
+      "path": "tests/domain/expanded-draft.test.ts",
+      "sha256": "4b24a419e7bf545e3cd9a39f394a5278f4ddd710a527f03a28fc7218412ada68"
+    },
+    {
+      "path": "tests/domain/full-tdd-evidence.txt",
+      "sha256": "9ede9ff646fa1b0ed5e3cb0d836f0c24924a7934ed6dc478e14b3f549af08c05"
+    }
+  ]
+}

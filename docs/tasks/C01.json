@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "id": "C01",
+  "goal": "Ampliar contrato validado sem perder compatibilidade do CLI",
+  "spec": [
+    "docs/specs/FULL-01-application.md"
+  ],
+  "status": "accepted",
+  "revision": "sha256:de3007dfe7b205e936f89645e48495a45dc9d3592458367095c59f42cd289512",
+  "contextEvidence": "docs/tasks/C01/context.md",
+  "owners": [
+    {
+      "agent": "/root/export_discovery",
+      "writePaths": [
+        "src/domain/course",
+        "tests/domain"
+      ]
+    }
+  ],
+  "acceptance": [
+    {
+      "id": "C1",
+      "text": "Seis atividades, três questões, blocos seguros e metadados aditivos com IDs globais",
+      "revision": "sha256:de3007dfe7b205e936f89645e48495a45dc9d3592458367095c59f42cd289512",
+      "evidence": [
+        "docs/tasks/C01/check.log",
+        "docs/tasks/C01/review-spec.md",
+        "docs/tasks/C01/review-quality.md"
+      ]
+    },
+    {
+      "id": "C2",
+      "text": "Fixtures e CLI anteriores continuam válidos; erros preservam caminhos, IDs e não normalizam entrada",
+      "revision": "sha256:de3007dfe7b205e936f89645e48495a45dc9d3592458367095c59f42cd289512",
+      "evidence": [
+        "docs/tasks/C01/check.log",
+        "docs/tasks/C01/review-spec.md",
+        "docs/tasks/C01/review-quality.md"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "npm-check",
+      "required": true,
+      "status": "passed",
+      "revision": "sha256:de3007dfe7b205e936f89645e48495a45dc9d3592458367095c59f42cd289512",
+      "evidence": "docs/tasks/C01/check.log"
+    }
+  ],
+  "reviews": [
+    {
+      "axis": "spec",
+      "agent": "/root/contract_review_spec",
+      "status": "passed",
+      "revision": "sha256:de3007dfe7b205e936f89645e48495a45dc9d3592458367095c59f42cd289512",
+      "evidence": "docs/tasks/C01/review-spec.md"
+    },
+    {
+      "axis": "quality",
+      "agent": "/root/contract_review_quality",
+      "status": "passed",
+      "revision": "sha256:de3007dfe7b205e936f89645e48495a45dc9d3592458367095c59f42cd289512",
+      "evidence": "docs/tasks/C01/review-quality.md"
+    }
+  ],
+  "budget": {
+    "maxCorrections": 2,
+    "corrections": 0
+  },
+  "integration": {
+    "revision": null,
+    "evidence": null
+  },
+  "history": [
+    {
+      "from": "planned",
+      "to": "executing",
+      "requestedTo": "executing",
+      "at": "2026-10-12T16:58:38.180Z",
+      "revision": null,
+      "reason": "Registro de integração do recorte executado sob FULL-01; não recria início histórico.",
+      "evidence": {
+        "checks": [],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "executing",
+      "to": "verifying",
+      "requestedTo": "verifying",
+      "at": "2026-10-12T16:58:38.185Z",
+      "revision": "sha256:de3007dfe7b205e936f89645e48495a45dc9d3592458367095c59f42cd289512",
+      "reason": "Snapshot congelado, conferir npm run check.",
+      "evidence": {
+        "checks": [],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "verifying",
+      "to": "reviewing",
+      "requestedTo": "reviewing",
+      "at": "2026-10-12T16:59:47.913Z",
+      "revision": "sha256:de3007dfe7b205e936f89645e48495a45dc9d3592458367095c59f42cd289512",
+      "reason": "Check real passou:110testes,lint,typecheck,build;duasrevisõesindependentes.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/C01/check.log"
+        ],
+        "reviews": [],
+        "acceptance": []
+      }
+    },
+    {
+      "from": "reviewing",
+      "to": "accepted",
+      "requestedTo": "accepted",
+      "at": "2026-10-12T17:14:16.778Z",
+      "revision": "sha256:de3007dfe7b205e936f89645e48495a45dc9d3592458367095c59f42cd289512",
+      "reason": "Dois revisores independentes aprovaram o mesmo snapshot; checks e critérios verificados.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/C01/check.log"
+        ],
+        "reviews": [
+          "docs/tasks/C01/review-spec.md",
+          "docs/tasks/C01/review-quality.md"
+        ],
+        "acceptance": [
+          "docs/tasks/C01/check.log",
+          "docs/tasks/C01/review-spec.md",
+          "docs/tasks/C01/review-quality.md",
+          "docs/tasks/C01/check.log",
+          "docs/tasks/C01/review-spec.md",
+          "docs/tasks/C01/review-quality.md"
+        ]
+      }
+    }
+  ]
+}
