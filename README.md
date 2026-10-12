@@ -17,7 +17,11 @@ Abrir http://127.0.0.1:3210. Dados, conteúdo, configurações e questões são 
 
 A coruja procedural 3D aparece junto ao título da entrada. A biblioteca Three.js é local e tem licença/fonte documentadas; o cenário é controlado separadamente por Fundo. Movimento reduzido, invisibilidade e pausa suspendem a animação; falha de WebGL conserva uma imagem acessível.
 
-O cenário interativo conserva as fotos locais em três camadas com parallax, luz, vegetação e partículas em Canvas2D. Ele reage ao ponteiro atrás da interface, mantendo o formulário imóvel. Fundo desliga animação/eventos; aba oculta, ausência de viewport e movimento reduzido também suspendem o loop. Não há novos assets, dependências ou carregamento externo.
+O cenário interativo usa geometria 3D em WebGL: colinas em profundidade, vegetação, árvores, céu e partículas, com iluminação clara/escura e reação ao ponteiro. O formulário permanece imóvel. Fundo desliga a cena; aba oculta, ausência de viewport e movimento reduzido suspendem a animação. As fotos locais ficam como fallback. Coruja e cenário usam Three.js local, sem carregamento externo.
+
+O frontend está separado por área em `src/client/features/{course,students,dates,moodle}`: componentes de apresentação, hooks de fluxo, tipos e helpers. As páginas de `app` apenas montam esses módulos. Os formulários de atividade ficam em `src/client/components/activity-editors`. Veja o [mapa do código](docs/CODE_MAP.md).
+
+O card de Alunos aproveita a largura disponível no desktop, até um workspace de 1760 px. A tabela mantém edição e paginação; em telas estreitas, sua rolagem horizontal fica contida no próprio painel.
 
 ```powershell
 npm run check
@@ -64,7 +68,9 @@ Alunos: CSV/XLS/XLSX → selecionar planilha/mapear colunas → editar/revisar d
 
 Datas: cronograma explícito → alvos/restrições atuais → antes/depois → plano vinculado ao hash. Condições que não são datas são preservadas. Edição invalida a prévia; montar/reabrir uma página nunca envia uma operação.
 
-O adaptador está restrito a **http://localhost:3211** com perfil **moodle-4.1.17-lab-ops-v1**. Sem configuração, revisão/exportação local continuam disponíveis. Sessão em memória com TTL e cookie opaco httpOnly, proteção de origem e transporte limitado à origem fixa; credenciais/cookies/sesskey nunca vão para portátil.
+O formulário de conexão recebe a URL base Moodle **HTTP ou HTTPS**, inclusive em subdiretório, junto de usuário e senha. `MOODLE_URL` fornece apenas um endereço inicial opcional. Cada sessão em memória, com TTL e cookie opaco httpOnly, fica vinculada à instalação escolhida; credenciais/cookies/sesskey nunca vão para projetos ou downloads. A conexão usa os formulários web Moodle, não exige token REST. Login por SSO e formulários de versões/plugins diferentes podem não ser suportados.
+
+O transporte valida URL e respostas DNS, fixa o IP aprovado na conexão e restringe redirecionamentos à instalação informada. Endereços internos e reservados são recusados; a exceção local de desenvolvimento é **http://localhost:3211/**. O status distingue disponibilidade do adaptador de compatibilidade comprovada. Somente esse laboratório, com perfil **moodle-4.1.17-lab-ops-v1**, possui a validação documentada. Não foram realizados testes em Moodle externo ou institucional.
 
 ```powershell
 $env:MOODLE_URL='http://localhost:3211'
@@ -82,6 +88,6 @@ Glossário exige informação de usuário ativa somente para seu conteúdo edito
 
 ## Planejamento e Git
 
-[PRD](docs/PRD.md), [arquitetura](docs/ARCHITECTURE.md), [design](docs/DESIGN_BRIEF.md), [plano ampliado](docs/BUILDER_PIPELINE_PLAN.md), [backlog](docs/BACKLOG.md) e [tickets](docs/tickets/README.md) preservam requisitos/histórico. Specs: [FULL-01](docs/specs/FULL-01-application.md) e [OPS-01](docs/specs/OPS-01-moodle-adapter.md).
+[PRD](docs/PRD.md), [arquitetura](docs/ARCHITECTURE.md), [design](docs/DESIGN_BRIEF.md), [plano ampliado](docs/BUILDER_PIPELINE_PLAN.md), [backlog](docs/BACKLOG.md) e [tickets](docs/tickets/README.md) preservam requisitos/histórico. Specs: [FULL-01](docs/specs/FULL-01-application.md), [OPS-01](docs/specs/OPS-01-moodle-adapter.md), [UX02](docs/specs/UX02-visual-refinement.md) e [URL01](docs/specs/URL01-moodle-connection.md). O trabalho posterior de visual, módulos frontend e conexão por URL está registrado em [UX02](docs/tasks/UX02.json).
 
 Subagentes/worktrees por funcionalidade, candidato congelado por hash, checks reais e dois eixos independentes de revisão antes do merge local main. docs/tasks distingue execução, verificação, aceite e integração. project-loop e frontend-design locais foram usados; não se afirma invocação de todos os workflows upstream. CodeGraph MCP indisponível, inspeção local realizada; grafo precisa sincronização após integração. Publicação/licença seguem decisão do mantenedor.
