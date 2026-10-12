@@ -1,0 +1,63 @@
+Client public-contract TDD evidence — 2026-10-12
+
+Initial node --test tests/client/project.test.ts ran before client modules existed:
+missing src/client/commands.ts, src/client/project-store.ts and src/client/portable.ts.
+Implemented those public interfaces, then six behavior tests passed.
+
+Additional red/green cycle:
+Command: node --test tests/client/webmcp.test.ts
+Red: 3 tests; 1 pass, 2 failures (exit 1).
+1. Repeated activity edits were accepted and could discard an earlier field update.
+2. An optional modelContext without unregister attempted to register five tools twice
+   after cleanup/remount (10 registration attempts instead of 5).
+Implemented strict one-change-per-activity/at-least-one-field proposal validation,
+retained registered tool names when unregister is unavailable, and idempotent cleanup.
+Green: node --test tests/client/*.test.ts passed 12/12 tests, exit 0.
+No UI or Moodle integration coverage is claimed by these pure client tests.
+
+Provenance extension cycle:
+Red: node --test tests/client/provenance.test.ts failed because provenance.ts did
+not yet exist (ERR_MODULE_NOT_FOUND, exit 1). A handwritten import fixture then
+failed the importer contract; it was replaced by the established topics fixture.
+Green: the actual import pipeline with a simulated OpenAI HTTP response preserves
+provider/model/prompt/field references and source preview through ZIP and IndexedDB.
+Unknown origins remain valid for older projects; user/preset edits and reordering
+are covered. At this point all 14 client tests passed, exit 0.
+
+Correction 1 cycle:
+Red: save mutation regression failed (exit 1) because the caller changed fullname,
+revision and source bytes before the database opened; reopening rejected invalid
+persisted content. save now clones before any await and uses only that snapshot.
+Identity regression first failed because projectIdentity did not exist (exit 1).
+Green: two actual DOCX imports, with the same draft.id but different source bytes,
+save/reopen as independent projectId workspaces. A stale tab of the same projectId
+still fails atomically. IndexedDB v1 migrates by copying to a new store and retains
+the old store; portable v1 without projectId keeps a stable legacy identity.
+UTC regressions cover offset/day rollover and preserving original strings until
+editing. The actual activity/chat TSX controls display 09:00-03 as 12:00 UTC.
+The actual TSX table preview renders five of 100 rows; editing an issue at row87
+renders only row87, retaining its stable content ID. Async import triggers are
+captured before disabling, and passed explicitly to modal focus restoration.
+Browser focus, layout and the 3D runtime remain part of the parent agent's QA.
+Final correction checks: npm run typecheck exit0; npm run lint exit0;
+node --test tests/client/*.test.ts 23/23 passed, exit0. The entry integrates the
+separately owned Owl3D component, receives the Shell theme and keeps Fundo limited
+to the backdrop. Workspace identity also binds reviewed WebMCP proposals and
+guards an export response when the project changes while the request is pending.
+
+Correction 2 (spec report S3/F2) cycle:
+Red: node --test tests/client/content.test.ts exit1, two failed probes. Both used
+the actual showIssue function extracted/transpiled from app/page.tsx against the
+actual ActivityEditor HTML, with hidden ancestors excluded from visible controls.
+settings.maxGrade=0 focused Título da atividade instead of Nota máxima; closing
+11:00Z before opening12:00Z focused Título da atividade instead of Fechamento(UTC).
+Green: both probes now focus the correct labels through stable entity IDs and
+data-field keys. Actual question/option/pair/essay controls and metadata source
+labels are covered, including reordered questions and the table cell at row87.
+Structural issues without a control focus their entity/panel, rather than an
+unrelated valid input. No browser focus claim is inferred from these DOM probes.
+The separately owned InteractiveBackground is connected to Shell enabled/theme;
+Fundo toggles that layer and the form does not receive a movement transform.
+Final correction2 checks after integration: typecheck exit0; lint exit0;
+27/27 client tests passed, exit0. Table-image attachment selection is also mapped
+to its own inline entity/field so an image-reference issue focuses Imagem da célula.

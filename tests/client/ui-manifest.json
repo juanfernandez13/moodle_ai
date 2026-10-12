@@ -1,0 +1,205 @@
+{
+  "candidate": "Moodle-AI UI correction2 + interactive background",
+  "owner": "project_context",
+  "createdUtc": "2026-10-12T18:50:20.0305759Z",
+  "checks": {
+    "typecheck": "pass",
+    "prettier": "3.7.4",
+    "lint": "pass",
+    "clientTests": "27/27"
+  },
+  "externalDependency": "src/visual/owl, src/visual/background and public/three-owl are owned and frozen separately by owl_3d",
+  "browserQa": "parent validation pending on rebuilt candidate",
+  "files": [
+    {
+      "path": "app/cadastro-lote/page.tsx",
+      "sha256": "f0ff30bb9f9147b72a5ed3a8c1c41b06f5b3e2e811c170529e20e4e166116cfb",
+      "bytes": 35291
+    },
+    {
+      "path": "app/datas/page.tsx",
+      "sha256": "13fd2589f5a2c59d144e1a5041374cb431d7ee4237e7b4ca54fa23bfdea19079",
+      "bytes": 20562
+    },
+    {
+      "path": "app/globals.css",
+      "sha256": "209ee3dcdc1328b5df87055c8bd63a390523bebfe905c7a5450f0d4354abb701",
+      "bytes": 31620
+    },
+    {
+      "path": "app/layout.tsx",
+      "sha256": "a034c9075f56c94ce7eb680a44f8215bb0798f5981713319a7681fe2a212b13c",
+      "bytes": 480
+    },
+    {
+      "path": "app/page.tsx",
+      "sha256": "cac706ae37e9b1ac9927683911f2570af3577837b3fcaceec2a27e78f2ac12d8",
+      "bytes": 103994
+    },
+    {
+      "path": "public/ASSET_SOURCE.md",
+      "sha256": "79bed92a558e751c303e80b101e1dff0799dcf2cf1413d3567d248fca0158b9e",
+      "bytes": 1833
+    },
+    {
+      "path": "public/brand-owl.svg",
+      "sha256": "d22f4cb7cf1a5d4e60668b6b14cd0691a1a7be118edf340dfd3a824ef28a7504",
+      "bytes": 732
+    },
+    {
+      "path": "public/favicon.svg",
+      "sha256": "b0c0ae95aa65a72421ece3bdcb680f34d3ecf88b3cd9119bbb200646cf78c3cb",
+      "bytes": 611
+    },
+    {
+      "path": "public/fonts/Nunito-Variable.ttf",
+      "sha256": "bb55a5ca5c2042335b3991af27c4d0705d0ef41cac6164ac737fd8f2a1e85207",
+      "bytes": 276932
+    },
+    {
+      "path": "public/fonts/OFL.txt",
+      "sha256": "580df76c95a1ec5ab878ceb25bb3d85c6a076804e9c970c8c6972aea775fdf65",
+      "bytes": 4385
+    },
+    {
+      "path": "public/LANDSCAPE_SOURCE.md",
+      "sha256": "e15dc4ac51fec3ac16726e79c7e19ee52d5856c8467400871b6575d15e0bd1d4",
+      "bytes": 2148
+    },
+    {
+      "path": "public/meadow-day.png",
+      "sha256": "6cf9ed3008017eb347fffe9f80c5765eb34a596a55e2357ee404204351dfb496",
+      "bytes": 2632883
+    },
+    {
+      "path": "public/meadow-dusk.png",
+      "sha256": "49a4499621b52dc65b779e8c10ffa690b7d18f7d6ca6c7afbf546d1061f191d7",
+      "bytes": 2315881
+    },
+    {
+      "path": "public/moodle-mark.svg",
+      "sha256": "a16e54c7a4f21a4f012d6688b0fe16fe2361fb4b8aa299044ef1b7fbf432b2b4",
+      "bytes": 853
+    },
+    {
+      "path": "src/client/commands.ts",
+      "sha256": "7a88dab1318d60c0242e0b2f00ecadcee77080c2c729388a50743b7d1d1ff494",
+      "bytes": 6008
+    },
+    {
+      "path": "src/client/components/activity-editor.tsx",
+      "sha256": "1118f4d3bd1799f057fca86e88afbb59fed84a122d156c3af35d7a52d99359ae",
+      "bytes": 40456
+    },
+    {
+      "path": "src/client/components/content.tsx",
+      "sha256": "4fa6bd4216690307dc78fe482a94342a6b3f41892467e2590d492efa6f27f6fe",
+      "bytes": 21355
+    },
+    {
+      "path": "src/client/components/entry-mascot.tsx",
+      "sha256": "b5f36b539b896e34b51521111fe750b923f432cd075f9b4af081fac90631f027",
+      "bytes": 172
+    },
+    {
+      "path": "src/client/components/modal.tsx",
+      "sha256": "6d8a10ecdba1708e6901f33d33e52378fba962f68350db67ca167360004ddc91",
+      "bytes": 1987
+    },
+    {
+      "path": "src/client/components/moodle-connection.tsx",
+      "sha256": "64e9533cc4644f7fc581000f0787fd4948db5da189f7d2a956aa5f92e5ac8814",
+      "bytes": 7341
+    },
+    {
+      "path": "src/client/components/pagination.tsx",
+      "sha256": "188a033272c4a553919dc02cb70bbbd608a0b8970fe69a36387e63d98cc620af",
+      "bytes": 786
+    },
+    {
+      "path": "src/client/components/provenance-viewer.tsx",
+      "sha256": "81589a655f25e3304b2eedf451e9462a14f1fc104051df7d3b38c8d6430b84f7",
+      "bytes": 3910
+    },
+    {
+      "path": "src/client/components/shell.tsx",
+      "sha256": "bb429fc4807d8ed4ffa75c2144faa05993ae9206bc50cff9c7530a9e54936b2a",
+      "bytes": 4901
+    },
+    {
+      "path": "src/client/dates.ts",
+      "sha256": "3975c97e8a30ac19c149d3b509cc5879d87b0fa7de6204a93b799fce6ca58bd1",
+      "bytes": 628
+    },
+    {
+      "path": "src/client/download.ts",
+      "sha256": "2835fb1bb568938017b6511eb03d8ff4791699167dfde250ff6459591d643428",
+      "bytes": 891
+    },
+    {
+      "path": "src/client/navigation.ts",
+      "sha256": "a139a42d28f14b545ac43b2a1a5db68a221533d83724290893e0c5465502603e",
+      "bytes": 3119
+    },
+    {
+      "path": "src/client/portable.ts",
+      "sha256": "18ab953778094db50b0bc5cf56342c471e5cfb71ae3b0fa0272adb6364619563",
+      "bytes": 8079
+    },
+    {
+      "path": "src/client/project-store.ts",
+      "sha256": "788ff77f76135ae473fc478c1721f5f441bd4c3df5ee2be68e79440006550fb6",
+      "bytes": 4322
+    },
+    {
+      "path": "src/client/project.ts",
+      "sha256": "3d605a38a02fe54e7e8ee9112a447869399eb6e198384d1d9fd8a86c22cb1be1",
+      "bytes": 5986
+    },
+    {
+      "path": "src/client/provenance.ts",
+      "sha256": "480e98188cc88ef74d3016df9f50e96a3d84ee9c9299fc852a6a03ff2a506a4b",
+      "bytes": 7830
+    },
+    {
+      "path": "src/client/webmcp.ts",
+      "sha256": "c3b265c035d37a4bb5912e7f448ca2ef6620ca29a33949ec2350e20781c8ad33",
+      "bytes": 9663
+    },
+    {
+      "path": "tests/client/content.test.ts",
+      "sha256": "cdf9042da7842f53019106803bb8d63038f315344703e461f788c8d386eda935",
+      "bytes": 12606
+    },
+    {
+      "path": "tests/client/dates.test.ts",
+      "sha256": "f53f1c09d096c2af46c1714916a14b845bbe402b0f68a344e92d28dbc371488d",
+      "bytes": 1474
+    },
+    {
+      "path": "tests/client/navigation.test.ts",
+      "sha256": "1183b582dfedf557c9fb1b8f1ef080e88450e0b0397feb95d9193fefdc0c2f09",
+      "bytes": 2353
+    },
+    {
+      "path": "tests/client/project.test.ts",
+      "sha256": "de860b7f792d7c6caf3722c2cb93cf6837384d93f783ad654bddaf0c6b103c90",
+      "bytes": 14154
+    },
+    {
+      "path": "tests/client/provenance.test.ts",
+      "sha256": "6e43a5d700a3d0e24f3c9a56bf6e5dd3910ae01ad645763cceb557ce478ca358",
+      "bytes": 5416
+    },
+    {
+      "path": "tests/client/tdd-evidence.txt",
+      "sha256": "a61a7c52cf08eb16446a8fa22915acec97f9d3f806f0acb860ae6521823d2fc7",
+      "bytes": 4336
+    },
+    {
+      "path": "tests/client/webmcp.test.ts",
+      "sha256": "413597bed15c103e6de9cd3885ec4ec71937dfc020ce0e83b4c86278cdde978c",
+      "bytes": 4462
+    }
+  ]
+}
