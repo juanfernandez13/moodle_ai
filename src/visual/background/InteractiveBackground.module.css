@@ -4,82 +4,32 @@
   overflow: hidden;
   pointer-events: none;
   z-index: 0;
-  background: #c7ded7;
+  background: #b9dbd7;
   contain: strict;
 }
 
-.frame[hidden] {
-  display: none;
-}
+.frame[hidden] { display: none; }
+.frame[data-theme="dark"] { background: #102c36; }
 
 .photo {
   position: absolute;
-  inset: -12px;
+  inset: 0;
   background-position: center;
   background-size: cover;
-  transform: translate(calc(var(--field-x, 0px) * 0.35), calc(var(--field-y, 0px) * 0.35));
-  transition: opacity 300ms;
-}
-
-.day {
-  background-image: url("/meadow-day.png");
-  opacity: 1;
-}
-
-.dusk {
-  background-image: url("/meadow-dusk.png");
   opacity: 0;
 }
 
-.frame[data-theme="dark"] {
-  background: #142c2a;
-}
-
-.frame[data-theme="dark"] .day {
-  opacity: 0;
-}
-
-.frame[data-theme="dark"] .dusk {
-  opacity: 1;
-}
-
-.atmosphere {
-  position: absolute;
-  inset: -16px;
-  background: linear-gradient(180deg, rgba(231, 245, 237, 0.36), transparent 55%, rgba(16, 48, 30, 0.16));
-  transform: translate(calc(var(--field-x, 0px) * 0.6), calc(var(--field-y, 0px) * 0.6));
-}
-
-.frame[data-theme="dark"] .atmosphere {
-  background: linear-gradient(180deg, rgba(13, 28, 31, 0.15), transparent 55%, rgba(5, 28, 16, 0.32));
-}
-
-.light {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 42% 55% at var(--field-light-x, 50%) var(--field-light-y, 38%), rgba(255, 243, 204, 0.14), transparent 75%);
-}
-
-.frame[data-theme="dark"] .light {
-  background: radial-gradient(ellipse 42% 55% at var(--field-light-x, 50%) var(--field-light-y, 38%), rgba(176, 225, 215, 0.08), transparent 75%);
-}
+.day { background-image: url("/meadow-day.png"); }
+.dusk { background-image: url("/meadow-dusk.png"); }
+.frame[data-field-state="fallback"] .day { opacity: 1; }
+.frame[data-field-state="fallback"][data-theme="dark"] .day { opacity: 0; }
+.frame[data-field-state="fallback"][data-theme="dark"] .dusk { opacity: 1; }
 
 .field {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  transform: translate(calc(var(--field-x, 0px) * 0.8), calc(var(--field-y, 0px) * 0.8));
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .photo {
-    transition: none;
-  }
-
-  .photo,
-  .atmosphere,
-  .field {
-    transform: none;
-  }
-}
+.frame[data-field-state="fallback"] .field { visibility: hidden; }

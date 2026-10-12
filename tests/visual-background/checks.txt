@@ -1,16 +1,42 @@
-Interactive background checks (2026-10-12)
+Perspective landscape checks (2026-10-12; Node v24.19.0)
+
+npm ci --offline --ignore-scripts
+Sandbox cache: ENOTCACHED for zod-4.6.6.tgz. Retried with sandbox escalation
+to the existing user cache, offline: exit 0, 216 packages, no new dependency.
 
 node --test tests/visual-background/field.test.ts tests/visual-background/runtime.test.ts
-Exit 0: 7 passed, 0 failed, 0 skipped.
+Exit 0: 8 passed, 0 failed, 0 skipped.
 
-node node_modules/typescript/bin/tsc --noEmit --incremental false --strict --noUncheckedIndexedAccess --exactOptionalPropertyTypes --target ES2023 --module ESNext --moduleResolution Bundler --jsx react-jsx --lib ES2023,DOM,DOM.Iterable --skipLibCheck --allowImportingTsExtensions next-env.d.ts src/visual/background/field.ts src/visual/background/runtime.ts src/visual/background/InteractiveBackground.tsx tests/visual-background/field.test.ts tests/visual-background/runtime.test.ts
+npm run typecheck
 Exit 0: no diagnostics.
 
-node node_modules/eslint/bin/eslint.js src/visual/background tests/visual-background --max-warnings 0
-Exit 0: no diagnostics (first test candidate).
+npx --offline eslint src/visual/background tests/visual-background --max-warnings 0
+Exit 0: no diagnostics.
 
-node node_modules/eslint/bin/eslint.js src app tests --max-warnings 0
-Exit 0: no diagnostics (final background candidate).
+npm run lint
+Exit 0: no diagnostics.
 
-Canvas drawing/event scheduling simulated. Browser visual verification and
-physical-device performance remain integrated gates. No dependency added.
+npm test
+Exit 0: 250 passed, 0 failed, 0 skipped.
+
+npm run build
+Sandbox attempt: Windows SWC canonicalization access denied (os error 5).
+Retry with sandbox escalation: exit 0; Next production compilation,
+TypeScript, 9 static pages and CLI TypeScript build completed.
+
+git diff --check
+Exit 0: no whitespace errors.
+
+Tests instantiate the actual checked-in r186 Three scene/geometry/material
+classes and mock only WebGLRenderer. They cover perspective camera response,
+pixel/geometry budgets, hidden/offscreen/reduced-motion behavior, loss and
+restoration, zero/huge sizes, dispose/remount and renderer/setup failures.
+These tests do not compile GLSL or prove visual appearance/GPU performance.
+Browser review is reserved for the root's integrated application QA.
+No real Moodle or IFCE access occurred. No remote asset or package was added.
+
+Root browser review confirmed actual day/dark WebGL terrain, grass and grove.
+It found that off/on reused a canvas after native context release. The component
+now removes the canvas while disabled and creates a fresh canvas when enabled.
+The 8 focused background tests passed again after that fix. Final toggle browser
+recheck belongs to root QA; the mock renderer cannot prove native context reuse.

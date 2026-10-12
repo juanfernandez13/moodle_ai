@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import type { BackgroundHandle, BackgroundTheme } from "./runtime.ts";
+import type { ThreeApi } from "./three-types.ts";
 import styles from "./InteractiveBackground.module.css";
 
 export interface InteractiveBackgroundProps {
@@ -9,7 +10,7 @@ export interface InteractiveBackgroundProps {
   theme: BackgroundTheme;
 }
 
-/** Local meadow photographs, depth layers and a transparent 2D field. */
+/** A perspective meadow; local photographs provide a WebGL fallback. */
 export default function InteractiveBackground({ enabled, theme }: InteractiveBackgroundProps) {
   const root = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -25,12 +26,13 @@ export default function InteractiveBackground({ enabled, theme }: InteractiveBac
     if (!enabled || !host || !surface) return;
     let cancelled = false;
     let mounted: BackgroundHandle | undefined;
-    void import("./runtime.ts").then(({ mountBackground }) => {
+    void Promise.all([import("./runtime.ts"), import("../owl/load-three.ts")]).then(async ([{ mountBackground }, { loadThree }]) => {
+      const three = await loadThree();
       if (cancelled) return;
-      mounted = mountBackground(host, surface, currentTheme.current);
+      mounted = mountBackground(host, surface, three as unknown as ThreeApi, currentTheme.current);
       handle.current = mounted;
     }).catch(() => {
-      if (!cancelled) host.dataset.fieldState = "static";
+      if (!cancelled) host.dataset.fieldState = "fallback";
     });
     return () => {
       cancelled = true;
@@ -39,12 +41,10 @@ export default function InteractiveBackground({ enabled, theme }: InteractiveBac
     };
   }, [enabled]);
   return (
-    <div ref={root} className={styles.frame} hidden={!enabled} data-theme={theme} data-field-state="static" aria-hidden="true">
+    <div ref={root} className={styles.frame} hidden={!enabled} data-theme={theme} data-field-state="fallback" aria-hidden="true">
       <div className={`${styles.photo} ${styles.day}`} />
       <div className={`${styles.photo} ${styles.dusk}`} />
-      <div className={styles.atmosphere} />
-      <div className={styles.light} />
-      <canvas ref={canvas} className={styles.field} />
+      {enabled && <canvas ref={canvas} className={styles.field} />}
     </div>
   );
 }
