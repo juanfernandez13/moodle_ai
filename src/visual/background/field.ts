@@ -1,109 +1,63 @@
-export interface Point {
-  x: number;
-  y: number;
-}
+export interface Point { x: number; y: number }
 
 export function viewportBudget(width: number, height: number, deviceRatio: number) {
   const finite = (value: number) => Number.isFinite(value) && value > 0;
   if (!finite(width) || !finite(height) || !Number.isFinite(width * height)) return null;
   const compact = width <= 600;
-  const maxRatio = compact ? 1.25 : 1.5;
-  const device = finite(deviceRatio) ? deviceRatio : 1;
-  const ratio = Math.min(device, maxRatio, Math.sqrt(1_600_000 / (width * height)));
+  const ratio = Math.min(finite(deviceRatio) ? deviceRatio : 1, compact ? 1.25 : 1.5, Math.sqrt(1_600_000 / (width * height)));
   return {
-    width, height, ratio,
+    width, height, ratio, compact,
     pixelsWide: Math.max(1, Math.floor(width * ratio)),
     pixelsHigh: Math.max(1, Math.floor(height * ratio)),
-    particleCount: compact ? 12 : 24,
-    bladeCount: compact ? 30 : 56,
+    particleCount: compact ? 20 : 34,
+    bladeCount: compact ? 8_000 : 16_000,
   };
 }
 
 export type ViewportBudget = NonNullable<ReturnType<typeof viewportBudget>>;
 
-/** Invalid/outside positions cannot expand depth motion or canvas work. */
 export function pointerPosition(x: number, y: number, width: number, height: number): Point {
   if (![x, y, width, height].every(Number.isFinite) || width <= 0 || height <= 0) return { x: 0, y: 0 };
-  return {
-    x: Math.max(-1, Math.min(1, x / width * 2 - 1)),
-    y: Math.max(-1, Math.min(1, y / height * 2 - 1)),
-  };
+  return { x: Math.max(-1, Math.min(1, x / width * 2 - 1)), y: Math.max(-1, Math.min(1, y / height * 2 - 1)) };
 }
 
-interface Particle extends Point {
-  phase: number;
-  depth: number;
-  radius: number;
+export function hill(x: number, z: number, cx: number, cz: number, width: number, depth: number, rise: number) {
+  return rise * Math.exp(-((x - cx) ** 2 / width ** 2 + (z - cz) ** 2 / depth ** 2));
 }
 
-interface Blade extends Point {
-  phase: number;
-  height: number;
-  lean: number;
-  thickness: number;
+/** The low valley preserves the workspace; the nearer banks give the grass volume. */
+export function meadowHeight(x: number, z: number) {
+  return -1.1 + hill(x, z, -29, -39, 24, 32, 8.8)
+    + hill(x, z, 40, -62, 35, 36, 9.2)
+    + hill(x, z, -19, 0, 13, 23, 2.8)
+    + hill(x, z, 22, 7, 15, 22, 2.1)
+    + Math.sin(x * .19 + z * .12) * Math.sin(z * .17) * .18;
 }
 
-export interface Field {
-  particles: Particle[];
-  blades: Blade[];
-}
+export interface GrassField { offsets: Float32Array; traits: Float32Array }
 
-/** Reproducible irregular clusters confined to the sides of the work surface. */
-export function createField(budget: ViewportBudget): Field {
-  let seed = 7919;
-  function random() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
-  const particles = Array.from({ length: budget.particleCount }, (_, i) => ({
-    x: i % 2 ? 0.85 + random() * 0.14 : random() * 0.15,
-    y: 0.26 + random() * 0.56,
-    phase: random() * Math.PI * 2,
-    depth: 0.5 + random() * 0.5,
-    radius: 0.8 + random() * 1.4,
-  }));
-  const compact = budget.width <= 600;
-  const blades = Array.from({ length: budget.bladeCount }, (_, i) => ({
-    x: i % 2 ? 0.81 + random() * 0.19 : random() * 0.19,
-    y: 0.97 + random() * 0.05,
-    phase: random() * Math.PI * 2,
-    height: (compact ? 14 : 22) + random() * (compact ? 29 : 48),
-    lean: random() * 0.45 - 0.225,
-    thickness: 0.65 + random() * 1.1,
-  }));
-  return { particles, blades };
-}
-
-export function drawField(context: CanvasRenderingContext2D, field: Field, budget: ViewportBudget, point: Point, elapsed: number, dark: boolean) {
-  const { width, height, ratio } = budget;
-  context.setTransform(ratio, 0, 0, ratio, 0, 0);
-  context.clearRect(0, 0, width, height);
-  const cursorX = (point.x + 1) * width / 2;
-  const cursorY = (point.y + 1) * height / 2;
-  for (const blade of field.blades) {
-    const x = blade.x * width;
-    const y = blade.y * height;
-    const distance = Math.hypot(x - cursorX, y - cursorY);
-    const response = Math.max(0, 1 - distance / 160) * point.x * 0.19;
-    const sway = Math.sin(elapsed * 0.72 + blade.phase) * 0.028 + response;
-    const bend = (blade.lean + sway) * blade.height;
-    context.beginPath();
-    context.moveTo(x, y);
-    context.quadraticCurveTo(x + bend * 0.25, y - blade.height * 0.58, x + bend, y - blade.height);
-    context.strokeStyle = dark ? "rgba(120, 166, 134, 0.24)" : "rgba(64, 110, 66, 0.23)";
-    context.lineWidth = blade.thickness;
-    context.stroke();
+/** Deterministic tufts in perspective side lanes, rather than a uniform lawn. */
+export function createField(budget: ViewportBudget, aspect: number, fov: number): GrassField {
+  let seed = 7193;
+  const random = () => { seed = seed * 16807 % 2147483647; return (seed - 1) / 2147483646; };
+  const offsets = new Float32Array(budget.bladeCount * 3);
+  const traits = new Float32Array(budget.bladeCount * 4);
+  const perspective = Math.tan(fov * Math.PI / 360) * aspect;
+  let centerX = 0, centerZ = 0, tuftHeight = 0;
+  for (let i = 0; i < budget.bladeCount; i++) {
+    if (i % 9 === 0) {
+      // Most tufts sit near the camera; sparse, shorter cover recedes up the bank.
+      centerZ = 9 - random() ** 1.7 * 75;
+      const side = i % 18 === 0 ? -1 : 1;
+      centerX = side * (.59 + random() * .52) * (18 - centerZ) * perspective;
+      tuftHeight = (.24 + random() ** 1.6 * .82) * (centerZ < -28 ? .66 : 1);
+    }
+    const angle = random() * Math.PI * 2;
+    const spread = .045 + random() * .16;
+    const x = centerX + Math.cos(angle) * spread;
+    const z = centerZ + Math.sin(angle) * spread;
+    offsets.set([x, meadowHeight(x, z) - .025, z], i * 3);
+    traits.set([tuftHeight * (.7 + random() * .5), .015 + random() * .017, angle, random()], i * 4);
   }
-  for (const particle of field.particles) {
-    const baseX = particle.x * width;
-    const baseY = particle.y * height;
-    const dx = baseX - cursorX;
-    const dy = baseY - cursorY;
-    const distance = Math.hypot(dx, dy);
-    const response = Math.max(0, 1 - distance / 140) * 7;
-    const x = baseX + Math.sin(elapsed * 0.27 + particle.phase) * 6 * particle.depth + (distance ? dx / distance * response : 0);
-    const y = baseY + Math.cos(elapsed * 0.21 + particle.phase) * 8 * particle.depth + (distance ? dy / distance * response : 0);
-    const pulse = 0.65 + Math.sin(elapsed * 0.8 + particle.phase) * 0.15;
-    context.beginPath();
-    context.arc(x, y, particle.radius, 0, Math.PI * 2);
-    context.fillStyle = dark ? `rgba(227, 255, 176, ${pulse * 0.7})` : `rgba(245, 252, 204, ${pulse * 0.34})`;
-    context.fill();
-  }
+  return { offsets, traits };
 }
