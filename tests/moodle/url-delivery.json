@@ -1,6 +1,6 @@
 {
   "task": "URL01",
-  "status": "ready-for-integration",
+  "status": "historical-first-candidate",
   "contentDigest": "sha256:b20bf22b571e1a9ece2631959f09f3fdd8ace1eb1f4c063ed5e8d60bfb8e2d80",
   "files": [
     {
@@ -104,5 +104,7 @@
   ],
   "institutionalMoodleAccess": false,
   "externalMoodleNetworkAccess": false,
-  "committed": false
+  "committed": false,
+  "supersededBy": "docs/tasks/UX02/candidate.json",
+  "snapshotNote": "Historical snapshot of the first URL01 delivery before the UX02 session-invalidation correction. contentDigest, files, verification and committed describe that earlier snapshot; they are not the final integrated hashes or checks. The current candidate and review evidence are in docs/tasks/UX02."
 }
