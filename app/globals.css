@@ -1223,6 +1223,19 @@ th {
   margin: 12px auto;
   padding: 30px 34px;
 }
+.tool-panel.students-panel {
+  max-width: none;
+  width: 100%;
+}
+@media (min-width: 741px) {
+  .workspace.workspace-students {
+    max-width: 1760px;
+    padding-inline: 24px;
+  }
+  .tool-panel.students-panel {
+    padding: 26px 24px;
+  }
+}
 .tool-heading {
   display: flex;
   align-items: flex-start;
