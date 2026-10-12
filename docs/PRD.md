@@ -1,6 +1,14 @@
 # PRD da nova versão do assistente para Moodle
 
-**Status:** proposta para validação e implementação. **Data:** 11 de outubro de 2026. **Projeto:** Moodle-AI, nome provisório.
+**Status:** execução inicial liberada em 12/10/2026; MVP e expansão em construção. **Data-base:** 11 de outubro de 2026. **Projeto:** Moodle-AI, nome provisório.
+
+## Decisões da execução inicial — 12/10/2026
+
+O mantenedor pediu para iniciar execução/criação e confirmou o Moodle-AI. A [spec V01](specs/V01-course-to-mbz.md) detalha contrato e aceites; os [tickets locais](tickets/README.md) organizam o trabalho. V01-01 entrega validação/diagnósticos por CLI, seguida de exportação, laboratório e restauração. Editor e importação permanecem entregas seguintes; o bootstrap não conclui o MVP.
+
+O primeiro contrato cobre fórum, tarefa e quiz de múltipla escolha; tipos adicionais são capacidades futuras explícitas. A persistência de projetos foi escolhida somente no navegador, com cópia portátil completa incluindo bytes e presets na versão completa. O primeiro MVP é a jornada V01–V07; [o plano ampliado](BUILDER_PIPELINE_PLAN.md) conserva imagens incorporadas, seis módulos, três tipos de questão, dois provedores reais, WebMCP, cadastro e datas como entregas da versão completa. Fora da primeira demonstração não significa removido do projeto.
+
+Prazo, licença, hospedagem, orçamento real de IA e laboratório fixado continuam pendentes nas etapas correspondentes; não bloqueiam o bootstrap sem IA. A referência Moodle 4.1.17+ / build 20250321 já foi informada e não é prova de compatibilidade do novo exportador.
 
 A nova aplicação ajudará professores e equipes pedagógicas a transformar um planejamento de disciplina em um curso Moodle revisado. O fluxo do MVP será importar um documento DOCX estruturado ou criar a disciplina manualmente, conferir e editar aulas e atividades, resolver pendências e baixar um pacote de backup Moodle `.mbz`.
 

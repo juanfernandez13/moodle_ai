@@ -1,0 +1,57 @@
+V01-01: evidência de TDD do contrato público validateDraft
+Data da sessão: 2026-10-12. Runtime observado: Node v24.19.0.
+Comando de cada ciclo: node --test tests/domain/*.test.ts
+Nos ciclos posteriores a saída TAP foi filtrada para not ok/tests/pass/fail,
+preservando o exit code real do processo. Não se invocou a skill upstream tdd.
+
+1. Fixture válida/cópia: RED import ausente, 0 pass/1 fail (exit 1).
+   GREEN após schema básico: 1 pass/0 fail (exit 0).
+   Essa falha de import comprova somente o primeiro ciclo.
+2. Ciclo agrupado de estrutura strict, IDs/textos, números e campos conhecidos:
+   RED 9 pass/52 fail em 61 testes (exit 1), por entradas incorretamente aceitas;
+   GREEN após limites e objetos strict: 61 pass/0 fail (exit 0).
+   Regras de enum/discriminação existentes no schema básico já passavam.
+3. Ciclo agrupado de coleções: RED 62 pass/13 fail em 75 testes (exit 1);
+   GREEN após cardinalidades: 75 pass/0 fail (exit 0).
+4. Ciclo agrupado de unicidade global e referências de anexos:
+   RED 76 pass/10 fail em 86 testes (exit 1), não houve dez ciclos individuais;
+   GREEN após regras determinísticas: 86 pass/0 fail (exit 0).
+5. Formato ISO: teste novo falhou junto ao ajuste de contrato para path raiz '$':
+   RED 85 pass/2 fail em 87 testes (exit 1); GREEN 87 pass/0 fail (exit 0).
+6. Ordem de datas com fusos: RED 87 pass/1 fail em 88 testes;
+   GREEN após comparação dos instantes: 88 pass/0 fail.
+7. Schedule sem datas: RED 88 pass/1 fail em 89 testes;
+   GREEN após exigir abertura e/ou fechamento: 89 pass/0 fail.
+8. MCQ single-choice: RED 89 pass/1 fail em 90 testes;
+   GREEN após regra de frações: 90 pass/0 fail.
+9. Atividade ausente no gradebook: RED 90 pass/1 fail em 91 testes;
+   GREEN após resolver referência: 91 pass/0 fail.
+10. Associação única no gradebook: RED 91 pass/1 fail em 92 testes;
+    GREEN após unicidade local/global de associação: 92 pass/0 fail.
+11. Fórum no gradebook: RED 92 pass/1 fail em 93 testes;
+    GREEN após restringir atividades avaliáveis: 93 pass/0 fail.
+12. Soma de pesos: RED 93 pass/1 fail em 94 testes;
+    GREEN após tolerância 0,000001: 94 pass/0 fail.
+Todos os RED de 6 a 12 tiveram exit 1; todos os GREEN tiveram exit 0.
+Os ciclos agrupados são registrados como grupos, sem alegar um ciclo por teste.
+Três testes finais verificam fixtures independentes sem introduzir regra nova.
+
+Verificação final do executor:
+node --test tests/domain/*.test.ts: 97 testes, 97 pass, 0 fail, exit 0.
+npm run typecheck: sem diagnósticos TypeScript.
+npx --no-install eslint src/domain/course tests/domain --max-warnings 0:
+sem diagnósticos, exit 0; nenhuma instalação adicional.
+Nenhum check confirma MBZ, bytes de anexos ou compatibilidade Moodle.
+
+Correção de revisão 1 (finding A4/P2 do candidato cb482fca...):
+13. Precisão ISO inferior a milissegundo: teste público individual novo com
+    ordem inversa/correta/igual, frações de tamanhos diferentes, fração ausente,
+    instantes equivalentes em fusos diferentes e fronteira entre segundos.
+    RED: node --test tests/domain/*.test.ts, 97 pass/1 fail em 98, exit 1;
+    falha: abertura .0009Z e fechamento .0001Z eram incorretamente aceitos.
+    GREEN após comparar segundos inteiros e frações decimais como strings:
+    mesmo comando, 98 pass/0 fail, exit 0. Contrato/schema não alterados.
+    npm run typecheck: exit 0, sem diagnósticos.
+    npx --no-install eslint src/domain/course/rules.ts
+    tests/domain/validate-draft.test.ts --max-warnings 0: exit 0.
+    Correção ainda depende da revisão do novo digest pelo integrador.

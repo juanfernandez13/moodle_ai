@@ -1,8 +1,24 @@
-# Planejamento do Moodle AI
+# Moodle AI
 
 Moodle-AI é o nome provisório de uma nova aplicação para professores e equipes pedagógicas prepararem cursos Moodle com auxílio de IA. O primeiro MVP transforma um planejamento DOCX suportado ou uma criação manual em um curso editável, validado e exportável como `.mbz`.
 
-Esta pasta contém o planejamento inicial, o catálogo visual e as ferramentas locais. A aplicação ainda será implementada. O projeto [CourseGen-AI](../CourseGen-AI/README.md) é uma referência técnica independente; convenções específicas serão reaproveitadas somente quando fizerem parte de um perfil explícito.
+Esta pasta contém o planejamento, catálogo visual e a primeira ferramenta executável: validação de rascunhos por CLI. O início foi autorizado em 12/10/2026. [Spec V01](docs/specs/V01-course-to-mbz.md), [tickets](docs/tickets/README.md) e [registro V01-01](docs/tasks/V01-01.json) mostram escopo e evidências. O projeto [CourseGen-AI](../CourseGen-AI/README.md) é referência técnica independente; não é alterado por esta implementação.
+
+## Executar o primeiro ticket
+
+Requer Node 24 e npm. Dependências locais fixadas no lockfile; nenhuma chave de IA é necessária.
+
+```powershell
+npm ci
+npm run check
+npm run demo
+npm run validate:draft -- tests/fixtures/course-valid.json
+node dist/cli/validate-draft.js tests/fixtures/course-valid.json
+```
+
+A fixture válida contém uma seção, seis atividades (dois fóruns, duas tarefas e dois quizzes) e três referências de anexos. O validador confere schema, identidade, referências, questões, datas e categorias de avaliação; a CLI imprime contagens/pendências e não o conteúdo completo. Saídas: 0 válido; 1 JSON/contrato/regra inválida; 2 uso/arquivo/limite de 1 MiB. A validação não confirma bytes dos anexos.
+
+V01-01 inicia o projeto. Geração MBZ, Moodle Lab, editor, importação e persistência ainda são tickets próprios; o primeiro comando não produz um curso restaurado nem comprova compatibilidade. A UI continuará usando Next/TypeScript/Tailwind e a direção visual existente.
 
 ## Documentos para desenvolver
 
@@ -30,7 +46,7 @@ O produto anunciará os formatos e a compatibilidade efetivamente testados. Um b
 
 ## Sequência inicial
 
-O usuário pediu para fechar o pipeline antes de iniciar código. A aplicação permanece sem implementação; [a proposta do processo](docs/PIPELINE.md) é o próximo artefato a revisar.
+O usuário liberou execução/criação nesta conversa em 12/10/2026. A instrução substitui o bloqueio anterior; o [processo local](docs/PIPELINE.md) coordena spec, contratos, tickets, checks e revisões.
 
 1. Revisar as propostas de PRD, arquitetura e design; fechar versão Moodle alvo, detalhes dos dois perfis de documento e prazo.
 2. Preparar o projeto e as ferramentas locais, com scripts de verificação e dependências fixadas em lockfile.
@@ -38,9 +54,9 @@ O usuário pediu para fechar o pipeline antes de iniciar código. A aplicação 
 4. Adicionar editor, anexos reais e interpretação por IA em entregas pequenas.
 5. Comprovar o fluxo genérico com dois exemplos e restauração em Moodle de teste.
 
-As decisões técnicas estão propostas, não implementadas. As 13 skills de Matt Pocock e `frontend-design` estão instaladas em `.agents/skills`, com origem e hashes em `skills-lock.json`. CodeGraph 1.6.2 está instalado localmente e o protocolo MCP foi verificado. A configuração em `.codex/config.toml` será carregada ao abrir esta pasta como projeto confiável e reiniciar o Codex; o MCP ainda não está disponível na sessão que fez o setup.
+O contrato de validação é a primeira implementação; demais decisões seguem a spec/backlog. As 13 skills de Matt Pocock e `frontend-design` estão instaladas em `.agents/skills`, com origem e hashes em `skills-lock.json`. Esta execução usa `project-loop` local e não afirma ter executado todos os workflows upstream. CodeGraph 1.6.2 continua ferramenta local; MCP não estava disponível e sua consulta de status não abriu o banco nesta execução, então foi usada inspeção de arquivos.
 
-O índice da aplicação ainda não existe, pois ela não foi iniciada. A CLI já permite investigar os scripts dos protótipos locais e foi usada nas revisões de design; o MCP permanece indisponível nesta sessão. Os diagramas Mermaid descrevem arquitetura e navegação propostas. Consulte [o registro das ferramentas](docs/SKILLS_AND_MCP.md) para comandos e limitações.
+O grafo precisa de nova sincronização antes de analisar o código acrescentado. Os diagramas Mermaid descrevem arquitetura e navegação planejadas. Consulte [o registro das ferramentas](docs/SKILLS_AND_MCP.md) para comandos e limitações.
 
 ## Ferramentas locais
 
@@ -50,7 +66,7 @@ npm run codegraph:init
 npm run codegraph:status
 ```
 
-O `package.json` atual contém somente ferramentas de desenvolvimento. A escolha e instalação das dependências da aplicação pertencem à primeira entrega do backlog.
+O `package.json` contém a CLI/domínio TypeScript e os scripts de verificação, além das ferramentas existentes. Scripts Next e dependências de UI serão definidos no ticket do editor; nenhuma aplicação web é iniciada por `npm run demo`.
 
 Os protótipos usam Tailwind CSS 4.3.3 compilado localmente. Para instalar suas dependências e atualizar o CSS compartilhado:
 

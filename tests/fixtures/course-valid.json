@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "id": "course-demo",
+  "revision": 3,
+  "metadata": {
+    "fullName": "Curso sintético de aprendizagem digital",
+    "shortName": "DEMO-01",
+    "summary": "Conteúdo fictício para validar o contrato inicial.",
+    "organization": "topics",
+    "startDate": "2026-10-12T09:00:00-03:00"
+  },
+  "sections": [
+    {
+      "id": "section-1",
+      "title": "Primeiro tópico",
+      "summary": "Exemplo com duas atividades de cada tipo.",
+      "activities": [
+        {
+          "id": "forum-1",
+          "type": "forum",
+          "title": "Apresentações",
+          "description": "Apresente uma expectativa para o curso.",
+          "attachmentIds": ["attachment-intro"],
+          "settings": { "discussionMode": "general" }
+        },
+        {
+          "id": "forum-2",
+          "type": "forum",
+          "title": "Discussão do tópico",
+          "description": "Compare duas estratégias de estudo.",
+          "attachmentIds": [],
+          "settings": { "discussionMode": "single" }
+        },
+        {
+          "id": "assignment-1",
+          "type": "assignment",
+          "title": "Plano de estudo",
+          "description": "Envie seu plano fictício.",
+          "attachmentIds": ["attachment-plan"],
+          "schedule": {
+            "opensAt": "2026-10-12T12:00:00Z",
+            "closesAt": "2026-10-19T12:00:00Z"
+          },
+          "settings": { "maxGrade": 10, "submissionMode": "file" }
+        },
+        {
+          "id": "assignment-2",
+          "type": "assignment",
+          "title": "Reflexão final",
+          "description": "Relate o que você aprendeu.",
+          "attachmentIds": ["attachment-reflection"],
+          "settings": { "maxGrade": 100, "submissionMode": "both" }
+        },
+        {
+          "id": "quiz-1",
+          "type": "quiz",
+          "title": "Verificação inicial",
+          "description": "Escolha uma resposta para a pergunta.",
+          "attachmentIds": [],
+          "settings": { "maxGrade": 10, "attempts": 0, "shuffleQuestions": false },
+          "questions": [
+            {
+              "id": "question-1",
+              "type": "multiple-choice",
+              "statement": "Qual ação ajuda a organizar o estudo?",
+              "options": [
+                { "id": "option-1-a", "text": "Planejar horários", "fraction": 1, "feedback": "Correto." },
+                { "id": "option-1-b", "text": "Evitar revisões", "fraction": 0, "feedback": "Tente novamente." },
+                { "id": "option-1-c", "text": "Ignorar objetivos", "fraction": 0, "feedback": "Tente novamente." }
+              ],
+              "feedback": "Um plano ajuda a distribuir o tempo."
+            }
+          ]
+        },
+        {
+          "id": "quiz-2",
+          "type": "quiz",
+          "title": "Verificação final",
+          "description": "Confira o conceito trabalhado.",
+          "attachmentIds": ["attachment-intro"],
+          "settings": { "maxGrade": 100, "attempts": 2, "shuffleQuestions": true },
+          "questions": [
+            {
+              "id": "question-2",
+              "type": "multiple-choice",
+              "statement": "Qual hábito favorece a aprendizagem?",
+              "options": [
+                { "id": "option-2-a", "text": "Revisar conceitos", "fraction": 1, "feedback": "Correto." },
+                { "id": "option-2-b", "text": "Nunca praticar", "fraction": 0, "feedback": "Tente novamente." }
+              ],
+              "feedback": "A revisão retoma e consolida conceitos."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "attachments": [
+    { "id": "attachment-intro", "name": "introducao.txt", "size": 27, "mediaType": "text/plain" },
+    { "id": "attachment-plan", "name": "plano.txt", "size": 41, "mediaType": "text/plain" },
+    { "id": "attachment-reflection", "name": "reflexao.txt", "size": 36, "mediaType": "text/plain" }
+  ],
+  "gradebook": {
+    "categories": [
+      { "id": "category-assignments", "name": "Tarefas", "weight": 60, "activityIds": ["assignment-1", "assignment-2"] },
+      { "id": "category-quizzes", "name": "Quizzes", "weight": 40, "activityIds": ["quiz-1", "quiz-2"] }
+    ]
+  }
+}

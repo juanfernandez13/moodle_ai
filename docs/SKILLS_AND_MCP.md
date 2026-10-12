@@ -53,9 +53,11 @@ npx.cmd --yes skills list --agent codex --json
 
 A conferência da instalação externa retornou 14 skills com escopo `project`. Novas skills locais podem aumentar a listagem; a contagem das cópias externas desta instalação é a registrada no lock. `--copy` materializa as skills no projeto. Reexecutar a instalação pode atualizar o conteúdo das fontes; confira o diff e os hashes antes de aceitar uma atualização.
 
-## Configuração de trabalho ainda pendente
+## Configuração de trabalho — execução inicial de 12/10/2026
 
-`setup-matt-pocock-skills` está instalado, mas seu fluxo de configuração não foi executado. A própria skill pede configuração do tracker e dos documentos de domínio antes dos fluxos de especificação, tickets e implementação orquestrada. Nesta preparação, não foram gerados seus arquivos `docs/agents/issue-tracker.md` e `docs/agents/domain.md`.
+O início autorizado usa o `project-loop` local, [tracker Markdown](agents/issue-tracker.md), [domínio único](agents/domain.md), [spec V01](specs/V01-course-to-mbz.md) e [tickets](tickets/README.md). A configuração é local e não cria issues externas. O setup e workflows upstream descritos abaixo continuam opções e não são apresentados como executados. Na consulta desta execução, CodeGraph MCP não estava exposto e a CLI `status` não conseguiu abrir o banco; foi usada inspeção local.
+
+`setup-matt-pocock-skills` está instalado, mas seu fluxo de configuração não foi executado. A própria skill pede configuração do tracker e dos documentos de domínio antes dos seus fluxos upstream. Na preparação anterior não havia esses arquivos; a execução atual gerou `docs/agents/issue-tracker.md` e `docs/agents/domain.md` pelo loop local, sem alegar execução do setup upstream.
 
 O setup suporta tracker local em Markdown, além de serviços externos. Ele explora o projeto, apresenta as escolhas e produz configuração após confirmação prevista no próprio workflow. A instalação não escolheu um serviço externo nem criou issues.
 

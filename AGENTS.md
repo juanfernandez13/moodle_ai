@@ -2,7 +2,7 @@
 
 Nova aplicação genérica de preparação de cursos Moodle. Leia `docs/PRD.md` para comportamento, `docs/ARCHITECTURE.md` para modelo e decisões e `docs/BACKLOG.md` para a entrega em execução. A pasta `../CourseGen-AI` é referência; não a altere como parte deste projeto.
 
-Estado atual: planejamento do pipeline. O usuário pediu para não iniciar código da aplicação. Leia `docs/PIPELINE.md`; não crie scaffold nem implemente funcionalidades até nova liberação explícita. Revisão dos artefatos existentes e planejamento podem avançar.
+Estado atual: execução inicial liberada pelo usuário em 12/10/2026, nesta conversa. O pedido de iniciar execução/criação e a confirmação de Moodle-AI revogam o bloqueio anterior de código. Leia `docs/specs/V01-course-to-mbz.md` e `docs/tickets/README.md`: V01-01 inicia o contrato/validação por CLI; exportador, laboratório e editor permanecem entregas próprias. Não trate o bootstrap como MVP concluído.
 
 ## Regras de implementação
 

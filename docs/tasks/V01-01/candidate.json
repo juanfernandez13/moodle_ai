@@ -1,0 +1,147 @@
+{
+  "base": "fd7ad9414c4aefc99719b42823790a2ffc381488",
+  "revision": "sha256:066e9800d6a124ecb1d01bd3baa8db885d08dbd98f9c80b6b343b6d7e9329a4f",
+  "digestRule": "SHA-256 of UTF-8 lines path + NUL + sha256 + LF, sorted by path; per-file sha256 hashes raw bytes.",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "93dc0864d08df8fce925f7b4a54a00906b8a65f282e3305a0fb27d51a766e2cc"
+    },
+    {
+      "path": "README.md",
+      "sha256": "f895a64ff40d79546527c9b88c74536d3f1406e4556dec7b594ed4e8c08abb40"
+    },
+    {
+      "path": "docs/AGENT_LOOP.md",
+      "sha256": "162942d7cb294128cd4ba08d9a7ee1ba9517f1e65fe3f92c6f9e6116b1f3c8d5"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "494b57f9bb8858ed7cc86de4c5d9ae64a4e0dbedb6ade77bed6b51510bc1e418"
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "sha256": "85dc5ea6afbbdff07e4ca7e618561c0c89f48a9c36dc3600ee0dd6078c63228f"
+    },
+    {
+      "path": "docs/BUILDER_PIPELINE_PLAN.md",
+      "sha256": "e16178af490a71a4c3c9b53b5a18cc56f97ef87e82af98e7e4f92f8f23d80065"
+    },
+    {
+      "path": "docs/PIPELINE.md",
+      "sha256": "4e25301eeecbe285699f50160de8cd865098568f49099f58bd821100e3efa6d3"
+    },
+    {
+      "path": "docs/PLANNING_READINESS.md",
+      "sha256": "51a29763f0938c7a9f49ba08117b61761bef8e2d7626d1c85afe20be310b322f"
+    },
+    {
+      "path": "docs/PRD.md",
+      "sha256": "633c603632c34516541ca9ad71b893824785348e775710d0d6a0a4212623e4b9"
+    },
+    {
+      "path": "docs/SKILLS_AND_MCP.md",
+      "sha256": "15398f65ccb4e3c94169889839a67116e4cf3e76d499a4979aaecd880f70450a"
+    },
+    {
+      "path": "docs/agents/domain.md",
+      "sha256": "26ac0e97f820468503a3286b1fd482a528ff931c4214b5901743965efa3d8b8d"
+    },
+    {
+      "path": "docs/agents/issue-tracker.md",
+      "sha256": "78231875e4eddd13de9bdae77b826c157958c086e91a027af1b07452fd155e68"
+    },
+    {
+      "path": "docs/specs/V01-course-to-mbz.md",
+      "sha256": "960cc172bb335f2db89395d7f9e575fad17e36e98bc3bf56d986149e9e61eadc"
+    },
+    {
+      "path": "docs/tickets/README.md",
+      "sha256": "d4b57de46bfdc2d5b5ea76fe152ecb28c225e2fe3331290e694c84e9ca775bae"
+    },
+    {
+      "path": "docs/tickets/V01-01-bootstrap-validation.md",
+      "sha256": "4b9fff1fab65c9581fc881331532057bdfdfd86a5bf956dbeb7bca8dedbec5f4"
+    },
+    {
+      "path": "docs/tickets/V01-02-export-mbz.md",
+      "sha256": "5a29d38be767a06cb42303b509295eb7e60eae1ae831083ec039dd99076f65e0"
+    },
+    {
+      "path": "docs/tickets/V01-03-moodle-lab.md",
+      "sha256": "160623710d2153808c5b1312c415232a64cf5285f16f731ab8846c0785fc3dde"
+    },
+    {
+      "path": "docs/tickets/V01-04-restore-fixture.md",
+      "sha256": "e76984c05d9ca4977457f9fb6019015f9bdbcc1bb7e88158ed09cffcf244ef7e"
+    },
+    {
+      "path": "docs/tickets/V02-01-manual-editor.md",
+      "sha256": "78c6854d53de7767a180638f1ec608ff7a0ba7d37bff00011bc4b9d5bde44904"
+    },
+    {
+      "path": "eslint.config.mjs",
+      "sha256": "433d07ed81f0c5b133d88a72f6c58ee481e3777e15a9fa04b885dfa9d7777a5b"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "d6ce03fb439a354119edf2eba5bb3c62cbc606e6b5b62eb06f0aa49393384d2a"
+    },
+    {
+      "path": "package.json",
+      "sha256": "61fee1805e1163387e207ad4e2d1d45060f1852ac7cf4796b5376df252d2615c"
+    },
+    {
+      "path": "src/cli/validate-draft.ts",
+      "sha256": "98692ff86a6202b0d153b3108d5aaa8424fb86ec403c3edf174632f3958c5234"
+    },
+    {
+      "path": "src/domain/course/index.ts",
+      "sha256": "252deff8416869998715646ab4a83560ea8533289a6b02f79f62711191704b0a"
+    },
+    {
+      "path": "src/domain/course/rules.ts",
+      "sha256": "162d63663f250bcc1aebba01654a4dfd0ba5ef5bcaf42a3cee2e68a7efb863fd"
+    },
+    {
+      "path": "src/domain/course/schema.ts",
+      "sha256": "8e64c0a23fc9eea80f64dfb0339a91acd7ff040f3f6c8f035bcef7579320ec1e"
+    },
+    {
+      "path": "src/domain/course/validate-draft.ts",
+      "sha256": "a20ffa47e85f99d71a73ebac05f7dfa6374177c4d2236e761c66251b29e4722d"
+    },
+    {
+      "path": "tests/cli/validate-draft.test.ts",
+      "sha256": "0e169a4c42f361e8c923caf3188950e66549e2c9ab29062b670dea7adfcc23d5"
+    },
+    {
+      "path": "tests/domain/validate-draft.test.ts",
+      "sha256": "b5bba5d14846704ec3903b6e6c1b0ab61455bf32f7bfd33ba06f038947d38ad0"
+    },
+    {
+      "path": "tests/fixtures/course-invalid-duplicate-id.json",
+      "sha256": "909f49569a27520d966db5172b83b568c934c2f06c7e845286f9b08234a70808"
+    },
+    {
+      "path": "tests/fixtures/course-invalid-internal-field.json",
+      "sha256": "d844b27153b1db7ae0bac69360f80d44f61b21739ee341e0bfc1fd128d2f876e"
+    },
+    {
+      "path": "tests/fixtures/course-invalid-version.json",
+      "sha256": "4a9e6123be8abde9c8bb587fb5d4b7fe3894a397683775f85140811963484c05"
+    },
+    {
+      "path": "tests/fixtures/course-valid.json",
+      "sha256": "e6aaff37d7e79266f7af94fdc16ab0fa97bb68179fba16076c85e67791aac335"
+    },
+    {
+      "path": "tsconfig.build.json",
+      "sha256": "9acdb4a8836ba4db63a73c492d22de6b4145ddba110c796d48da9ccf5dd07c15"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "bf9bd4ddffa9e15451ab7574161a0277dc45fee2f583abdbf4199c4b118c960d"
+    }
+  ]
+}
