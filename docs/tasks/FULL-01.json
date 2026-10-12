@@ -8,7 +8,7 @@
     "docs/specs/OPS-01-moodle-adapter.md",
     "docs/specs/BG01-interactive-background.md"
   ],
-  "status": "accepted",
+  "status": "integrated",
   "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
   "contextEvidence": "docs/tasks/FULL-01/context.md",
   "owners": [
@@ -343,8 +343,8 @@
     "corrections": 2
   },
   "integration": {
-    "revision": null,
-    "evidence": null
+    "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+    "evidence": "docs/tasks/FULL-01/integration.json"
   },
   "history": [
     {
@@ -612,6 +612,74 @@
       "at": "2026-10-12T19:12:37.623Z",
       "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
       "reason": "Checks reais e dois pareceres independentes aprovados no mesmo snapshot; evidências e limitações inspecionadas pelo coordenador.",
+      "evidence": {
+        "checks": [
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/verification-4.json"
+        ],
+        "reviews": [
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md"
+        ],
+        "acceptance": [
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md",
+          "docs/tasks/FULL-01/verification-4.json",
+          "docs/tasks/FULL-01/browser-4.md",
+          "docs/tasks/FULL-01/review-spec.md",
+          "docs/tasks/FULL-01/review-quality.md"
+        ]
+      }
+    },
+    {
+      "from": "accepted",
+      "to": "integrated",
+      "requestedTo": "integrated",
+      "at": "2026-10-12T19:20:10.512Z",
+      "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+      "reason": "Nove funcionalidades aceitas integradas em main por commits/merges explícitos; npm ci e check completos no destino passaram;199/199 arquivos iguais ao candidato aprovado. Sem push/deploy ou acesso institucional.",
       "evidence": {
         "checks": [
           "docs/tasks/FULL-01/verification-4.json",

@@ -1,0 +1,79 @@
+{
+  "candidate": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+  "base": "645413365f4d0c8cec9bbc021c020a85a206f504",
+  "features": [
+    {
+      "name": "platform",
+      "branch": "feat/application-platform",
+      "revision": "sha256:cce60b2bee87cc1c463bd1b3c2f6c7fb21f77dc42791a9f6ceac3f66c8741b9f",
+      "featureCommit": "f4d993ad095c436af1b08be29ffdc38c7ccd1573",
+      "mainMerge": "5b9773499f1a8a7b25ecacafe5186bf2cb1ecbf6",
+      "filesVerified": 45
+    },
+    {
+      "name": "export",
+      "branch": "feat/moodle-export",
+      "revision": "sha256:bf69b33e24fc2b67218d97bada62e7056d9fed1652f5adcc52032096d899206e",
+      "featureCommit": "a23ed1ba599e7e19f107a03d5761b0a344e75d1d",
+      "mainMerge": "68337b9eb243c4eb40aff23984bbf703e47045a2",
+      "filesVerified": 13
+    },
+    {
+      "name": "import",
+      "branch": "feat/document-import",
+      "revision": "sha256:91ec166f3abb893118473d807d30cb14cbc3449c7bc280243bf3421661a76d99",
+      "featureCommit": "58b7cf99306edc57e16ad22faa13b433440ed18b",
+      "mainMerge": "c5a0ec2893adcf73eb1d1b69b749503c17a8ea33",
+      "filesVerified": 23
+    },
+    {
+      "name": "editor",
+      "branch": "feat/course-editor",
+      "revision": "sha256:19bd5bca049038c801040ca307b4a86882a950b7bace7c7633851a9252fdada2",
+      "featureCommit": "dc47da0e89248c99ed0ca639b527e5905ea273cc",
+      "mainMerge": "e229539419d9f45efb7e0d08fa459f9541adaff6",
+      "filesVerified": 37
+    },
+    {
+      "name": "students",
+      "branch": "feat/student-batch",
+      "revision": "sha256:ce1fb497ec52ba9fafb8d6a577925f559691a1d978b4506facbbde219980986a",
+      "featureCommit": "b130aaac1a655d3bf523d9d27b0c3b9fb2a96399",
+      "mainMerge": "341dae8efb53801917c7f3e5f5ecd8266e5bc3e6",
+      "filesVerified": 6
+    },
+    {
+      "name": "dates",
+      "branch": "feat/course-dates",
+      "revision": "sha256:b9b72462ead3297091959cb55b6c36de2ba9966240108a016574fad26c814216",
+      "featureCommit": "58a28390d42a49adeddf5d02cf404e2d9b629d0b",
+      "mainMerge": "2fae84ead266a251651fc5c08f0c840a2f7b0bcc",
+      "filesVerified": 3
+    },
+    {
+      "name": "operations",
+      "branch": "feat/moodle-lab-operations",
+      "revision": "sha256:849f2987a6af9f97df50dca7fa3d1642ef2e159e1265abd2531ac5d2d812cf40",
+      "featureCommit": "426fb296d2c6d8c7d4624429bd2eca33b881b4c1",
+      "mainMerge": "67db477f231d8742f5edc864911a3cdcd8b0d260",
+      "filesVerified": 31
+    },
+    {
+      "name": "owl",
+      "branch": "feat/owl-3d",
+      "revision": "sha256:0afceff370f13bf9e97b12fa2194386b442a4c436ede856c96f0ab849835f37f",
+      "featureCommit": "ffdc71ac5b6dffb119181666a9c3ef6da67d25bf",
+      "mainMerge": "0625f9287ffa0344638f93d27248bce966b81b9e",
+      "filesVerified": 17
+    },
+    {
+      "name": "background",
+      "branch": "feat/interactive-background",
+      "revision": "sha256:4244f716a3f8e8ad0230ea255001139684dc827159f73c5096d3f7e9e75ee89c",
+      "featureCommit": "a8c6ccc62910ce17cc40cef9b6cdd70cfbc1764c",
+      "mainMerge": "47723b3820158b5eadb1330bfe418e7906c8384c",
+      "filesVerified": 9
+    }
+  ],
+  "remotePush": false
+}

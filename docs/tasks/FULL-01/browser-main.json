@@ -1,0 +1,14 @@
+{
+  "revision": "sha256:ad04237d5ef30724403d0dfc9ecc83b6e6ee00208fff7d5ec1ac2c41f89ed7e8",
+  "mainFeatureHead": "47723b3820158b5eadb1330bfe418e7906c8384c",
+  "runtime": "Next production started from C:/Users/juanp/Projetos/Moodle/Moodle-AI after destination check exit0",
+  "url": "http://127.0.0.1:3210/",
+  "control": "CUA IAB; temporary viewport overrides reset",
+  "viewport": [688, 612],
+  "documentWidth": 673,
+  "owl": "ready",
+  "background": "interactive",
+  "pointerResponse": {"fieldX": "-15.623px", "lightX": "26.56495286371527%"},
+  "screenshot": "outputs/Moodle-AI-interface-final.jpg",
+  "session": "Fictitious lab UI login/logout completed; no institutional Moodle used"
+}
