@@ -21,6 +21,8 @@ O cenário interativo usa geometria 3D em WebGL: colinas em profundidade, vegeta
 
 O frontend está separado por área em `src/client/features/{course,students,dates,moodle}`: componentes de apresentação, hooks de fluxo, tipos e helpers. As páginas de `app` apenas montam esses módulos. Os formulários de atividade ficam em `src/client/components/activity-editors`. Veja o [mapa do código](docs/CODE_MAP.md).
 
+O card de Alunos aproveita a largura disponível no desktop, até um workspace de 1760 px. A tabela mantém edição e paginação; em telas estreitas, sua rolagem horizontal fica contida no próprio painel.
+
 ```powershell
 npm run check
 npm run demo

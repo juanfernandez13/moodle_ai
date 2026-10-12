@@ -86,6 +86,8 @@ O estado de confirmação permanece junto de suas ações assíncronas: alterar 
 
 Antes, `app/page.tsx` tinha 2729 linhas, alunos 1012 e o editor de atividades 1204. A divisão atual permite alterar um painel ou fluxo sem percorrer toda a página. O orquestrador do curso ainda conecta várias ações porque coordena o workspace; os filhos recebem contratos menores.
 
+As três rotas de curso, alunos e datas agora têm cinco linhas cada. O card de alunos usa uma variante ampla do Shell e uma classe própria, preservando os tamanhos da entrada e de datas. O limite de largura do workspace de alunos é 1760 px; no móvel, a tabela rola dentro do card.
+
 `app/globals.css` ainda concentra os tokens e estilos compartilhados, e `src/server/export/builders.ts` mantém os builders XML. Não houve divisão desses builders nesta entrega. A separação evita misturar a refatoração frontend com alterações no formato de backup já validado.
 
 ## Conexão Moodle por URL
