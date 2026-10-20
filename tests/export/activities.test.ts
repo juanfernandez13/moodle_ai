@@ -312,6 +312,43 @@ test("quiz exporta tentativas, datas, nota, embaralhamento e as categorias de qu
   }
 });
 
+test("chat exporta sessão, repetição e retenção sem item de nota", async () => {
+  const sessionAt = "2026-11-03T22:00:00Z";
+  const chat = (id: string, repeat: "none" | "daily" | "weekly", at?: string) => ({
+    id,
+    type: "chat" as const,
+    title: `Chat ${id}`,
+    description: "Plantão de dúvidas.",
+    attachmentIds: [],
+    settings: { repeat, keepDays: 30, ...(at ? { sessionAt: at } : {}) },
+  });
+  const mbz = await exportMbz(
+    draft([
+      section("s1", [
+        chat("once", "none", sessionAt),
+        chat("daily", "daily", sessionAt),
+        chat("weekly", "weekly", sessionAt),
+        chat("unscheduled", "none"),
+      ]),
+    ]),
+  );
+  const found = mbz.activity("once");
+  assertWiring(mbz, found, "chat");
+  assert.equal(found.module["@_version"], "2022112800");
+  assert.equal(found.body.chat.keepdays, "30");
+  assert.equal(found.body.chat.chattime, seconds(sessionAt));
+  assert.equal(found.body.chat.studentlogs, "0");
+  assert.equal(found.grades.grade_items, "");
+  assert.equal(found.inforef.grade_itemref, undefined);
+  // mod_chat: 0 = do not publish times, 1 = publish the session once, 2 = daily, 3 = weekly.
+  const schedule = (id: string) => mbz.activity(id).body.chat.schedule;
+  assert.equal(schedule("once"), "1");
+  assert.equal(schedule("daily"), "2");
+  assert.equal(schedule("weekly"), "3");
+  assert.equal(schedule("unscheduled"), "0");
+  assert.equal(mbz.activity("unscheduled").body.chat.chattime, "0");
+});
+
 test("wiki exporta modo, primeira página e formato HTML", async () => {
   const mbz = await exportMbz(
     draft([

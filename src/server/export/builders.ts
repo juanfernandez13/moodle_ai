@@ -281,12 +281,15 @@ function activityXml(model: ExportModel, activity: ActivityModel): string {
           keepdays: source.settings.keepDays,
           studentlogs: 0,
           chattime: timestamp(source.settings.sessionAt),
+          // mod_chat: 0 hides chat times, 1 publishes the session once, 2 daily, 3 weekly.
           schedule:
-            source.settings.repeat === "none"
-              ? 0
-              : source.settings.repeat === "daily"
-                ? 2
-                : 3,
+            source.settings.repeat === "daily"
+              ? 2
+              : source.settings.repeat === "weekly"
+                ? 3
+                : source.settings.sessionAt === undefined
+                  ? 0
+                  : 1,
           timemodified: now,
         }) + "<messages/><users/>",
       );
