@@ -144,6 +144,21 @@ test("confirmação de criação lê #uuresults por linha: criado, aviso vira er
   assert.equal(post.body.get("uutype"), "0");
 });
 
+test("confirmação de atualização em pt_br distingue atualizado de 'não atualizado - não existe'", async () => {
+  const { client, result } = await preview(batch(), { mode: "update", enrol: false }, { results: "uploaduser-results.update.pt_br.html" });
+  const confirmed = await confirmStudents(client, result.operation);
+  assert.deepEqual(
+    confirmed.rows.map((row) => [row.username, row.status]),
+    [
+      ["lab-ana", "updated"],
+      ["LAB-BIA", "updated"], // Moodle may print the username in another case
+      ["lab-caio", "error"], // uuwarning "Usuário não atualizado - não existe"
+      ["lab-davi", "error"], // uuerror
+    ],
+  );
+  assert.deepEqual(confirmed.counts, { created: 0, updated: 2, error: 2, unknown: 0 });
+});
+
 test("formulário reexibido sem #uuresults marca o lote inteiro como erro", async () => {
   const { client, result } = await preview(batch(), { mode: "create", enrol: false }, { results: "uploaduser-preview.html" });
   const confirmed = await confirmStudents(client, result.operation);

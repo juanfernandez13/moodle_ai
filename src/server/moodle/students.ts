@@ -78,7 +78,8 @@ export async function confirmStudents(client: MoodleClient, operation: StudentOp
     const username = cells.eq(3).text().trim();
     if (!operation.rows.some(row => row.username.toLowerCase() === username.toLowerCase())) return;
     const statusText = cells.eq(0).text().trim();
-    const status: StudentResult['status'] = $(element).find('.uuerror').length ? 'error' : /^new user$|^novo usu[aá]rio$/i.test(statusText) ? 'created' : /^(user|usu[aá]rio).*(updated|atualiz)|up.to.date/i.test(statusText) ? 'updated' : cells.eq(0).find('.uuwarning').length ? 'error' : 'unknown';
+    // Warnings come first: "User not updated - does not exist" is a uuwarning that would also match the updated pattern.
+    const status: StudentResult['status'] = $(element).find('.uuerror').length || cells.eq(0).find('.uuwarning').length ? 'error' : /^new user$|^novo usu[aá]rio$/i.test(statusText) ? 'created' : /^(user|usu[aá]rio).*(updated|atualiz)|up.to.date/i.test(statusText) ? 'updated' : 'unknown';
     result.set(username.toLowerCase(), { username, status, message: status === 'created' ? 'Usuário criado pelo Moodle.' : status === 'updated' ? 'Usuário atualizado pelo Moodle.' : status === 'error' ? 'O Moodle informou falha nesta linha; cadastro ou matrícula podem ter sido aplicados parcialmente. Confira no Moodle.' : 'O Moodle não forneceu um resultado reconhecível. Confira antes de reenviar.' });
   });
   return studentResults(operation.rows.map(row => result.get(row.username.toLowerCase()) ?? { username: row.username, status: 'unknown', message: 'O Moodle não confirmou o resultado desta linha. Confira antes de reenviar.' }));
