@@ -1,0 +1,184 @@
+/* Casca do app: cabeçalho em vidro, compacto, e uma área de conteúdo que pode encolher.
+   Carregado depois de globals.css e antes de entry.css, editor.css, tools.css, students.css e dates.css.
+
+   Contrato com as telas (entrada, editor, Alunos, Datas):
+   - Telas pensadas para caber na janela: o editor, Alunos e Datas com 720px de largura e 540px de altura
+     ou mais, e a entrada com 1100px de largura e 540px de altura ou mais. Nelas o app ocupa exatamente a
+     altura da janela (100dvh) e a página não rola: cada coluna ou painel rola por dentro. Em qualquer
+     outro tamanho (celular, entrada empilhada, janela baixa) a página rola normalmente, inclusive
+     pelo teclado. Nas telas de altura fixa o Chrome só rola uma coluna pelo teclado depois de um
+     clique nela; shell.tsx (useKeyboardScroll) cobre o caso sem clique e sem foco, então PageDown,
+     Espaço e setas rolam a coluna principal logo que a tela abre. Não há tabindex em
+     .workspace-main: um tabindex faria cada clique focar a região e o teclado deixaria de rolar a
+     coluna clicada.
+   - Vidro: .surface-panel (globals.css) e o cabeçalho (aqui) são vidro fosco sobre o caderno, com
+     fundo opaco quando o navegador não tem desfoque ou a pessoa pede menos transparência.
+   - .workspace-main é uma coluna flex com min-height: 0 e ocupa todo o espaço abaixo do cabeçalho.
+     Os filhos diretos entram nela como itens flex que NÃO encolhem sozinhos (flex-shrink: 0), então
+     nada é cortado em silêncio. Quem quer preencher o resto da altura e rolar por dentro usa
+     flex: 1 1 0 e min-height: 0 (e overflow: auto nas colunas). Se um filho passar da altura nas telas
+     de altura fixa, quem rola é .workspace-main, nunca a janela.
+   - A margem do caderno e o respiro lateral (até 1760px de largura) vêm do padding do cabeçalho e
+     de .workspace-main; os filhos usam 100% da largura que sobra. */
+
+.application {
+  --workspace-max: 1760px;
+  --workspace-pad: clamp(16px, 3vw, 48px);
+  /* Começa depois da linha vermelha do caderno (--notebook-gutter) e centraliza acima de 1760px. */
+  --workspace-start: max(
+    calc(var(--notebook-gutter) + var(--workspace-pad)),
+    calc((100% - var(--workspace-max)) / 2 + var(--workspace-pad))
+  );
+  --workspace-end: max(
+    var(--workspace-pad),
+    calc((100% - var(--workspace-max)) / 2 + var(--workspace-pad))
+  );
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+}
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px var(--workspace-end) 8px var(--workspace-start);
+}
+.brand {
+  line-height: 1.2;
+}
+
+/* ---------- Vidro no cabeçalho: marca e botões, um pouco mais claros que os painéis ---------- */
+.brand,
+.header-action {
+  background: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.1);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.1);
+}
+.brand {
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+}
+.theme-dark .brand,
+.theme-dark .header-action {
+  background: rgba(28, 48, 37, 0.74);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .brand,
+  .header-action,
+  .theme-dark .brand,
+  .theme-dark .header-action {
+    background: var(--surface);
+  }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more), (forced-colors: active) {
+  .brand,
+  .header-action,
+  .theme-dark .brand,
+  .theme-dark .header-action {
+    background: var(--surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .brand,
+  .theme-dark .brand {
+    border-color: var(--line);
+  }
+}
+/* Botões do cabeçalho: texto de 16px, ícone sempre junto da palavra. A página aberta fica marcada
+   por fundo suave e borda de 1px na cor da ação, não só pela cor do texto. */
+.header-action {
+  min-height: 44px;
+  font-size: 16px;
+  white-space: nowrap;
+}
+.header-action svg {
+  width: 20px;
+  height: 20px;
+}
+.header-action[aria-pressed="true"],
+.header-action[aria-current="page"] {
+  background: var(--selected);
+  border-color: var(--action);
+}
+
+.workspace-main {
+  /* Contém elementos absolutos (inputs .visually-hidden): sem isso eles escapam da rolagem interna
+     e fazem a janela rolar por causa de um campo invisível. */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding: 4px var(--workspace-end) 14px var(--workspace-start);
+  /* Quem recebe foco ou é rolado até aqui não fica colado na borda (o anel de foco não é cortado). */
+  scroll-padding-block: 12px;
+}
+/* Especificidade zero: qualquer regra de tela (.entry-panel, .editor-layout...) vence esta. */
+:where(.workspace-main > *) {
+  flex-shrink: 0;
+}
+:where(.workspace-main > main, .workspace-main > .status-banner) {
+  width: 100%;
+}
+
+/* Telas de altura fixa. O app só prende a altura quando a tela foi desenhada para caber nela. */
+@media screen and (min-width: 720px) and (min-height: 540px) {
+  .application:has(.editor-layout, .tool-panel) {
+    height: 100vh;
+    height: 100dvh;
+  }
+  .application:has(.editor-layout, .tool-panel) .workspace-main {
+    overflow: auto;
+  }
+}
+@media screen and (min-width: 1100px) and (min-height: 540px) {
+  .application:has(.entry-panel) {
+    height: 100vh;
+    height: 100dvh;
+  }
+  .application:has(.entry-panel) .workspace-main {
+    overflow: auto;
+  }
+}
+
+/* Dentro do vidro, tabelas ficam opacas como os campos e os cartões: dados nunca ficam sobre transparência. */
+.surface-panel table {
+  background: var(--surface);
+}
+
+/* O diálogo continua opaco: é uma janela sobre a página, não um painel. Só o fundo atrás dele desfoca. */
+.modal.surface-panel,
+.theme-dark .modal.surface-panel {
+  background: var(--surface);
+  border-color: var(--line);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+@media (max-width: 600px) {
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  /* Celular: três botões lado a lado, ícone ao lado da palavra (nada de rótulo de 11px empilhado). */
+  .header-action {
+    flex-direction: row;
+    gap: 6px;
+    padding: 6px 4px;
+    min-height: 48px;
+  }
+  .workspace-main {
+    padding-bottom: 24px;
+  }
+}

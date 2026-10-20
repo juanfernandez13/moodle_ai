@@ -11,3 +11,5 @@ coverage/
 .npm-cache/
 tmp/
 *.mbz
+*.stackdump
+public/fonts/Switzer-*.woff2

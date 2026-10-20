@@ -1,0 +1,996 @@
+/* Datas (/datas) e Alunos (/cadastro-lote): layout em largura total, sem rolagem da página em notebooks.
+   Carregado depois de globals.css; as regras daqui vencem pela ordem. Tudo é escopado em .tool-panel
+   para não tocar editor e entrada, que compartilham field-grid, table-scroll, panel-tabs etc. */
+
+/* ---------- Painel: largura do espaço de trabalho, coluna flexível ---------- */
+.application .tool-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 20px 12px;
+}
+.tool-panel > * {
+  min-width: 0;
+}
+
+/* Cabeçalho: título + descrição na mesma linha, voltar ao curso à direita, abas/etapas abaixo. */
+.tool-panel .tool-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "title back"
+    "tabs tabs";
+  align-items: baseline;
+  gap: 8px 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.tool-top > .tool-title {
+  grid-area: title;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 16px;
+  min-width: 0;
+}
+.tool-top > .tool-title h1 {
+  margin: 0;
+  font-size: 26px;
+  line-height: 1.25;
+}
+.tool-top > .tool-title p {
+  margin: 0;
+  max-width: none;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.tool-top > a {
+  grid-area: back;
+  justify-self: end;
+  min-height: 44px;
+  margin-right: -12px;
+  padding-inline: 12px;
+}
+.tool-top > .panel-tabs,
+.tool-top > .steps {
+  grid-area: tabs;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+}
+.tool-top .panel-tabs button,
+.tool-top .steps button {
+  min-height: 44px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+}
+/* Etapas do cadastro: o botão inteiro é a cápsula (alvo de 44 px), a lista só agrupa. */
+.tool-top .steps li {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font-size: 13px;
+}
+.tool-top .steps button {
+  border: 1px solid var(--control-border);
+  border-radius: 99px;
+  background: var(--surface);
+  color: var(--muted);
+}
+.tool-top .steps button:hover:not(:disabled) {
+  border-color: var(--focus);
+}
+.tool-top .steps .current button {
+  background: var(--selected);
+  border-color: var(--action);
+  color: var(--text);
+}
+.tool-top .panel-tabs button:disabled,
+.tool-top .steps button:disabled {
+  border-color: var(--line);
+  background: transparent;
+  color: var(--muted);
+}
+
+.tool-panel > .status-banner {
+  margin: 0;
+}
+
+/* Corpo: área que rola por dentro quando a janela é baixa (ver bloco de notebook mais abaixo). */
+.tool-panel .tool-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.tool-panel .tool-body > * {
+  flex: 0 0 auto;
+}
+.tool-panel .tool-body > .error-text {
+  margin: 12px 0 0;
+}
+
+/* Rodapé do painel (Alunos): aviso e atalho para Datas na mesma linha. */
+.tool-panel .tool-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 24px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+.tool-foot p {
+  margin: 8px 0;
+  font-size: 13px;
+}
+.tool-foot .tool-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+/* ---------- Tabelas: linhas finas, cabeçalho fixo, rolagem própria ---------- */
+.tool-panel .table-scroll {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  scroll-padding-top: 44px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--control-border) transparent;
+}
+.tool-panel table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.tool-panel th,
+.tool-panel td {
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 8px 12px;
+  vertical-align: middle;
+}
+.tool-panel th + th,
+.tool-panel td + td {
+  border-left: 1px solid var(--line);
+}
+.tool-panel tbody tr:last-child > td {
+  border-bottom: 0;
+}
+.tool-panel .table-scroll thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--support);
+  box-shadow: 0 1px 0 var(--line);
+  white-space: nowrap;
+}
+.tool-panel .pagination {
+  margin: 0;
+}
+.tool-panel .pagination .field-help {
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* ---------- Datas: planejar ---------- */
+.tool-panel .date-plan {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "main"
+    "side"
+    "action";
+  gap: 14px 24px;
+  align-items: start;
+}
+.date-plan-main {
+  grid-area: main;
+  container: dateplan / inline-size;
+}
+.date-plan-side {
+  grid-area: side;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+.date-plan > .primary {
+  grid-area: action;
+  justify-self: start;
+}
+.date-plan .field-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 16px;
+}
+.date-plan .field-grid .field {
+  margin: 0;
+  justify-content: flex-end;
+}
+@container dateplan (max-width: 400px) {
+  .date-plan .field-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@container dateplan (min-width: 600px) {
+  .date-plan .field-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.date-plan-side .notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  order: -1;
+  margin: 0;
+}
+.date-plan-side .notice > svg {
+  flex: 0 0 auto;
+  margin-top: 1px;
+  color: var(--action);
+}
+.date-plan-side .form-details {
+  margin: 0;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.date-plan-side .form-details summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0;
+}
+.date-plan-side .form-details .field-help {
+  margin: 0 0 8px;
+}
+.date-plan-side .form-details .field {
+  margin: 0 0 14px;
+}
+.date-plan-side .field textarea.json-input {
+  min-height: 150px;
+}
+@media (min-width: 1000px) {
+  .tool-panel .date-plan {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 330px);
+    grid-template-areas:
+      "main side"
+      "action action";
+  }
+}
+@media (min-width: 1500px) {
+  .tool-panel .date-plan {
+    grid-template-columns: minmax(0, 2fr) minmax(340px, 1fr);
+  }
+}
+
+/* ---------- Datas: aba Moodle ---------- */
+.tool-panel .date-connection {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px 24px;
+  align-items: start;
+}
+.date-connection > .moodle-connection {
+  margin: 0;
+}
+.date-connection-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+.date-connection-side .field {
+  align-self: stretch;
+  margin: 0;
+}
+.date-connection-side .tool-warning {
+  align-self: stretch;
+  margin: 0;
+}
+@media (min-width: 1000px) {
+  .tool-panel .date-connection {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  }
+}
+
+/* ---------- Datas e Alunos: prévia, conferência e resultados (título + paginação + ação numa linha) ---------- */
+.tool-panel .date-results {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "title"
+    "table"
+    "pager"
+    "action";
+  gap: 10px 16px;
+  align-items: center;
+  margin: 0;
+}
+.date-results > .review-title {
+  grid-area: title;
+  min-width: 0;
+}
+.date-results > .review-title h2,
+.date-results > .review-title h3 {
+  margin: 0 0 2px;
+  font-size: 20px;
+  line-height: 1.3;
+}
+.date-results > .review-title p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.date-results > .table-scroll {
+  grid-area: table;
+}
+.date-results > .pagination {
+  grid-area: pager;
+}
+.date-results > .primary {
+  grid-area: action;
+  justify-self: start;
+}
+.tool-panel .date-results.notice {
+  padding: 14px;
+}
+.date-results .date-preview td {
+  font-size: 13px;
+  white-space: nowrap;
+}
+.date-results .date-preview td:first-child {
+  min-width: 190px;
+  max-width: 380px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.date-results .date-preview td small {
+  display: inline;
+  margin: 0 0 0 8px;
+  font-size: 11px;
+}
+@media (min-width: 900px) {
+  .tool-panel .date-results {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      "title pager action"
+      "table table table";
+  }
+  .tool-panel .date-results.no-action {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "title pager"
+      "table table";
+  }
+  .date-results > .pagination {
+    justify-content: flex-end;
+  }
+}
+
+/* ---------- Alunos: planilha ---------- */
+.tool-panel .student-import {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+.student-import > .import-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+}
+.import-row > .upload-group {
+  flex: 1 1 360px;
+  max-width: 960px;
+  margin: 0;
+}
+.import-row > .button-row {
+  flex: 0 0 auto;
+  margin: 0;
+  gap: 4px 8px;
+}
+.student-import > .field {
+  max-width: 360px;
+  margin: 0;
+}
+.student-import > .primary {
+  align-self: flex-start;
+}
+.student-import > .notice {
+  margin: 0;
+}
+
+/* Mapeamento de colunas */
+.tool-panel .mapping-editor {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px 24px;
+  align-items: start;
+}
+.mapping-editor h2 {
+  margin: 0 0 4px;
+  font-size: 18px;
+}
+.mapping-editor p {
+  margin-bottom: 4px;
+}
+.mapping-editor .check-row {
+  margin: 0 0 4px;
+}
+.mapping-editor .sheet-preview td {
+  white-space: nowrap;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mapping-editor .mapping-grid {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 8px 14px;
+  margin-bottom: 12px;
+}
+.mapping-editor .mapping-grid .field {
+  margin: 0;
+}
+@media (min-width: 1100px) {
+  .tool-panel .mapping-editor {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  }
+}
+@media (max-width: 600px) {
+  .mapping-editor .mapping-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- Alunos: revisão (tabela à esquerda, opções e ação à direita) ---------- */
+.tool-panel .review-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px 20px;
+  align-items: start;
+}
+.review-stage > .section-heading {
+  margin: 0;
+  align-items: center;
+}
+.review-stage > .section-heading h2 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.3;
+}
+.review-stage > .section-heading > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 16px;
+}
+.review-stage > .section-heading .field-help {
+  margin: 0;
+}
+.review-stage > .section-heading .issue-count,
+.review-stage > .section-heading .valid-count {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.review-main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  min-height: 0;
+}
+.review-main > .table-scroll {
+  flex: 0 1 auto;
+  min-height: 0;
+}
+.review-side {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  min-height: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--support);
+}
+.review-side .field-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 16px;
+}
+.review-side .field-grid .field,
+.review-side .field {
+  margin: 0;
+}
+.review-side .field-grid .field-help {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.review-side .check-row {
+  min-height: 44px;
+  margin: 0;
+}
+.review-side > .primary {
+  align-self: flex-start;
+}
+.review-side .review-issues {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--control-border) transparent;
+  max-height: 24vh;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.review-side .review-issues .issue-link {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.review-side .review-issues .issue-link:last-child {
+  border-bottom: 0;
+}
+/* A lista rola e cortaria um anel desenhado por fora: o anel de foco fica dentro do botão. */
+.review-side .review-issues .issue-link:focus-visible {
+  outline-offset: -3px;
+}
+.student-table input {
+  min-width: 0;
+}
+.student-table input[aria-invalid="true"] {
+  border-color: var(--error);
+}
+.student-table td {
+  padding: 4px;
+}
+.student-table th {
+  padding: 8px 4px 8px 8px;
+}
+.student-table td:first-child,
+.student-table th:first-child {
+  width: 52px;
+  padding-inline: 8px;
+  text-align: center;
+}
+.student-table td:nth-child(2) input,
+.student-table td:nth-child(3) input,
+.student-table td:nth-child(4) input {
+  min-width: 84px;
+}
+.student-table td:nth-child(5) input {
+  min-width: 164px;
+}
+.student-table td:nth-child(6) input,
+.student-table td:nth-child(7) input {
+  min-width: 92px;
+}
+.student-table td:last-child,
+.student-table th:last-child {
+  width: 78px;
+  padding-inline: 8px;
+}
+.student-table td:last-child summary {
+  padding: 12px 0;
+  cursor: pointer;
+  list-style-position: inside;
+  white-space: nowrap;
+}
+.student-table td:last-child details[open] p {
+  font-size: 12px;
+  margin: 0 0 4px;
+}
+@media (min-width: 1100px) {
+  .tool-panel .review-stage {
+    grid-template-columns: minmax(0, 1fr) clamp(240px, 20vw, 300px);
+    grid-template-rows: auto minmax(174px, 1fr);
+  }
+  .review-stage > .section-heading {
+    grid-column: 1 / -1;
+  }
+  .review-side .field-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- Alunos: download e Moodle ----------
+   Sem resultado ainda: [CSVs | conexão + escolha de curso]. Com prévia ou resultado do Moodle: uma coluna
+   estreita com os controles à esquerda e a prévia à direita, cada uma rolando por dentro. */
+.tool-panel .download-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px 24px;
+  align-items: start;
+}
+.download-rail {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px 24px;
+  align-items: start;
+  min-width: 0;
+}
+.download-rail > .delivery {
+  display: block;
+  margin: 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--support);
+}
+.download-rail > .delivery h2 {
+  margin-bottom: 4px;
+  font-size: 18px;
+}
+.download-rail > .delivery p {
+  margin-bottom: 4px;
+}
+.download-rail .preset-row {
+  padding: 12px 0;
+}
+.download-rail .preset-row:last-child {
+  border-bottom: 0;
+}
+.tool-panel .moodle-students {
+  container: moodlestudents / inline-size;
+  min-width: 0;
+}
+.moodle-students-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px 20px;
+  align-items: start;
+}
+.moodle-students-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+.moodle-students-side .field,
+.moodle-students-side .tool-warning {
+  align-self: stretch;
+  margin: 0;
+}
+@container moodlestudents (min-width: 700px) {
+  .moodle-students-grid {
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  }
+}
+.tool-panel .moodle-students-output {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+.moodle-students-output:empty {
+  display: none;
+}
+.moodle-students-output > .notice,
+.moodle-students-output > .error-text {
+  margin: 0;
+}
+.moodle-students-output .notice h3 {
+  margin: 0 0 4px;
+  font-size: 18px;
+}
+.moodle-students-output .notice p {
+  margin: 0 0 8px;
+}
+.moodle-students-output .notice .table-scroll {
+  max-height: max(200px, calc(100dvh - 470px));
+}
+.moodle-students-output .notice .pagination {
+  margin-top: 8px;
+}
+.moodle-confirm {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px 20px;
+  align-items: start;
+}
+.moodle-confirm .confirm-main,
+.moodle-confirm .confirm-side {
+  min-width: 0;
+}
+.moodle-confirm .confirm-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+.moodle-confirm .confirm-side .form-details {
+  align-self: stretch;
+  margin: 0;
+  padding: 0 14px 6px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.moodle-confirm .confirm-side .form-details summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0;
+}
+.moodle-confirm .confirm-side .form-details p {
+  margin: 0 0 8px;
+}
+.moodle-confirm .confirm-side .form-details dl {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 4px 14px;
+  margin: 0 0 10px;
+}
+.moodle-confirm .confirm-side .form-details dl > div {
+  display: contents;
+}
+.moodle-confirm .confirm-side .form-details dd {
+  margin: 0;
+}
+.moodle-confirm .confirm-side > .field-help {
+  margin: 0;
+}
+@media (min-width: 1100px) {
+  .download-rail {
+    grid-template-columns: clamp(280px, 24vw, 360px) minmax(0, 1fr);
+  }
+  .tool-panel .download-stage:has(> .moodle-students-output:not([hidden]) > *) {
+    grid-template-columns: clamp(320px, 27vw, 400px) minmax(0, 1fr);
+  }
+  .download-stage:has(> .moodle-students-output:not([hidden]) > *) > .download-rail {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (min-width: 1280px) {
+  .moodle-confirm {
+    grid-template-columns: minmax(0, 1.4fr) minmax(280px, 1fr);
+  }
+}
+
+/* Conexão com o Moodle (compartilhada por Datas e Alunos): mais compacta dentro das ferramentas. */
+.tool-panel .moodle-connection {
+  margin: 0;
+  padding: 12px 16px 14px;
+}
+.tool-panel .moodle-connection h3 {
+  margin-bottom: 6px;
+}
+.tool-panel .moodle-connection .field {
+  margin: 8px 0;
+}
+.tool-panel .moodle-connection .field-grid .field {
+  margin: 0;
+}
+.tool-panel .moodle-connection .field-grid {
+  gap: 8px 16px;
+  margin: 8px 0;
+}
+.tool-panel .moodle-connection .field-help {
+  margin: 4px 0 8px;
+}
+.tool-panel .moodle-connection p > svg {
+  display: inline;
+  vertical-align: -2px;
+  margin-right: 4px;
+}
+.tool-panel .moodle-connection .field > .field-help {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+/* ---------- Notebook: a página não rola; o corpo do painel rola por dentro ----------
+   Contrato com shell.css: com 720px de largura e 540px de altura ou mais (a mesma condição abaixo) o app
+   tem a altura da janela e .workspace-main é uma coluna flex com a altura que sobra abaixo do cabeçalho.
+   O painel encolhe para caber nela (flex-shrink: 1, min-height: 0) e só o corpo rola. Em janelas mais
+   baixas e no celular o painel mantém a altura natural e a página rola como qualquer outra. */
+@media (min-width: 720px) and (min-height: 540px) {
+  .workspace-main > .tool-panel {
+    flex: 0 1 auto;
+    min-height: 0;
+  }
+  .tool-panel > .tool-top,
+  .tool-panel > .status-banner,
+  .tool-panel > .tool-foot {
+    flex-shrink: 0;
+  }
+  .tool-panel .tool-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: -4px;
+    padding: 4px;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--control-border) transparent;
+  }
+  /* Prévia de datas: encolhe para caber e a tabela rola dentro dela. */
+  .tool-panel .tool-body > .date-results {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .tool-panel .date-results {
+    grid-template-rows: auto minmax(168px, 1fr);
+  }
+  .date-results > .table-scroll {
+    min-height: 168px;
+  }
+  .review-main > .table-scroll {
+    min-height: 120px;
+  }
+  .review-side {
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--control-border) transparent;
+  }
+  .review-side > * {
+    flex-shrink: 0;
+  }
+}
+@media (min-width: 720px) and (max-width: 1099px) and (min-height: 540px) {
+  /* Revisão em coluna única: a tabela ocupa a altura que sobra e as opções ficam numa faixa embaixo. */
+  .tool-panel .tool-body > .review-stage {
+    flex: 1 1 auto;
+    min-height: 0;
+    grid-template-rows: auto minmax(174px, 1fr) auto;
+  }
+  .review-stage > .review-main {
+    height: 100%;
+  }
+  .review-side {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px 20px;
+    overflow: visible;
+  }
+  .review-side > .review-issues,
+  .review-side > .field-grid {
+    grid-column: 1 / -1;
+  }
+  .review-side > .review-issues {
+    max-height: 84px;
+  }
+  .review-side > .check-row {
+    grid-column: 1;
+  }
+  .review-side > .primary {
+    grid-column: 2;
+  }
+}
+@media (min-width: 900px) and (max-width: 1099px) and (min-height: 540px) {
+  /* Mais largura: os dois campos à esquerda, marcação e botão empilhados à direita. */
+  .review-side {
+    align-items: start;
+  }
+  .review-side > .field-grid {
+    grid-column: 1;
+    grid-row: span 2;
+  }
+  .review-side > .check-row,
+  .review-side > .primary {
+    grid-column: 2;
+  }
+}
+@media (min-width: 1100px) and (min-height: 540px) {
+  /* Revisão em duas colunas: encolhe para caber, a tabela rola dentro dela e as opções rolam à parte. */
+  .tool-panel .tool-body > .review-stage {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .review-stage > .review-main,
+  .review-stage > .review-side {
+    height: 100%;
+  }
+  /* Com prévia do Moodle: controles e prévia rolam cada um na sua coluna. */
+  .tool-panel .tool-body > .download-stage:has(> .moodle-students-output:not([hidden]) > *) {
+    flex: 1 1 auto;
+    min-height: 0;
+    grid-template-rows: minmax(260px, 1fr);
+  }
+  .download-stage:has(> .moodle-students-output:not([hidden]) > *) > .download-rail,
+  .download-stage:has(> .moodle-students-output:not([hidden]) > *) > .moodle-students-output {
+    align-self: stretch;
+    min-height: 0;
+    margin: -4px;
+    padding: 4px;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--control-border) transparent;
+  }
+}
+
+/* ---------- Telas estreitas ---------- */
+@media (max-width: 899px) {
+  .application .tool-panel {
+    padding: 14px 16px 12px;
+  }
+}
+@media (max-width: 600px) {
+  .application .tool-panel {
+    padding: 14px 14px 12px;
+  }
+  .tool-panel .tool-top {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "title"
+      "back"
+      "tabs";
+    gap: 6px;
+  }
+  .tool-top > .tool-title h1 {
+    font-size: 23px;
+  }
+  .tool-top > a {
+    justify-self: start;
+    margin-left: -12px;
+  }
+  .tool-top .panel-tabs,
+  .tool-top .steps {
+    gap: 6px;
+  }
+  .tool-top .panel-tabs button,
+  .tool-top .steps button {
+    padding: 8px 11px;
+    font-size: 12px;
+  }
+  .tool-foot {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .review-side .field-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .review-stage > .section-heading {
+    align-items: flex-start;
+  }
+}
+@media (max-width: 400px) {
+  .tool-top .panel-tabs,
+  .tool-top .steps {
+    gap: 4px;
+  }
+  .tool-top .panel-tabs button,
+  .tool-top .steps button {
+    padding-inline: 8px;
+  }
+}
+
+/* ---------- Telas grandes: mais respiro, mesma estrutura ---------- */
+@media (min-width: 1500px) and (min-height: 860px) {
+  .application .tool-panel {
+    gap: 16px;
+    padding: 22px 28px 18px;
+  }
+  .tool-panel .tool-top {
+    gap: 10px 24px;
+    padding-bottom: 16px;
+  }
+  .tool-panel .date-plan {
+    gap: 18px 28px;
+  }
+  .date-plan .field-grid {
+    gap: 18px 20px;
+  }
+  .date-plan-side {
+    gap: 14px;
+  }
+  .tool-panel .review-stage {
+    gap: 14px 24px;
+  }
+}

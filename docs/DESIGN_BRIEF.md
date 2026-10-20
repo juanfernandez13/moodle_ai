@@ -155,3 +155,20 @@ A aplicação genérica deverá ser reconhecível pelo trabalho que facilita, ma
 Após comparar a jornada original, o protótipo recupera Planilha → Revisão → Download. A lista fictícia é editável, os cursos de destino são definidos para o lote inteiro e a saída apresenta um CSV de demonstração por curso. Arquivos locais mostram somente metadados; a revisão usa o exemplo explícito. O envio ao Moodle tem sua sequência descrita, sem conexão ou cadastro. Contrato, comparação e limites estão na [revisão do cadastro em lote](STUDENTS_DESIGN_REVIEW.md). Isso não incorpora F01 ao MVP nem inicia a aplicação.
 
 A marca passa a usar uma coruja vetorial minimalista com M geométrico na barriga; o favicon usa somente a coruja. A mascote 3D conserva seu tamanho e o ícone oficial. Os botões Alunos, Fundo e Tema usam cápsulas com seleção suave. Após quatro segundos de ponteiro parado, poucos vagalumes se aproximam; acompanham por dois segundos ao retomar o movimento e voltam às laterais, respeitando movimento reduzido e fundo oculto.
+
+## Revisão visual — 18/10/2026
+
+- O usuário rejeitou a coruja 3D, a paisagem 3D interativa e o vidro translúcido.
+- A nova direção é o design system “Moodle IA” no [Claude Design](https://claude.ai/artifact/Nb59WCuqbzecsU15PGLGV7), com os [fluxogramas de navegação](https://claude.ai/artifact/UYpCjS2RNmX81UigWYLfQx).
+- Escolhido: coruja 2D “Redonda” (`public/brand-owl.svg`; cabeça em `public/brand-owl-mark.svg`), fundo de caderno só em CSS, Switzer na interface e superfícies opacas.
+- Vocabulário: “pendência” no lugar de “correção”.
+
+As seções anteriores e o catálogo [`design-system.html`](../design-system.html) (vidro, Nunito e 3D) permanecem como registro histórico; a referência vigente é o design system “Moodle IA”.
+
+## Largura total, grade de arquivos e chave de IA — 18/10/2026
+
+- **Largura.** Entrada, editor, Alunos e Datas usam a largura inteira do espaço de trabalho, até 1760 px, com a margem do caderno e respiro lateral. O painel único de 800 px e a coluna de 1050 px de Datas deixaram de valer.
+- **Sem rolagem da página em notebook.** Com 720 × 540 px ou mais (a entrada, com 1100 × 540 px ou mais) o app tem a altura da janela: as colunas do editor (Sumário, página aberta, Pendências) e o corpo dos painéis rolam por dentro. Em janelas menores ou mais baixas, e no celular, a página rola normalmente, inclusive pelo teclado.
+- **Entrada em grade.** O planejamento é sempre um arquivo só, numa faixa compacta. Tarefas e Quizzes aceitam vários arquivos e são áreas abertas: arrastar para dentro, ou escolher por botão (acessível pelo teclado); cada área lista nome, tamanho e remover. Soltar um arquivo fora das áreas não abre o arquivo nem tira a pessoa da tela.
+- **Chave de IA.** O caminho seguro é a chave no servidor (`.env.local`, veja `.env.example`): a tela diz se o servidor já tem chave e qual é o modelo padrão, sem nunca receber a chave. Quem quiser usar outra pode digitá-la só na memória da aba; ela é apagada ao fechar, ao trocar de provedor e nunca vai para o projeto, para as cópias nem para os registros.
+- **Limites.** Até 30 arquivos por importação, 25 MB cada e 80 MB no total. Tamanhos aparecem sempre em B, KB ou MB; anexos do backup continuam em 16 MB cada e 64 MB no total, e os documentos de origem ficam à parte.

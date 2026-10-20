@@ -1,7 +1,12 @@
-"use client";
-import Owl3D from "../../visual/owl/Owl3D";
-import { useTheme } from "./shell.tsx";
-
 export function EntryMascot() {
-  return <Owl3D theme={useTheme()} />;
+  return (
+    <img
+      className="owl"
+      src="/brand-owl.svg"
+      width={110}
+      height={119}
+      alt=""
+      draggable={false}
+    />
+  );
 }
