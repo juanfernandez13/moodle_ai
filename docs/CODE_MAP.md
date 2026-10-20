@@ -8,10 +8,11 @@ Atualizado em 12/10/2026 para UX02, a partir da base `9c2167d`. Este mapa descre
 Moodle-AI/
 ├─ app/
 │  ├─ page.tsx                  monta CourseBuilder
-│  ├─ globals.css               tokens, layout e controles compartilhados
+│  ├─ globals.css               tokens, base e controles compartilhados
+│  ├─ styles/                   casca do app (shell.css) e uma folha por tela: entry, editor e tools (Datas e Alunos)
 │  ├─ cadastro-lote/page.tsx    monta StudentsWorkspace
 │  ├─ datas/page.tsx            monta DatesWorkspace
-│  └─ api/                     limites HTTP e composição dos serviços
+│  └─ api/                     limites HTTP e composição dos serviços (GET /api/import/providers diz se o servidor tem chave de IA, nunca a chave)
 ├─ src/
 │  ├─ domain/
 │  │  ├─ course/               CourseDraft, schema e validação
@@ -36,12 +37,9 @@ Moodle-AI/
 │  │  ├─ export/               modelo Moodle, XML e arquivo MBZ
 │  │  ├─ students/             leitura de CSV/XLS/XLSX
 │  │  └─ moodle/               política de URL, sessão, HTTP, formulários e operações
-│  ├─ visual/
-│  │  ├─ owl/                  modelo, animação e lifecycle da coruja
-│  │  └─ background/           cena, composição e lifecycle do fundo
-│  ├─ shared/                  transporte HTTP, origem e utilitários de arquivo
+│  ├─ shared/                  transporte HTTP, origem, limites de envio (upload-limits.ts) e utilitários de arquivo
 │  └─ cli/                     validação de draft por terminal
-├─ public/                     fontes, ícones e Three.js local/licenciado
+├─ public/                     fontes Switzer, ícones e SVGs da marca
 ├─ tests/                      testes por domínio + fixtures fictícias
 ├─ scripts/                    comandos de teste e apoio
 └─ docs/
@@ -66,7 +64,7 @@ flowchart LR
     Export --> MBZ[Download .mbz]
 ```
 
-O `CourseDraft` é o contrato central. IDs estáveis associam seções, atividades e anexos. A mesma validação é usada na entrada, no editor e na exportação. A cópia portátil inclui arquivos; o IndexedDB guarda o projeto no navegador. A coruja e o fundo são efeitos de apresentação e não participam do estado do curso.
+O `CourseDraft` é o contrato central. IDs estáveis associam seções, atividades e anexos. A mesma validação é usada na entrada, no editor e na exportação. A cópia portátil inclui arquivos; o IndexedDB guarda o projeto no navegador. A coruja e o fundo são elementos de apresentação e não participam do estado do curso.
 
 As rotas em `app/api` validam o transporte e chamam `src/server`. O domínio não importa servidor, React ou APIs Node. A inspeção de imports não encontrou importação direta de `src/server` no cliente. Isso estabelece a separação de responsabilidades; não é, sozinho, uma auditoria completa de segurança.
 
@@ -86,9 +84,9 @@ O estado de confirmação permanece junto de suas ações assíncronas: alterar 
 
 Antes, `app/page.tsx` tinha 2729 linhas, alunos 1012 e o editor de atividades 1204. A divisão atual permite alterar um painel ou fluxo sem percorrer toda a página. O orquestrador do curso ainda conecta várias ações porque coordena o workspace; os filhos recebem contratos menores.
 
-As três rotas de curso, alunos e datas agora têm cinco linhas cada. O card de alunos usa uma variante ampla do Shell e uma classe própria, preservando os tamanhos da entrada e de datas. O limite de largura do workspace de alunos é 1760 px; no móvel, a tabela rola dentro do card.
+As três rotas de curso, alunos e datas agora têm cinco linhas cada. Todas as telas usam a largura inteira do espaço de trabalho, até 1760 px (`app/styles/shell.css`). Em notebook (editor, Alunos e Datas a partir de 720 × 540 px; a entrada a partir de 1100 × 540 px) o app tem a altura da janela e a página não rola: colunas e painéis rolam por dentro. Em janelas menores ou mais baixas a página rola normalmente; no celular as tabelas rolam dentro do card.
 
-`app/globals.css` ainda concentra os tokens e estilos compartilhados, e `src/server/export/builders.ts` mantém os builders XML. Não houve divisão desses builders nesta entrega. A separação evita misturar a refatoração frontend com alterações no formato de backup já validado.
+`app/globals.css` concentra os tokens, a base e os componentes compartilhados; a casca e cada tela têm folha própria em `app/styles/`, importada depois dela em `app/layout.tsx` (quem está lá vence pela ordem de carga). `src/server/export/builders.ts` mantém os builders XML. Não houve divisão desses builders nesta entrega. A separação evita misturar a refatoração frontend com alterações no formato de backup já validado.
 
 ## Conexão Moodle por URL
 
@@ -98,7 +96,7 @@ São aceitas URLs públicas HTTP/HTTPS, inclusive subdiretórios. A política de
 
 ## Por que a interface divergiu do design system
 
-O catálogo e a aplicação são implementações distintas. Os tokens de verde, Nunito e vidro foram transferidos, mas alguns comportamentos do protótipo não foram: Tarefas/Quizzes foram recolhidos em “documentos complementares”, e parte dos controles permaneceu com acabamento nativo diferente. A transparência do painel também foi aplicada a áreas de texto que precisavam de uma superfície de leitura mais estável.
+O catálogo e a aplicação são implementações distintas. Os tokens de verde, Nunito e vidro foram transferidos, mas alguns comportamentos do protótipo não foram: Tarefas/Quizzes foram recolhidos em “documentos complementares”, e parte dos controles permaneceu com acabamento nativo diferente. A transparência do painel também foi aplicada a áreas de texto que precisavam de uma superfície de leitura mais estável. Esta seção registra o estado da UX02: desde 18/10/2026 a aplicação não usa vidro nem Nunito, e sim Switzer e superfícies opacas (`surface-panel`) do design system “Moodle IA”.
 
 UX02 corrige a visibilidade dos grupos, a hierarquia, o contraste e o acabamento compartilhado. O catálogo histórico continua útil como referência; a aplicação e sua folha de estilo são o código executado. Manter dois sistemas independentes sem um catálogo alimentado pelos componentes reais pode gerar novas divergências.
 
