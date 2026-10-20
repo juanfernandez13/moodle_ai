@@ -1,259 +1,240 @@
 "use client";
-import { FileText, Upload, Trash2, ClipboardList, ListChecks } from "lucide-react";
-import { formatBytes } from "../../../download.ts";
+import { useEffect, useId, useRef } from "react";
+import {
+  ArrowLeft,
+  ClipboardList,
+  Info,
+  ListChecks,
+  LoaderCircle,
+  Send,
+  TriangleAlert,
+} from "lucide-react";
+import { checkUploadLimits } from "../../../../shared/upload-limits.ts";
 import type { CourseBuilderModel } from "../hooks/use-course-builder.ts";
+import { AiSelect } from "./ai-select.tsx";
+import {
+  DropZone,
+  LIMITS_TEXT,
+  MatrixRow,
+  isSupported,
+  plural,
+  sameFile,
+  useFileDragState,
+} from "./upload-parts.tsx";
 
 type Props = Pick<
   CourseBuilderModel,
-  "setSelectedFiles"
+  | "setSelectedFiles"
   | "selectedFiles"
-  | "profile"
   | "provider"
-  | "setProfile"
   | "setProvider"
-  | "apiKey"
-  | "setApiKey"
-  | "model"
-  | "setModel"
+  | "keys"
+  | "setKeys"
   | "pasteText"
   | "setPasteText"
   | "busy"
   | "importDocuments"
->;
+> & {
+  /** Colar o texto da matriz no lugar de enviar arquivos (o caminho fica no Importar JSON). */
+  pasting: boolean;
+  setPasting: (value: boolean) => void;
+};
 
+type Group = keyof Props["selectedFiles"];
+
+/** Importar arquivos: a Matriz, as áreas de Tarefas e Quizzes e a coluna da IA com o botão principal. */
 export function ImportFilesPanel({
   setSelectedFiles,
   selectedFiles,
-  profile,
   provider,
-  setProfile,
   setProvider,
-  apiKey,
-  setApiKey,
-  model,
-  setModel,
+  keys,
+  setKeys,
   pasteText,
   setPasteText,
   busy,
   importDocuments,
+  pasting,
+  setPasting,
 }: Props) {
+  const { armed, stray } = useFileDragState();
+  const reasonId = useId();
+  const backed = useRef(false);
+
+  // Ao voltar do texto para os arquivos, o foco vai para o botão da Matriz, que ocupa o lugar do link.
+  useEffect(() => {
+    if (!backed.current || pasting) return;
+    backed.current = false;
+    document.getElementById("upload-choose-matrix")?.focus();
+  }, [pasting]);
+
+  function receive(group: Group, incoming: File[]): string {
+    const supported = incoming.filter(isSupported);
+    const ignored = incoming.length - supported.length;
+    const messages: string[] = [];
+    if (ignored > 0)
+      messages.push(
+        `${ignored} ${plural(ignored, "arquivo ignorado", "arquivos ignorados")}: só Word, PDF ou texto.`,
+      );
+    if (group === "planning") {
+      // A Matriz é um arquivo só: outro arquivo substitui o primeiro.
+      const first = supported[0];
+      if (first)
+        setSelectedFiles((previous) => ({ ...previous, planning: [first] }));
+      return messages.join(" ");
+    }
+    const current = selectedFiles[group];
+    const fresh: File[] = [];
+    for (const file of supported)
+      if (![...current, ...fresh].some((other) => sameFile(other, file)))
+        fresh.push(file);
+    const repeated = supported.length - fresh.length;
+    if (repeated > 0)
+      messages.push(
+        `${repeated} ${plural(repeated, "arquivo repetido", "arquivos repetidos")}.`,
+      );
+    if (fresh.length > 0)
+      setSelectedFiles((previous) => ({
+        ...previous,
+        [group]: [...previous[group], ...fresh],
+      }));
+    return messages.join(" ");
+  }
+  function remove(group: Group, index: number) {
+    setSelectedFiles((previous) => ({
+      ...previous,
+      [group]: previous[group].filter((_, position) => position !== index),
+    }));
+  }
+
+  const matrix = selectedFiles.planning[0];
+  const everyFile = [
+    ...selectedFiles.planning,
+    ...selectedFiles.tasks,
+    ...selectedFiles.quizzes,
+  ];
+  // Mesma regra e mesma frase da conferência feita ao enviar.
+  const problem =
+    !pasting && everyFile.length > 0 ? checkUploadLimits(everyFile) : null;
+  const hasSource = pasting ? pasteText.trim() !== "" : matrix !== undefined;
+  // Uma linha só, a primeira coisa que falta. O botão fica desligado enquanto houver motivo.
+  const reason =
+    problem ??
+    (!hasSource
+      ? pasting
+        ? "Cole o texto."
+        : "Envie a matriz."
+      : provider === null
+        ? "Escolha uma IA."
+        : "");
+  const sending = busy === "import";
+
   return (
-    <>
-      <div className="uploads">
-        {[
-          [
-            "planning",
-            "Documento de planejamento",
-            "Obrigatório",
-            "DOCX, PDF com texto ou TXT",
-            "Escolher documento",
-          ],
-          [
-            "tasks",
-            "Tarefas",
-            "Opcional",
-            "Documentos DOCX, PDF ou TXT de tarefas",
-            "Adicionar tarefas",
-          ],
-          [
-            "quizzes",
-            "Quizzes",
-            "Opcional",
-            "Documentos DOCX, PDF ou TXT com questões",
-            "Adicionar quizzes",
-          ],
-        ].map(([group, label, requirement, help, action]) => (
-          <div
-            className={`upload-group ${group === "planning" ? "planning-group" : ""}`}
-            id={`upload-group-${group}`}
-            key={group}
-          >
-            <div className="upload-row">
-              {group === "planning" ? (
-                <FileText size={24} aria-hidden="true" />
-              ) : group === "tasks" ? (
-                <ClipboardList size={24} aria-hidden="true" />
-              ) : (
-                <ListChecks size={24} aria-hidden="true" />
-              )}
-              <div className="upload-copy">
-                <label htmlFor={`upload-${group}`}>
-                  {label}
-                  <small>{requirement}</small>
-                </label>
-                <p>{help}</p>
-              </div>
-              <label
-                className="file-button"
-                htmlFor={`upload-${group}`}
-              >
-                {action}
-                <input
-                  id={`upload-${group}`}
-                  className="visually-hidden"
-                  type="file"
-                  multiple={group !== "planning"}
-                  accept={".docx,.pdf,.txt"}
-                  onChange={(event) => {
-                    const files = Array.from(
-                      event.target.files ?? [],
-                    );
-                    setSelectedFiles((previous) => ({
-                      ...previous,
-                      [group!]:
-                        group === "planning"
-                          ? files.slice(0, 1)
-                          : [
-                            ...previous[
-                            group as keyof typeof previous
-                            ],
-                            ...files,
-                          ],
-                    }));
-                    event.target.value = "";
-                  }}
-                />
+    <div className="entry-board" data-armed={armed || undefined}>
+      <div className="entry-files-col">
+        {pasting ? (
+          <div className="entry-paste">
+            <div className="entry-paste-head">
+              <label className="entry-card-title" htmlFor="entry-paste">
+                Texto da Matriz
               </label>
+              <button
+                type="button"
+                className="entry-link"
+                onClick={() => {
+                  backed.current = true;
+                  setPasting(false);
+                }}
+              >
+                <ArrowLeft size={18} aria-hidden="true" />
+                Voltar aos arquivos
+              </button>
             </div>
-            {selectedFiles[group as keyof typeof selectedFiles]
-              .length > 0 && (
-                <ul className="file-list">
-                  {selectedFiles[
-                    group as keyof typeof selectedFiles
-                  ].map((file, index) => (
-                    <li key={`${file.name}-${index}`}>
-                      <FileText size={17} />
-                      <span>
-                        {file.name}
-                        <small>{formatBytes(file.size)}</small>
-                      </span>
-                      <button
-                        type="button"
-                        className="icon-button"
-                        aria-label={`Remover ${file.name}`}
-                        onClick={() =>
-                          setSelectedFiles((previous) => ({
-                            ...previous,
-                            [group!]: previous[
-                              group as keyof typeof previous
-                            ].filter(
-                              (_, position) => position !== index,
-                            ),
-                          }))
-                        }
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
+            <textarea
+              id="entry-paste"
+              value={pasteText}
+              onChange={(event) => setPasteText(event.target.value)}
+            />
+            {everyFile.length > 0 && (
+              <p className="entry-note">Só o texto será lido.</p>
+            )}
           </div>
-        ))}
-      </div>
-      <details className="interpret-settings">
-        <summary>
-          Organização:{" "}
-          {profile === "docx-topicos-v1" ? "tópicos" : "semanas"} ·{" "}
-          {provider === "offline"
-            ? "Perfil local, sem IA"
-            : provider === "openai"
-              ? "OpenAI"
-              : "Gemini"}
-        </summary>
-        <div className="field-grid">
-          <label className="field">
-            <span>Organização do documento</span>
-            <select
-              value={profile}
-              onChange={(event) =>
-                setProfile(event.target.value as typeof profile)
-              }
-            >
-              <option value="docx-topicos-v1">Por tópicos</option>
-              <option value="docx-semanal-v1">Por semanas</option>
-            </select>
-          </label>
-          <label className="field">
-            <span>Interpretar com</span>
-            <select
-              value={provider}
-              onChange={(event) =>
-                setProvider(event.target.value as typeof provider)
-              }
-            >
-              <option value="offline">Perfil local, sem IA</option>
-              <option value="openai">OpenAI</option>
-              <option value="gemini">Gemini</option>
-            </select>
-          </label>
-        </div>
-        <p className="field-help">
-          O perfil local aceita planejamentos delimitados e informa o
-          que não reconhece. Nada é enviado a uma IA nesse modo.
-        </p>
-        {provider !== "offline" && (
+        ) : (
           <>
-            <label className="field">
-              <span>Chave do provedor (somente nesta sessão)</span>
-              <input
-                type="password"
-                autoComplete="off"
-                value={apiKey}
-                onChange={(event) => setApiKey(event.target.value)}
+            <MatrixRow
+              file={matrix}
+              onAdd={(files) => receive("planning", files)}
+              onRemove={() => remove("planning", 0)}
+            />
+            <div className="entry-drops">
+              <DropZone
+                group="tasks"
+                title="Tarefas"
+                icon={<ClipboardList size={20} />}
+                files={selectedFiles.tasks}
+                onAdd={(files) => receive("tasks", files)}
+                onRemove={(index) => remove("tasks", index)}
               />
-            </label>
-            <label className="field">
-              <span>Modelo</span>
-              <input
-                value={model}
-                onChange={(event) => setModel(event.target.value)}
-                placeholder={
-                  provider === "openai"
-                    ? "Modelo configurado pelo servidor"
-                    : "Modelo configurado pelo servidor"
-                }
+              <DropZone
+                group="quizzes"
+                title="Quizzes"
+                icon={<ListChecks size={20} />}
+                files={selectedFiles.quizzes}
+                onAdd={(files) => receive("quizzes", files)}
+                onRemove={(index) => remove("quizzes", index)}
               />
-            </label>
-            <p className="field-help">
-              O documento será enviado ao provedor escolhido. A chave
-              não será salva no projeto.
+            </div>
+            <p
+              className="entry-stray"
+              aria-hidden="true"
+              data-show={stray || undefined}
+            >
+              Solte em Tarefas ou Quizzes.
             </p>
           </>
         )}
-        <label className="field">
-          <span>Ou cole um planejamento em texto</span>
-          <textarea
-            value={pasteText}
-            onChange={(event) => setPasteText(event.target.value)}
-          />
-        </label>
-        <button
-          type="button"
-          className="secondary"
-          disabled={busy !== null}
-          onClick={(event) => {
-            void importDocuments(true, event.currentTarget);
-          }}
-        >
-          Interpretar texto
-        </button>
-      </details>
-      <button
-        type="button"
-        className="primary entry-primary"
-        disabled={busy !== null}
-        onClick={(event) => {
-          void importDocuments(false, event.currentTarget);
-        }}
-      >
-        <Upload size={18} />
-        Interpretar planejamento
-      </button>
-      <p className="field-help centered import-limits">
-        Até 10 MiB por arquivo, 20 MiB e 10 arquivos no total. Confira
-        a proposta antes de abrir o editor.
-      </p>
-    </>
+      </div>
+      <div className="entry-ai">
+        <AiSelect
+          provider={provider}
+          setProvider={setProvider}
+          keys={keys}
+          setKeys={setKeys}
+        />
+        <div className="entry-action">
+          <button
+            type="button"
+            className="primary entry-send"
+            disabled={busy !== null || reason !== ""}
+            aria-describedby={reasonId}
+            onClick={(event) => void importDocuments(pasting, event.currentTarget)}
+          >
+            {sending ? (
+              <LoaderCircle className="spinner" size={20} aria-hidden="true" />
+            ) : (
+              <Send size={20} aria-hidden="true" />
+            )}
+            {sending ? "Enviando…" : "Enviar para análise"}
+          </button>
+          {/* Sempre no lugar, para a tela não pular quando o motivo some. */}
+          <p
+            className="entry-reason"
+            id={reasonId}
+            aria-live="polite"
+            aria-atomic="true"
+            data-problem={problem !== null || undefined}
+          >
+            {reason !== "" &&
+              (problem !== null ? (
+                <TriangleAlert size={16} aria-hidden="true" />
+              ) : (
+                <Info size={16} aria-hidden="true" />
+              ))}
+            {reason}
+          </p>
+          {!pasting && <p className="entry-limits">{LIMITS_TEXT}</p>}
+        </div>
+      </div>
+    </div>
   );
 }

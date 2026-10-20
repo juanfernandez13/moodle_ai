@@ -1,6 +1,7 @@
 "use client";
-import { Save, FolderOpen, Copy, BookOpen } from "lucide-react";
-import { EntryMascot } from "../../../components/entry-mascot.tsx";
+import { useEffect, useRef, useState } from "react";
+import type { KeyboardEvent } from "react";
+import { ArrowLeft, Copy, FileJson, Hand, Upload } from "lucide-react";
 import type { CourseBuilderModel } from "../hooks/use-course-builder.ts";
 import { ImportFilesPanel } from "./import-files-panel.tsx";
 import { ManualCourseForm } from "./manual-course-form.tsx";
@@ -8,19 +9,15 @@ import { JsonImportPanel } from "./json-import-panel.tsx";
 
 type Props = Pick<
   CourseBuilderModel,
-  "entry"
+  | "entry"
   | "setEntry"
   | "setError"
   | "setSelectedFiles"
   | "selectedFiles"
-  | "profile"
   | "provider"
-  | "setProfile"
   | "setProvider"
-  | "apiKey"
-  | "setApiKey"
-  | "model"
-  | "setModel"
+  | "keys"
+  | "setKeys"
   | "pasteText"
   | "setPasteText"
   | "busy"
@@ -37,9 +34,14 @@ type Props = Pick<
   | "setShowPrompt"
   | "proposalTrigger"
   | "portableInput"
-  | "projects"
-  | "setShowProjects"
 >;
+
+// Só dois caminhos no alto da tela (abas, como no design system); o JSON abre pelo rodapé e volta pelo "Voltar".
+const MODES = [
+  ["files", "Importar arquivos", Upload],
+  ["manual", "Criar manualmente", Hand],
+] as const;
+const STEPS = ["Arquivos", "Revisão", "Baixar"];
 
 export function EntryPanel({
   entry,
@@ -47,14 +49,10 @@ export function EntryPanel({
   setError,
   setSelectedFiles,
   selectedFiles,
-  profile,
   provider,
-  setProfile,
   setProvider,
-  apiKey,
-  setApiKey,
-  model,
-  setModel,
+  keys,
+  setKeys,
   pasteText,
   setPasteText,
   busy,
@@ -71,95 +69,110 @@ export function EntryPanel({
   setShowPrompt,
   proposalTrigger,
   portableInput,
-  projects,
-  setShowProjects,
 }: Props) {
+  // Colar o texto da matriz: o caminho começa no Importar JSON, mas o texto é lido pela mesma tela e pela mesma IA.
+  const [pasting, setPasting] = useState(false);
+  // Ao trocar de tela por um link, o botão que foi clicado some: o foco vai para onde a pessoa continua.
+  const focusAfter = useRef<string | null>(null);
+  useEffect(() => {
+    const id = focusAfter.current;
+    if (id === null) return;
+    focusAfter.current = null;
+    document.getElementById(id)?.focus();
+  }, [entry]);
+
+  function selectMode(mode: Props["entry"], focusId?: string) {
+    if (focusId) focusAfter.current = focusId;
+    setEntry(mode);
+    setError("");
+  }
+  function moveTab(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    const last = MODES.length - 1;
+    const target =
+      event.key === "ArrowRight"
+        ? index === last ? 0 : index + 1
+        : event.key === "ArrowLeft"
+          ? index === 0 ? last : index - 1
+          : event.key === "Home"
+            ? 0
+            : event.key === "End"
+              ? last
+              : -1;
+    if (target < 0) return;
+    event.preventDefault();
+    const next = MODES[target]![0];
+    selectMode(next);
+    document.getElementById(`tab-${next}`)?.focus();
+  }
+
+  const json = entry === "json";
+  const viewProps = json
+    ? { "aria-labelledby": "entry-title" }
+    : {
+        id: `panel-${entry}`,
+        role: "tabpanel",
+        "aria-labelledby": `tab-${entry}`,
+      };
+
   return (
-    <main className="entry-panel glass">
-      <ol className="journey" aria-label="Etapas de criação">
-        <li aria-current="step">
-          <span>1</span>Documentos
-        </li>
-        <li>
-          <span>2</span>Revisão
-        </li>
-        <li>
-          <span>3</span>Baixar curso
-        </li>
-      </ol>
-      <div className="entry-tabs" role="tablist" aria-label="Como começar">
-        {[
-          ["files", "Importar arquivos"],
-          ["manual", "Criar manualmente"],
-          ["json", "Importar JSON"],
-        ].map(([value, label], index) => (
+    <main className="entry-panel surface-panel" data-entry={entry}>
+      <div className="entry-top">
+        <h1 id="entry-title" className="entry-title">
+          {json ? "Importar JSON" : "Criar disciplina"}
+        </h1>
+        {json ? (
           <button
-            key={value}
             type="button"
-            role="tab"
-            aria-selected={entry === value}
-            aria-controls={`panel-${value}`}
-            id={`tab-${value}`}
-            tabIndex={entry === value ? 0 : -1}
-            onKeyDown={(event) => {
-              if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
-                const modes = ["files", "manual", "json"] as const;
-                const next =
-                  (index + (event.key === "ArrowRight" ? 1 : 2)) % 3;
-                setEntry(modes[next]!);
-                document.getElementById(`tab-${modes[next]}`)?.focus();
-              }
-            }}
-            onClick={() => {
-              setEntry(value as typeof entry);
-              setError("");
-            }}
+            className="entry-back"
+            onClick={() => selectMode("files", "entry-open-json")}
           >
-            {label}
+            <ArrowLeft size={18} aria-hidden="true" />
+            Voltar
           </button>
-        ))}
-      </div>
-      <section
-        id={`panel-${entry}`}
-        role="tabpanel"
-        aria-labelledby={`tab-${entry}`}
-        className="entry-content"
-      >
-        <div className="panel-heading">
-          <div>
-            <h1>
-              {entry === "files"
-                ? "Arquivos do curso"
-                : entry === "manual"
-                  ? "Comece sua disciplina"
-                  : "Importar JSON"}
-            </h1>
-            <p>
-              {entry === "files"
-                ? "Adicione o planejamento e os materiais."
-                : entry === "manual"
-                  ? "Dê um nome ao curso. As unidades e atividades vêm depois."
-                  : "Traga um curso versionado ou a resposta de outra IA."}
-            </p>
+        ) : (
+          <div className="entry-modes" role="tablist" aria-label="Como começar">
+            {MODES.map(([value, label, Icon], index) => (
+              <button
+                key={value}
+                type="button"
+                role="tab"
+                aria-selected={entry === value}
+                aria-controls={entry === value ? `panel-${value}` : undefined}
+                id={`tab-${value}`}
+                tabIndex={entry === value ? 0 : -1}
+                onKeyDown={(event) => moveTab(event, index)}
+                onClick={() => selectMode(value)}
+              >
+                <Icon size={16} aria-hidden="true" />
+                {label}
+              </button>
+            ))}
           </div>
-          <EntryMascot />
-        </div>
+        )}
+        <ol className="entry-steps" aria-label="Etapas">
+          {STEPS.map((step, index) => (
+            <li key={step} aria-current={index === 0 ? "step" : undefined}>
+              <span aria-hidden="true">{index + 1}</span>
+              {step}
+            </li>
+          ))}
+        </ol>
+      </div>
+      <section className="entry-view" {...viewProps}>
         {entry === "files" && (
           <ImportFilesPanel
             setSelectedFiles={setSelectedFiles}
             selectedFiles={selectedFiles}
-            profile={profile}
             provider={provider}
-            setProfile={setProfile}
             setProvider={setProvider}
-            apiKey={apiKey}
-            setApiKey={setApiKey}
-            model={model}
-            setModel={setModel}
+            keys={keys}
+            setKeys={setKeys}
             pasteText={pasteText}
             setPasteText={setPasteText}
             busy={busy}
             importDocuments={importDocuments}
+            pasting={pasting}
+            setPasting={setPasting}
           />
         )}
         {entry === "manual" && (
@@ -172,45 +185,43 @@ export function EntryPanel({
             setFirstSection={setFirstSection}
           />
         )}
-        {entry === "json" && (
-          <JsonImportPanel jsonText={jsonText} setJsonText={setJsonText} importJson={importJson} />
+        {json && (
+          <JsonImportPanel
+            jsonText={jsonText}
+            setJsonText={setJsonText}
+            importJson={importJson}
+            example={example}
+            setShowPrompt={setShowPrompt}
+            proposalTrigger={proposalTrigger}
+            portableInput={portableInput}
+            onPasteText={() => {
+              setPasting(true);
+              selectMode("files", "entry-paste");
+            }}
+          />
         )}
       </section>
-      <div className="entry-secondary">
-        <button type="button" className="text-button" onClick={example}>
-          <BookOpen size={17} />
-          Usar exemplo
-        </button>
-        <button
-          type="button"
-          className="text-button"
-          onClick={() => setShowPrompt(true)}
-        >
-          <Copy size={17} />
-          Copiar prompt
-        </button>
-        <button
-          type="button"
-          className="text-button"
-          onClick={(event) => {
-            proposalTrigger.current = event.currentTarget;
-            portableInput.current?.click();
-          }}
-        >
-          <FolderOpen size={17} />
-          Importar projeto
-        </button>
-        {projects.length > 0 && (
+      {!json && (
+        <div className="entry-footer">
           <button
             type="button"
-            className="text-button"
-            onClick={() => setShowProjects(true)}
+            id="entry-open-json"
+            className="entry-link"
+            onClick={() => selectMode("json", "entry-json")}
           >
-            <Save size={17} />
-            Projetos salvos ({projects.length})
+            <FileJson size={18} aria-hidden="true" />
+            Importar JSON
           </button>
-        )}
-      </div>
+          <button
+            type="button"
+            className="entry-link"
+            onClick={() => setShowPrompt(true)}
+          >
+            <Copy size={18} aria-hidden="true" />
+            Copiar prompt
+          </button>
+        </div>
+      )}
     </main>
   );
 }

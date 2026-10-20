@@ -30,31 +30,31 @@ export function EditorHeader({
   issues,
 }: Props) {
   return (
-    <header className="editor-heading glass">
-      <div>
-        <div className="title-with-back">
-          <button
-            type="button"
-            className="icon-button"
-            aria-label="Voltar à entrada mantendo o curso salvo"
-            onClick={() => {
-              setProject(null);
-              setError("");
-              setMessage(
-                "Seu curso salvo pode ser reaberto em Projetos salvos.",
-              );
-            }}
-          >
-            <ArrowLeft size={20} />
-          </button>
-          <h1>{project.draft.metadata.fullName || "Curso sem nome"}</h1>
-        </div>
-        <p
-          className={`save-state ${saveState.startsWith("Não salvo") ? "error-text" : ""}`}
-          role="status"
+    <header className="editor-heading surface-panel">
+      <div className="title-with-back">
+        <button
+          type="button"
+          className="icon-button"
+          aria-label="Voltar à entrada mantendo o curso salvo"
+          onClick={() => {
+            setProject(null);
+            setError("");
+            setMessage(
+              "Seu curso salvo pode ser reaberto em Projetos salvos.",
+            );
+          }}
         >
-          {saveState}
-        </p>
+          <ArrowLeft size={20} />
+        </button>
+        <div className="editor-title-text">
+          <h1>{project.draft.metadata.fullName || "Curso sem nome"}</h1>
+          <p
+            className={`save-state ${saveState.startsWith("Não salvo") ? "error-text" : ""}`}
+            role="status"
+          >
+            {saveState}
+          </p>
+        </div>
       </div>
       <div className="editor-tools">
         <button

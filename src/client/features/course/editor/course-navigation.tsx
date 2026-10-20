@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useRef } from "react";
 import { Plus, FolderOpen, Code2, BookOpen, Paperclip } from "lucide-react";
 import { makeSection } from "../../../project.ts";
 import type { CourseProject } from "../../../project.ts";
@@ -20,8 +21,15 @@ export function CourseNavigation({
   commands,
   setShowProjects
 }: Props) {
+  const nav = useRef<HTMLElement>(null);
+  // O Sumário rola por dentro: o item escolhido (inclusive uma unidade recém-criada) sempre fica à vista.
+  useEffect(() => {
+    nav.current
+      ?.querySelector<HTMLElement>("button.selected")
+      ?.scrollIntoView({ block: "nearest" });
+  }, [view, project.draft.sections.length]);
   return (
-    <><div className="mobile-course-nav glass">
+    <><div className="mobile-course-nav surface-panel">
       <label className="field">
         <span>Onde editar</span>
         <select
@@ -81,7 +89,11 @@ export function CourseNavigation({
         </button>
       </div>
     </div>
-      <aside className="course-nav glass" aria-label="Estrutura do curso">
+      <aside
+        ref={nav}
+        className="course-nav surface-panel"
+        aria-label="Estrutura do curso"
+      >
         <div className="nav-title">
           <BookOpen size={18} />
           <strong>Seu curso</strong>

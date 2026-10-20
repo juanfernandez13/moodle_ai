@@ -1,8 +1,10 @@
 "use client";
 import { FileText, Upload, Trash2, Download, Paperclip } from "lucide-react";
+import { PROJECT_FILE_LIMITS } from "../../../project.ts";
 import type { CourseProject } from "../../../project.ts";
 import { applyCommands } from "../../../commands.ts";
 import { downloadFile, formatBytes } from "../../../download.ts";
+import { formatMegabytes } from "../../../../shared/upload-limits.ts";
 import { withDraft } from "../../../provenance.ts";
 import { ProvenanceViewer } from "../../../components/provenance-viewer.tsx";
 import type { CourseBuilderModel } from "../hooks/use-course-builder.ts";
@@ -18,6 +20,9 @@ type Props = Pick<
   | "lastCopy"
 >
   & { project: CourseProject; };
+
+// Anexos vão para o backup Moodle e seguem os limites dele.
+const ATTACHMENT_LIMITS_TEXT = `Até ${formatMegabytes(PROJECT_FILE_LIMITS.attachmentBytes)} por arquivo · ${formatMegabytes(PROJECT_FILE_LIMITS.attachmentsTotalBytes)} no total`;
 
 export function ProjectFilesPanel({
   project,
@@ -78,9 +83,7 @@ export function ProjectFilesPanel({
           }}
         />
       </label>
-      <p className="field-help">
-        Até 16 MiB por arquivo e 64 MiB por projeto, incluindo fontes.
-      </p>
+      <p className="field-help">{ATTACHMENT_LIMITS_TEXT}</p>
       <ul className="file-list project-file-list">
         {project.assets.map((file) => (
           <li key={file.id}>

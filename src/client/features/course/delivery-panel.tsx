@@ -11,7 +11,7 @@ type Props = {
 
 export function DeliveryPanel({ artifact, project }: Props) {
   return (
-    <section className="delivery glass">
+    <section className="delivery surface-panel">
       <div>
         <p className="subtle">Backup pronto</p>
         <h2>Seu curso está preparado para baixar</h2>
