@@ -99,7 +99,9 @@ export async function readCourse(client: MoodleClient, courseId: number, knownTi
     const sectionId = `section:${id}`;
     if (seen.has(sectionId)) return;
     seen.add(sectionId);
-    targets.push({ id: sectionId, kind: 'section', sectionIndex: number - 1, title: normalized(section.find('.sectionname, .course-section-header').first().text()) || `Unidade ${number}` });
+    // The 4.x header also holds badges ("Hidden from students", "Highlighted"); only use it without a .sectionname.
+    const heading = section.find('.sectionname').first();
+    targets.push({ id: sectionId, kind: 'section', sectionIndex: number - 1, title: normalized((heading.length ? heading : section.find('.course-section-header').first()).text()) || `Unidade ${number}` });
     section.find('[class*="modtype_"]').each((_, node) => {
       const module = $(node), moduleId = /module-(\d+)/.exec(module.attr('id') ?? '')?.[1] ?? module.attr('data-cmid');
       const type = /(?:^|\s)modtype_([a-z0-9_]+)/.exec(module.attr('class') ?? '')?.[1];

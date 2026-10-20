@@ -23,6 +23,54 @@ function setup(options: CoreSiteOptions = {}) {
 }
 const editPosts = (site: ReturnType<typeof coreSite>) =>
   site.posts().filter((request) => /\/course\/(modedit|editsection)\.php/.test(request.path));
+const expectedTargets = (topic2: string) => [
+  ["section:22", "section", 0, "Unidade 1 — Ligações"],
+  ["module:61", "forum", 0, "Fórum da unidade"],
+  ["module:62", "assignment", 0, "Relatório & análise"],
+  ["section:23", "section", 1, topic2],
+  ["module:63", "quiz", 1, "Quiz 1"],
+];
+
+test("course/view.php do Boost 4.1 vira seções e atividades com IDs, unidade e títulos limpos", async () => {
+  const { site, client } = setup();
+  const course = await readCourse(client, 4);
+  assert.deepEqual(course.course, { id: 4, title: "Laboratório de Química" });
+  assert.deepEqual(
+    course.targets.map((target) => [target.id, target.kind, target.sectionIndex, target.title]),
+    expectedTargets("Topic 2"),
+  );
+  assert.deepEqual(
+    course.issues.map((issue) => issue.code),
+    ["unsupported_date_type", "preserved_cutoff"],
+  );
+  assert.match(course.issues[0]!.message, /64 \(label\)/);
+  // User timezone 99 means "server timezone": the site setting is read.
+  assert.equal(course.timezone, "America/Sao_Paulo");
+  assert.equal(site.posts().length, 0);
+  const byId = new Map(course.targets.map((target) => [target.id, target]));
+  assert.equal(byId.get("module:62")?.opensAt, "2026-03-02T03:00:00.000Z");
+  assert.equal(byId.get("module:62")?.closesAt, "2026-03-10T02:59:00.000Z");
+  assert.equal(byId.get("module:63")?.opensAt, "2026-03-09T11:00:00.000Z");
+  assert.equal(byId.get("module:63")?.closesAt, undefined);
+  assert.equal(byId.get("module:61")?.opensAt, new Date(1772452800 * 1000).toISOString());
+  assert.equal(byId.get("section:22")?.availability, "");
+});
+
+test("a mesma leitura vale para o pacote pt_br e para o markup antigo li#section-N", async () => {
+  for (const [courseView, topic2] of [
+    ["course-view.boost-4.1.pt_br.html", "Tópico 2"],
+    ["course-view.legacy-sections.html", "Topic 2"],
+  ] as const) {
+    const { client } = setup({ courseView });
+    const course = await readCourse(client, 4);
+    assert.deepEqual(
+      course.targets.map((target) => [target.id, target.kind, target.sectionIndex, target.title]),
+      expectedTargets(topic2),
+      courseView,
+    );
+    assert.deepEqual(course.issues.map((issue) => issue.code), ["unsupported_date_type", "preserved_cutoff"]);
+  }
+});
 
 test("seções do Moodle 3.11 sem data-id são apontadas e nada é enviado", async () => {
   const { site, client } = setup({ courseView: "course-view.moodle-3.11.html" });
