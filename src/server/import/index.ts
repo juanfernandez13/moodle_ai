@@ -1,6 +1,10 @@
 import { z } from "zod";
 import { validateDraft } from "../../domain/course/index.ts";
 import { hash256, ArchiveError } from "../../shared/archive.ts";
+import {
+  UPLOAD_MESSAGES,
+  formatMegabytes,
+} from "../../shared/upload-limits.ts";
 import { extractDocument } from "./documents.ts";
 import { interpretOffline } from "./offline.ts";
 import { interpretWithProvider } from "./providers.ts";
@@ -63,7 +67,10 @@ function invalidInput(error: z.ZodError): ImportResult {
         problem.code === "unrecognized_keys"
           ? "unknown_field"
           : "invalid_import_input",
-        "Confira os campos, perfil, provedor e limites da importação.",
+        problem.path.join(".") === "files" &&
+          (problem.code === "too_big" || problem.code === "too_small")
+          ? UPLOAD_MESSAGES.fileCount
+          : "Confira os campos, perfil, provedor e limites da importação.",
         problem.path.join(".") || "$",
       ),
     ),
@@ -81,6 +88,26 @@ function controlledError(
           "Não foi possível interpretar o documento. Confira o formato e tente novamente.",
         );
   return { ok: false, issues: [problem], ...(preview ? { preview } : {}) };
+}
+// First limit the documents break together, in words a teacher can act on.
+function batchLimitProblem(documents: ExtractedDocument[]): string | null {
+  const assets = documents.flatMap((document) => document.assets);
+  const characters = documents.reduce(
+    (total, document) =>
+      total +
+      document.blocks.reduce((sum, block) => sum + blockText(block).length, 0),
+    0,
+  );
+  if (characters > IMPORT_LIMITS.maxTextCharacters)
+    return `O texto dos documentos juntos passa de ${IMPORT_LIMITS.maxTextCharacters.toLocaleString("pt-BR")} caracteres. Divida a importação.`;
+  if (assets.length > IMPORT_LIMITS.maxAssets)
+    return `Os documentos juntos têm mais de ${IMPORT_LIMITS.maxAssets} imagens. Divida a importação.`;
+  if (
+    assets.reduce((total, asset) => total + asset.bytes.length, 0) >
+    IMPORT_LIMITS.maxArchiveTotalBytes
+  )
+    return `As imagens dos documentos juntos passam de ${formatMegabytes(IMPORT_LIMITS.maxArchiveTotalBytes)}. Divida a importação.`;
+  return null;
 }
 const portable = (input: DocumentInput): PortableFile => ({
   id: input.id,
@@ -245,38 +272,14 @@ export async function importDocuments(
   )
     return {
       ok: false,
-      issues: [
-        issue(
-          "total_upload_limit",
-          "Os documentos juntos podem ter até 20 MiB.",
-        ),
-      ],
+      issues: [issue("total_upload_limit", UPLOAD_MESSAGES.totalSize)],
     };
   const documents: ExtractedDocument[] = [];
   try {
     for (const file of parsed.data.files)
       documents.push(await extractDocument(file, dependencies.signal));
-    if (
-      documents.reduce(
-        (total, document) =>
-          total +
-          document.blocks.reduce(
-            (sum, block) => sum + blockText(block).length,
-            0,
-          ),
-        0,
-      ) > IMPORT_LIMITS.maxTextCharacters ||
-      documents.flatMap((document) => document.assets).length >
-        IMPORT_LIMITS.maxAssets ||
-      documents
-        .flatMap((document) => document.assets)
-        .reduce((total, asset) => total + asset.bytes.length, 0) >
-        IMPORT_LIMITS.maxArchiveTotalBytes
-    )
-      throw new ImportError(
-        "document_content_limit",
-        "O conjunto excede os limites de texto ou imagens. Divida a importação.",
-      );
+    const tooMuch = batchLimitProblem(documents);
+    if (tooMuch) throw new ImportError("document_content_limit", tooMuch);
     return await interpretExtracted(
       documents,
       parsed.data.profile,

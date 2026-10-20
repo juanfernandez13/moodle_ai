@@ -33,7 +33,7 @@ export async function POST(request: Request): Promise<Response> {
       return responseIssue(
         "invalid_draft_transport",
         "draft",
-        "Envie um único rascunho JSON de até 4 MiB.",
+        "Envie um único rascunho JSON de até 4 MB.",
       );
     let raw: unknown;
     try {
@@ -67,7 +67,7 @@ export async function POST(request: Request): Promise<Response> {
         return responseIssue(
           "attachment_too_large",
           "attachments",
-          "Cada anexo pode ter no máximo 16 MiB.",
+          "Cada anexo pode ter no máximo 16 MB.",
         );
       files.set(key.slice(5), value);
     }

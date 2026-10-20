@@ -217,6 +217,52 @@ test("cancelamento e prazo encerrado preservam diagnóstico sem conteúdo bruto"
   assert.ok(result.issues.some((issue) => issue.code === "provider_timeout"));
 });
 
+test("modelo em branco no ambiente do servidor vale como sem modelo", async (context) => {
+  // A tela lê o mesmo ambiente (GET /api/import/providers) e diz que vale o modelo padrão.
+  const names = ["OPENAI_MODEL", "GEMINI_MODEL"] as const;
+  const previous = names.map((name) => process.env[name]);
+  context.after(() =>
+    names.forEach((name, index) => {
+      const value = previous[index];
+      if (value === undefined) delete process.env[name];
+      else process.env[name] = value;
+    }),
+  );
+  for (const blank of ["", "   ", " \t"]) {
+    for (const name of names) process.env[name] = blank;
+    for (const provider of ["openai", "gemini"] as const) {
+      let used = "";
+      const result = await interpretText(
+        { ...request(provider), model: undefined },
+        {
+          fetch: async (url, options) => {
+            used =
+              provider === "openai"
+                ? String(JSON.parse(String(options?.body)).model)
+                : decodeURIComponent(String(url));
+            return response(provider);
+          },
+        },
+      );
+      assert.equal(result.ok, true, JSON.stringify(result.issues));
+      const expected = provider === "openai" ? "gpt-6-astra" : "gemini-3.8-flash";
+      assert.ok(used.includes(expected), used);
+    }
+  }
+  process.env.OPENAI_MODEL = "  modelo-do-servidor ";
+  let used = "";
+  await interpretText(
+    { ...request("openai"), model: undefined },
+    {
+      fetch: async (_url, options) => {
+        used = String(JSON.parse(String(options?.body)).model);
+        return response("openai");
+      },
+    },
+  );
+  assert.equal(used, "modelo-do-servidor");
+});
+
 test("origem de um campo inexistente é rejeitada mesmo quando o bloco existe", async () => {
   const fields = [
     { ...offline.provenance.fields[0]!, path: "metadata.nonexistent" },

@@ -3,7 +3,11 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { POST as importPost } from "../../app/api/import/route.ts";
 import { POST as interpretPost } from "../../app/api/interpret/route.ts";
-import { interpretText } from "../../src/server/import/index.ts";
+import {
+  IMPORT_LIMITS,
+  interpretText,
+} from "../../src/server/import/index.ts";
+import { UPLOAD_MESSAGES } from "../../src/shared/upload-limits.ts";
 
 const text = await readFile(
   new URL("../fixtures/import/topics.txt", import.meta.url),
@@ -80,13 +84,18 @@ test("limite do corpo é aplicado antes de ler arquivos e JSON malformado é san
     headers: {
       origin: "http://localhost",
       "content-type": "multipart/form-data; boundary=empty",
-      "content-length": String(21 * 1024 * 1024),
+      "content-length": String(IMPORT_LIMITS.maxTotalBytes + 1024 * 1024),
     },
     body: "SECRET",
   });
   const large = await importPost(request);
   assert.equal(large.status, 413);
-  assert.equal((await large.text()).includes("SECRET"), false);
+  const largeText = await large.text();
+  assert.equal(largeText.includes("SECRET"), false);
+  assert.equal(
+    JSON.parse(largeText).issues[0].message,
+    UPLOAD_MESSAGES.totalSize,
+  );
   const invalid = await interpretPost(
     new Request("http://localhost/api/interpret", {
       method: "POST",
