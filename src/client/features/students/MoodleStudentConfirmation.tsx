@@ -1,8 +1,12 @@
 "use client";
+import { Loader2, Send } from "lucide-react";
 import { Pagination } from "../../components/pagination.tsx";
-import { studentPage } from "./helpers.ts";
+import { previewStatusLabel, STUDENT_PAGE_SIZE, studentPage } from "./helpers.ts";
 import type { MoodleStudentPreview } from "./schemas.ts";
 
+const defaultLabels: Record<string, string> = { city: "Cidade", country: "País" };
+
+/** What Moodle would do, before it does anything. The one button here is the only one that registers the students. */
 export function MoodleStudentConfirmation({
   preview,
   page,
@@ -18,21 +22,22 @@ export function MoodleStudentConfirmation({
   onPageChange: (page: number) => void;
   onConfirm: () => Promise<void>;
 }) {
+  const options = preview.effectiveOptions;
+  const total = preview.rows.length;
   return (
-    <section className="notice">
-      <h3>Prévia de cadastro no Moodle</h3>
-      <p>
-        Identificação {preview.hash.slice(0, 12)}. Nenhum aluno
-        foi cadastrado nesta etapa.
-      </p>
-      <div className="table-scroll">
+    <section className="stu-confirm" aria-labelledby="student-confirm-title">
+      <header>
+        <h3 id="student-confirm-title">Confira antes de cadastrar</h3>
+        <p className="stu-help">Nada foi cadastrado ainda.</p>
+      </header>
+      <div className="table-scroll stu-table">
         <table>
           <thead>
             <tr>
-              <th>Usuário</th>
-              <th>Nome</th>
-              <th>E-mail</th>
-              <th>Estado</th>
+              <th scope="col">Usuário</th>
+              <th scope="col">Nome</th>
+              <th scope="col">E-mail</th>
+              <th scope="col">Situação</th>
             </tr>
           </thead>
           <tbody>
@@ -41,107 +46,81 @@ export function MoodleStudentConfirmation({
                 <td>{row.username}</td>
                 <td>{row.name}</td>
                 <td>{row.email}</td>
-                <td>{row.status}</td>
+                <td>{previewStatusLabel(row.status)}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <Pagination
-        page={page}
-        count={preview.rows.length}
-        onChange={onPageChange}
-      />
-      {preview.effectiveOptions && (
-        <details className="form-details" open>
-          <summary>Opções efetivas do cadastro</summary>
-          <p>
-            Novas senhas:{" "}
-            {preview.effectiveOptions.newPassword ===
-              "generated-by-moodle-and-email"
-              ? "geradas pelo Moodle e enviadas por e-mail"
-              : "não são criadas"}
-            . Senhas existentes são preservadas. Só os campos do CSV são
-            atualizados.
-          </p>
+      {total > STUDENT_PAGE_SIZE && (
+        <Pagination page={page} count={total} onChange={onPageChange} />
+      )}
+      <details className="stu-details">
+        <summary>Ver detalhes</summary>
+        <p>
+          {options.newPassword === "generated-by-moodle-and-email"
+            ? "Senha nova: o Moodle cria e envia por e-mail."
+            : "Senha nova: não é criada."}
+        </p>
+        <p>Quem já existe mantém a senha. Só os dados do arquivo mudam.</p>
+        {Object.keys(options.defaults).length > 0 && (
           <dl>
-            {Object.entries(
-              preview.effectiveOptions.defaults,
-            ).map(([key, value]) => (
+            {Object.entries(options.defaults).map(([key, value]) => (
               <div key={key}>
-                <dt>
-                  {key === "city"
-                    ? "Cidade"
-                    : key === "country"
-                      ? "País"
-                      : key}
-                </dt>
+                <dt>{defaultLabels[key] ?? key}</dt>
                 <dd>{value || "(em branco)"}</dd>
               </div>
             ))}
           </dl>
-          {preview.effectiveOptions.enrolments.length > 0 && (
-            <>
-              <p>
-                Matrícula manual com papel Estudante nos cursos
-                conferidos:
-              </p>
-              <div className="table-scroll">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Curso</th>
-                      <th>Duração</th>
-                      <th>Aviso de expiração</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {preview.effectiveOptions.enrolments.map(
-                      (enrolment) => (
-                        <tr
-                          key={`${enrolment.courseId}-${enrolment.enrolId}`}
-                        >
-                          <td>{enrolment.shortName}</td>
-                          <td>
-                            {enrolment.durationSeconds === 0
-                              ? "Sem prazo"
-                              : `${enrolment.durationSeconds / 86400} dias`}
-                          </td>
-                          <td>
-                            {enrolment.expiryNotify
-                              ? "Ativado"
-                              : "Desativado"}
-                          </td>
-                        </tr>
-                      ),
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </>
-          )}
-          <p className="field-help">
-            Exclusão, renomeação e suspensão de usuários estão
-            desativadas.
-          </p>
-        </details>
-      )}
+        )}
+        {options.enrolments.length > 0 && (
+          <div className="table-scroll stu-table">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Curso</th>
+                  <th scope="col">Prazo</th>
+                  <th scope="col">Aviso de fim</th>
+                </tr>
+              </thead>
+              <tbody>
+                {options.enrolments.map((enrolment) => (
+                  <tr key={`${enrolment.courseId}-${enrolment.enrolId}`}>
+                    <td>{enrolment.shortName}</td>
+                    <td>
+                      {enrolment.durationSeconds === 0
+                        ? "Sem prazo"
+                        : `${enrolment.durationSeconds / 86400} dias`}
+                    </td>
+                    <td>{enrolment.expiryNotify ? "Ligado" : "Desligado"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+        <p>Nada é apagado, renomeado ou suspenso.</p>
+      </details>
       {preview.issues?.map((issue) => (
-        <p className="field-help" key={issue.code}>
+        <p className="stu-hint" key={issue.code}>
           {issue.message}
         </p>
       ))}
       <button
         type="button"
-        className="primary"
+        className="primary stu-confirm-button"
         disabled={busy || !authenticated}
         onClick={() => {
           void onConfirm();
         }}
       >
-        Confirmar cadastro de {preview.rows.length} alunos
+        {busy ? (
+          <Loader2 size={20} className="spinner" aria-hidden="true" />
+        ) : (
+          <Send size={20} aria-hidden="true" />
+        )}
+        {busy ? "Enviando…" : `${options.mode === "update" ? "Atualizar" : "Cadastrar"} ${total} ${total === 1 ? "aluno" : "alunos"}`}
       </button>
     </section>
   );
 }
-

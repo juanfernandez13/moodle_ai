@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { mapStudentRows } from "../../../../domain/students/index.ts";
 import type { StudentRow, StudentMapping } from "../../../../domain/students/index.ts";
-import { createStudentExample } from "../helpers.ts";
+import { createStudentExample, friendlyParseMessage } from "../helpers.ts";
 import type { StudentEditField } from "../helpers.ts";
 
 export function useStudentSource({
@@ -43,30 +43,38 @@ export function useStudentSource({
     setFile(source);
     try {
       if (source.size > 8 * 1024 * 1024)
-        throw new Error("A planilha pode ter até 8 MiB.");
+        throw new Error("A planilha pode ter até 8 MB.");
       const data = new FormData();
       data.set("file", source);
       if (targetSheet) data.set("sheet", targetSheet);
-      const response = await fetch("/api/students/parse", {
-        method: "POST",
-        body: data,
-      });
-      const result = (await response.json()) as {
+      let response: Response;
+      let result: {
         ok: boolean;
         rows?: StudentRow[];
         matrix?: string[][];
         sheet?: string;
         sheetNames?: string[];
-        issues?: { message: string }[];
+        issues?: { code?: string; message: string }[];
       };
+      try {
+        response = await fetch("/api/students/parse", {
+          method: "POST",
+          body: data,
+        });
+        result = await response.json();
+      } catch {
+        throw new Error("Não foi possível ler a planilha. Tente de novo.");
+      }
       if (result.matrix) setMatrix(result.matrix);
       if (result.sheetNames) setSheets(result.sheetNames);
       if (result.sheet) setSheet(result.sheet);
       if (!response.ok || !result.ok || !result.rows) {
         setMappingOpen(Boolean(result.matrix));
         throw new Error(
-          result.issues?.map((issue) => issue.message).join("\n") ||
-          "Não foi possível interpretar a planilha.",
+          result.issues
+            ?.map((issue) => friendlyParseMessage(issue, result.matrix?.length))
+            .join("\n") ||
+          "Não foi possível ler a planilha.",
         );
       }
       setRows(result.rows);
@@ -77,7 +85,7 @@ export function useStudentSource({
       setError(
         failure instanceof Error
           ? failure.message
-          : "Não foi possível ler a planilha. A revisão anterior foi preservada.",
+          : "Não foi possível ler a planilha.",
       );
     } finally {
       setBusy(false);
@@ -94,6 +102,28 @@ export function useStudentSource({
     onReview();
     setMappingOpen(false);
   }
+  /** Typed students arrive as the matrix the example uses, so mapping, validation and review work the same. */
+  function fromManual(typed: string[][]) {
+    if (typed.length < 2) {
+      setError("Preencha ao menos um aluno.");
+      return;
+    }
+    let mapped: StudentRow[];
+    try {
+      mapped = mapStudentRows(typed);
+    } catch (failure) {
+      setError(failure instanceof Error ? failure.message : "Confira os alunos.");
+      return;
+    }
+    onInvalidate();
+    setFile(null);
+    setMatrix(typed);
+    setRows(mapped);
+    setPage(0);
+    setSheets([]);
+    onReview();
+    setMappingOpen(false);
+  }
 
   function applyMapping() {
     try {
@@ -104,7 +134,7 @@ export function useStudentSource({
       onReview();
       setMappingOpen(false);
     } catch (failure) {
-      setError(failure instanceof Error ? failure.message : "Confira o mapeamento.");
+      setError(failure instanceof Error ? failure.message : "Confira as colunas.");
     }
   }
   function changeSheet(next: string) {
@@ -122,6 +152,7 @@ export function useStudentSource({
     page,
     parse,
     example,
+    fromManual,
     changeRow,
     changeSheet,
     applyMapping,

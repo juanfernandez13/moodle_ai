@@ -35,15 +35,30 @@ export function useStudentCsv({
         batches.map((batch) => buildStudentPreview(batch, options)),
       );
       const failed = results.find((result) => !result.ok);
-      if (failed && !failed.ok)
+      if (failed && !failed.ok) {
+        // A long list of the same problem helps no one: the first few lines say what to fix.
+        const names: Record<string, string> = {
+          username: "usuário",
+          firstName: "primeiro nome",
+          lastName: "sobrenome",
+          email: "e-mail",
+          cpf: "CPF",
+          course: "curso",
+        };
+        const lines = failed.issues.map((issue) => {
+          const line = rows.find((row) => row.id === issue.rowId)?.rowNumber ?? "?";
+          const field = issue.path.split(".").pop() ?? "";
+          return issue.code === "unsafe_csv_value"
+            ? `Linha ${line}, ${names[field] ?? field}: apague o sinal = + - ou @ do começo.`
+            : `Linha ${line}: ${issue.message}`;
+        });
         throw new Error(
-          failed.issues
-            .map(
-              (issue) =>
-                `Linha ${rows.find((row) => row.id === issue.rowId)?.rowNumber ?? "?"}: ${issue.message}`,
-            )
-            .join("\n"),
+          [
+            ...lines.slice(0, 4),
+            ...(lines.length > 4 ? [`E mais ${lines.length - 4}.`] : []),
+          ].join("\n"),
         );
+      }
       if (revision !== generation.current)
         throw new Error(
           "A lista mudou durante a conferência. Gere uma nova prévia.",

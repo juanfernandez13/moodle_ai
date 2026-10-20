@@ -17,28 +17,37 @@ export function EditableStudentTable({
   onPageChange: (page: number) => void;
   onRowChange: (id: string, field: StudentEditField, value: string) => void;
 }) {
+  const headings: Record<StudentEditField, string> = {
+    firstName: "Primeiro nome",
+    lastName: "Sobrenome",
+    email: "E-mail",
+    cpf: "CPF",
+    course: "Curso",
+    username: "Usuário",
+  };
   return (
     <>
-      <div className="table-scroll student-table">
+      <div className="table-scroll stu-table">
         <table>
           <thead>
             <tr>
-              <th>Linha</th>
-              <th>Usuário</th>
-              <th>Primeiro nome</th>
-              <th>Sobrenome</th>
-              <th>E-mail</th>
-              <th>CPF</th>
-              <th>Curso</th>
-              <th>Origem</th>
+              <th scope="col">Linha</th>
+              {editableStudentFields.map((field) => (
+                <th scope="col" key={field}>
+                  {headings[field]}
+                </th>
+              ))}
+              <th scope="col">Original</th>
             </tr>
           </thead>
           <tbody>
             {studentPage(rows, page).map((row) => (
               <tr key={row.id} id={`student-${row.id}`}>
-                <td>{row.rowNumber}</td>
+                <td className="stu-row-number" data-label="Linha">
+                  {row.rowNumber}
+                </td>
                 {editableStudentFields.map((field) => (
-                  <td key={field}>
+                  <td key={field} data-label={headings[field]}>
                     <input
                       aria-label={`Linha ${row.rowNumber}: ${studentFieldLabels[field]}`}
                       value={row[field]}
@@ -53,14 +62,18 @@ export function EditableStudentTable({
                     />
                   </td>
                 ))}
-                <td>
+                <td className="stu-original" data-label="Original">
                   <details>
-                    <summary>Fonte</summary>
-                    {Object.entries(row.original).map(([key, value]) => (
-                      <p key={key}>
-                        {key}: {value}
-                      </p>
-                    ))}
+                    <summary aria-label={`Ver original da linha ${row.rowNumber}`}>
+                      Ver
+                    </summary>
+                    <div className="stu-original-body">
+                      {Object.entries(row.original).map(([key, value]) => (
+                        <p key={key}>
+                          {key}: {value}
+                        </p>
+                      ))}
+                    </div>
                   </details>
                 </td>
               </tr>
@@ -68,8 +81,9 @@ export function EditableStudentTable({
           </tbody>
         </table>
       </div>
-      <Pagination page={page} count={rows.length} onChange={onPageChange} />
+      {studentPage(rows, 1).length > 0 && (
+        <Pagination page={page} count={rows.length} onChange={onPageChange} />
+      )}
     </>
   );
 }
-
