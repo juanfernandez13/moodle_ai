@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<!-- Minimal Moodle 4.1 (Boost) admin/roles/define.php?action=edit&roleid=5: the archetype select of the role.
+     Other archetypes are selected by the test site. -->
+<html dir="ltr" lang="en" xml:lang="en">
+<head><title>Lab: Administration: Users: Permissions: Define roles</title></head>
+<body id="page-admin-roles-define" class="path-admin path-admin-roles chrome dir-ltr lang-en pagelayout-admin">
+<form id="rolesform" action="http://localhost:3211/admin/roles/define.php?action=edit&amp;roleid=5" method="post">
+  <input type="hidden" name="sesskey" value="aB3dE5fG7h">
+  <input type="text" name="shortname" id="shortname" value="student">
+  <select class="custom-select" name="archetype" id="menuarchetype">
+    <option value="">None</option>
+    <option value="manager">ARCHETYPE: Manager</option>
+    <option value="editingteacher">ARCHETYPE: Teacher (editing)</option>
+    <option value="teacher">ARCHETYPE: Non-editing teacher</option>
+    <option value="student" selected>ARCHETYPE: Student</option>
+  </select>
+  <input type="submit" name="savechanges" value="Save changes">
+</form>
+</body>
+</html>

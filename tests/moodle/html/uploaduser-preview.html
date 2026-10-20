@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<!-- Minimal Moodle 4.1 (Boost) tool_uploaduser preview: #uupreview (html_writer::table) and the second form.
+     Select lists keep the core option values; long lists (countries, timezones, languages) are trimmed. -->
+<html dir="ltr" lang="en" xml:lang="en">
+<head><title>Lab: Administration: Users: Accounts: Upload users</title></head>
+<body id="page-admin-tool-uploaduser-index" class="path-admin path-admin-tool path-admin-tool-uploaduser chrome dir-ltr lang-en pagelayout-admin course-1 context-1">
+<div id="page" class="container-fluid"><div id="page-content"><section id="region-main" aria-label="Content">
+<div role="main"><span id="maincontent"></span>
+<h2>Upload users preview</h2>
+<div class="no-overflow"><table class="generaltable boxaligncenter flexible-wrap" id="uupreview">
+<thead>
+<tr>
+<th class="header c0" style="" scope="col">CSV line</th>
+<th class="header c1" style="" scope="col">username</th>
+<th class="header c2" style="" scope="col">firstname</th>
+<th class="header c3" style="" scope="col">lastname</th>
+<th class="header c4" style="" scope="col">email</th>
+<th class="header c5" style="" scope="col">idnumber</th>
+<th class="header c6" style="" scope="col">course1</th>
+<th class="header c7 lastcol" style="" scope="col">Status</th>
+</tr>
+</thead>
+<tbody><tr class="">
+<td class="cell c0" style="">2</td>
+<td class="cell c1" style="">lab-ana</td>
+<td class="cell c2" style="">Ana</td>
+<td class="cell c3" style="">Fictícia</td>
+<td class="cell c4" style="">ana@example.invalid</td>
+<td class="cell c5" style=""></td>
+<td class="cell c6" style="">LAB</td>
+<td class="cell c7 lastcol" style=""></td>
+</tr>
+<tr class="">
+<td class="cell c0" style="">3</td>
+<td class="cell c1" style="">lab-bia</td>
+<td class="cell c2" style="">Bia</td>
+<td class="cell c3" style="">Fictícia</td>
+<td class="cell c4" style="">bia@example.invalid</td>
+<td class="cell c5" style=""></td>
+<td class="cell c6" style="">LAB</td>
+<td class="cell c7 lastcol" style=""></td>
+</tr>
+<tr class="">
+<td class="cell c0" style="">4</td>
+<td class="cell c1" style="">lab-caio</td>
+<td class="cell c2" style="">Caio</td>
+<td class="cell c3" style="">Fictício</td>
+<td class="cell c4" style="">caio@example.invalid</td>
+<td class="cell c5" style=""></td>
+<td class="cell c6" style="">LAB</td>
+<td class="cell c7 lastcol" style="">Email address is already in use by another user (lab-zeca)</td>
+</tr>
+<tr class="lastrow">
+<td class="cell c0" style="">5</td>
+<td class="cell c1" style="">lab-davi</td>
+<td class="cell c2" style="">Davi</td>
+<td class="cell c3" style="">Fictício</td>
+<td class="cell c4" style="">davi@example.invalid</td>
+<td class="cell c5" style=""></td>
+<td class="cell c6" style="">LAB</td>
+<td class="cell c7 lastcol" style=""></td>
+</tr>
+</tbody>
+</table>
+</div>
+<form autocomplete="off" action="http://localhost:3211/admin/tool/uploaduser/index.php" method="post" accept-charset="utf-8" id="mform2_Hk3pQ7xZ1c" class="mform" data-boost-form-errors-enhanced="1">
+  <div style="display: none;"><input name="iid" type="hidden" value="1029384756" />
+<input name="previewrows" type="hidden" value="100000" />
+<input name="sesskey" type="hidden" value="aB3dE5fG7h" />
+<input name="_qf__admin_uploaduser_form2" type="hidden" value="1" />
+<input name="mform_isexpanded_id_settingsheader" type="hidden" value="1" />
+<input name="mform_isexpanded_id_defaultheader" type="hidden" value="0" />
+</div>
+  <fieldset class="clearfix collapsible" id="id_settingsheader">
+    <legend class="ftoggler">Settings</legend>
+    <div class="fcontainer clearfix">
+      <select class="custom-select" name="uutype" id="id_uutype">
+        <option value="0" selected>Add new only, skip existing users</option>
+        <option value="1">Add all, append number to usernames if needed</option>
+        <option value="2">Add new and update existing users</option>
+        <option value="3">Update existing users only</option>
+      </select>
+      <select class="custom-select" name="uupasswordnew" id="id_uupasswordnew">
+        <option value="0">Field required in file</option>
+        <option value="1" selected>Create password if needed and send via email</option>
+      </select>
+      <select class="custom-select" name="uuupdatetype" id="id_uuupdatetype">
+        <option value="0" selected>No changes</option>
+        <option value="1">Override with file</option>
+        <option value="2">Override with file and defaults</option>
+        <option value="3">Fill in missing from file and defaults</option>
+      </select>
+      <select class="custom-select" name="uupasswordold" id="id_uupasswordold">
+        <option value="0" selected>No</option>
+        <option value="1">Yes</option>
+      </select>
+      <select class="custom-select" name="uuforcepasswordchange" id="id_uuforcepasswordchange">
+        <option value="0">None</option>
+        <option value="1" selected>Users having a weak password</option>
+        <option value="2">All users</option>
+      </select>
+      <select class="custom-select" name="uuallowrenames" id="id_uuallowrenames">
+        <option value="0" selected>No</option>
+        <option value="1">Yes</option>
+      </select>
+      <select class="custom-select" name="uuallowdeletes" id="id_uuallowdeletes">
+        <option value="0" selected>No</option>
+        <option value="1">Yes</option>
+      </select>
+      <select class="custom-select" name="uuallowsuspends" id="id_uuallowsuspends">
+        <option value="0">No</option>
+        <option value="1" selected>Yes</option>
+      </select>
+      <select class="custom-select" name="uunoemailduplicates" id="id_uunoemailduplicates">
+        <option value="0">No</option>
+        <option value="1" selected>Yes</option>
+      </select>
+      <select class="custom-select" name="uustandardusernames" id="id_uustandardusernames">
+        <option value="0">No</option>
+        <option value="1" selected>Yes</option>
+      </select>
+      <select class="custom-select" name="uumatchemail" id="id_uumatchemail">
+        <option value="0" selected>No</option>
+        <option value="1">Yes</option>
+      </select>
+      <select class="custom-select" name="uubulk" id="id_uubulk">
+        <option value="0" selected>No</option>
+        <option value="1">To new users</option>
+        <option value="2">To updated users</option>
+        <option value="3">To new and updated users</option>
+      </select>
+    </div>
+  </fieldset>
+  <fieldset class="clearfix collapsible collapsed" id="id_defaultheader">
+    <legend class="ftoggler">Default values</legend>
+    <div class="fcontainer clearfix">
+      <select class="custom-select" name="auth" id="id_auth">
+        <option value="manual" selected>Manual accounts</option>
+        <option value="nologin">No login</option>
+      </select>
+      <select class="custom-select" name="maildisplay" id="id_maildisplay">
+        <option value="0">Hide my email address from non-privileged users</option>
+        <option value="1">Allow everyone to see my email address</option>
+        <option value="2" selected>Allow only other course members to see my email address</option>
+      </select>
+      <select class="custom-select" name="emailstop" id="id_emailstop">
+        <option value="0" selected>This email address is enabled</option>
+        <option value="1">This email address is disabled</option>
+      </select>
+      <select class="custom-select" name="mailformat" id="id_mailformat">
+        <option value="0">Plain text format</option>
+        <option value="1" selected>Pretty HTML format</option>
+      </select>
+      <select class="custom-select" name="maildigest" id="id_maildigest">
+        <option value="0" selected>No digest (single email per forum post)</option>
+        <option value="1">Complete (daily email with full posts)</option>
+        <option value="2">Subjects (daily email with subjects only)</option>
+      </select>
+      <select class="custom-select" name="autosubscribe" id="id_autosubscribe">
+        <option value="1" selected>Yes: when I post, subscribe me to that forum discussion</option>
+        <option value="0">No: don't automatically subscribe me to forum discussions</option>
+      </select>
+      <input type="text" class="form-control " name="city" id="id_city" value="" size="25" maxlength="120">
+      <select class="custom-select" name="country" id="id_country">
+        <option value="" selected>Select a country</option>
+        <option value="BR">Brazil</option>
+        <option value="PT">Portugal</option>
+      </select>
+      <select class="custom-select" name="timezone" id="id_timezone">
+        <option value="99" selected>Server timezone (America/Sao_Paulo)</option>
+        <option value="America/Sao_Paulo">America/Sao_Paulo</option>
+      </select>
+      <select class="custom-select" name="lang" id="id_lang">
+        <option value="en" selected>English &lrm;(en)&lrm;</option>
+        <option value="pt_br">Português - Brasil &lrm;(pt_br)&lrm;</option>
+      </select>
+      <textarea id="id_description_editor" name="description_editor[text]" class="form-control" rows="10" cols="80" spellcheck="true"></textarea>
+      <input type="hidden" name="description_editor[format]" value="1">
+      <input type="hidden" name="description_editor[itemid]" value="771122334">
+      <input type="text" class="form-control " name="institution" id="id_institution" value="" size="25" maxlength="255">
+      <input type="text" class="form-control " name="department" id="id_department" value="" size="25" maxlength="255">
+    </div>
+  </fieldset>
+  <div class="form-group row fitem femptylabel" data-groupname="buttonar">
+    <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="group">
+      <div class="form-group fitem"><span data-fieldtype="submit"><input type="submit" class="btn btn-primary" name="submitbutton" id="id_submitbutton" value="Upload users"></span></div>
+      <div class="form-group fitem btn-cancel"><span data-fieldtype="submit"><input type="submit" class="btn btn-secondary" name="cancel" id="id_cancel" value="Cancel" data-skip-validation="1" data-cancel="1" onclick="skipClientValidation = true; return true;"></span></div>
+    </div>
+  </div>
+</form>
+</div>
+</section></div></div>
+</body>
+</html>

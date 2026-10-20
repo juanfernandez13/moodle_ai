@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<!-- Minimal Moodle 4.1 (Boost) user/edit.php: the timezone of the signed-in user (99 = server timezone). Timezone list trimmed. -->
+<html dir="ltr" lang="en" xml:lang="en">
+<head><title>Lab Admin: Edit profile</title></head>
+<body id="page-user-edit" class="path-user chrome dir-ltr lang-en pagelayout-admin">
+<form autocomplete="off" action="http://localhost:3211/user/edit.php" method="post" accept-charset="utf-8" id="mform1_us3r" class="mform">
+<div style="display: none;"><input name="id" type="hidden" value="2" />
+<input name="course" type="hidden" value="1" />
+<input name="sesskey" type="hidden" value="aB3dE5fG7h" />
+<input name="_qf__user_edit_form" type="hidden" value="1" />
+</div>
+<input type="text" class="form-control " name="firstname" id="id_firstname" value="Lab" size="30">
+<input type="text" class="form-control " name="lastname" id="id_lastname" value="Admin" size="30">
+<select class="custom-select" name="timezone" id="id_timezone"><option value="99" selected>Server timezone (America/Sao_Paulo)</option><option value="America/Sao_Paulo">America/Sao_Paulo</option><option value="Europe/Lisbon">Europe/Lisbon</option><option value="UTC">UTC</option></select>
+<input type="submit" class="btn btn-primary" name="submitbutton" id="id_submitbutton" value="Update profile">
+</form>
+</body>
+</html>

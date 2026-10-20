@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!-- Minimal Moodle 4.1 (Boost) enrol/editinstance.php?type=manual: status, default role and enrolment duration.
+     Variations (disabled method, duration) are applied by the test site. -->
+<html dir="ltr" lang="en" xml:lang="en">
+<head><title>Laboratório de Química: Manual enrolments</title></head>
+<body id="page-enrol-editinstance" class="path-enrol chrome dir-ltr lang-en pagelayout-admin course-4 context-30">
+<form autocomplete="off" action="http://localhost:3211/enrol/editinstance.php" method="post" accept-charset="utf-8" id="mform1_m4nual" class="mform">
+  <div style="display: none;"><input name="id" type="hidden" value="13" />
+<input name="courseid" type="hidden" value="4" />
+<input name="type" type="hidden" value="manual" />
+<input name="sesskey" type="hidden" value="aB3dE5fG7h" />
+<input name="_qf__enrol_instance_edit_form" type="hidden" value="1" />
+</div>
+  <select class="custom-select" name="status" id="id_status">
+    <option value="0" selected>Yes</option>
+    <option value="1">No</option>
+  </select>
+  <select class="custom-select" name="roleid" id="id_roleid">
+    <option value="3">Teacher</option>
+    <option value="4">Non-editing teacher</option>
+    <option value="5" selected>Student</option>
+  </select>
+  <fieldset data-fieldtype="duration" id="id_enrolperiod">
+    <input type="text" class="form-control " name="enrolperiod[number]" id="id_enrolperiod_number" value="0" size="3">
+    <select class="custom-select" name="enrolperiod[timeunit]" id="id_enrolperiod_timeunit">
+      <option value="604800">weeks</option>
+      <option value="86400" selected>days</option>
+      <option value="3600">hours</option>
+      <option value="60">minutes</option>
+      <option value="1">seconds</option>
+    </select>
+    <label class="form-check fitem"><input type="checkbox" class="form-check-input" name="enrolperiod[enabled]" id="id_enrolperiod_enabled" value="1">Enable</label>
+  </fieldset>
+  <select class="custom-select" name="expirynotify" id="id_expirynotify">
+    <option value="0" selected>No</option>
+    <option value="1">Enroller only</option>
+    <option value="2">Enroller and enrolled user</option>
+  </select>
+  <input type="submit" class="btn btn-primary" name="submitbutton" id="id_submitbutton" value="Save changes">
+  <input type="submit" class="btn btn-secondary" name="cancel" id="id_cancel" value="Cancel">
+</form>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!-- Minimal Moodle 4.1 (Boost) admin/tool/uploaduser/index.php, first form (file + CSV options).
+     The filepicker lists several repositories; only the "upload" one may receive the CSV. -->
+<html dir="ltr" lang="en" xml:lang="en">
+<head><title>Lab: Administration: Users: Accounts: Upload users</title></head>
+<body id="page-admin-tool-uploaduser-index" class="path-admin path-admin-tool path-admin-tool-uploaduser chrome dir-ltr lang-en pagelayout-admin course-1 context-1">
+<div id="page" class="container-fluid"><div id="page-content"><section id="region-main" aria-label="Content">
+<div role="main"><span id="maincontent"></span>
+<h2>Upload users</h2>
+<form autocomplete="off" action="http://localhost:3211/admin/tool/uploaduser/index.php" method="post" accept-charset="utf-8" id="mform1_q7Hc2LrAa9" class="mform" data-boost-form-errors-enhanced="1">
+  <div style="display: none;"><input name="sesskey" type="hidden" value="aB3dE5fG7h" />
+<input name="_qf__admin_uploaduser_form1" type="hidden" value="1" />
+<input name="mform_isexpanded_id_settingsheader" type="hidden" value="1" />
+</div>
+  <fieldset class="clearfix collapsible" id="id_settingsheader">
+    <legend class="ftoggler"><a href="#" class="fheader" role="button" aria-controls="id_settingsheader" aria-expanded="true">Upload</a></legend>
+    <div class="fcontainer clearfix">
+      <div id="fitem_id_userfile" class="form-group row fitem">
+        <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0"><label class="d-inline word-break" for="id_userfile">File</label></div>
+        <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="filepicker">
+          <input type="hidden" name="userfile" id="id_userfile" value="384211077" class="filepickerhidden"/>
+          <div class="filemanager-loading mdl-align" id="filepicker-loading-65f1c3a2b1d4e"><span class="sr-only">Loading...</span></div>
+          <div id="filepicker-wrapper-65f1c3a2b1d4e" class="mdl-left w-100" style="display:none">
+            <div><input type="button" class="btn btn-secondary fp-btn-choose" id="filepicker-button-65f1c3a2b1d4e" value="Choose a file..."/><span> Maximum file size: 100 MB</span></div>
+            <div id="file_info_65f1c3a2b1d4e" class="mdl-left filepicker-filelist" style="position: relative"><div class="filepicker-filename"><div class="filepicker-container"><div class="dndupload-message">You can drag and drop files here to add them.</div></div></div></div>
+          </div>
+        </div>
+      </div>
+      <div id="fitem_id_delimiter_name" class="form-group row fitem">
+        <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0"><label class="d-inline word-break" for="id_delimiter_name">CSV separator</label></div>
+        <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="select">
+          <select class="custom-select" name="delimiter_name" id="id_delimiter_name">
+            <option value="comma" selected>,</option>
+            <option value="semicolon">;</option>
+            <option value="colon">:</option>
+            <option value="tab">\t</option>
+          </select>
+        </div>
+      </div>
+      <div id="fitem_id_encoding" class="form-group row fitem">
+        <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0"><label class="d-inline word-break" for="id_encoding">Encoding</label></div>
+        <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="select">
+          <select class="custom-select" name="encoding" id="id_encoding">
+            <option value="ISO-8859-1">ISO-8859-1</option>
+            <option value="UTF-8" selected>UTF-8</option>
+            <option value="Windows-1252">Windows-1252</option>
+          </select>
+        </div>
+      </div>
+      <div id="fitem_id_previewrows" class="form-group row fitem">
+        <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0"><label class="d-inline word-break" for="id_previewrows">Preview rows</label></div>
+        <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="select">
+          <select class="custom-select" name="previewrows" id="id_previewrows">
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+            <option value="100">100</option>
+            <option value="1000">1000</option>
+            <option value="100000">100000</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <div class="form-group row fitem femptylabel" data-groupname="buttonar">
+    <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="group">
+      <div class="form-group fitem"><span data-fieldtype="submit"><input type="submit" class="btn btn-primary" name="submitbutton" id="id_submitbutton" value="Upload users"></span></div>
+    </div>
+  </div>
+</form>
+</div>
+</section></div></div>
+<script>
+//<![CDATA[
+M.form_filepicker.init(Y, {"accepted_types":[".csv",".txt"],"return_types":2,"context":{"id":1,"contextlevel":10,"instanceid":0,"path":"\/1","depth":1,"locked":false},"client_id":"65f1c3a2b1d4e","maxbytes":104857600,"areamaxbytes":-1,"env":"filepicker","itemid":384211077,"repositories":{"4":{"id":"4","name":"Server files","type":"local","icon":"http:\/\/localhost:3211\/theme\/image.php\/boost\/repository_local\/1710000000\/icon","supported_types":[],"return_types":6,"defaultreturntype":2,"sortorder":1},"5":{"id":"5","name":"Recent files","type":"recent","icon":"http:\/\/localhost:3211\/theme\/image.php\/boost\/repository_recent\/1710000000\/icon","supported_types":[],"return_types":2,"defaultreturntype":2,"sortorder":2},"6":{"id":"6","name":"Upload a file","type":"upload","icon":"http:\/\/localhost:3211\/theme\/image.php\/boost\/repository_upload\/1710000000\/icon","supported_types":[],"return_types":2,"defaultreturntype":2,"sortorder":3},"7":{"id":"7","name":"Private files","type":"user","icon":"http:\/\/localhost:3211\/theme\/image.php\/boost\/repository_user\/1710000000\/icon","supported_types":[],"return_types":6,"defaultreturntype":2,"sortorder":4}},"externallink":true,"rememberuserlicensepref":true,"userprefs":{"recentrepository":"6","recentlicense":"unknown","recentviewmode":""},"accepted_types_count":2});
+//]]>
+</script>
+</body>
+</html>
