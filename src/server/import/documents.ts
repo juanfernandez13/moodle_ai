@@ -1,6 +1,7 @@
 import { XMLParser, XMLValidator } from "fast-xml-parser";
 import type { ContentBlock, InlineBlock } from "../../domain/course/index.ts";
 import { readArchive, hash256 } from "../../shared/archive.ts";
+import { UPLOAD_MESSAGES } from "../../shared/upload-limits.ts";
 import {
   IMPORT_LIMITS,
   ImportError,
@@ -376,10 +377,7 @@ export async function extractDocument(
   if (input.bytes.length === 0)
     throw new ImportError("empty_document", "O documento está vazio.");
   if (input.bytes.length > IMPORT_LIMITS.maxFileBytes)
-    throw new ImportError(
-      "file_size_limit",
-      "Cada documento pode ter até 10 MiB.",
-    );
+    throw new ImportError("file_size_limit", UPLOAD_MESSAGES.fileSize);
   const extension = input.name.split(".").at(-1)?.toLowerCase();
   let result: ExtractedDocument;
   if (extension === "docx") result = await extractDocx(input, signal);

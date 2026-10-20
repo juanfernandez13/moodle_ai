@@ -1,4 +1,5 @@
 "use client";
+import { PageTurnOverlay } from "../../components/page-turn.tsx";
 import { Shell } from "../../components/shell.tsx";
 import { useCourseBuilder } from "./hooks/use-course-builder.ts";
 import { EntryPanel } from "./entry/entry-panel.tsx";
@@ -41,14 +42,10 @@ export function CourseBuilder() {
         setError={course.setError}
         setSelectedFiles={course.setSelectedFiles}
         selectedFiles={course.selectedFiles}
-        profile={course.profile}
         provider={course.provider}
-        setProfile={course.setProfile}
         setProvider={course.setProvider}
-        apiKey={course.apiKey}
-        setApiKey={course.setApiKey}
-        model={course.model}
-        setModel={course.setModel}
+        keys={course.keys}
+        setKeys={course.setKeys}
         pasteText={course.pasteText}
         setPasteText={course.setPasteText}
         busy={course.busy}
@@ -65,8 +62,6 @@ export function CourseBuilder() {
         setShowPrompt={course.setShowPrompt}
         proposalTrigger={course.proposalTrigger}
         portableInput={course.portableInput}
-        projects={course.projects}
-        setShowProjects={course.setShowProjects}
       /> : <EditorWorkspace
         setProject={course.setProject}
         setError={course.setError}
@@ -99,6 +94,7 @@ export function CourseBuilder() {
         showIssue={course.showIssue}
       />}
       {course.artifact && course.project && <DeliveryPanel artifact={course.artifact} project={course.project} />}
+      <PageTurnOverlay step={!course.project ? 0 : course.artifact ? 2 : 1} />
       {course.showPrompt && <PromptDialog
         setShowPrompt={course.setShowPrompt}
         prompt={course.prompt}

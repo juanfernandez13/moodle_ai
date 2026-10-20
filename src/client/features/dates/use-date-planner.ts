@@ -15,7 +15,11 @@ import {
 import { dateTargets } from "./helpers.ts";
 import type { DatePane, DateOperationResult } from "./types.ts";
 
-/** Keeps revision invalidation and one-use confirmation beside their async actions. */
+/**
+ * Keeps revision invalidation and one-use confirmation beside their async actions.
+ * The wizard (use-date-wizard.ts) only drives screens on top of this; every Moodle-changing rule stays here.
+ * Tests extract this function on its own, so it may use only React state/ref hooks and the imports above.
+ */
 export function useDatePlanner() {
   const [input, setInput] = useState<DatePlanInput>({
     startDate: "2026-10-19",
@@ -31,8 +35,10 @@ export function useDatePlanner() {
     plan: DatePlan;
   } | null>(null);
   const [error, setError] = useState("");
-  const [pane, setPane] = useState<DatePane>("plan");
-  const [page, setPage] = useState(0);
+  const [pane, setPane] = useState<DatePane>("login");
+  // Test mode: example units on this device only; it never reaches the Moodle actions below.
+  const [demo, setDemo] = useState(false);
+  const [demoUnits, setDemoUnits] = useState(4);
   const [courseId, setCourseId] = useState(0);
   const [busy, setBusy] = useState(false);
   const [moodlePreview, setMoodlePreview] = useState<{
@@ -61,17 +67,13 @@ export function useDatePlanner() {
       if (remoteTargets.current) {
         remoteTargets.current = false;
         setTargetsText("");
-        setPreview(null);
       }
       if (confirming.current) unknown.current = true;
       setUnknownResult(unknown.current);
-      if (unknown.current) {
-        setError(
-          "Há uma alteração anterior sem resultado confirmado. Confira as datas no Moodle de origem antes de repetir.",
-        );
-      } else {
+      // With a lock the screens say so themselves (use-date-wizard.ts): the results page keeps showing.
+      if (!unknown.current) {
         setResults([]);
-        setPane("connection");
+        if (!demo) setPane("login");
       }
     },
   });
@@ -83,31 +85,52 @@ export function useDatePlanner() {
     setError("");
     setInput((previous) => ({ ...previous, [field]: value }));
   }
+  function changeDemoUnits(value: number) {
+    revision.current++;
+    setPreview(null);
+    setError("");
+    setDemoUnits(value);
+  }
+  function startDemo() {
+    revision.current++;
+    currentPreview.current = null;
+    setMoodlePreview(null);
+    setPreview(null);
+    setError("");
+    setDemo(true);
+    setPane("plan");
+  }
+  function leaveDemo() {
+    revision.current++;
+    setPreview(null);
+    setError("");
+    setDemo(false);
+    setPane(moodle.status?.authenticated ? "course" : "login");
+  }
   async function simulate() {
     setError("");
     const expected = revision.current;
     try {
-      const targets = dateTargets(input.unitCount, targetsText);
-      const result = buildDatePlan(input, targets);
+      // Remote course targets belong to the Moodle flow; the test mode always uses its own example units.
+      const targets = dateTargets(
+        demoUnits,
+        remoteTargets.current ? "" : targetsText,
+      );
+      const result = buildDatePlan({ ...input, unitCount: demoUnits }, targets);
       if (!result.ok)
-        throw new Error(
-          result.issues
-            .map((issue) => `${issue.path}: ${issue.message}`)
-            .join("\n"),
-        );
+        throw new Error(result.issues.map((issue) => issue.message).join("\n"));
       const next = await previewDatePlan(result.plan);
       if (expected !== revision.current)
-        throw new Error("O planejamento mudou. Simule novamente.");
+        throw new Error("As datas mudaram. Veja como fica de novo.");
       setPreview(next);
       currentPreview.current = null;
       setMoodlePreview(null);
-      setPage(0);
       setPane("preview");
     } catch (failure) {
       setError(
         failure instanceof Error
           ? failure.message
-          : "Confira as datas e os alvos.",
+          : "Confira o dia e os horários.",
       );
     }
   }
@@ -144,10 +167,10 @@ export function useDatePlanner() {
         JSON.stringify(calculated.plan) !== JSON.stringify(parsed.plan)
       )
         throw new Error(
-          "O plano recebido difere dos alvos e das regras atuais. Confira a configuração.",
+          "O Moodle devolveu datas diferentes do esperado. Leia o curso de novo.",
         );
       if (expected !== revision.current)
-        throw new Error("O planejamento mudou. Confira novamente.");
+        throw new Error("As datas mudaram. Veja como fica de novo.");
       const next = {
         previewId: parsed.previewId,
         hash: parsed.hash,
@@ -155,12 +178,13 @@ export function useDatePlanner() {
       };
       currentPreview.current = next;
       setMoodlePreview(next);
-      setPage(0);
       setPane("preview");
     } catch (failure) {
       if (expectedSession !== sessionGeneration.current) return;
       setError(
-        failure instanceof Error ? failure.message : "A prévia Moodle falhou.",
+        failure instanceof Error
+          ? failure.message
+          : "Não foi possível ver como fica. Tente de novo.",
       );
     } finally {
       if (expectedSession === sessionGeneration.current) setBusy(false);
@@ -179,6 +203,8 @@ export function useDatePlanner() {
     currentPreview.current = null;
     confirming.current = true;
     setMoodlePreview(null);
+    // A second run must not show the first run's results while Moodle is still working.
+    setResults([]);
     setBusy(true);
     setPane("result");
     setError("");
@@ -203,7 +229,6 @@ export function useDatePlanner() {
         })
         .parse(value);
       setResults(parsed.results);
-      setPage(0);
       setPane("result");
       unknown.current ||= parsed.results.some(
         (entry) => entry.status === "unknown",
@@ -213,22 +238,21 @@ export function useDatePlanner() {
       if (expectedSession !== sessionGeneration.current) return;
       unknown.current = true;
       setUnknownResult(true);
-      setError(
-        `${failure instanceof Error ? failure.message : "O resultado é desconhecido."} Confira as datas atuais no Moodle antes de repetir.`,
-      );
+      // The results page tells the person it is unknown and what to do; the banner only adds the reason.
+      setError(failure instanceof Error ? failure.message : "");
     } finally {
       confirming.current = false;
       if (expectedSession === sessionGeneration.current) setBusy(false);
     }
   }
-  async function readTargets() {
-    if (!courseId || renderedSession !== sessionGeneration.current) return;
+  async function readTargets(target: number = courseId) {
+    if (!target || renderedSession !== sessionGeneration.current) return;
     const expected = revision.current;
     const expectedSession = sessionGeneration.current;
     setBusy(true);
     setError("");
     try {
-      const response = await fetch(`/api/moodle/course?courseId=${courseId}`, {
+      const response = await fetch(`/api/moodle/course?courseId=${target}`, {
         cache: "no-store",
       });
       const value: unknown = await response.json();
@@ -238,18 +262,31 @@ export function useDatePlanner() {
         .safeParse(value);
       if (!response.ok || !parsed.success)
         throw new Error(
-          issuesMessage(value, "Não foi possível ler os alvos do curso."),
+          issuesMessage(value, "Não foi possível ler as datas do curso."),
         );
       const targets = parsed.data.targets as DateTarget[];
+      if (!targets.length)
+        throw new Error("Este curso não tem datas para ajustar.");
       const count = Math.max(
-        ...targets.map((target) => target.sectionIndex + 1),
+        ...targets.map((item) => item.sectionIndex + 1),
       );
-      const check = buildDatePlan({ ...input, unitCount: count }, targets);
+      // Only the course is being checked here, so a probe schedule stands in for whatever dates are typed now.
+      const check = buildDatePlan(
+        {
+          startDate: "2026-01-05",
+          unitCount: count,
+          daysPerUnit: 7,
+          opensAtTime: "00:00",
+          closesAtTime: "23:59",
+          timezoneOffsetMinutes: -180,
+        },
+        targets,
+      );
       if (!check.ok)
         throw new Error(check.issues.map((issue) => issue.message).join("\n"));
       if (expected !== revision.current)
         throw new Error(
-          "O curso ou plano mudou durante a leitura. Leia novamente.",
+          "O curso ou as datas mudaram durante a leitura. Leia de novo.",
         );
       change("unitCount", count);
       remoteTargets.current = true;
@@ -280,6 +317,11 @@ export function useDatePlanner() {
     setMoodlePreview(null);
     setResults([]);
     setCourseId(value);
+    // A summary must never describe the course that was chosen before this one.
+    if (remoteTargets.current) {
+      remoteTargets.current = false;
+      setTargetsText("");
+    }
   }
   return {
     input,
@@ -288,8 +330,8 @@ export function useDatePlanner() {
     error,
     pane,
     setPane,
-    page,
-    setPage,
+    demo,
+    demoUnits,
     moodle,
     courseId,
     busy,
@@ -297,8 +339,11 @@ export function useDatePlanner() {
     results,
     unknownResult,
     change,
+    changeDemoUnits,
     changeTargets,
     selectCourse,
+    startDemo,
+    leaveDemo,
     simulate,
     previewMoodleDates,
     confirmDates,

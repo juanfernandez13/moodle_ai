@@ -1,9 +1,13 @@
 import type { ContentBlock, CourseDraft } from "../../domain/course/index.ts";
+import { UPLOAD_LIMITS } from "../../shared/upload-limits.ts";
 
 export const IMPORT_LIMITS = Object.freeze({
-  maxFiles: 10,
-  maxFileBytes: 10 * 1024 * 1024,
-  maxTotalBytes: 20 * 1024 * 1024,
+  // What is sent: shared with the browser check and the project's source files.
+  // next.config.ts proxyClientMaxBodySize must stay above maxTotalBytes.
+  ...UPLOAD_LIMITS,
+  // What is read from inside a DOCX. The entry and total byte limits match the
+  // export limits (16 MiB per attachment, 64 MiB in all), so an image that is
+  // imported can always be exported. A larger upload does not raise them.
   maxArchiveEntries: 2000,
   maxArchiveEntryBytes: 16 * 1024 * 1024,
   maxArchiveTotalBytes: 64 * 1024 * 1024,

@@ -1,152 +1,139 @@
 "use client";
-import Link from "next/link";
-import { ArrowLeft, Download, AlertCircle } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { CircleAlert, FlaskConical, LogIn } from "lucide-react";
+import { PageTurn } from "../../components/page-turn.tsx";
 import { Shell } from "../../components/shell.tsx";
-import { downloadFile } from "../../download.ts";
-import { useDatePlanner } from "./use-date-planner.ts";
-import { DatePlanForm } from "./components/DatePlanForm.tsx";
-import { DateConnectionPanel } from "./components/DateConnectionPanel.tsx";
-import { DatePreviewTable } from "./components/DatePreviewTable.tsx";
+import { useDateWizard } from "./use-date-wizard.ts";
+import { DateSteps } from "./components/DateSteps.tsx";
+import { DateLoginStep } from "./components/DateLoginStep.tsx";
+import { DateCourseStep } from "./components/DateCourseStep.tsx";
+import { DateScheduleStep } from "./components/DateScheduleStep.tsx";
+import { DateReviewStep } from "./components/DateReviewStep.tsx";
 import { DateResultsPanel } from "./components/DateResultsPanel.tsx";
 
+/** "Ajustar datas": four steps on one page (login, course, new dates, review), or the two dates steps in test mode. */
 export function DatesWorkspace() {
-  const {
-    input,
-    targetsText,
-    preview,
-    error,
-    pane,
-    setPane,
-    page,
-    setPage,
-    moodle,
-    courseId,
-    busy,
-    moodlePreview,
-    results,
-    unknownResult,
-    change,
-    changeTargets,
-    selectCourse,
-    simulate,
-    previewMoodleDates,
-    confirmDates,
-    readTargets
-  } = useDatePlanner();
+  const wizard = useDateWizard();
+  const stage = useRef<HTMLElement>(null);
+  const lastShown = useRef(wizard.shown);
+  const plan = wizard.demo ? wizard.preview?.plan : wizard.moodlePreview?.plan;
+  const shown = wizard.shown === "preview" && !plan ? "plan" : wizard.shown;
+
+  // Keyboard and screen-reader users land on the new step instead of on a button that no longer exists.
+  // The step title (visually hidden) takes the focus: PageDown and the arrows then scroll that step.
+  useEffect(() => {
+    if (lastShown.current === shown) return;
+    lastShown.current = shown;
+    const title = stage.current?.querySelector("h2");
+    if (title) {
+      title.tabIndex = -1;
+      title.focus({ preventScroll: true });
+    }
+  }, [shown]);
+
   return (
     <Shell active="dates">
-      <main className="tool-panel glass">
-        <div className="tool-heading">
-          <div>
-            <h1>Planejar datas</h1>
-            <p>
-              Defina a cadência, confira o antes e depois e exporte um plano
-              identificado.
-            </p>
+      <main className="tool-panel dates-wizard surface-panel">
+        <div className="dw-top">
+          <div className="dw-title">
+            <h1>Ajustar datas</h1>
+            {wizard.demo && (
+              <span className="dw-chip">
+                <FlaskConical size={18} aria-hidden="true" />
+                Só um teste
+              </span>
+            )}
           </div>
-          <Link href="/" className="text-button">
-            <ArrowLeft size={17} />
-            Voltar ao curso
-          </Link>
+          <button
+            type="button"
+            className="dw-link dw-mode"
+            disabled={wizard.applying}
+            onClick={wizard.demo ? wizard.leaveDemo : wizard.startDemo}
+          >
+            {wizard.demo ? (
+              <LogIn size={20} aria-hidden="true" />
+            ) : (
+              <FlaskConical size={20} aria-hidden="true" />
+            )}
+            {wizard.demo ? "Usar o Moodle" : "Testar sem o Moodle"}
+          </button>
+          <DateSteps steps={wizard.steps} onGo={wizard.goTo} />
         </div>
-        <nav className="panel-tabs" aria-label="Etapas das datas">
-          {[
-            ["plan", "Planejar"],
-            ["connection", "Moodle"],
-            ["preview", "Conferir"],
-            ["result", "Resultado"],
-          ].map(([id, label]) => (
-            <button
-              key={id}
-              type="button"
-              aria-pressed={pane === id}
-              disabled={
-                (id === "preview" && !preview && !moodlePreview) ||
-                (id === "result" && !results.length && !unknownResult)
-              }
-              onClick={() => setPane(id as typeof pane)}
-            >
-              {label}
-            </button>
-          ))}
-        </nav>
-        {error && (
+        {wizard.message && (
           <div className="status-banner error-banner" role="alert">
-            <AlertCircle size={18} />
-            <span className="preserve-text">{error}</span>
+            <CircleAlert size={22} aria-hidden="true" />
+            <span className="preserve-text">{wizard.message}</span>
           </div>
         )}
-        <DatePlanForm
-          active={pane === "plan"}
-          input={input}
-          targetsText={targetsText}
-          onChange={change}
-          onTargetsChange={changeTargets}
-          onSimulate={simulate}
-        />
-        {preview && pane === "preview" && !moodlePreview && (
-          <section className="date-results">
-            <h2>Conferir antes e depois</h2>
-            <p className="field-help">
-              Plano {preview.hash.slice(0, 16)}. Alterar qualquer campo invalida
-              esta prévia.
-            </p>
-            <DatePreviewTable plan={preview.plan} page={page} onPageChange={setPage} showKind />
-            <button
-              type="button"
-              className="primary"
-              onClick={() =>
-                downloadFile(
-                  new TextEncoder().encode(JSON.stringify(preview, null, 2)),
-                  "cronograma-conferido.json",
-                  "application/json",
-                )
-              }
-            >
-              <Download size={18} />
-              Baixar plano conferido
-            </button>
-          </section>
-        )}
-        <DateConnectionPanel
-          active={pane === "connection"}
-          moodle={moodle}
-          courseId={courseId}
-          busy={busy}
-          unknownResult={unknownResult}
-          onSelectCourse={selectCourse}
-          onReadTargets={readTargets}
-          onPreview={previewMoodleDates}
-        />
-        {moodlePreview && pane === "preview" && (
-          <section className="notice">
-            <h3>Prévia de mudanças no Moodle</h3>
-            <p>
-              Identificação {moodlePreview.hash.slice(0, 16)}. Confira{" "}
-              {moodlePreview.plan.changes.length} alvos antes de aplicar.
-            </p>
-            <DatePreviewTable plan={moodlePreview.plan} page={page} onPageChange={setPage} />
-            <button
-              type="button"
-              className="primary"
-              disabled={busy || !moodle.status?.authenticated}
-              onClick={() => {
-                void confirmDates();
+        <PageTurn
+          as="section"
+          step={["login", "course", "plan", "preview", "result"].indexOf(shown)}
+          ref={stage}
+          className="dw-stage"
+          aria-label={wizard.steps.find((step) => step.state === "current")?.label}
+        >
+          {shown === "login" && (
+            <DateLoginStep
+              moodle={wizard.moodle}
+              expired={wizard.dropped}
+              onContinue={() => wizard.setPane("course")}
+              onLogout={wizard.signOut}
+            />
+          )}
+          {shown === "course" && (
+            <DateCourseStep
+              courses={wizard.moodle.courses}
+              loading={wizard.loadingCourses}
+              loaded={wizard.coursesLoaded}
+              courseId={wizard.courseId}
+              reading={wizard.busy}
+              summary={wizard.summary}
+              onPick={wizard.pickCourse}
+              onReload={() => {
+                void wizard.moodle.loadCourses();
               }}
-            >
-              Confirmar alterações de datas
-            </button>
-          </section>
-        )}
-        {results.length > 0 && pane === "result" && (
-          <DateResultsPanel results={results} page={page} onPageChange={setPage} />
-        )}
-        {unknownResult && (
-          <p className="error-text">
-            Há resultado desconhecido. Confira o Moodle antes de outra
-            aplicação; uma nova tentativa está bloqueada nesta sessão.
-          </p>
-        )}
+              onBack={() => wizard.setPane("login")}
+              onContinue={() => wizard.setPane("plan")}
+            />
+          )}
+          {shown === "plan" && (
+            <DateScheduleStep
+              input={wizard.input}
+              demo={wizard.demo}
+              demoUnits={wizard.demoUnits}
+              busy={wizard.busy}
+              locked={wizard.unknownResult}
+              onChange={wizard.change}
+              onDemoUnits={wizard.changeDemoUnits}
+              onBack={() => wizard.setPane("course")}
+              onNext={() => {
+                void wizard.previewPlan();
+              }}
+            />
+          )}
+          {shown === "preview" && plan && (
+            <DateReviewStep
+              plan={plan}
+              courseTitle={wizard.courseTitle}
+              demo={wizard.demo}
+              busy={wizard.busy}
+              onApply={() => {
+                void wizard.confirmDates();
+              }}
+              onBack={() => wizard.setPane("plan")}
+              onUseMoodle={wizard.leaveDemo}
+            />
+          )}
+          {shown === "result" && (
+            <DateResultsPanel
+              results={wizard.results}
+              busy={wizard.busy}
+              locked={wizard.unknownResult}
+              onNext={wizard.chooseAnother}
+              onBack={() => wizard.setPane("plan")}
+            />
+          )}
+        </PageTurn>
       </main>
     </Shell>
   );

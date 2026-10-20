@@ -1,0 +1,1143 @@
+/* Datas (/datas): "Ajustar datas", um assistente de quatro passos numa página só.
+   Carregado depois de globals.css, shell.css e tools.css; tudo é escopado em .dates-wizard (e nas classes dw-*),
+   então Alunos, entrada e editor não são tocados.
+
+   Estrutura: .dw-top (título, "Testar sem o Moodle", passos) > .dw-stage > .dw-body (conteúdo do passo) + .dw-actions
+   (botão principal de 52px à esquerda, links pequenos ao lado). O painel é vidro (.surface-panel, globals.css); campos,
+   cartões e a tabela ficam opacos (var(--surface)), então o texto nunca fica sobre as linhas do caderno.
+
+   Altura: com 720px de largura e 540px de altura ou mais (contrato do shell.css) o painel encolhe para caber na janela e
+   só .dw-body rola por dentro (a tabela do passo 4 rola sozinha). Em janelas menores a página rola como qualquer outra.
+   Tamanhos: texto de 16px ou mais, rótulos de 16px, alvos de 44px ou mais. Laranja (#c4600a) só marca o que muda o Moodle.
+   Linhas e pesos: bordas de 1px (só o anel de foco tem 2px), títulos 600, rótulos e botões 500, texto 400. */
+
+.application .dates-wizard {
+  --dw-warn: #c4600a;
+  --dw-warn-soft: #fef1e4;
+  --dw-pad-x: 28px;
+  --dw-radius: 22px;
+  gap: 16px;
+  padding: 18px var(--dw-pad-x) 22px;
+  border-radius: var(--dw-radius);
+  font-size: 16px;
+}
+.application.theme-dark .dates-wizard {
+  --dw-warn: #f2a65e;
+  --dw-warn-soft: #3a2a1b;
+}
+.dates-wizard h1,
+.dates-wizard h2,
+.dates-wizard h3 {
+  letter-spacing: -0.01em;
+}
+
+/* ---------- Topo: título, modo de teste e passos ---------- */
+.dates-wizard .dw-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "title mode"
+    "steps steps";
+  align-items: center;
+  gap: 8px 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 85%, transparent);
+}
+.dw-title {
+  grid-area: title;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px;
+  min-width: 0;
+}
+.dates-wizard .dw-title h1 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.2;
+}
+.dw-mode {
+  grid-area: mode;
+  justify-self: end;
+  margin-right: -10px;
+}
+.dw-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 4px 14px;
+  border: 1px solid var(--dw-warn);
+  border-radius: 99px;
+  background: var(--dw-warn-soft);
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 500;
+}
+.dw-steps-nav {
+  grid-area: steps;
+}
+.dw-steps {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dw-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.dw-step:not(:last-child) {
+  flex: 1 1 0;
+}
+/* A linha entre dois passos fica verde quando o passo da esquerda está feito. */
+.dw-step:not(:last-child)::after {
+  content: "";
+  flex: 1 1 auto;
+  min-width: 14px;
+  height: 1px;
+  background: var(--line);
+}
+.dw-step[data-state="done"]:not(:last-child)::after {
+  background: var(--action);
+}
+.application .dw-step-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 4px 16px 4px 4px;
+  border: 0;
+  border-radius: 99px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: left;
+}
+.application .dw-step-button:disabled {
+  background: transparent;
+  color: var(--muted);
+  cursor: default;
+}
+.application .dw-step-button:not(:disabled):not([aria-current]):hover {
+  background: color-mix(in srgb, var(--selected) 70%, transparent);
+  color: var(--text);
+}
+.application .dw-step-button[aria-current] {
+  color: var(--text);
+  cursor: default;
+}
+/* Numerais centralizados no círculo: Switzer 500, tabular, line-height 1. */
+.dw-num {
+  display: grid;
+  place-items: center;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--control-border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.dw-step[data-state="current"] .dw-num {
+  border-color: var(--action);
+  background: var(--action);
+  color: var(--on-action);
+}
+.dw-step[data-state="done"] .dw-num {
+  border-color: var(--action);
+  background: var(--selected);
+  color: var(--action);
+}
+.dw-now {
+  display: none;
+  margin: 8px 0 0;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+/* ---------- Aviso (erros) ---------- */
+.application .dates-wizard > .status-banner {
+  margin: 0;
+  padding: 12px 16px;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+/* ---------- Passo: corpo e ações ---------- */
+.dw-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+.dw-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+.dw-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+}
+.dw-actions > .dw-help {
+  margin: 0;
+}
+.dw-list-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 16px;
+}
+
+.dw-prompt {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.dw-big {
+  margin: 0 0 2px;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.dw-help {
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.4;
+}
+.dw-wait {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 18px;
+  font-weight: 500;
+}
+.dw-empty {
+  margin: 0;
+  padding: 22px 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--support);
+  color: var(--muted);
+  font-size: 18px;
+  text-align: center;
+}
+.dw-problem {
+  margin: 0;
+  padding: 8px 14px;
+  border: 1px solid var(--error);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--error) 7%, var(--surface));
+  color: var(--error);
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* ---------- Botões ---------- */
+.application .dates-wizard .dw-primary {
+  gap: 12px;
+  min-height: 52px;
+  padding: 10px 30px;
+  border-radius: 99px;
+  font-size: 18px;
+  font-weight: 500;
+}
+.application .dates-wizard .dw-primary svg {
+  width: 22px;
+  height: 22px;
+}
+/* O único botão que muda o Moodle: borda dupla fina, a do botão (1px) e um anel laranja de 1px afastado 2px. */
+.application .dates-wizard .dw-apply {
+  border: 1px solid var(--action);
+  box-shadow:
+    0 0 0 2px var(--surface),
+    0 0 0 3px var(--dw-warn);
+}
+.application .dates-wizard .dw-apply:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 5px;
+}
+.application .dates-wizard .dw-apply:disabled {
+  border-color: var(--line);
+  box-shadow:
+    0 0 0 2px var(--surface),
+    0 0 0 3px var(--line);
+}
+.application .dw-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--action);
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+.application .dw-link:hover:not(:disabled) {
+  background: var(--selected);
+  color: var(--text);
+}
+.application .dw-link:disabled {
+  background: transparent;
+  color: var(--muted);
+  text-decoration: none;
+}
+.dw-more {
+  margin: 4px auto 8px;
+}
+
+/* ---------- Campos ---------- */
+.dw-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.dw-field > label {
+  font-size: 16px;
+  font-weight: 500;
+}
+.application .dw-input {
+  width: 100%;
+  min-height: 52px;
+  padding: 10px 14px;
+  border: 1px solid var(--control-border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 18px;
+  line-height: 1.3;
+}
+.application .dw-input::placeholder {
+  color: var(--muted);
+  opacity: 0.75;
+}
+.application .dw-input:disabled {
+  background: var(--support);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+.dw-login {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px 24px;
+  align-items: start;
+}
+.dw-password {
+  position: relative;
+}
+.application .dw-password .dw-input {
+  padding-right: 132px;
+}
+.application .dw-reveal {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 4px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--action);
+  font-size: 16px;
+  font-weight: 500;
+}
+.application .dw-reveal:hover {
+  background: var(--selected);
+  color: var(--text);
+}
+.dw-warning {
+  margin: 0;
+  padding: 8px 14px;
+  border: 1px solid var(--dw-warn);
+  border-radius: 12px;
+  background: var(--dw-warn-soft);
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+/* ---------- Selo (conectado, resultado) ---------- */
+.dw-connected,
+.dw-result {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 22px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+}
+.dw-seal {
+  display: grid;
+  place-items: center;
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--action);
+  color: var(--on-action);
+}
+.dw-result[data-tone="wait"] .dw-seal {
+  background: var(--selected);
+  color: var(--action);
+}
+.dw-result[data-tone="warn"] {
+  border-color: var(--dw-warn);
+}
+.dw-result[data-tone="warn"] .dw-seal {
+  border: 1px solid var(--dw-warn);
+  background: var(--dw-warn-soft);
+  color: var(--text);
+}
+.dw-result[data-tone="error"] {
+  border-color: var(--error);
+}
+.dw-result[data-tone="error"] .dw-seal {
+  background: var(--error);
+  color: var(--surface);
+}
+
+/* ---------- Passo 2: cursos ---------- */
+.dw-choice {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+.dw-search {
+  max-width: 420px;
+}
+.dw-search-box {
+  position: relative;
+}
+.dw-search-box > svg {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+}
+.application .dw-search-box .dw-input {
+  padding-left: 44px;
+}
+.dw-courses {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 12px;
+}
+.application .dw-course {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 72px;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: left;
+}
+.application .dw-course:hover {
+  border-color: var(--control-border);
+}
+.application .dw-course[aria-pressed="true"] {
+  border-color: var(--action);
+  background: color-mix(in srgb, var(--selected) 55%, var(--surface));
+}
+.application .dw-course[aria-disabled="true"] {
+  cursor: progress;
+}
+.dw-mark {
+  display: grid;
+  place-items: center;
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--control-border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--on-action);
+}
+.dw-course[aria-pressed="true"] .dw-mark {
+  border-color: var(--action);
+  background: var(--action);
+}
+.dw-course-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.dw-course-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.dw-course small {
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 400;
+  overflow-wrap: anywhere;
+}
+.dw-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  min-height: 44px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+.dw-status > svg {
+  color: var(--action);
+}
+
+/* ---------- Passo 3: perguntas ---------- */
+.dw-questions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: 16px;
+}
+.dw-question {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  min-width: 0;
+  padding: 20px 22px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+}
+/* Com subgrid, título, controle e legenda de cada pergunta ficam alinhados entre os cartões, mesmo quando um título quebra. */
+@supports (grid-template-rows: subgrid) {
+  .dw-question {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 3;
+    justify-items: start;
+  }
+}
+.application .dw-input.dw-date {
+  max-width: 300px;
+  min-height: 56px;
+  font-size: 22px;
+  font-weight: 500;
+}
+.dw-caption {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+.dw-caption-error {
+  color: var(--error);
+}
+.dw-stepper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.application .dw-round {
+  display: grid;
+  place-items: center;
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: 1px solid var(--action);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--action);
+}
+.application .dw-round:hover:not(:disabled) {
+  background: var(--selected);
+}
+.application .dw-round:disabled {
+  border-color: var(--line);
+  background: var(--support);
+  color: var(--muted);
+}
+.application .dw-number {
+  flex: 0 0 96px;
+  width: 96px;
+  min-height: 56px;
+  padding: 6px 8px;
+  border: 1px solid var(--control-border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 28px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  text-align: center;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.dw-number::-webkit-inner-spin-button,
+.dw-number::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+.dw-unit {
+  font-size: 20px;
+  font-weight: 500;
+}
+.dw-times {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4px 16px;
+  padding: 8px 12px 8px 20px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+.dw-times-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 14px;
+  margin: 0;
+  font-size: 18px;
+}
+.dw-times-line > svg {
+  color: var(--action);
+}
+.dw-times-line strong {
+  font-variant-numeric: tabular-nums;
+}
+.dw-zone {
+  color: var(--muted);
+  font-size: 16px;
+}
+.dw-times-fields {
+  display: flex;
+  flex-wrap: wrap;
+  grid-column: 1 / -1;
+  gap: 12px 24px;
+  padding: 4px 0 10px;
+}
+.application .dw-times-fields .dw-input {
+  width: 180px;
+}
+
+/* ---------- Passo 4 e resultado: tabela ---------- */
+.dw-table-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: min(60vh, 520px);
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  scrollbar-width: thin;
+  scrollbar-color: var(--control-border) transparent;
+}
+.dw-table-wrap:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.application .dw-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 16px;
+  line-height: 1.35;
+}
+.application .dw-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 10px 16px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--support);
+  font-size: 15px;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+}
+.application .dw-table tbody th,
+.application .dw-table tbody td {
+  padding: 10px 16px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  vertical-align: top;
+}
+.application .dw-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+.application .dw-table tbody tr[data-kind="section"] > * {
+  background: var(--support);
+}
+.application .dw-table thead th:first-child,
+.application .dw-table tbody th {
+  width: 42%;
+}
+.dw-what {
+  font-weight: 500;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.dw-what small {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 400;
+}
+.dw-moment {
+  display: block;
+}
+.dw-moment small {
+  margin-right: 4px;
+  color: var(--muted);
+  font-size: 15px;
+}
+.dw-none {
+  color: var(--muted);
+}
+/* Quem ficou igual aparece mais calmo; quem muda, em destaque. */
+.application .dw-table td[data-changed="false"] {
+  color: var(--muted);
+}
+.application .dw-table td[data-changed="true"] {
+  font-weight: 500;
+}
+.dw-course-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.dw-course-line > svg {
+  color: var(--action);
+}
+.dw-course-line > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dw-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+.dw-note > svg {
+  color: var(--action);
+}
+.dw-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+.dw-state[data-status="applied"] > svg {
+  color: var(--action);
+}
+.dw-state[data-status="error"] > svg {
+  color: var(--error);
+}
+.dw-state[data-status="unknown"] > svg {
+  color: var(--dw-warn);
+}
+.dw-why {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 400;
+}
+
+/* ---------- Notebook: a página não rola; o corpo do passo rola por dentro ---------- */
+@media (min-width: 720px) and (min-height: 540px) {
+  .dw-stage {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .dw-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: -4px;
+    padding: 4px;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--control-border) transparent;
+  }
+  .dw-actions {
+    flex: 0 0 auto;
+  }
+  .dw-body > * {
+    flex-shrink: 0;
+  }
+  /* A tabela é a única parte que encolhe: ocupa o que sobra e rola dentro dela. */
+  .dw-body > .dw-table-wrap {
+    flex: 1 1 auto;
+    min-height: 150px;
+    max-height: none;
+  }
+  /* Lista de cursos: título, busca e a frase "8 unidades · 21 atividades" ficam à vista; só a lista rola. */
+  .dw-body-list > .dw-choice {
+    flex: 0 1 auto;
+    min-height: 0;
+  }
+  .dw-body-list .dw-courses {
+    flex: 0 1 auto;
+    align-content: start;
+    min-height: 150px;
+    margin: -4px;
+    padding: 4px;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--control-border) transparent;
+  }
+}
+/* Janelas baixas (notebook de 720px): menos respiro vertical, mesmo tamanho de letra. */
+@media (min-width: 720px) and (max-height: 760px) {
+  .application .dates-wizard {
+    gap: 12px;
+    padding-top: 14px;
+    padding-bottom: 16px;
+  }
+  .dates-wizard .dw-top {
+    padding-bottom: 10px;
+  }
+  .dates-wizard .dw-title h1 {
+    font-size: 28px;
+  }
+  .dw-stage,
+  .dw-body {
+    gap: 14px;
+  }
+  .dw-question {
+    padding-block: 16px;
+  }
+}
+/* Telas altas: um pouco mais de ar. */
+@media (min-height: 900px) and (min-width: 1100px) {
+  .application .dates-wizard {
+    --dw-pad-x: 36px;
+    gap: 22px;
+    padding: 24px var(--dw-pad-x) 28px;
+  }
+  .dw-stage,
+  .dw-body {
+    gap: 22px;
+  }
+}
+
+/* Telas grandes (monitor de mesa): tudo cresce, para quem senta mais longe. */
+@media (min-width: 1500px) and (min-height: 880px) {
+  .application .dates-wizard {
+    font-size: 18px;
+  }
+  .dates-wizard .dw-title h1 {
+    font-size: 36px;
+  }
+  .dw-num {
+    flex-basis: 46px;
+    width: 46px;
+    height: 46px;
+    font-size: 20px;
+  }
+  .application .dw-step-button {
+    min-height: 54px;
+    font-size: 18px;
+  }
+  .dw-prompt {
+    font-size: 26px;
+  }
+  .dw-big {
+    font-size: 28px;
+  }
+  .dw-help,
+  .dw-wait,
+  .dw-warning {
+    font-size: 18px;
+  }
+  .dw-field > label {
+    font-size: 18px;
+  }
+  .application .dw-input {
+    min-height: 60px;
+    font-size: 20px;
+  }
+  .application .dw-input.dw-date {
+    max-width: 340px;
+    min-height: 64px;
+    font-size: 26px;
+  }
+  .application .dates-wizard .dw-primary {
+    min-height: 60px;
+    padding-inline: 36px;
+    font-size: 20px;
+  }
+  .application .dw-link,
+  .application .dw-reveal {
+    font-size: 18px;
+  }
+  .application .dw-course {
+    min-height: 84px;
+    font-size: 20px;
+  }
+  .dw-course small,
+  .dw-what small,
+  .dw-moment small,
+  .dw-why {
+    font-size: 16px;
+  }
+  .dw-caption,
+  .dw-note,
+  .dw-status,
+  .dw-times-line,
+  .dw-problem {
+    font-size: 20px;
+  }
+  .dw-zone,
+  .dw-unit {
+    font-size: 18px;
+  }
+  .application .dw-round {
+    flex-basis: 64px;
+    width: 64px;
+    height: 64px;
+  }
+  .application .dw-number {
+    flex-basis: 108px;
+    width: 108px;
+    min-height: 64px;
+    font-size: 32px;
+  }
+  .application .dw-table {
+    font-size: 18px;
+  }
+  .application .dw-table thead th {
+    padding: 12px 20px;
+    font-size: 16px;
+  }
+  .application .dw-table tbody th,
+  .application .dw-table tbody td {
+    padding: 12px 20px;
+  }
+  .application .dates-wizard > .status-banner {
+    font-size: 19px;
+  }
+}
+
+/* ---------- Telas estreitas ---------- */
+@media (max-width: 959px) {
+  .dw-login {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 560px;
+  }
+}
+@media (max-width: 720px) {
+  .application .dates-wizard {
+    --dw-pad-x: 14px;
+    --dw-radius: 18px;
+    gap: 14px;
+    padding: 16px var(--dw-pad-x) 20px;
+  }
+  .dates-wizard .dw-top {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "title"
+      "mode"
+      "steps";
+  }
+  .dw-mode {
+    justify-self: start;
+    margin: 0 0 0 -10px;
+  }
+  .dates-wizard .dw-title h1 {
+    font-size: 26px;
+  }
+  /* Só o círculo de cada passo; o nome do passo atual aparece embaixo. */
+  .dw-step-button {
+    padding-right: 4px;
+  }
+  .dw-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+  .dw-now {
+    display: block;
+  }
+  /* Botão principal na largura toda; "Voltar" e a frase de ajuda lado a lado embaixo dele. */
+  .dw-actions {
+    gap: 6px 14px;
+  }
+  .application .dates-wizard .dw-primary {
+    width: 100%;
+  }
+  .dw-question {
+    padding: 16px;
+  }
+  .dw-times {
+    grid-template-columns: minmax(0, 1fr);
+    padding-left: 16px;
+  }
+  .dw-times > .dw-link {
+    justify-self: start;
+    margin-left: -10px;
+  }
+  .dw-connected,
+  .dw-result {
+    padding: 14px 16px;
+  }
+  /* Tabela vira lista de cartões: nome em cima, depois "Antes" e "Depois" um sob o outro, cada data numa linha. */
+  .dw-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+  .application .dw-table,
+  .application .dw-table tbody {
+    display: block;
+  }
+  .application .dw-table tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .application .dw-table tbody tr:last-child {
+    border-bottom: 0;
+  }
+  .application .dw-table tbody th,
+  .application .dw-table tbody td {
+    width: auto;
+    padding: 0;
+    border: 0;
+  }
+  .application .dw-table tbody td {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    column-gap: 8px;
+  }
+  .application .dw-table tbody td::before {
+    grid-row: 1 / span 2;
+  }
+  .dw-table .dw-moment,
+  .dw-table .dw-none {
+    grid-column: 2;
+  }
+  .application .dw-table tbody tr[data-kind="section"] {
+    background: var(--support);
+  }
+  .application .dw-table tbody td::before {
+    content: attr(data-label);
+    display: block;
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .application .dw-table.dw-results tbody td {
+    display: block;
+  }
+  .application .dw-table.dw-results tbody td::before {
+    display: none;
+  }
+}
+@media (max-width: 400px) {
+  .dw-stepper {
+    gap: 8px;
+  }
+  .application .dw-number {
+    flex-basis: 80px;
+    width: 80px;
+  }
+  .dw-step {
+    gap: 6px;
+  }
+  .dw-steps {
+    gap: 6px;
+  }
+}
+
+/* Alto contraste do sistema: o que está escolhido ou aberto ganha linha dupla fina (a cor de fundo some nesse modo). */
+@media (forced-colors: active) {
+  .application .dw-course[aria-pressed="true"],
+  .dw-step[data-state="current"] .dw-num,
+  .dw-step[data-state="done"] .dw-num {
+    border-color: Highlight;
+    outline: 1px solid Highlight;
+    outline-offset: -3px;
+  }
+}
+
+/* Janelas em que a página rola (celular, zoom alto, janela baixa): a barra do botão principal fica presa embaixo,
+   para o botão nunca sumir no fim de uma lista longa. Com menos de 480px de altura ela não prende: ocuparia metade da tela. */
+@media (not ((min-width: 720px) and (min-height: 540px))) and (min-height: 480px) {
+  .application .dates-wizard {
+    padding-bottom: 0;
+  }
+  .dw-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 3;
+    margin-inline: calc(var(--dw-pad-x) * -1);
+    padding: 10px var(--dw-pad-x) calc(10px + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--line);
+    border-radius: 0 0 var(--dw-radius) var(--dw-radius);
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 -10px 18px -14px rgba(23, 62, 48, 0.2);
+  }
+}

@@ -3,16 +3,28 @@ import { z } from "zod";
 import { validateDraft } from "../domain/course/index.ts";
 import { courseDraftSchema } from "../domain/course/schema.ts";
 import { readArchive, hash256 } from "../shared/archive.ts";
-import { projectIdentity, validateProject } from "./project.ts";
+import { formatMegabytes } from "../shared/upload-limits.ts";
+import {
+  PROJECT_FILE_LIMITS,
+  projectIdentity,
+  validateProject,
+} from "./project.ts";
 import { projectProvenanceSchema } from "./provenance.ts";
 import type { CourseProject, ProjectFile, ProjectPreset } from "./project.ts";
 
-const MAX_ZIP = 25 * 1024 * 1024;
+// A copy holds everything a project can: attachments, imported sources and the
+// project's own documents (course, presets, provenance, manifest). DOCX and PDF
+// are already compressed, so the zip can be as large as its contents.
 const limits = {
   maxEntries: 1000,
-  maxEntryBytes: 16 * 1024 * 1024,
-  maxTotalBytes: 64 * 1024 * 1024,
+  maxEntryBytes: PROJECT_FILE_LIMITS.sourceBytes,
+  maxTotalBytes:
+    PROJECT_FILE_LIMITS.attachmentsTotalBytes +
+    PROJECT_FILE_LIMITS.sourcesTotalBytes +
+    16 * 1024 * 1024,
 };
+const MAX_ZIP = limits.maxTotalBytes;
+const zipLimitMessage = `A cópia portátil pode ter até ${formatMegabytes(MAX_ZIP)} compactados.`;
 const encoder = new TextEncoder();
 const decoder = new TextDecoder("utf-8", { fatal: true });
 const text = z.string().min(1).max(200);
@@ -116,7 +128,7 @@ export async function createPortable(
   ];
   if (documents.some((entry) => entry.length > limits.maxEntryBytes))
     throw new Error(
-      "Um documento interno do projeto ultrapassa 16 MiB. Reduza o conteúdo antes de exportar.",
+      `Um documento interno do projeto ultrapassa ${formatMegabytes(limits.maxEntryBytes)}. Reduza o conteúdo antes de exportar.`,
     );
   const expanded =
     documents.reduce((total, entry) => total + entry.length, 0) +
@@ -126,7 +138,7 @@ export async function createPortable(
     );
   if (expanded > limits.maxTotalBytes)
     throw new Error(
-      "O projeto portátil completo ultrapassa 64 MiB expandidos, incluindo conteúdo e rastreabilidade.",
+      `O projeto portátil completo ultrapassa ${formatMegabytes(limits.maxTotalBytes)} expandidos, incluindo conteúdo e rastreabilidade.`,
     );
   zip.file("manifest.json", manifestBytes);
   const bytes = await zip.generateAsync({
@@ -134,14 +146,12 @@ export async function createPortable(
     compression: "DEFLATE",
     compressionOptions: { level: 6 },
   });
-  if (bytes.length > MAX_ZIP)
-    throw new Error("A cópia portátil pode ter até 25 MiB compactados.");
+  if (bytes.length > MAX_ZIP) throw new Error(zipLimitMessage);
   return bytes;
 }
 
 export async function readPortable(bytes: Uint8Array): Promise<CourseProject> {
-  if (bytes.length > MAX_ZIP)
-    throw new Error("A cópia portátil pode ter até 25 MiB compactados.");
+  if (bytes.length > MAX_ZIP) throw new Error(zipLimitMessage);
   const entries = await readArchive(bytes, limits);
   const manifestBytes = entries.get("manifest.json");
   if (!manifestBytes) throw new Error("Manifesto do projeto não encontrado.");

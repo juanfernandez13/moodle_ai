@@ -80,7 +80,7 @@ export function profileIssues(draft: CourseDraft): ValidationIssue[] {
         issue(
           "attachment_too_large",
           `attachments[${index}].size`,
-          "Cada anexo pode ter no máximo 16 MiB.",
+          "Cada anexo pode ter no máximo 16 MB.",
         ),
       );
     if (/[\\/\u0000]/.test(ref.name) || ref.name === "." || ref.name === "..")
@@ -97,7 +97,7 @@ export function profileIssues(draft: CourseDraft): ValidationIssue[] {
       issue(
         "attachments_too_large",
         "attachments",
-        "A soma dos anexos pode ter no máximo 64 MiB.",
+        "A soma dos anexos pode ter no máximo 64 MB.",
       ),
     );
   return issues;

@@ -1,0 +1,1389 @@
+/* Alunos (/cadastro-lote): três passos, pouco texto, um botão principal por passo.
+   Carregado depois de globals.css, shell.css e tools.css; tudo aqui é escopado em .students-panel (classes stu-*),
+   então Datas e as outras telas não mudam. O painel é vidro (.surface-panel, globals.css); campos, tabelas e
+   cartões dentro dele ficam opacos (var(--surface)) para o texto nunca ficar sobre as linhas do caderno.
+
+   Contrato com shell.css e tools.css: com 720px de largura e 540px de altura ou mais o app tem a altura da janela e
+   a página não rola. O painel ocupa a altura que sobra; cada passo é uma coluna flexível em que a tabela (ou o cartão)
+   encolhe e rola por dentro, e o botão principal fica sempre à vista. Em janelas baixas e no celular o painel tem a
+   altura do conteúdo e a página rola na vertical, nunca na horizontal. */
+
+/* ---------- Painel e cabeçalho ---------- */
+.application .students-panel.tool-panel {
+  gap: 12px;
+  padding: 14px 24px 10px;
+  font-size: 16px;
+}
+.students-panel .stu-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 28px;
+  min-height: 66px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 75%, transparent);
+}
+.students-panel .stu-head h1 {
+  flex: 0 0 auto;
+  margin: 0;
+  font-size: 27px;
+  line-height: 1.2;
+}
+.students-panel .stu-head .stu-modes {
+  margin-left: auto;
+}
+
+/* Passos: número em círculo + palavra. O passo aberto fica marcado por fundo suave e borda de 1px na cor da ação. */
+.stu-steps {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.stu-steps li {
+  display: flex;
+  align-items: center;
+}
+.stu-steps li + li::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 22px;
+  height: 1px;
+  margin: 0 2px;
+  background: var(--line);
+}
+.stu-steps li.done + li::before,
+.stu-steps li.current::before {
+  background: var(--action);
+}
+.stu-steps button {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 48px;
+  padding: 6px 14px 6px 8px;
+  border: 1px solid transparent;
+  border-radius: 99px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.stu-steps button:hover:not(:disabled) {
+  background: var(--selected);
+  color: var(--text);
+}
+.stu-steps button:disabled {
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted);
+}
+.stu-steps .current button {
+  border-color: var(--action);
+  background: var(--selected);
+  color: var(--text);
+}
+.stu-step-number {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--control-border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  line-height: 1;
+}
+.stu-steps .done .stu-step-number {
+  border-color: var(--action);
+  background: var(--selected);
+}
+.stu-steps .current .stu-step-number {
+  border-color: var(--action);
+  background: var(--action);
+  color: var(--on-action);
+}
+.stu-steps button:disabled .stu-step-number {
+  border-color: var(--line);
+  background: transparent;
+  color: var(--muted);
+}
+
+/* Como informar os alunos: duas opções iguais, a mesma dupla da entrada (arquivo ou à mão). */
+.stu-modes {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--control-border);
+  border-radius: 99px;
+  background: var(--surface);
+}
+.stu-modes button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  border-radius: 99px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.stu-modes button:hover:not([aria-selected="true"]) {
+  background: var(--selected);
+  color: var(--text);
+}
+.stu-modes button[aria-selected="true"] {
+  border-color: var(--action);
+  background: var(--selected);
+  color: var(--text);
+}
+
+/* Aviso de erro: legível e sem sumir. */
+.students-panel > .status-banner {
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: var(--surface);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+/* ---------- Corpo: cada passo é uma coluna que preenche a altura ---------- */
+.students-panel .stu-body {
+  gap: 12px;
+}
+.students-panel .stu-body > .stu-import,
+.students-panel .stu-body > .stu-review,
+.students-panel .stu-body > .stu-send {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+.students-panel .stu-pane {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+
+/* Título de passo: duas a quatro palavras e uma linha de ajuda. */
+.stu-stage-head {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 20px;
+}
+.stu-stage-head > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 16px;
+  min-width: 0;
+}
+.stu-stage-head h2 {
+  margin: 0;
+  font-size: 23px;
+  line-height: 1.25;
+}
+.stu-stage-head h2:focus {
+  outline: none;
+}
+.students-panel .stu-help {
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.4;
+}
+.students-panel .stu-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.4;
+}
+.students-panel .stu-hint.error-text {
+  color: var(--error);
+  font-weight: 500;
+}
+.stu-chip {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 8px 16px;
+  border: 1px solid var(--action);
+  border-radius: 99px;
+  background: var(--selected);
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.stu-chip.bad {
+  border-color: var(--error);
+  background: var(--surface);
+  color: var(--error);
+}
+
+/* Botões do painel: grandes, com ícone e palavra. */
+.students-panel .primary,
+.students-panel .secondary {
+  min-height: 48px;
+  padding: 10px 24px;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.students-panel .primary:disabled,
+.students-panel .secondary:disabled {
+  border-color: var(--line);
+  background: var(--support);
+  color: var(--muted);
+}
+.students-panel .text-button {
+  min-height: 44px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.students-panel .text-button:disabled {
+  background: transparent;
+}
+
+/* Campos: rótulo sempre à vista, 16px, alvo de 48px. */
+.students-panel .field {
+  margin: 0;
+}
+.students-panel .field > span:not(.field-help) {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.students-panel .field input,
+.students-panel .field select {
+  min-height: 48px;
+  padding: 10px 14px;
+  font-size: 16px;
+}
+.students-panel .field select {
+  padding-right: 44px;
+}
+.students-panel .field-help {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.4;
+}
+.students-panel .check-row {
+  margin: 0;
+  gap: 12px;
+  font-size: 16px;
+}
+.students-panel .check-row input {
+  width: 22px;
+  height: 22px;
+}
+
+/* Linha de botões no fim de um passo: voltar à esquerda, ação principal à direita. */
+.stu-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-top: auto;
+}
+.stu-actions > .stu-hint {
+  flex: 1 1 auto;
+  justify-content: flex-end;
+  text-align: right;
+}
+.stu-actions > .primary:last-child {
+  margin-left: auto;
+}
+
+/* ---------- Passo 1: planilha ---------- */
+.stu-zone {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 300px;
+  padding: 20px 24px;
+  border: 1px dashed var(--control-border);
+  border-radius: 22px;
+  background: var(--surface);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+.stu-zone:hover {
+  border-color: var(--action);
+}
+.stu-zone.dragging {
+  border-style: solid;
+  border-color: var(--action);
+  background: var(--selected);
+}
+.stu-zone[aria-busy="true"] {
+  cursor: progress;
+}
+.stu-zone-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--selected);
+  color: var(--action);
+}
+.stu-zone-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.stu-touch-text {
+  display: none;
+}
+@media (hover: none) {
+  .stu-drag-text {
+    display: none;
+  }
+  .stu-touch-text {
+    display: inline;
+  }
+}
+.students-panel .stu-pick {
+  min-height: 56px;
+  padding: 12px 32px;
+  font-size: 18px;
+}
+.stu-zone-help,
+.students-panel .stu-zone-file {
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.4;
+}
+.students-panel .stu-zone-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  color: var(--text);
+  font-weight: 500;
+}
+.stu-links {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 24px;
+}
+.stu-links .text-button {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.stu-sheet-pick {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+.stu-sheet-pick > span {
+  white-space: nowrap;
+}
+.stu-sheet-pick select {
+  min-width: 180px;
+}
+.stu-file-row {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  font-size: 16px;
+  font-weight: 500;
+}
+.stu-file-row > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.stu-loaded {
+  margin-top: 0;
+}
+
+/* Colunas da planilha (só abre quando não foram reconhecidas). */
+.stu-mapping {
+  display: grid;
+  flex: 0 0 auto;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px 28px;
+  align-items: start;
+}
+.stu-mapping h2 {
+  margin: 0;
+  font-size: 23px;
+}
+.stu-mapping-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.stu-mapping-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+.stu-mapping-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 16px;
+}
+.stu-more {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.stu-more summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0;
+  color: var(--action);
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.stu-more .stu-mapping-grid {
+  padding-top: 4px;
+}
+.stu-sheet {
+  max-height: 168px;
+}
+.stu-sheet td {
+  max-width: 220px;
+  overflow: hidden;
+  padding: 8px 12px;
+  font-size: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (min-width: 1000px) {
+  .stu-mapping {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  }
+}
+
+/* À mão: a mesma tabela de colunas da planilha de exemplo. */
+.stu-manual {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 270px;
+}
+.stu-manual > .stu-help {
+  margin: 0;
+}
+.stu-manual .stu-manual-table {
+  flex: 0 1 auto;
+  min-height: 160px;
+}
+.stu-manual .stu-actions {
+  margin-top: 0;
+}
+.stu-manual-table th:nth-child(1) {
+  width: 33%;
+}
+.stu-manual-table th:nth-child(2) {
+  width: 29%;
+}
+.stu-manual-table th:nth-child(3),
+.stu-manual-table th:nth-child(4) {
+  width: 16%;
+}
+.stu-manual-table th:last-child,
+.stu-manual-table td:last-child {
+  width: 128px;
+  padding-inline: 6px;
+}
+.students-panel .stu-remove {
+  width: 100%;
+  color: var(--muted);
+}
+.students-panel .stu-remove:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--error) 10%, var(--surface));
+  color: var(--error);
+}
+
+/* ---------- Tabelas: opacas, cabeçalho fixo, linhas de 56px ---------- */
+.students-panel .stu-table {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+.students-panel .stu-table table {
+  width: 100%;
+  font-size: 16px;
+}
+.students-panel .stu-table th {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--support);
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: left;
+}
+.students-panel .stu-table td {
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--line);
+  font-size: 16px;
+  line-height: 1.4;
+  vertical-align: middle;
+}
+.students-panel .stu-table th + th,
+.students-panel .stu-table td + td {
+  border-left: 0;
+}
+.students-panel .stu-table tbody tr:last-child > td {
+  border-bottom: 0;
+}
+.students-panel .stu-table input {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--control-border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.4;
+}
+.students-panel .stu-table input[aria-invalid="true"] {
+  border-color: var(--error);
+  background: color-mix(in srgb, var(--error) 7%, var(--surface));
+}
+
+/* ---------- Passo 2: conferir ---------- */
+.stu-review-table {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 96px;
+}
+.stu-review-table.tall {
+  min-height: 160px;
+}
+.stu-review-table > .stu-table {
+  flex: 0 1 auto;
+  min-height: 0;
+}
+.students-panel .stu-review-table .pagination {
+  flex: 0 0 auto;
+  margin: 0;
+}
+.students-panel .stu-review-table .pagination .field-help {
+  font-size: 16px;
+  white-space: nowrap;
+}
+.stu-review .stu-table table {
+  min-width: 940px;
+}
+.stu-review .stu-table th:nth-child(1),
+.stu-review .stu-table td:nth-child(1) {
+  width: 64px;
+  text-align: center;
+}
+.stu-review .stu-table th:nth-child(2) { width: 13%; }
+.stu-review .stu-table th:nth-child(3) { width: 14%; }
+.stu-review .stu-table th:nth-child(4) { width: 22%; }
+.stu-review .stu-table th:nth-child(5) { width: 13%; }
+.stu-review .stu-table th:nth-child(6) { width: 13%; }
+.stu-review .stu-table th:nth-child(7) { width: 12%; }
+.stu-review .stu-table th:last-child,
+.stu-review .stu-table td:last-child {
+  width: 92px;
+  padding-inline: 6px;
+}
+.stu-review .stu-table tbody tr {
+  position: relative;
+}
+.stu-original summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 8px;
+  border-radius: 10px;
+  color: var(--action);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.stu-original summary:hover {
+  background: var(--selected);
+}
+.stu-original details[open] > summary {
+  background: var(--selected);
+  text-decoration: none;
+}
+/* Os valores originais cobrem a própria linha, sem mudar a altura da tabela. */
+.stu-original-body {
+  position: absolute;
+  inset: 3px 100px 3px 3px;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 20px;
+  padding: 4px 14px;
+  overflow: auto;
+  border: 1px solid var(--action);
+  border-radius: 10px;
+  background: var(--selected);
+}
+.stu-original-body p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+/* Pendências: cada uma é um botão que leva ao campo. O quadro tem folga para o anel de foco. */
+.stu-issues {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-height: 112px;
+  margin: 0;
+  padding: 8px;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  list-style: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--control-border) transparent;
+}
+.stu-issues li {
+  display: flex;
+  min-width: 0;
+  max-width: 100%;
+}
+.students-panel .stu-issues .issue-link {
+  display: block;
+  width: auto;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--error);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--error);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.students-panel .stu-issues .issue-link:hover {
+  background: color-mix(in srgb, var(--error) 8%, var(--surface));
+}
+
+/* Opções: duas pílulas, cursos e matrícula na mesma faixa. */
+.stu-options {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px 28px;
+}
+.stu-mode {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.stu-mode legend {
+  margin: 0 0 6px;
+  padding: 0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.stu-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.stu-pill {
+  position: relative;
+  display: inline-flex;
+}
+.stu-pill input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.stu-pill span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 20px;
+  border: 1px solid var(--control-border);
+  border-radius: 99px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.stu-pill:hover input:not(:checked) + span {
+  border-color: var(--focus);
+  background: var(--support);
+}
+.stu-pill input:checked + span {
+  border-color: var(--action);
+  background: var(--selected);
+}
+.stu-pill input:focus-visible + span {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.stu-courses {
+  flex: 1 1 280px;
+  max-width: 440px;
+}
+.stu-courses input[aria-invalid="true"] {
+  border-color: var(--error);
+}
+.stu-courses .error-text {
+  font-weight: 500;
+}
+.students-panel .stu-enrol {
+  flex: 0 0 auto;
+  min-height: 48px;
+}
+@media (min-width: 1200px) {
+  .students-panel .stu-enrol {
+    margin-top: 28px;
+  }
+}
+
+/* ---------- Passo 3: enviar ---------- */
+.stu-send-grid {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: minmax(0, 1fr);
+  gap: 16px;
+  min-height: 220px;
+}
+.stu-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: start;
+  gap: 12px;
+  max-height: 100%;
+  min-width: 0;
+  padding: 20px;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface);
+  text-align: center;
+  scrollbar-width: thin;
+  scrollbar-color: var(--control-border) transparent;
+}
+.stu-card-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--selected);
+  color: var(--action);
+}
+.stu-card-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+.students-panel .stu-big {
+  width: 100%;
+  max-width: 380px;
+  min-height: 60px;
+  font-size: 19px;
+}
+.stu-card > .stu-help {
+  margin: 0;
+}
+.stu-files {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+.stu-files li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 8px 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+.stu-files li > span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.stu-files small {
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+}
+.stu-chevron {
+  margin-left: auto;
+  transition: transform 0.15s;
+}
+.stu-moodle .stu-big {
+  position: relative;
+}
+.stu-moodle.open .stu-chevron {
+  transform: rotate(180deg);
+}
+/* Com o Moodle aberto o cartão vira a coluna de trabalho: sem ícone grande nem frase de apoio. */
+.stu-moodle.open {
+  align-items: stretch;
+  gap: 12px;
+  text-align: left;
+}
+.stu-moodle.open > .stu-card-icon,
+.stu-moodle.open > .stu-help {
+  display: none;
+}
+.stu-moodle.open .stu-big {
+  max-width: none;
+}
+.stu-moodle-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+.stu-moodle-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+.students-panel .stu-sending {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 16px;
+  border: 1px solid var(--action);
+  border-radius: 14px;
+  background: var(--selected);
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* Conexão compartilhada com Datas: aqui sem moldura, só os campos e um botão. As frases longas ficam de fora. */
+.students-panel .stu-moodle-body .moodle-connection {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: 16px;
+  line-height: 1.45;
+}
+.students-panel .stu-moodle-body .moodle-connection h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+/* Já conectado, o título "Conectar ao Moodle" só confunde: a frase "Conectado como ..." basta. */
+.students-panel .stu-moodle-body .moodle-connection:not(:has(form)) > h3 {
+  display: none;
+}
+.students-panel .stu-moodle-body .moodle-connection p {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+.students-panel .stu-moodle-body .moodle-connection form > p.field-help:first-child,
+.students-panel .stu-moodle-body .moodle-connection form > p.field-help:last-child,
+.students-panel .stu-moodle-body .moodle-connection .field > .field-help,
+.students-panel .stu-moodle-body .moodle-connection > p.field-help:not(.preserve-text):not([role="status"]) {
+  display: none;
+}
+.students-panel .stu-moodle-body .moodle-connection .field {
+  margin: 0 0 10px;
+}
+.students-panel .stu-moodle-body .moodle-connection .field-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 14px;
+  margin: 0 0 12px;
+}
+.students-panel .stu-moodle-body .moodle-connection .field-grid .field {
+  margin: 0;
+}
+.students-panel .stu-moodle-body .moodle-connection .field-help {
+  font-size: 15px;
+}
+.students-panel .stu-moodle-body .moodle-connection .button-row {
+  margin-top: 4px;
+  gap: 4px 12px;
+}
+.students-panel .stu-moodle-body .moodle-connection .secondary {
+  min-height: 44px;
+  padding: 8px 16px;
+  font-size: 16px;
+}
+.students-panel .stu-moodle-body .moodle-connection button[type="submit"] {
+  min-height: 48px;
+  padding: 10px 24px;
+  border-color: transparent;
+  background: var(--action);
+  color: var(--on-action);
+  font-size: 17px;
+  font-weight: 500;
+}
+.students-panel .stu-moodle-body .moodle-connection button[type="submit"]:hover:not(:disabled) {
+  background: var(--action);
+  filter: brightness(0.94);
+}
+.students-panel .stu-moodle-body .moodle-connection button[type="submit"]:disabled {
+  border-color: var(--line);
+  background: var(--support);
+  color: var(--muted);
+}
+
+/* Prévia, confirmação e resultado dentro do cartão do Moodle. */
+.stu-output {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+.stu-confirm,
+.stu-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+.stu-confirm h3,
+.stu-results h3 {
+  margin: 0;
+  font-size: 20px;
+}
+.stu-confirm .stu-table,
+.stu-results .stu-table {
+  max-height: 260px;
+}
+.stu-confirm .stu-table th,
+.stu-results .stu-table th,
+.stu-confirm .stu-table td,
+.stu-results .stu-table td {
+  padding: 8px 12px;
+}
+.stu-confirm .pagination,
+.stu-results .pagination {
+  margin: 0;
+}
+.stu-confirm .pagination .field-help,
+.stu-results .pagination .field-help {
+  font-size: 16px;
+  white-space: nowrap;
+}
+.stu-details {
+  margin: 0;
+  padding: 0 14px 4px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+.stu-details summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0;
+  color: var(--action);
+  font-size: 16px;
+  font-weight: 500;
+}
+.stu-details p {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+.stu-details dl {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 4px 14px;
+  margin: 0 0 10px;
+}
+.stu-details dl > div {
+  display: contents;
+}
+.stu-details dd {
+  margin: 0;
+}
+.stu-details .stu-table {
+  margin: 0 0 10px;
+}
+.students-panel .stu-confirm-button {
+  align-self: flex-start;
+  min-height: 56px;
+  padding: 12px 28px;
+  font-size: 18px;
+}
+.stu-results .stu-table td:nth-child(2) {
+  white-space: nowrap;
+}
+.stu-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.stu-counts li {
+  padding: 6px 14px;
+  border: 1px solid var(--action);
+  border-radius: 99px;
+  background: var(--selected);
+  font-size: 16px;
+  font-weight: 500;
+}
+.stu-counts li.error,
+.stu-counts li.unknown {
+  border-color: var(--error);
+  background: var(--surface);
+  color: var(--error);
+}
+.students-panel .stu-lock {
+  margin: 0;
+  padding: 12px 16px;
+  border: 1px solid var(--error);
+  border-radius: 14px;
+  background: var(--surface);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* ---------- Aviso de privacidade (passo 1) ---------- */
+.students-panel .stu-note {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: auto 0 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+/* ---------- Altura fixa: a página não rola, o painel preenche e cada passo rola por dentro ---------- */
+@media (min-width: 720px) and (min-height: 540px) {
+  .workspace-main > .students-panel.tool-panel {
+    flex: 1 1 0;
+    min-height: 0;
+    max-height: 740px;
+  }
+  .students-panel > .stu-head {
+    flex-shrink: 0;
+  }
+}
+
+/* ---------- Telas médias: cabeçalho em duas linhas, passo de envio em uma coluna ---------- */
+@media (max-width: 1199px) {
+  .students-panel .stu-steps {
+    flex: 1 0 100%;
+    order: 3;
+  }
+  .students-panel .stu-head .stu-modes {
+    order: 2;
+  }
+}
+@media (max-width: 899px) {
+  .application .students-panel.tool-panel {
+    padding: 14px 16px 10px;
+  }
+  .students-panel .stu-head .stu-modes {
+    flex: 1 0 100%;
+    margin-left: 0;
+  }
+  .stu-modes button {
+    flex: 1 1 0;
+    justify-content: center;
+  }
+  .stu-send-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+  }
+  .stu-card {
+    align-self: stretch;
+  }
+}
+
+/* ---------- Celular: tudo em uma coluna, tabelas viram cartões, a página rola na vertical ---------- */
+@media (max-width: 640px) {
+  .application .students-panel.tool-panel {
+    padding: 14px 14px 10px;
+  }
+  .students-panel .stu-head h1 {
+    font-size: 24px;
+  }
+  .students-panel .stu-head .stu-modes {
+    flex: 1 0 100%;
+    margin-left: 0;
+    order: 2;
+  }
+  .students-panel .stu-modes {
+    display: flex;
+    max-width: 100%;
+  }
+  .stu-modes button {
+    flex: 1 1 0;
+    justify-content: center;
+    gap: 6px;
+    min-width: 0;
+    padding: 4px 8px;
+    line-height: 1.15;
+    text-align: center;
+    white-space: normal;
+  }
+  .stu-steps li + li::before {
+    width: 12px;
+  }
+  .stu-steps button {
+    padding-right: 10px;
+  }
+  .stu-stage-head {
+    flex-wrap: wrap;
+  }
+  .stu-zone {
+    min-height: 220px;
+    padding: 20px 14px;
+  }
+  .stu-zone-title {
+    font-size: 21px;
+  }
+  .stu-mapping-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .stu-options {
+    align-items: stretch;
+  }
+  .stu-courses {
+    flex-basis: 100%;
+    max-width: none;
+  }
+
+  .stu-pills,
+  .stu-pill,
+  .stu-pill span {
+    width: 100%;
+  }
+  .stu-pill span {
+    justify-content: center;
+  }
+  .stu-actions > * {
+    flex: 1 1 100%;
+  }
+  .stu-actions > .primary,
+  .stu-actions > .secondary {
+    margin-left: 0;
+  }
+  .stu-actions > .stu-hint {
+    justify-content: flex-start;
+    text-align: left;
+  }
+  .students-panel .stu-moodle-body .moodle-connection .field-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .students-panel .stu-confirm-button {
+    align-self: stretch;
+  }
+
+  /* Cada aluno vira um cartão: rótulo visível acima de cada campo. */
+  .stu-manual-table table,
+  .stu-manual-table tbody,
+  .stu-manual-table tr,
+  .stu-manual-table td,
+  .stu-review .stu-table table,
+  .stu-review .stu-table tbody,
+  .stu-review .stu-table tr,
+  .stu-review .stu-table td {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+  .stu-manual-table thead,
+  .stu-review .stu-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+  .stu-manual-table tr,
+  .stu-review .stu-table tr {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .students-panel .stu-manual-table td,
+  .students-panel .stu-review .stu-table td {
+    padding: 4px 0;
+    border: 0;
+    text-align: left;
+  }
+  .stu-manual-table td[data-label]::before,
+  .stu-review .stu-table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 4px;
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .stu-review .stu-table td.stu-row-number {
+    color: var(--text);
+    font-size: 17px;
+    font-weight: 500;
+  }
+  .stu-review .stu-table td.stu-row-number::before {
+    display: inline;
+    margin: 0 6px 0 0;
+    color: inherit;
+    font-size: inherit;
+  }
+  .stu-manual-table th:last-child,
+  .stu-manual-table td:last-child {
+    width: 100%;
+  }
+  .stu-review .stu-table td.stu-original {
+    padding-top: 0;
+  }
+  .stu-review .stu-table td.stu-original::before {
+    display: none;
+  }
+  .stu-original summary {
+    justify-content: flex-start;
+    padding: 0;
+  }
+  .stu-original-body {
+    position: static;
+    margin-top: 4px;
+    padding: 8px 12px;
+  }
+  .stu-card {
+    padding: 16px;
+  }
+  .stu-files li {
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 400px) {
+  .stu-steps .stu-step-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+  .stu-steps .current .stu-step-label {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+  }
+  .stu-steps button {
+    padding-right: 8px;
+    gap: 7px;
+  }
+}
+
+/* ---------- Telas grandes: mais respiro, mesma estrutura ---------- */
+@media (min-width: 1500px) and (min-height: 860px) {
+  .application .students-panel.tool-panel {
+    gap: 14px;
+    padding: 18px 28px 14px;
+  }
+}
+
+/* Sem vidro (navegador sem desfoque, menos transparência ou alto contraste) o painel vira opaco em globals.css; as caixas
+   internas já são opacas, então nada muda aqui. */
+@media (prefers-reduced-motion: reduce) {
+  .stu-zone,
+  .stu-chevron {
+    transition: none;
+  }
+}
+/* Alto contraste do sistema: o que está escolhido ganha linha dupla fina (a cor de fundo some nesse modo). */
+@media (forced-colors: active) {
+  .stu-modes button[aria-selected="true"],
+  .stu-steps .current button,
+  .stu-pill input:checked + span {
+    border-color: Highlight;
+    outline: 1px solid Highlight;
+    outline-offset: -3px;
+  }
+  .stu-zone.dragging {
+    border-color: Highlight;
+  }
+}

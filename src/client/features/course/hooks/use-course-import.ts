@@ -5,6 +5,7 @@ import { validateDraft } from "../../../../domain/course/index.ts";
 import { createProject, validateProject } from "../../../project.ts";
 import type { ProjectFile } from "../../../project.ts";
 import { fromBase64 } from "../../../download.ts";
+import { checkUploadLimits } from "../../../../shared/upload-limits.ts";
 import { captureProvenance, importProvenanceSchema, sourcePreviewSchema } from "../../../provenance.ts";
 import type { CourseTransfers } from "./use-course-transfers.ts";
 import type { CourseDialogs } from "./use-course-dialogs.ts";
@@ -23,6 +24,19 @@ type Options = Pick<
     setMessage: (message: string) => void
   };
 
+/** As IAs que a entrada oferece. "Sem IA" é o mesmo que Criar manualmente e não aparece mais. */
+export type AiProvider = "gemini" | "openai";
+/** Chave (e modelo, se a pessoa quis) digitada nesta aba. Vive só neste estado do React: nunca vai para o armazenamento do navegador. */
+export interface TabKey {
+  apiKey: string;
+  model: string;
+}
+export type TabKeys = Partial<Record<AiProvider, TabKey>>;
+
+// "Tópicos ou semanas" não é mais perguntado: a IA descobre pelo documento e a pessoa muda no Caderno.
+// A API ainda pede um perfil, então vai sempre o padrão.
+const DEFAULT_PROFILE = "docx-topicos-v1" as const;
+
 export function useCourseImport({
   setBusy,
   controller,
@@ -40,14 +54,10 @@ export function useCourseImport({
     tasks: File[];
     quizzes: File[];
   }>({ planning: [], tasks: [], quizzes: [] });
-  const [profile, setProfile] = useState<"docx-topicos-v1" | "docx-semanal-v1">(
-    "docx-topicos-v1",
-  );
-  const [provider, setProvider] = useState<"offline" | "openai" | "gemini">(
-    "offline",
-  );
-  const [apiKey, setApiKey] = useState("");
-  const [model, setModel] = useState("");
+  const profile = DEFAULT_PROFILE;
+  // null: ainda não há IA escolhida. A entrada escolhe sozinha a do servidor, se houver.
+  const [provider, setProvider] = useState<AiProvider | null>(null);
+  const [keys, setKeys] = useState<TabKeys>({});
   const [pasteText, setPasteText] = useState("");
   function importJson(trigger: HTMLElement) {
     proposalTrigger.current = trigger;
@@ -78,35 +88,35 @@ export function useCourseImport({
     setError("");
     setMessage("");
     if (!textOnly && selectedFiles.planning.length === 0) {
-      setError(
-        "Escolha um documento de planejamento ou crie o curso manualmente.",
-      );
+      setError("Envie a matriz ou crie o curso manualmente.");
       return;
     }
     if (textOnly && !pasteText.trim()) {
-      setError("Cole o texto do planejamento antes de interpretar.");
+      setError("Cole o texto da matriz antes de enviar.");
+      return;
+    }
+    if (!provider) {
+      setError("Escolha uma IA.");
       return;
     }
     if (!textOnly) {
-      const files = [
+      const problem = checkUploadLimits([
         ...selectedFiles.planning,
         ...selectedFiles.tasks,
         ...selectedFiles.quizzes,
-      ];
-      if (
-        files.length > 10 ||
-        files.some((file) => file.size > 10 * 1024 * 1024) ||
-        files.reduce((size, file) => size + file.size, 0) > 20 * 1024 * 1024
-      ) {
-        setError(
-          "Importe até 10 arquivos, com até 10 MiB por arquivo e 20 MiB no total.",
-        );
+      ]);
+      if (problem) {
+        setError(problem);
         return;
       }
     }
     const abort = new AbortController();
     controller.current = abort;
     setBusy("import");
+    // Só vai a chave (ou o modelo) adicionada nesta aba; ela vale mais que a do servidor. Sem ela, vale a configuração do servidor.
+    const tabKey = keys[provider];
+    const typedKey = tabKey?.apiKey.trim() ?? "";
+    const typedModel = tabKey?.model.trim() ?? "";
     try {
       let response: Response;
       if (textOnly)
@@ -117,8 +127,8 @@ export function useCourseImport({
             text: pasteText,
             profile,
             provider,
-            ...(apiKey ? { apiKey } : {}),
-            ...(model ? { model } : {}),
+            ...(typedKey ? { apiKey: typedKey } : {}),
+            ...(typedModel ? { model: typedModel } : {}),
           }),
           signal: abort.signal,
         });
@@ -132,8 +142,8 @@ export function useCourseImport({
           data.append("files", file);
         data.set("profile", profile);
         data.set("provider", provider);
-        if (apiKey) data.set("apiKey", apiKey);
-        if (model) data.set("model", model);
+        if (typedKey) data.set("apiKey", typedKey);
+        if (typedModel) data.set("model", typedModel);
         response = await fetch("/api/import", {
           method: "POST",
           body: data,
@@ -157,7 +167,7 @@ export function useCourseImport({
           envelope.issues
             .map((issue) => `${issue.path}: ${issue.message}`)
             .join("\n") ||
-          "O documento não foi reconhecido. Tente o perfil adequado ou continue manualmente.",
+          "Não reconhecemos este documento. Tente outro arquivo.",
         );
         return;
       }
@@ -197,10 +207,10 @@ export function useCourseImport({
     } catch (failure) {
       setError(
         abort.signal.aborted
-          ? "Interpretação cancelada. Seus arquivos e o curso anterior foram mantidos."
+          ? "Envio cancelado. Seus arquivos foram mantidos."
           : failure instanceof Error
             ? failure.message
-            : "A interpretação falhou. Sua entrada foi mantida.",
+            : "Não deu certo. O que você escolheu foi mantido.",
       );
     } finally {
       setBusy(null);
@@ -219,13 +229,10 @@ export function useCourseImport({
     selectedFiles,
     setSelectedFiles,
     profile,
-    setProfile,
     provider,
     setProvider,
-    apiKey,
-    setApiKey,
-    model,
-    setModel,
+    keys,
+    setKeys,
     pasteText,
     setPasteText,
     importJson,

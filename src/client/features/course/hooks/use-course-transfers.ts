@@ -1,7 +1,11 @@
 "use client";
 import { useRef, useState } from "react";
 import type { ValidationIssue } from "../../../../domain/course/index.ts";
-import { newId, projectIdentity } from "../../../project.ts";
+import {
+  PROJECT_FILE_LIMITS,
+  newId,
+  projectIdentity,
+} from "../../../project.ts";
 import type { ProjectFile } from "../../../project.ts";
 import { applyCommands } from "../../../commands.ts";
 import { createPortable, readPortable } from "../../../portable.ts";
@@ -91,8 +95,8 @@ export function useCourseTransfers({
     try {
       const additions: ProjectFile[] = [];
       for (const file of Array.from(files)) {
-        if (file.size > 16 * 1024 * 1024)
-          throw new Error("Cada arquivo pode ter até 16 MiB.");
+        if (file.size > PROJECT_FILE_LIMITS.attachmentBytes)
+          throw new Error("Cada anexo pode ter até 16 MB.");
         additions.push({
           id:
             missingTarget && files.length === 1
@@ -106,14 +110,14 @@ export function useCourseTransfers({
       const current = projectRef.current;
       if (!current || projectIdentity(current) !== projectIdentity(project))
         throw new Error("O projeto mudou enquanto os arquivos eram lidos.");
+      // Only attachments count: imported sources have their own, larger limit.
       if (
-        [...current.assets, ...current.sources, ...additions].reduce(
+        [...current.assets, ...additions].reduce(
           (sum, file) => sum + file.bytes.length,
           0,
-        ) >
-        64 * 1024 * 1024
+        ) > PROJECT_FILE_LIMITS.attachmentsTotalBytes
       )
-        throw new Error("Os arquivos do projeto podem somar até 64 MiB.");
+        throw new Error("Os anexos do curso podem somar até 64 MB.");
       const attachments = [
         ...current.draft.attachments.filter(
           (entry) => !additions.some((file) => file.id === entry.id),

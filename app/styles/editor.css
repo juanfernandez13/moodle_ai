@@ -1,0 +1,394 @@
+/* Editor do curso: cabeçalho fixo no topo e colunas (Sumário, página aberta, Pendências) que rolam por dentro.
+   Carregado depois de globals.css e shell.css.
+
+   Contrato com shell.css: .editor-layout é filho direto de .workspace-main, uma coluna flex com min-height: 0.
+   A partir de 720px de largura e 540px de altura o app ocupa exatamente a altura da janela e quem rola
+   é a coluna, nunca a janela. Numa janela mais baixa o editor mantém 340px de altura mínima e a página rola.
+
+   - 1100px ou mais:  três colunas (Sumário | página | Pendências), cada uma rola sozinha.
+   - 720px a 1099px:  duas colunas (Sumário | página); as Pendências ficam logo abaixo da página, na mesma rolagem.
+   - menos de 720px:  tudo empilhado e a página rola normalmente.
+
+   As regras levam o prefixo .editor-layout (a barra de entrega, .workspace-main) para vencer globals.css em qualquer ordem de carga. */
+
+.editor-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px 16px;
+  align-items: stretch;
+  min-width: 0;
+}
+/* Agrupa a página e as Pendências; some do layout, exceto na faixa de duas colunas. */
+.editor-layout .editor-main {
+  display: contents;
+}
+
+/* Cabeçalho do editor: uma linha compacta com título, estado de salvamento e as duas ações. */
+.editor-layout .editor-heading {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 20px;
+  min-width: 0;
+  padding: 8px 14px 8px 10px;
+}
+.editor-layout .title-with-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.editor-layout .editor-title-text {
+  min-width: 0;
+}
+.editor-layout .editor-heading h1 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.editor-layout .save-state {
+  margin: 1px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.editor-layout .editor-tools {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+/* Sumário. */
+.editor-layout .course-nav {
+  min-width: 0;
+  padding: 12px 10px 8px;
+}
+.editor-layout .nav-title {
+  margin-bottom: 10px;
+}
+.editor-layout .nav-divider {
+  margin: 12px 8px;
+}
+
+/* Página aberta. */
+.editor-layout .editor-content {
+  container: editor-page / inline-size;
+  min-width: 0;
+  min-height: 0;
+  padding: 22px 28px 28px;
+}
+/* Páginas estreitas (largura útil do conteúdo): campos em uma coluna e atividades em duas. */
+@container editor-page (max-width: 440px) {
+  .editor-layout .field-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+}
+@container editor-page (max-width: 400px) {
+  .editor-layout .activity-choices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Pendências: título, contagem e botão ficam à vista; só a lista rola. */
+.editor-layout .issues-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 16px 16px 14px;
+}
+.editor-layout .issues-panel > :not(.issues-body) {
+  flex: none;
+}
+.editor-layout .issues-panel h2 {
+  margin-bottom: 4px;
+}
+.editor-layout .revision-label {
+  margin-bottom: 12px;
+}
+.editor-layout .issues-body {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.editor-layout .issues-body > .field-help:first-child {
+  margin-top: 12px;
+}
+.editor-layout .issues-panel > .secondary {
+  margin-top: 12px;
+}
+
+/* Rolagem fina e discreta nas áreas que rolam. */
+.editor-layout .course-nav,
+.editor-layout .editor-content,
+.editor-layout .editor-main,
+.editor-layout .issues-body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--control-border) transparent;
+}
+
+/* Sombras de rolagem: aparecem na borda de cima ou de baixo quando há mais conteúdo naquela direção.
+   Ficam em pseudo-elementos colados (sticky) cuja opacidade acompanha a rolagem, então o painel continua
+   sendo vidro liso: nada de faixa branca por cima da pauta. Onde o navegador não liga animação à rolagem
+   (animation-timeline), não há sombra e a barra fina de rolagem basta. */
+.editor-layout {
+  --editor-shade: rgba(23, 62, 48, 0.1);
+}
+.theme-dark .editor-layout {
+  --editor-shade: rgba(0, 0, 0, 0.36);
+}
+@keyframes editor-shade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes editor-shade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@supports (animation-timeline: scroll()) {
+  .editor-layout :is(.course-nav, .editor-content, .issues-body)::before,
+  .editor-layout :is(.course-nav, .editor-content, .issues-body)::after {
+    content: "";
+    display: none;
+    position: sticky;
+    z-index: 2;
+    height: 12px;
+    margin-inline: calc(-1 * var(--shade-bleed, 0px));
+    pointer-events: none;
+    opacity: 0;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll(nearest block);
+  }
+  /* Colar em "sticky" conta a partir da área do conteúdo; a folga negativa leva a sombra até a borda do painel. */
+  .editor-layout :is(.course-nav, .editor-content, .issues-body)::before {
+    top: var(--shade-top, 0px);
+    margin-bottom: -12px;
+    background: radial-gradient(farthest-side at 50% 0, var(--editor-shade), transparent);
+    animation-name: editor-shade-in;
+    animation-range: 0 24px;
+  }
+  .editor-layout :is(.course-nav, .editor-content, .issues-body)::after {
+    bottom: var(--shade-bottom, 0px);
+    margin-top: -12px;
+    background: radial-gradient(farthest-side at 50% 100%, var(--editor-shade), transparent);
+    animation-name: editor-shade-out;
+    animation-range: calc(100% - 24px) 100%;
+  }
+  .editor-layout .course-nav {
+    --shade-bleed: 10px;
+    --shade-top: -12px;
+    --shade-bottom: -8px;
+  }
+  .editor-layout .editor-content {
+    --shade-top: -22px;
+    --shade-bottom: -28px;
+  }
+  .editor-layout .issues-body {
+    --shade-bleed: 6px;
+  }
+  /* O Sumário rola a partir de 720px; a página e as Pendências, só com três colunas (1100px). */
+  @media (min-width: 720px) {
+    .editor-layout .course-nav::before,
+    .editor-layout .course-nav::after {
+      display: block;
+    }
+  }
+  @media (min-width: 1100px) {
+    .editor-layout :is(.editor-content, .issues-body)::before,
+    .editor-layout :is(.editor-content, .issues-body)::after {
+      display: block;
+    }
+  }
+}
+@media print, (forced-colors: active) {
+  .editor-layout :is(.course-nav, .editor-content, .issues-body)::before,
+  .editor-layout :is(.course-nav, .editor-content, .issues-body)::after {
+    display: none !important;
+  }
+}
+
+/* Barra de entrega do backup (fora do .editor-layout): compacta para não tirar altura das colunas. */
+@media (min-width: 720px) {
+  .workspace-main > .delivery {
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    margin-top: 12px;
+    padding: 14px 22px;
+  }
+  .workspace-main > .delivery h2 {
+    margin-bottom: 4px;
+    font-size: 17px;
+  }
+  .workspace-main > .delivery p {
+    margin-bottom: 4px;
+  }
+  .workspace-main > .delivery .field-help {
+    margin: 0;
+  }
+}
+
+/* Duas ou três colunas: o editor preenche a altura que sobra e o Sumário rola por dentro. */
+@media (min-width: 720px) {
+  .editor-layout {
+    flex: 1 1 0;
+    min-height: 340px;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .editor-layout .editor-heading {
+    grid-row: 1;
+  }
+  .editor-layout .mobile-course-nav {
+    display: none;
+  }
+  .editor-layout .course-nav {
+    display: block;
+    grid-column: 1;
+    grid-row: 2;
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+/* Três colunas: página e Pendências também rolam cada uma na sua coluna. */
+@media (min-width: 1100px) {
+  .editor-layout {
+    grid-template-columns:
+      clamp(212px, 19vw, 280px)
+      minmax(0, 1fr)
+      clamp(236px, 19vw, 320px);
+  }
+  .editor-layout .editor-content,
+  .editor-layout .issues-panel {
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  .editor-layout .editor-content {
+    grid-column: 2;
+    grid-row: 2;
+    /* Coluna larga, leitura confortável: o conteúdo para em cerca de 900px e fica centralizado. */
+    padding-inline: max(22px, calc((100% - 920px) / 2));
+    scrollbar-gutter: stable both-edges;
+  }
+  .editor-layout .issues-panel {
+    grid-column: 3;
+    grid-row: 2;
+  }
+  .editor-layout .issues-body {
+    min-height: 64px;
+    overflow: auto;
+    overscroll-behavior: contain;
+    /* A lista rola e cortaria o anel de foco (2px mais 2px de deslocamento) nas laterais: folga de 6px sem mudar a largura. */
+    margin-inline: -6px;
+    padding-inline: 6px;
+  }
+}
+
+/* Duas colunas: a página e as Pendências rolam juntas na coluna da direita. */
+@media (min-width: 720px) and (max-width: 1099.98px) {
+  .editor-layout {
+    grid-template-columns: clamp(200px, 28vw, 264px) minmax(0, 1fr);
+  }
+  .editor-layout .editor-main {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    /* Espaço para a sombra dos cartões não ser cortada pela rolagem. */
+    margin: -6px -6px 0;
+    padding: 6px 6px 20px;
+  }
+  .editor-layout .editor-main > * {
+    flex: none;
+  }
+  .editor-layout .editor-content {
+    padding: 20px 22px 24px;
+  }
+  /* Abaixo da página há largura de sobra: a lista de pendências vira duas colunas. */
+  .editor-layout .issue-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 16px;
+  }
+}
+
+/* Celular: tudo empilhado e a página rola normalmente. */
+@media (max-width: 719.98px) {
+  .editor-layout {
+    flex: 0 0 auto;
+    min-height: 0;
+    gap: 14px;
+  }
+  .editor-layout .editor-heading {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px 14px;
+  }
+  .editor-layout .course-nav {
+    display: none;
+  }
+  .editor-layout .mobile-course-nav {
+    display: block;
+    padding: 13px 16px;
+  }
+  .editor-layout .editor-content {
+    padding: 21px 20px;
+    min-height: 320px;
+  }
+  .editor-layout .issues-panel {
+    padding: 18px 16px;
+  }
+}
+@media (max-width: 600px) {
+  .editor-layout .editor-heading h1 {
+    font-size: 19px;
+  }
+  .editor-layout .editor-tools {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 360px) {
+  .editor-layout .editor-content {
+    padding: 19px 16px;
+  }
+}
+
+/* Impressão: sem altura fixa nem rolagem interna, tudo corre na folha. */
+@media print {
+  .editor-layout {
+    flex: none;
+    min-height: 0;
+  }
+  .editor-layout .course-nav,
+  .editor-layout .editor-content,
+  .editor-layout .editor-main,
+  .editor-layout .issues-panel,
+  .editor-layout .issues-body {
+    overflow: visible;
+  }
+}

@@ -1,4 +1,5 @@
 import { validateDraft } from "../domain/course/index.ts";
+import { UPLOAD_LIMITS, UPLOAD_MESSAGES } from "../shared/upload-limits.ts";
 import { validateProvenance } from "./provenance.ts";
 import type { ProjectProvenance } from "./provenance.ts";
 import type {
@@ -14,6 +15,15 @@ export interface ProjectFile {
   mediaType: string;
   bytes: Uint8Array;
 }
+// Attachments (assets) go into the Moodle backup, so they follow its limits:
+// 16 MiB each, 64 MiB in all. Sources are the documents the teacher imported
+// and follow the upload limits; they never go into the backup.
+export const PROJECT_FILE_LIMITS = Object.freeze({
+  attachmentBytes: 16 * 1024 * 1024,
+  attachmentsTotalBytes: 64 * 1024 * 1024,
+  sourceBytes: UPLOAD_LIMITS.maxFileBytes,
+  sourcesTotalBytes: UPLOAD_LIMITS.maxTotalBytes,
+});
 export interface ProjectPreset {
   id: string;
   name: string;
@@ -187,17 +197,37 @@ export function validateProject(project: CourseProject): void {
       `O curso tem pendências: ${result.issues[0]?.message ?? "contrato inválido"}`,
     );
   const ids = new Set<string>();
-  let total = 0;
-  for (const file of [...project.assets, ...project.sources]) {
-    if (ids.has(file.id) || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(file.id))
-      throw new Error("Identificador de arquivo inválido ou repetido.");
-    ids.add(file.id);
-    if (file.bytes.length > 16 * 1024 * 1024)
-      throw new Error("Cada arquivo pode ter até 16 MiB.");
-    total += file.bytes.length;
+  const groups = [
+    {
+      files: project.assets,
+      fileBytes: PROJECT_FILE_LIMITS.attachmentBytes,
+      totalBytes: PROJECT_FILE_LIMITS.attachmentsTotalBytes,
+      fileMessage: "Cada anexo pode ter até 16 MB.",
+      totalMessage: "Os anexos do curso podem somar até 64 MB.",
+    },
+    {
+      files: project.sources,
+      fileBytes: PROJECT_FILE_LIMITS.sourceBytes,
+      totalBytes: PROJECT_FILE_LIMITS.sourcesTotalBytes,
+      fileMessage: UPLOAD_MESSAGES.fileSize,
+      totalMessage: UPLOAD_MESSAGES.totalSize,
+    },
+  ];
+  for (const group of groups) {
+    let total = 0;
+    for (const file of group.files) {
+      if (
+        ids.has(file.id) ||
+        !/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(file.id)
+      )
+        throw new Error("Identificador de arquivo inválido ou repetido.");
+      ids.add(file.id);
+      if (file.bytes.length > group.fileBytes)
+        throw new Error(group.fileMessage);
+      total += file.bytes.length;
+    }
+    if (total > group.totalBytes) throw new Error(group.totalMessage);
   }
-  if (total > 64 * 1024 * 1024)
-    throw new Error("Os arquivos do projeto podem somar até 64 MiB.");
   validateProvenance(project);
   for (const attachment of project.draft.attachments) {
     const file = project.assets.find((entry) => entry.id === attachment.id);

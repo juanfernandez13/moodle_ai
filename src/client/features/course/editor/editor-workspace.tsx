@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useRef } from "react";
 import type { CourseProject } from "../../../project.ts";
 import type { CourseBuilderModel } from "../hooks/use-course-builder.ts";
 import { EditorHeader } from "./editor-header.tsx";
@@ -73,6 +74,13 @@ export function EditorWorkspace({
   lastCopy,
   showIssue,
 }: Props) {
+  const main = useRef<HTMLDivElement>(null);
+  const content = useRef<HTMLElement>(null);
+  // A página aberta rola dentro da própria coluna: ao trocar de unidade ou de atividade ela volta ao topo.
+  useEffect(() => {
+    main.current?.scrollTo({ top: 0 });
+    content.current?.scrollTo({ top: 0 });
+  }, [view, activity?.id]);
   return (
     <main className="editor-layout">
       <EditorHeader
@@ -96,62 +104,66 @@ export function EditorWorkspace({
         setShowProjects={setShowProjects}
       />
 
-      <section
-        className="editor-content glass"
-        id={`entity-${section?.id ?? project.draft.id}`}
-      >
-        {view === "course" && (
-          <CourseMetadataPanel
-            coursePane={coursePane}
-            setCoursePane={setCoursePane}
-            project={project}
-            commands={commands}
-            issueFocus={issueFocus}
-          />
-        )}
-        {section && (
-          <SectionPanel
-            project={project}
-            section={section}
-            activity={activity}
-            commands={commands}
-            setView={setView}
-            setActivityId={setActivityId}
-            issueFocus={issueFocus}
-            setActivityPages={setActivityPages}
-            visibleActivities={visibleActivities}
-            activityPage={activityPage}
-          />
-        )}
-        {view === "grades" && (
-          <GradesPanel
-            project={project}
-            commands={commands}
-            allActivities={allActivities}
-            setProject={setProject}
-            setValidatedRevision={setValidatedRevision}
-          />
-        )}
-        {view === "files" && (
-          <ProjectFilesPanel
-            project={project}
-            missingTarget={missingTarget}
-            setMissingTarget={setMissingTarget}
-            addFiles={addFiles}
-            allActivities={allActivities}
-            setProject={setProject}
-            setValidatedRevision={setValidatedRevision}
-            lastCopy={lastCopy}
-          />
-        )}
-      </section>
-      <ReviewSidebar
-        project={project}
-        issues={issues}
-        showIssue={showIssue}
-        setShowReview={setShowReview}
-        setValidatedRevision={setValidatedRevision}
-      />
+      {/* Em telas largas e no celular o wrapper some (display: contents); em tablets ele rola com a página e as pendências. */}
+      <div className="editor-main" ref={main}>
+        <section
+          ref={content}
+          className="editor-content surface-panel"
+          id={`entity-${section?.id ?? project.draft.id}`}
+        >
+          {view === "course" && (
+            <CourseMetadataPanel
+              coursePane={coursePane}
+              setCoursePane={setCoursePane}
+              project={project}
+              commands={commands}
+              issueFocus={issueFocus}
+            />
+          )}
+          {section && (
+            <SectionPanel
+              project={project}
+              section={section}
+              activity={activity}
+              commands={commands}
+              setView={setView}
+              setActivityId={setActivityId}
+              issueFocus={issueFocus}
+              setActivityPages={setActivityPages}
+              visibleActivities={visibleActivities}
+              activityPage={activityPage}
+            />
+          )}
+          {view === "grades" && (
+            <GradesPanel
+              project={project}
+              commands={commands}
+              allActivities={allActivities}
+              setProject={setProject}
+              setValidatedRevision={setValidatedRevision}
+            />
+          )}
+          {view === "files" && (
+            <ProjectFilesPanel
+              project={project}
+              missingTarget={missingTarget}
+              setMissingTarget={setMissingTarget}
+              addFiles={addFiles}
+              allActivities={allActivities}
+              setProject={setProject}
+              setValidatedRevision={setValidatedRevision}
+              lastCopy={lastCopy}
+            />
+          )}
+        </section>
+        <ReviewSidebar
+          project={project}
+          issues={issues}
+          showIssue={showIssue}
+          setShowReview={setShowReview}
+          setValidatedRevision={setValidatedRevision}
+        />
+      </div>
     </main>
   );
 }

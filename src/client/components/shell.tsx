@@ -1,20 +1,8 @@
 "use client";
 import Link from "next/link";
-import { createContext, useContext, useEffect, useState } from "react";
-import type { ReactNode } from "react";
-import InteractiveBackground from "../../visual/background/InteractiveBackground";
-import {
-  Users,
-  Image as LandscapeIcon,
-  Moon,
-  Sun,
-  CalendarDays,
-} from "lucide-react";
-
-const ThemeContext = createContext<"light" | "dark">("light");
-export function useTheme(): "light" | "dark" {
-  return useContext(ThemeContext);
-}
+import { useEffect, useRef, useState } from "react";
+import type { ReactNode, RefObject } from "react";
+import { Users, Moon, Sun, CalendarDays } from "lucide-react";
 
 function preference(key: string, value?: string): string | null {
   try {
@@ -25,6 +13,111 @@ function preference(key: string, value?: string): string | null {
   }
 }
 
+const SCROLL_KEYS = new Set([
+  "PageDown",
+  "PageUp",
+  "Home",
+  "End",
+  " ",
+  "ArrowDown",
+  "ArrowUp",
+]);
+
+/** Área com barra de rolagem vertical (tem mais conteúdo do que cabe), em qualquer direção. */
+function scrolls(element: HTMLElement): boolean {
+  if (element.scrollHeight <= element.clientHeight + 1) return false;
+  const overflow = getComputedStyle(element).overflowY;
+  return overflow === "auto" || overflow === "scroll";
+}
+
+function canScroll(element: HTMLElement, down: boolean): boolean {
+  if (!scrolls(element)) return false;
+  return down
+    ? element.scrollTop + element.clientHeight < element.scrollHeight - 1
+    : element.scrollTop > 0;
+}
+
+/** A maior área de rolagem (a própria região ou uma coluna dentro dela) que ainda rola nessa direção. */
+function mainArea(region: HTMLElement, down: boolean): HTMLElement | null {
+  let best: HTMLElement | null = null;
+  let bestSize = 0;
+  for (const element of [
+    region,
+    ...region.querySelectorAll<HTMLElement>("*"),
+  ]) {
+    if (
+      element instanceof HTMLTextAreaElement ||
+      element instanceof HTMLSelectElement
+    )
+      continue;
+    if (!canScroll(element, down)) continue;
+    const size = element.clientWidth * element.clientHeight;
+    if (size > bestSize) {
+      best = element;
+      bestSize = size;
+    }
+  }
+  return best;
+}
+
+/**
+ * Nas telas de altura fixa a página não rola: as colunas rolam por dentro. O Chrome só rola uma
+ * coluna pelo teclado depois de um clique nela, então PageDown, Espaço e as setas não fazem nada
+ * logo que a tela abre. Só nesse caso (nada em foco, a página não rola e o clique não foi dentro de
+ * uma coluna) a coluna principal rola aqui. Foco e ordem do Tab não mudam, e tudo o que o navegador
+ * já faz sozinho continua com ele.
+ */
+function useKeyboardScroll(region: RefObject<HTMLElement | null>) {
+  useEffect(() => {
+    let pressed: Element | null = null;
+    const remember = (event: PointerEvent) => {
+      pressed = event.target instanceof Element ? event.target : null;
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      const root = region.current;
+      if (!root || event.defaultPrevented || event.isComposing) return;
+      if (event.altKey || event.ctrlKey || event.metaKey) return;
+      if (!SCROLL_KEYS.has(event.key)) return;
+      if (event.shiftKey && event.key !== " ") return;
+      if (document.activeElement && document.activeElement !== document.body)
+        return;
+      if (document.querySelector("dialog[open]")) return;
+      const page = document.scrollingElement;
+      if (page && page.scrollHeight > page.clientHeight + 1) return;
+      for (let node = pressed; node; node = node.parentElement) {
+        if (node instanceof HTMLElement && scrolls(node)) return;
+      }
+      const down =
+        event.key === " "
+          ? !event.shiftKey
+          : event.key === "PageDown" ||
+            event.key === "End" ||
+            event.key === "ArrowDown";
+      const area = mainArea(root, down);
+      if (!area) return;
+      const behavior = matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth";
+      if (event.key === "Home") area.scrollTo({ top: 0, behavior });
+      else if (event.key === "End")
+        area.scrollTo({ top: area.scrollHeight, behavior });
+      else {
+        const step = event.key.startsWith("Arrow")
+          ? 40
+          : Math.max(area.clientHeight * 0.875, area.clientHeight - 40);
+        area.scrollBy({ top: down ? step : -step, behavior });
+      }
+      event.preventDefault();
+    };
+    window.addEventListener("pointerdown", remember, true);
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("pointerdown", remember, true);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [region]);
+}
+
 export function Shell({
   children,
   active = "course",
@@ -33,117 +126,59 @@ export function Shell({
   active?: "course" | "students" | "dates";
 }) {
   const [dark, setDark] = useState(false);
-  const [scene, setScene] = useState(true);
+  const main = useRef<HTMLDivElement>(null);
   useEffect(() => {
     setDark(preference("moodle-ai-theme") === "dark");
-    setScene(preference("moodle-ai-scene") !== "off");
   }, []);
+  useKeyboardScroll(main);
   return (
-    <ThemeContext.Provider value={dark ? "dark" : "light"}>
-      <div
-        className={`application ${dark ? "theme-dark" : "theme-light"} ${scene ? "scene-on" : "scene-off"}`}
-      >
-        <InteractiveBackground
-          enabled={scene}
-          theme={dark ? "dark" : "light"}
-        />
-        <div className={`workspace${active === "students" ? " workspace-students" : ""}`}>
-          <header className="topbar">
-            <Link className="brand" href="/">
-              <img src="/brand-owl.svg" width="39" height="39" alt="" />
-              <span>
-                Moodle<span className="brand-ai"> AI</span>
-              </span>
-            </Link>
-            <nav
-              className="header-actions"
-              aria-label="Ferramentas e aparência"
+    <div className={`application ${dark ? "theme-dark" : "theme-light"}`}>
+      <div className="workspace">
+        <header className="topbar">
+          <Link className="brand" href="/">
+            <img src="/brand-owl-mark.svg" width="34" height="34" alt="" />
+            Moodle IA
+          </Link>
+          <nav className="header-actions" aria-label="Menu">
+            <Link
+              href="/cadastro-lote"
+              className="header-action"
+              aria-current={active === "students" ? "page" : undefined}
             >
-              <Link
-                href="/cadastro-lote"
-                className="header-action"
-                aria-current={active === "students" ? "page" : undefined}
-              >
-                <Users size={19} />
-                Alunos
-              </Link>
-              <Link
-                href="/datas"
-                className="header-action dates-link"
-                aria-current={active === "dates" ? "page" : undefined}
-              >
-                <CalendarDays size={19} />
-                Datas
-              </Link>
-              <button
-                type="button"
-                className="header-action"
-                aria-pressed={scene}
-                onClick={() => {
-                  setScene(!scene);
-                  preference("moodle-ai-scene", scene ? "off" : "on");
-                }}
-              >
-                <LandscapeIcon size={19} />
-                Fundo
-              </button>
-              <button
-                type="button"
-                className="header-action"
-                aria-pressed={dark}
-                onClick={() => {
-                  setDark(!dark);
-                  preference("moodle-ai-theme", dark ? "light" : "dark");
-                }}
-              >
-                {dark ? <Sun size={19} /> : <Moon size={19} />}Tema
-              </button>
-            </nav>
-          </header>
+              <Users size={20} aria-hidden="true" />
+              Alunos
+            </Link>
+            <Link
+              href="/datas"
+              className="header-action dates-link"
+              aria-current={active === "dates" ? "page" : undefined}
+            >
+              <CalendarDays size={20} aria-hidden="true" />
+              Datas
+            </Link>
+            <button
+              type="button"
+              className="header-action"
+              aria-label="Tema escuro"
+              aria-pressed={dark}
+              onClick={() => {
+                setDark(!dark);
+                preference("moodle-ai-theme", dark ? "light" : "dark");
+              }}
+            >
+              {dark ? (
+                <Sun size={20} aria-hidden="true" />
+              ) : (
+                <Moon size={20} aria-hidden="true" />
+              )}
+              Tema
+            </button>
+          </nav>
+        </header>
+        <div className="workspace-main" ref={main}>
           {children}
-          <footer className="app-footer">
-            Feito para preparar, revisar e levar seu curso ao Moodle.
-          </footer>
         </div>
       </div>
-    </ThemeContext.Provider>
-  );
-}
-
-export function Owl() {
-  return (
-    <svg className="owl" viewBox="0 0 200 200" aria-hidden="true">
-      <g stroke="#765334" strokeWidth="1.5" strokeLinejoin="round">
-        <ellipse cx="100" cy="117" rx="55" ry="68" fill="#b89060" />
-        <path d="m49 80-9-35 34 19m52 0 34-19-9 35" fill="#b89060" />
-        <ellipse cx="45" cy="130" rx="12" ry="40" fill="#9f794c" />
-        <ellipse cx="155" cy="130" rx="12" ry="40" fill="#9f794c" />
-        <ellipse cx="100" cy="153" rx="26" ry="31" fill="#ead4a9" />
-        <circle cx="75" cy="96" r="25" fill="#fffaf0" />
-        <circle cx="125" cy="96" r="25" fill="#fffaf0" />
-      </g>
-      <g fill="#38a66b" stroke="#226542" strokeWidth="2">
-        <circle cx="76" cy="97" r="15" />
-        <circle cx="124" cy="97" r="15" />
-      </g>
-      <g fill="#182219">
-        <circle cx="76" cy="97" r="8" />
-        <circle cx="124" cy="97" r="8" />
-      </g>
-      <g fill="#fff">
-        <circle cx="72" cy="92" r="4" />
-        <circle cx="120" cy="92" r="4" />
-      </g>
-      <path
-        d="M94 120Q100 113 106 120L100 134Z"
-        fill="#cea85d"
-        stroke="#886332"
-      />
-      <path d="M66 40h68v23q-34-6-68 0Z" fill="#17191c" />
-      <path d="m31 35 69-28 69 28-69-27Z" fill="#17191c" />
-      <path d="M100 36 56 45v33" fill="none" stroke="#e4bd45" strokeWidth="4" />
-      <path d="m53 77-2 12h10l-2-12" fill="#e4bd45" />
-      <image href="/moodle-mark.svg" x="81" y="139" width="38" height="27" />
-    </svg>
+    </div>
   );
 }

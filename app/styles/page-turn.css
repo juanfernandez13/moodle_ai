@@ -1,0 +1,217 @@
+/* Virada de folha entre passos (PageTurn e PageTurnOverlay, src/client/components/page-turn.tsx).
+   Ao trocar de passo, uma folha de caderno em branco (cor da página, pauta de 1px a cada 32px e a margem laranja)
+   cobre a área do passo e vira para a esquerda, presa pela borda esquerda, deixando aparecer o passo novo, que já
+   está por baixo e continua clicável. Ao voltar, a folha vem da esquerda, pousa sobre a área e some devagar, e o
+   passo aparece. Só a área do passo vira: cabeçalho, passos e fundo ficam parados.
+   Nomes alinhados ao design system (README, PageTurn): mi-turn (contêiner), mi-turn-next e mi-turn-back (a folha).
+   Carregado depois dos outros arquivos de tela.
+
+   Contrato:
+   - Nada aqui muda o layout. O contêiner só ganha position: relative; a camada que recorta a folha
+     (.mi-turn-stage) e a folha são absolutas, sem eventos de ponteiro, e só existem durante a virada (600ms).
+   - A folha só aparece enquanto a animação roda (visibility), então, se alguma regra desligar as animações, nada
+     fica cobrindo o conteúdo.
+   - Cores vêm das variáveis do caderno (--base, --notebook-line, --notebook-margin, --line) e valem nos dois temas.
+   - Com prefers-reduced-motion: reduce não há rotação: só um fade de 150ms. As regras com !important abaixo vencem a
+     regra global de globals.css (animation: none !important) só para esta camada, que é um fade, não movimento.
+   - Medidas que o componente define em cada virada, na camada: --turn-p (profundidade da perspectiva), --turn-x e
+     --turn-y (distância da folha ao canto da página, para a pauta e a margem baterem com as do fundo). */
+
+.mi-turn {
+  position: relative;
+}
+
+.mi-turn-stage {
+  --turn-ms: 600ms;
+  --turn-ease: cubic-bezier(0.3, 0.7, 0.2, 1);
+  --turn-cast: rgba(23, 62, 48, 0.26);
+  --turn-shade: rgba(23, 62, 48, 0.14);
+  /* A margem fica onde está na página (72px da borda; 40px no celular) quando a área começa perto dela; numa área
+     mais afastada, a 44px da borda da folha, para a folha continuar parecendo uma página de caderno. */
+  --turn-margin: max(
+    calc(var(--notebook-margin-x, 72px) - var(--turn-x, 0px)),
+    44px
+  );
+  --turn-paper:
+    linear-gradient(
+      90deg,
+      transparent calc(var(--turn-margin) - 1px),
+      var(--notebook-margin) calc(var(--turn-margin) - 1px),
+      var(--notebook-margin) var(--turn-margin),
+      transparent var(--turn-margin)
+    ),
+    linear-gradient(180deg, transparent 31px, var(--notebook-line) 31px);
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  perspective: var(--turn-p, 2800px);
+}
+.theme-dark .mi-turn-stage {
+  --turn-cast: rgba(0, 0, 0, 0.5);
+  --turn-shade: rgba(0, 0, 0, 0.34);
+}
+.mi-turn-stage[data-turn="next"] {
+  animation: mi-turn-end-next var(--turn-ms) linear both;
+}
+.mi-turn-stage[data-turn="back"] {
+  animation: mi-turn-end-back var(--turn-ms) linear both;
+}
+
+/* A página em branco por baixo: ao voltar, a folha pousa sobre ela e, no fim, ela some e mostra o passo. */
+.mi-turn-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  background-color: var(--base);
+  background-image: var(--turn-paper);
+  background-repeat: no-repeat, repeat-y;
+  background-size: 100% 100%, 100% 32px;
+  background-position: 0 0, 0 calc(var(--turn-y, 0px) * -1);
+}
+.mi-turn-stage[data-turn="back"]::before {
+  animation: mi-turn-hold var(--turn-ms) both;
+}
+
+/* A folha. O lado esquerdo é a lombada; o lado direito se levanta e vem em direção a quem olha. */
+.mi-turn-sheet {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background-color: var(--base);
+  background-image: var(--turn-paper);
+  background-repeat: no-repeat, repeat-y;
+  background-size: 100% 100%, 100% 32px;
+  background-position: 0 0, 0 calc(var(--turn-y, 0px) * -1);
+  background-origin: border-box;
+  box-shadow: 18px 0 36px -14px var(--turn-cast);
+  transform-origin: 0 50%;
+  backface-visibility: hidden;
+  will-change: transform;
+  animation-duration: var(--turn-ms);
+  animation-timing-function: var(--turn-ease);
+  animation-fill-mode: both;
+}
+/* O escurecimento do lado que se levanta. */
+.mi-turn-sheet::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent 30%, var(--turn-shade));
+  opacity: 0;
+  animation-duration: var(--turn-ms);
+  animation-timing-function: var(--turn-ease);
+  animation-fill-mode: both;
+}
+.mi-turn-next {
+  animation-name: mi-turn-next;
+}
+.mi-turn-next::after {
+  animation-name: mi-turn-shade-next;
+}
+.mi-turn-back {
+  animation-name: mi-turn-back;
+}
+.mi-turn-back::after {
+  animation-name: mi-turn-shade-back;
+}
+
+/* Avançar: a folha cobre a área e vira para a esquerda até ficar de lado, junto à lombada. */
+@keyframes mi-turn-next {
+  from {
+    transform: rotateY(0deg);
+    visibility: visible;
+  }
+  to {
+    transform: rotateY(-80deg);
+    visibility: visible;
+  }
+}
+/* Voltar: o caminho inverso, da lombada até pousar sobre a área. */
+@keyframes mi-turn-back {
+  from {
+    transform: rotateY(-80deg);
+    visibility: visible;
+  }
+  to {
+    transform: rotateY(0deg);
+    visibility: visible;
+  }
+}
+@keyframes mi-turn-shade-next {
+  from {
+    opacity: 0;
+  }
+  45%,
+  to {
+    opacity: 1;
+  }
+}
+@keyframes mi-turn-shade-back {
+  from,
+  55% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+/* A camada some no fim: ao avançar só sobra a sombra da folha de lado; ao voltar, a página em branco e a folha
+   pousada somem juntas e o passo aparece. */
+@keyframes mi-turn-end-next {
+  0%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes mi-turn-end-back {
+  0%,
+  58% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes mi-turn-hold {
+  from,
+  to {
+    visibility: visible;
+  }
+}
+@keyframes mi-turn-fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Menos movimento: sem rotação. A página em branco cobre a área e some em 150ms, e o passo aparece. */
+@media (prefers-reduced-motion: reduce) {
+  .mi-turn-sheet {
+    display: none;
+  }
+  .mi-turn-stage[data-turn] {
+    animation: mi-turn-fade 150ms ease-out both !important;
+  }
+  .mi-turn-stage[data-turn]::before {
+    animation: mi-turn-hold 150ms both !important;
+  }
+}
+/* Sem folha na impressão nem no alto contraste do sistema. */
+@media print, (forced-colors: active) {
+  .mi-turn-stage {
+    display: none;
+  }
+}

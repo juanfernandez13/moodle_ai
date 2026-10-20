@@ -3,9 +3,12 @@ import {
   IMPORT_LIMITS,
 } from "../../../src/server/import/index.ts";
 import { BodyError, readFormBody } from "../../../src/shared/http.ts";
+import { UPLOAD_MESSAGES } from "../../../src/shared/upload-limits.ts";
 import { checkImportRequestPolicy } from "../../../src/server/import/request-policy.ts";
 
 export const runtime = "nodejs";
+// Boundaries and headers of up to maxFiles parts, on top of the documents.
+const BODY_OVERHEAD_BYTES = 64 * 1024;
 const fail = (code: string, message: string, status = 422): Response =>
   Response.json(
     { ok: false, issues: [{ code, path: "$", severity: "error", message }] },
@@ -18,7 +21,7 @@ export async function POST(request: Request): Promise<Response> {
     if (rejected) return rejected;
     const form = await readFormBody(
       request,
-      IMPORT_LIMITS.maxTotalBytes + 64 * 1024,
+      IMPORT_LIMITS.maxTotalBytes + BODY_OVERHEAD_BYTES,
     );
     const allowed = new Set([
       "files",
@@ -38,10 +41,7 @@ export async function POST(request: Request): Promise<Response> {
       entries.length > IMPORT_LIMITS.maxFiles ||
       entries.some((entry) => typeof entry === "string")
     )
-      return fail(
-        "invalid_import_files",
-        "Selecione entre 1 e 10 arquivos DOCX, PDF ou TXT.",
-      );
+      return fail("invalid_import_files", UPLOAD_MESSAGES.fileCount);
     const options: Record<string, unknown> = {};
     for (const key of ["profile", "provider", "apiKey", "model"]) {
       const values = form.getAll(key);
@@ -64,11 +64,7 @@ export async function POST(request: Request): Promise<Response> {
           "Envie os documentos como arquivos.",
         );
       if (file.size > IMPORT_LIMITS.maxFileBytes)
-        return fail(
-          "file_size_limit",
-          "Cada documento pode ter até 10 MiB.",
-          413,
-        );
+        return fail("file_size_limit", UPLOAD_MESSAGES.fileSize, 413);
       files.push({
         id: `source-${index + 1}`,
         name: file.name,
@@ -88,12 +84,14 @@ export async function POST(request: Request): Promise<Response> {
       },
     });
   } catch (error) {
-    if (error instanceof BodyError)
+    if (error instanceof BodyError) {
+      const tooLarge = error.code === "request_too_large";
       return fail(
         error.code,
-        error.message,
-        error.code === "request_too_large" ? 413 : 400,
+        tooLarge ? UPLOAD_MESSAGES.totalSize : error.message,
+        tooLarge ? 413 : 400,
       );
+    }
     return fail(
       "import_request_failed",
       "Não foi possível ler a importação. Confira os arquivos e tente novamente.",

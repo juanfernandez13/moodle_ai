@@ -31,7 +31,7 @@ export function Modal({
   return (
     <dialog
       ref={ref}
-      className="modal glass"
+      className="modal surface-panel"
       aria-labelledby={titleId}
       onKeyDown={(event) => {
         if (event.key !== "Tab") return;

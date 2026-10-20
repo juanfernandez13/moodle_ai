@@ -1,0 +1,1114 @@
+/* Entrada ("Criar disciplina"): linhas finas, pesos leves, pouco texto.
+     Título e abas ........... [Criar disciplina]                    [Importar arquivos | Criar manualmente]
+     Passos .................. [1 Arquivos — 2 Revisão — 3 Baixar]
+     Matriz .................. [ícone  Matriz                   Enviar arquivo]     [IA ........ select ]
+     Tarefas e Quizzes ....... [Tarefas]            [Quizzes]                       [Enviar para análise]
+     Rodapé .................. Importar JSON · Copiar prompt
+   Carregado depois de globals.css e shell.css.
+
+   Linhas: 1px, sempre. Cartões e divisores em --line; campos, botões e áreas de arrastar em --control-border
+   (tracejado de 1px só onde se arrasta arquivo). Nada de 1,5 ou 2px; os 2px ficam só para o anel de foco
+   (globals.css). Pesos: títulos 600, rótulos e botões 500, texto 400. Nada em 700.
+
+   O painel é o vidro de .surface-panel (globals.css). Cartões, campos e áreas de arrastar dentro dele são
+   opacos (--surface): texto e campos nunca ficam sobre transparência. Nunca vidro dentro de vidro.
+
+   Contrato com shell.css: .entry-panel é filho direto de .workspace-main (coluna flex). Com 1100px de largura
+   e 540px de altura ou mais a janela tem a altura da tela: o painel tem a altura do conteúdo e, se faltar
+   altura, só .entry-view rola por dentro (nunca a página). Fora disso é uma coluna só, com a altura do
+   conteúdo, e a página rola como qualquer outra.
+
+   Medidas: tudo parte de variáveis (--ctl, --fs...). Janelas baixas encolhem os respiros sem passar de 44px
+   nos alvos; telas grandes aumentam letra e botões. */
+
+.application .entry-panel {
+  --ctl: 44px;
+  --fs: 17px;
+  --fs-sm: 16px;
+  --fs-card: 18px;
+  --fs-h1: 30px;
+  --icon: 40px;
+  --gap: 16px;
+  /* Piso das áreas de arrastar. Quem manda na altura da linha é a caixa da IA: as áreas esticam até ela. */
+  --zone-min: 150px;
+  /* Altura máxima da lista de arquivos de uma área: passando disso, só a lista rola. */
+  --list-max: clamp(96px, 19vh, 200px);
+  /* Largura da coluna da IA; as abas do alto usam a mesma medida. */
+  --entry-ai: clamp(360px, 30vw, 420px);
+  --entry-pad: clamp(16px, 2vw, 28px);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px var(--entry-pad) 12px;
+  font-size: var(--fs);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* Altura da tela: o painel tem a altura do conteúdo e o miolo rola por dentro só se faltar espaço. */
+.entry-view {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+@media screen and (min-width: 1100px) and (min-height: 540px) {
+  .application .entry-panel {
+    flex: 0 1 auto;
+    min-height: 0;
+    max-height: 100%;
+  }
+  .entry-view {
+    flex: 0 1 auto;
+    overflow: auto;
+    /* A folga evita que o anel de foco e a sombra dos cartões sejam cortados pela rolagem. */
+    margin: -6px;
+    padding: 6px;
+  }
+}
+/* Janela baixa (notebook): respiros menores; botões e campos continuam com 44px ou mais. */
+@media screen and (min-width: 1100px) and (max-height: 780px) {
+  .application .entry-panel {
+    --gap: 12px;
+    --zone-min: 140px;
+    padding-top: 16px;
+    padding-bottom: 8px;
+  }
+}
+/* Janela muito baixa: tudo mais justo. */
+@media screen and (min-width: 1100px) and (max-height: 640px) {
+  .application .entry-panel {
+    --gap: 10px;
+    --zone-min: 120px;
+    --list-max: 96px;
+    --fs-h1: 28px;
+  }
+}
+/* Tela grande: letra e botões maiores, e mais ar. */
+@media screen and (min-width: 1500px) and (min-height: 900px) {
+  .application .entry-panel {
+    --ctl: 48px;
+    --fs: 18px;
+    --fs-sm: 17px;
+    --fs-card: 20px;
+    --fs-h1: 34px;
+    --icon: 44px;
+    --gap: 20px;
+    --zone-min: 160px;
+    --list-max: clamp(120px, 20vh, 260px);
+    padding-top: 28px;
+    padding-bottom: 16px;
+  }
+}
+
+/* ---------- Alto: título, abas e passos ---------- */
+.entry-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--entry-ai);
+  grid-template-areas:
+    "title action"
+    "steps steps";
+  align-items: center;
+  gap: 10px 24px;
+}
+.entry-title {
+  grid-area: title;
+  margin: 0;
+  font-size: var(--fs-h1);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.entry-modes,
+.entry-back {
+  grid-area: action;
+}
+
+/* Abas (Importar arquivos | Criar manualmente): a escolhida é a única preenchida. */
+.entry-modes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  justify-self: end;
+  width: 100%;
+  min-width: max-content;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: var(--support);
+}
+.entry-modes button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--ctl);
+  padding: 6px 14px;
+  border: 0;
+  border-radius: 99px;
+  background: transparent;
+  color: var(--muted);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+.entry-modes button:hover {
+  background: var(--selected);
+  color: var(--text);
+}
+.entry-modes button[aria-selected="true"] {
+  background: var(--action);
+  color: var(--on-action);
+}
+
+/* Voltar (no Importar JSON): uma pílula de contorno fino. */
+.entry-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+  gap: 8px;
+  min-height: var(--ctl);
+  padding: 8px 20px;
+  border: 1px solid var(--control-border);
+  border-radius: 99px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--fs);
+  font-weight: 500;
+  line-height: 1.2;
+}
+.entry-back svg {
+  color: var(--action);
+}
+.entry-back:hover {
+  border-color: var(--action);
+  background: var(--support);
+}
+
+/* Passos: o número fica no centro do círculo; a linha entre eles tem 1px. */
+.entry-steps {
+  grid-area: steps;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: var(--fs);
+  font-weight: 500;
+}
+.entry-steps li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.entry-steps li + li::before {
+  content: "";
+  width: 32px;
+  height: 1px;
+  margin-right: 2px;
+  background: var(--control-border);
+}
+.entry-steps li span {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--control-border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.entry-steps [aria-current="step"] {
+  color: var(--text);
+}
+.entry-steps [aria-current="step"] span {
+  border-color: var(--action);
+  background: var(--action);
+  color: var(--on-action);
+}
+
+/* ---------- Botões e links ---------- */
+/* Contorno fino (Enviar arquivo, Trocar, Escolher arquivos, Cancelar). */
+.entry-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--ctl);
+  padding: 8px 20px;
+  border: 1px solid var(--control-border);
+  border-radius: 99px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--fs);
+  font-weight: 500;
+  line-height: 1.25;
+  white-space: nowrap;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+.entry-btn svg {
+  color: var(--action);
+}
+.entry-btn:hover:not(:disabled) {
+  border-color: var(--action);
+  background: var(--support);
+}
+
+/* Botão principal: um por tela, com ícone. */
+.application .entry-panel .entry-send,
+.modal .entry-send {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: calc(var(--ctl, 44px) + 4px);
+  padding: 10px 20px;
+  border: 1px solid var(--action);
+  border-radius: 99px;
+  background: var(--action);
+  color: var(--on-action);
+  font-size: var(--fs, 16px);
+  font-weight: 500;
+  line-height: 1.25;
+}
+.application .entry-panel .entry-send:disabled,
+.modal .entry-send:disabled {
+  border-color: var(--line);
+  background: var(--support);
+  color: var(--muted);
+}
+
+/* Remover, fechar: só o ícone, com aria-label. O alvo tem 44px. */
+.entry-icon-btn {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+}
+.entry-icon-btn:hover {
+  background: var(--selected);
+  color: var(--text);
+}
+
+/* Links pequenos (rodapé e Importar JSON): texto verde com sublinhado de 1px. */
+.entry-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--action);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+.entry-link:hover {
+  background: var(--selected);
+  color: var(--text);
+}
+
+/* ---------- Campos ---------- */
+.entry-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.entry-label {
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  line-height: 1.3;
+}
+.entry-optional {
+  color: var(--muted);
+  font-size: var(--fs-sm);
+  font-weight: 400;
+}
+.entry-input,
+.entry-select {
+  width: 100%;
+  min-height: var(--ctl);
+  padding: 8px 14px;
+  border: 1px solid var(--control-border);
+  border-radius: var(--control-radius, 12px);
+  background-color: var(--surface);
+  color: var(--text);
+  font-size: var(--fs);
+  font-weight: 400;
+  line-height: 1.4;
+}
+.entry-input::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+.entry-input:hover,
+.entry-select:hover {
+  border-color: var(--action);
+}
+.entry-input[aria-invalid="true"] {
+  border-color: var(--error);
+}
+.entry-select {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: 44px;
+  background-image: var(--select-icon);
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  cursor: pointer;
+}
+.entry-select option {
+  color: var(--text);
+  background: var(--surface);
+}
+.entry-help {
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+}
+.entry-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+}
+.entry-note svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--action);
+}
+.entry-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0;
+  color: var(--error);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  line-height: 1.35;
+}
+.entry-error svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+/* ---------- Miolo: a Matriz, as áreas de arrastar e a coluna da IA ---------- */
+.entry-board {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--entry-ai);
+  gap: var(--gap) 24px;
+  align-items: stretch;
+  min-width: 0;
+}
+.entry-files-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  min-width: 0;
+}
+
+/* Cartões opacos: o texto nunca fica sobre a pauta do caderno. */
+.entry-matrix,
+.entry-zone,
+.entry-ai,
+.entry-paste,
+.entry-json-card,
+.entry-manual-card {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--control-radius, 12px);
+  background: var(--surface);
+}
+.entry-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--icon);
+  height: var(--icon);
+  border-radius: 50%;
+  background: var(--support);
+  color: var(--action);
+}
+.entry-card-title {
+  display: block;
+  margin: 0;
+  font-size: var(--fs-card);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+}
+.entry-file-name {
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.entry-file-size {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* Matriz: uma linha só. */
+.entry-matrix {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4px 14px;
+  padding: 12px 16px;
+  transition: border-color 0.15s ease;
+}
+.entry-matrix[data-filled="true"] {
+  border-color: var(--action);
+}
+.entry-matrix[data-filled="true"] .entry-icon {
+  background: var(--selected);
+}
+.entry-matrix-text {
+  min-width: 0;
+}
+.entry-matrix-file {
+  margin: 2px 0 0;
+  font-size: var(--fs-sm);
+  line-height: 1.35;
+}
+.entry-matrix-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.entry-matrix-note {
+  grid-column: 1 / -1;
+}
+.entry-matrix-file .entry-file-size {
+  white-space: nowrap;
+}
+[data-big] .entry-file-size {
+  color: var(--error);
+  font-weight: 500;
+}
+.entry-matrix-file[data-big] .entry-file-size {
+  white-space: normal;
+}
+
+/* Tarefas e Quizzes: áreas de arrastar iguais, tracejado de 1px. */
+.entry-drops {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap);
+  min-width: 0;
+}
+.entry-zone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: var(--zone-min);
+  padding: 14px 16px;
+  border-style: dashed;
+  border-color: var(--control-border);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+.entry-zone-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.entry-zone-head .entry-icon {
+  width: 36px;
+  height: 36px;
+}
+/* O número fica no centro do círculo. */
+.entry-count {
+  display: grid;
+  place-items: center;
+  flex: none;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 99px;
+  background: var(--selected);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.entry-zone-empty {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--fs);
+  line-height: 1.3;
+}
+.entry-zone-empty svg {
+  color: var(--action);
+}
+.entry-files {
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 0;
+  max-height: var(--list-max);
+  /* A folga deixa o anel de foco do botão de remover inteiro dentro da rolagem (a lista não muda de lugar). */
+  margin: -4px;
+  padding: 4px;
+  list-style: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* Rolagem fina, como o resto das linhas. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--control-border) transparent;
+}
+.entry-file {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 0 0 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--control-radius, 12px);
+  background: var(--support);
+  font-size: var(--fs-sm);
+  line-height: 1.3;
+}
+.entry-file .entry-file-name {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 0;
+}
+.entry-file .entry-file-size {
+  flex: none;
+  max-width: 45%;
+  white-space: nowrap;
+}
+.entry-file[data-big] {
+  border-color: var(--error);
+}
+.entry-file[data-big] .entry-file-size {
+  white-space: normal;
+}
+.entry-choose {
+  align-self: center;
+  margin-top: auto;
+}
+
+/* Arrastando: todas as áreas se mostram; a que está sob o arquivo vira alvo, com texto. */
+.entry-board[data-armed] .entry-zone {
+  border-color: var(--action);
+  background: var(--support);
+}
+.entry-zone[data-dragging="true"] {
+  border-style: solid;
+  border-color: var(--action);
+  background: var(--selected);
+}
+.entry-zone[data-dragging="true"]::after {
+  content: attr(data-drop);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  border-radius: inherit;
+  background: var(--selected);
+  color: var(--text);
+  font-size: var(--fs-card);
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: center;
+  text-wrap: balance;
+  pointer-events: none;
+}
+.entry-stray {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  z-index: 2;
+  max-width: calc(100% - 24px);
+  margin: 0;
+  padding: 8px 18px;
+  border-radius: 99px;
+  background: var(--action);
+  color: var(--on-action);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(-6px);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease,
+    visibility 0.15s;
+  pointer-events: none;
+}
+.entry-stray[data-show] {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%);
+}
+
+/* Texto da Matriz no lugar dos arquivos (o caminho começa no Importar JSON). */
+.entry-paste {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+}
+.entry-paste-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 12px;
+}
+.entry-paste textarea {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 150px;
+  padding: 12px 14px;
+  border: 1px solid var(--control-border);
+  border-radius: var(--control-radius, 12px);
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--fs);
+  line-height: 1.45;
+  resize: vertical;
+}
+.entry-paste textarea:hover {
+  border-color: var(--action);
+}
+
+/* ---------- Coluna da IA ---------- */
+/* A caixa tem a altura do que há nela (nunca estica e deixa um vazio no meio) e acompanha a rolagem. */
+.entry-ai {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-self: start;
+  padding: 16px;
+}
+@media screen and (min-width: 1100px) and (min-height: 540px) {
+  .entry-ai {
+    position: sticky;
+    top: 0;
+  }
+}
+/* O botão principal fica embaixo da coluna; o motivo e os limites ficam logo abaixo dele. */
+.entry-action {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+}
+/* Sempre ocupa a linha, para a tela não pular quando o motivo some. */
+.entry-reason {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 22px;
+  margin: 0;
+  color: var(--text);
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+  text-align: center;
+}
+.entry-reason svg {
+  flex: none;
+  color: var(--action);
+}
+.entry-reason[data-problem] {
+  color: var(--error);
+  font-weight: 500;
+}
+.entry-reason[data-problem] svg {
+  color: var(--error);
+}
+.entry-limits {
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--fs-sm);
+  line-height: 1.3;
+  text-align: center;
+}
+
+/* ---------- Janelinha "Adicionar chave" (o Modal é o mesmo das outras janelas) ---------- */
+.modal:has(.entry-key-dialog) {
+  width: min(420px, calc(100vw - 32px));
+  padding: 24px;
+}
+.modal:has(.entry-key-dialog) .modal-title h2 {
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.entry-key-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 16px;
+}
+.entry-key-dialog .entry-input {
+  min-height: 44px;
+  font-size: 16px;
+}
+.entry-pick {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.entry-pick legend {
+  padding: 0;
+  margin-bottom: 6px;
+}
+.entry-pills {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.entry-pill {
+  display: block;
+}
+.entry-pill span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 6px 14px;
+  border: 1px solid var(--control-border);
+  border-radius: 99px;
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+.entry-pill:hover span {
+  border-color: var(--action);
+}
+.entry-pill input:checked + span {
+  border-color: var(--action);
+  background: var(--action);
+  color: var(--on-action);
+}
+.entry-pill input:focus-visible + span {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.entry-more summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 6px;
+  border-radius: 8px;
+  color: var(--action);
+  font-size: var(--fs-sm, 15px);
+  font-weight: 500;
+  cursor: pointer;
+  list-style: none;
+}
+.entry-more summary::-webkit-details-marker {
+  display: none;
+}
+.entry-more summary:hover {
+  background: var(--selected);
+  color: var(--text);
+}
+.entry-more summary svg {
+  transition: transform 0.15s ease;
+}
+.entry-more[open] summary svg {
+  transform: rotate(180deg);
+}
+.entry-more[open] summary {
+  margin-bottom: 4px;
+}
+.entry-dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.entry-dialog-actions .entry-send {
+  flex: 1 1 140px;
+  width: auto;
+}
+.entry-dialog-actions .entry-btn {
+  flex: 0 0 auto;
+  min-height: 48px;
+}
+
+/* ---------- Criar manualmente ---------- */
+.entry-manual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+.entry-manual-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 560px;
+  padding: 20px;
+}
+
+/* ---------- Importar JSON ---------- */
+.entry-json {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  min-width: 0;
+}
+.entry-json-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+}
+.entry-json-card .entry-help {
+  margin: 0;
+}
+.entry-json-card textarea {
+  width: 100%;
+  min-height: clamp(160px, 30vh, 340px);
+  margin-top: 6px;
+  padding: 12px 14px;
+  border: 1px solid var(--control-border);
+  border-radius: var(--control-radius, 12px);
+  background: var(--surface);
+  color: var(--text);
+  font-family: ui-monospace, monospace;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  resize: vertical;
+}
+.entry-json-card textarea:hover {
+  border-color: var(--action);
+}
+.entry-json-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 20px;
+}
+.entry-json-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 8px;
+}
+.application .entry-panel .entry-json-actions .entry-send {
+  width: auto;
+  min-width: 240px;
+}
+
+/* ---------- Rodapé ---------- */
+.entry-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 20px;
+  padding-top: 4px;
+  border-top: 1px solid var(--line);
+}
+
+/* ---------- Telas menores ---------- */
+/* Uma coluna: Matriz, Tarefas e Quizzes lado a lado, e a IA por último, na largura toda. */
+@media (max-width: 1099px) {
+  .entry-top {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .entry-board {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .entry-drops {
+    flex: none;
+  }
+  .entry-zone {
+    min-height: 200px;
+  }
+  /* A caixa da IA na largura toda: a escolha à esquerda e o botão de enviar à direita. */
+  .entry-ai {
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 24px;
+  }
+  .entry-ai > .entry-field {
+    flex: 1 1 50%;
+  }
+  .entry-action {
+    flex: 1 1 40%;
+    margin-top: 0;
+  }
+}
+/* Celular: uma coluna na ordem da tela: abas, passos, Matriz, Tarefas, Quizzes, IA. */
+@media (max-width: 719px) {
+  .application .entry-panel {
+    --gap: 12px;
+    --zone-min: 0px;
+    --list-max: none;
+    padding: 16px;
+  }
+  .entry-top {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "title"
+      "action"
+      "steps";
+    gap: 12px;
+  }
+  .entry-title {
+    font-size: 26px;
+  }
+  .entry-back,
+  .entry-modes {
+    justify-self: stretch;
+    min-width: 0;
+  }
+  /* Três passos iguais, com o número em cima e a palavra embaixo: cabem em qualquer largura. */
+  .entry-steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    text-align: center;
+    font-size: var(--fs-sm);
+  }
+  .entry-steps li {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .entry-steps li + li::before {
+    display: none;
+  }
+  .entry-modes button {
+    padding-inline: 8px;
+    font-size: 14px;
+  }
+  .entry-matrix {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .entry-matrix-actions {
+    grid-column: 1 / -1;
+  }
+  .entry-matrix-actions .entry-btn {
+    flex: 1;
+  }
+  .entry-drops {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .entry-zone {
+    min-height: 0;
+  }
+  .entry-zone-empty {
+    padding: 6px 0;
+  }
+  .entry-ai {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  .entry-ai > .entry-field,
+  .entry-action {
+    flex: none;
+  }
+  .application .entry-panel .entry-json-actions .entry-send {
+    width: 100%;
+  }
+  .entry-json-card textarea {
+    min-height: 200px;
+  }
+  .entry-manual-card {
+    padding: 16px;
+  }
+}
+@media (max-width: 380px) {
+  .entry-title {
+    font-size: 24px;
+  }
+  .entry-modes button svg {
+    display: none;
+  }
+}
+@media (max-width: 340px) {
+  .entry-modes button {
+    padding-inline: 4px;
+    font-size: 13px;
+  }
+}
+/* Sem mouse não se arrasta arquivo: só o botão. */
+@media (hover: none) and (pointer: coarse) {
+  .entry-zone-empty,
+  .entry-stray {
+    display: none;
+  }
+}
+
+/* ---------- Cores forçadas e alto contraste ---------- */
+@media (forced-colors: active) {
+  /* Sem as cores de fundo, o que está escolhido se mostra pela borda de 1px. */
+  .entry-modes button[aria-selected="true"] {
+    border: 1px solid Highlight;
+  }
+  .entry-steps [aria-current="step"] span,
+  .entry-pill input:checked + span,
+  .entry-zone[data-dragging="true"],
+  .entry-matrix[data-filled="true"] {
+    border-color: Highlight;
+  }
+}
