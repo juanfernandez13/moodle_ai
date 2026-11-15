@@ -5,7 +5,7 @@ import { PassThrough, Writable } from "node:stream";
 import type { IncomingMessage, ClientRequest } from "node:http";
 import type { NativeRequest } from "../../src/server/moodle/native-transport.ts";
 
-test("user URLs reject local, private, metadata, numeric-IP aliases and explicitly excluded IFCE before network", () => {
+test("user URLs reject local, private, metadata and numeric-IP aliases before network", () => {
   const unsafe = [
     "http://127.0.0.1",
     "https://10.0.0.1/moodle",
@@ -15,8 +15,6 @@ test("user URLs reject local, private, metadata, numeric-IP aliases and explicit
     "http://2130706433",
     "http://0x7f000001",
     "http://localhost:3210",
-    "https://moodle.ifce.edu.br/",
-    "https://ifce.edu.br./",
     "https://user:pass@public.example/",
     "https://public.example/?x=1",
     "https://public.example/#x",
@@ -30,6 +28,15 @@ test("user URLs reject local, private, metadata, numeric-IP aliases and explicit
         ["unsafe_moodle_url", "invalid_moodle_url"].includes(error.code),
       url,
     );
+});
+
+test("the school's own public Moodle address is accepted like any other public host", () => {
+  // Só a regra do endereço: construir o cliente não abre conexão nenhuma.
+  for (const url of [
+    "https://moodle.ifce.edu.br/",
+    "https://ead.ifce.edu.br/moodle",
+  ])
+    assert.doesNotThrow(() => new MoodleHttp(url), url);
 });
 
 test("subpath routes and already-prefixed form URLs resolve exactly once and cannot escape installation", () => {

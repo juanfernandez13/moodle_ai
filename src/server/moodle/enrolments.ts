@@ -7,7 +7,7 @@ import { MoodleError } from './http.ts';
 export type StudentEnrolment = { courseId: number; shortName: string; enrolId: number; method: 'manual'; roleId: number; role: 'student'; durationSeconds: number; expiryNotify: boolean };
 export async function inspectStudentEnrolments(client: MoodleClient, rows: readonly StudentRow[]): Promise<StudentEnrolment[]> {
   const courses = [...new Set(rows.map(row => row.course))];
-  if (courses.length > 20) throw new MoodleError('enrol_course_limit', 'Use até 20 cursos distintos por lote de matrículas.');
+  if (courses.length > 20) throw new MoodleError('enrol_course_limit', 'Use até 20 disciplinas distintas por lote de matrículas.');
   const result: StudentEnrolment[] = [];
   for (const shortName of courses) {
     const found = await client.http.text(`/course/search.php?search=${encodeURIComponent(shortName)}&perpage=100`); requirePage(found);
@@ -16,20 +16,20 @@ export async function inspectStudentEnrolments(client: MoodleClient, rows: reado
       const href = search(element).attr('href'); if (!href) return;
       const id = Number(client.http.url(href).searchParams.get('id')); if (Number.isSafeInteger(id) && id > 1) ids.add(id);
     });
-    if (ids.size > 50) throw new MoodleError('ambiguous_enrol_course', 'O nome curto do curso retornou candidatos demais. Confira o lote.');
+    if (ids.size > 50) throw new MoodleError('ambiguous_enrol_course', 'O nome curto da disciplina retornou candidatos demais. Confira o lote.');
     let courseId: number | undefined;
     for (const id of ids) {
       const html = await client.http.text(`/course/edit.php?id=${id}`); requirePage(html);
       if (load(html)('input[name="shortname"]').attr('value') === shortName) { courseId = id; break; }
     }
-    if (!courseId) throw new MoodleError('enrol_course_missing', 'Um curso de matrícula não foi encontrado ou não está acessível pelo nome curto exato.');
+    if (!courseId) throw new MoodleError('enrol_course_missing', 'Uma disciplina de matrícula não foi encontrada ou não está acessível pelo nome curto exato.');
     const html = await client.http.text(`/enrol/instances.php?id=${courseId}`); requirePage(html);
     const $ = load(html), links = new Set<string>();
     $('a[href*="editinstance.php"]').each((_, element) => {
       const href = $(element).attr('href'); if (!href) return;
       const url = client.http.url(href); if (url.searchParams.get('type') === 'manual') links.add(url.toString());
     });
-    if (links.size !== 1) throw new MoodleError('manual_enrol_missing', 'O curso deve ter um único método de matrícula manual configurado e revisado no Moodle. O adaptador não cria métodos.');
+    if (links.size !== 1) throw new MoodleError('manual_enrol_missing', 'A disciplina deve ter um único método de matrícula manual configurado e revisado no Moodle. O adaptador não cria métodos.');
     const formHtml = await client.http.text([...links][0]!); requirePage(formHtml);
     const form = readForm(formHtml, 'form:has([name="roleid"])');
     const enrolId = Number(form.fields.get('id')), roleId = Number(form.fields.get('roleid'));

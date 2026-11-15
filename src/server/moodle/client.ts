@@ -44,8 +44,10 @@ export class MoodleClient {
   }
   async courses(): Promise<{ id: number; title: string; shortName?: string }[]> {
     const result = new Map<number, { id: number; title: string; shortName?: string }>();
-    for (let page = 0; page < 20; page++) {
-      const html = await this.http.text(`/course/index.php?browse=courses&perpage=100&page=${page}`); requirePage(html);
+    // Categorias achadas pelo caminho (fila de leitura) e já vistas.
+    const queue: number[] = [], seen = new Set<number>();
+    /** Lê uma página de lista: acumula as disciplinas e as categorias, e diz se há próxima página. */
+    const read = (html: string, page: number): boolean => {
       const $ = load(html);
       $('.coursebox, .course-listitem').each((_, element) => {
         const box = $(element), link = box.find('.coursename a, a[href*="course/view.php"]').first();
@@ -54,14 +56,37 @@ export class MoodleClient {
         const title = link.text().trim().slice(0, 200);
         if (Number.isSafeInteger(id) && id > 1 && title) result.set(id, { id, title });
       });
-      const next = $('a[rel="next"], .pagination .page-item').toArray().some(element => {
+      $('a[href*="course/index.php?categoryid="]').each((_, element) => {
+        let id = 0;
+        // Um link de fora da instalação não é seguido.
+        try { id = Number(this.http.url($(element).attr('href') ?? '').searchParams.get('categoryid')); } catch { return; }
+        if (Number.isSafeInteger(id) && id > 0 && !seen.has(id)) { seen.add(id); queue.push(id); }
+      });
+      return $('a[rel="next"], .pagination .page-item').toArray().some(element => {
         const href = $(element).attr('href') ?? $(element).find('a').attr('href');
         if (!href) return false;
         return Number(this.http.url(href).searchParams.get('page')) === page + 1;
       });
-      if (!next) break;
-      if (page === 19) throw new MoodleError('course_limit', 'Há cursos demais para esta consulta.');
+    };
+    for (let page = 0; page < 20; page++) {
+      const html = await this.http.text(`/course/index.php?browse=courses&perpage=100&page=${page}`); requirePage(html);
+      if (!read(html, page)) break;
+      if (page === 19) throw new MoodleError('course_limit', 'Há disciplinas demais para esta consulta.');
     }
-    return [...result.values()];
+    if (result.size > 0) return [...result.values()];
+    // Moodle com categorias: sem categoria, a página não lista disciplinas (só as categorias). Percorre cada categoria,
+    // e as subcategorias que aparecerem nelas.
+    const top = await this.http.text('/course/index.php'); requirePage(top); read(top, 0);
+    for (let index = 0; index < queue.length; index++) {
+      if (index >= 200) throw new MoodleError('course_limit', 'Há categorias demais para esta consulta.');
+      // Só a visão padrão da categoria lista as subcategorias; com "browse=courses" vêm apenas as disciplinas.
+      const overview = await this.http.text(`/course/index.php?categoryid=${queue[index]}`); requirePage(overview); read(overview, 0);
+      for (let page = 0; page < 20; page++) {
+        const html = await this.http.text(`/course/index.php?categoryid=${queue[index]}&browse=courses&perpage=100&page=${page}`); requirePage(html);
+        if (!read(html, page)) break;
+        if (page === 19) throw new MoodleError('course_limit', 'Há disciplinas demais para esta consulta.');
+      }
+    }
+    return [...result.values()].sort((a, b) => a.title.localeCompare(b.title, 'pt-BR'));
   }
 }

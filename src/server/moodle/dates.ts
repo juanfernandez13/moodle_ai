@@ -120,7 +120,7 @@ export async function readCourse(client: MoodleClient, courseId: number, knownTi
     const snapshot = await readTarget(client, target, timezone); snapshots.push(snapshot);
     if (snapshot.form.fields.get('cutoffdate[enabled]') === '1') issues.push({ code: 'preserved_cutoff', message: `O prazo de corte adicional de “${target.title}” será preservado. Confira se ele permite o período planejado.` });
   }
-  return { course: { id: courseId, title: normalized($('h1').first().text()) || `Curso ${courseId}` }, targets: snapshots.map(snapshot => snapshot.target), snapshots, timezone, issues };
+  return { course: { id: courseId, title: normalized($('h1').first().text()) || `Disciplina ${courseId}` }, targets: snapshots.map(snapshot => snapshot.target), snapshots, timezone, issues };
 }
 export async function previewDates(client: MoodleClient, courseId: number, input: DatePlanInput): Promise<{ operation: DateOperation; hash: string; plan: DatePlan; targets: DateTarget[]; issues: Issue[] }> {
   const course = await readCourse(client, courseId);

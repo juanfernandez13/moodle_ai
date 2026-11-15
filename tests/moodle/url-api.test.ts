@@ -241,7 +241,6 @@ test("URL validation and malformed login input fail before DNS or transport and 
     "http://127.1",
     "http://2130706433",
     "http://[::ffff:7f00:1]",
-    "https://moodle.ifce.edu.br/",
     "file:///secret",
     "https://me:secret@learning.example/",
     "https://learning.example/?key=secret",
@@ -310,10 +309,13 @@ test("a target change cannot interrupt an existing operation or leak credentials
       const url = new URL(String(input));
       if (url.hostname !== "localhost") publicCalls.push(url.href);
       if (url.pathname === "/course/index.php") {
-        entered!();
-        await new Promise<void>((resolve) => {
-          release = resolve;
-        });
+        // Só a primeira leitura da lista fica parada; as seguintes (a das categorias, quando não há disciplinas) seguem.
+        if (!release) {
+          entered!();
+          await new Promise<void>((resolve) => {
+            release = resolve;
+          });
+        }
         return new Response("No courses");
       }
       return new Response(

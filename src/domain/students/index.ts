@@ -160,7 +160,7 @@ export function mapStudentRows(
     email: locate("email", "correioeletronico"),
     username: locate("username", "usuario", "login"),
     cpf: locate("cpf", "idnumber"),
-    course: locate("curso", "course", "course1"),
+    course: locate("disciplina", "curso", "course", "course1"),
   };
   if (
     !mapping &&
@@ -331,7 +331,7 @@ export async function buildStudentPreview(
           code: "required_course",
           path: "course",
           rowId: row.id,
-          message: "Informe o nome curto do curso para matrícula.",
+          message: "Informe o nome curto da disciplina para matrícula.",
         })),
     };
   const unsafe = rows.flatMap((row, index) =>
@@ -355,7 +355,25 @@ export async function buildStudentPreview(
       })),
   );
   if (unsafe.length) return { ok: false, issues: unsafe };
-  const copied = structuredClone([...rows]);
+  // Ordem fixa das chaves: a planilha monta a linha de um jeito e o servidor, ao validá-la, de outro. O hash é do texto
+  // JSON, então sem isso a tela e o servidor discordariam da mesma lista e toda prévia viria como "desatualizada".
+  const copied = structuredClone([...rows]).map(
+    (row): StudentRow => ({
+      id: row.id,
+      rowNumber: row.rowNumber,
+      original: row.original,
+      username: row.username,
+      firstName: row.firstName,
+      lastName: row.lastName,
+      email: row.email,
+      cpf: row.cpf,
+      course: row.course,
+    }),
+  );
+  const orderedOptions: StudentOptions = {
+    mode: options.mode,
+    enrol: options.enrol,
+  };
   const headers = [
     "username",
     "firstname",
@@ -383,7 +401,9 @@ export async function buildStudentPreview(
       .join("\r\n") +
     "\r\n";
   const hash = await hash256(
-    new TextEncoder().encode(JSON.stringify({ rows: copied, options, csv })),
+    new TextEncoder().encode(
+      JSON.stringify({ rows: copied, options: orderedOptions, csv }),
+    ),
   );
   return {
     ok: true,
@@ -392,7 +412,7 @@ export async function buildStudentPreview(
       csv,
       count: copied.length,
       rows: copied,
-      options: structuredClone(options),
+      options: orderedOptions,
     },
   };
 }

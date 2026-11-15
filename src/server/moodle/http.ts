@@ -65,6 +65,7 @@ export class MoodleHttp {
         "unsafe_redirect",
         "O Moodle tentou acessar um endereço fora da origem ou instalação configurada.",
       );
+    url.hash = "";
     return url;
   }
   clear(): void {
@@ -185,6 +186,8 @@ export class MoodleHttp {
             );
           }
           await response.body?.cancel();
+          // Sem o fragmento: ele nunca é parte do pedido.
+          next.hash = "";
           url = next;
           if ([301, 302, 303].includes(response.status))
             current = { method: "GET" };

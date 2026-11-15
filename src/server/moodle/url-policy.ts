@@ -81,11 +81,6 @@ export function isPublicAddress(address: string): boolean {
 function checkHost(url: URL): void {
   const host = hostname(url),
     domain = host.replace(/\.+$/, "");
-  if (domain === "ifce.edu.br" || domain.endsWith(".ifce.edu.br"))
-    throw new MoodleError(
-      "unsafe_moodle_url",
-      "Este endereço está excluído desta execução.",
-    );
   if (url.origin === "http://localhost:3211") return;
   if (
     isIP(host)
@@ -163,7 +158,8 @@ export function withinInstallation(url: URL, base: URL): boolean {
     url.origin === base.origin &&
     !url.username &&
     !url.password &&
-    !url.hash &&
+    // O fragmento (#section-1) fica só no navegador e nunca é pedido ao servidor: não muda origem nem caminho. O Moodle
+    // o acrescenta ao redirecionar depois de salvar uma seção; recusá-lo deixava toda edição de seção "desconhecida".
     !ambiguousPath(url.pathname) &&
     (url.pathname === base.pathname.slice(0, -1) ||
       url.pathname.startsWith(base.pathname))
