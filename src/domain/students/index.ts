@@ -117,6 +117,17 @@ export function parseCsv(text: string): string[][] {
   return rows.filter((items) => items.some((item) => item !== ""));
 }
 
+/**
+ * The login a student gets when the spreadsheet has no login column: the CPF, digits only (the login at IFCE, and what the
+ * original app did), or, when there is no CPF, the first part of the e-mail. The review screen keeps it in step while the
+ * CPF or the e-mail is edited, and shows a login column only when the spreadsheet brought a login of its own.
+ */
+export function deriveStudentUsername(row: { cpf: string; email: string }): string {
+  const cpf = row.cpf.trim();
+  if (cpf) return /^[\d.\-\s]+$/.test(cpf) ? cpf.replace(/\D/g, "") : cpf;
+  return row.email.split("@")[0] ?? "";
+}
+
 const normalize = (value: string) =>
   value
     .normalize("NFD")
@@ -158,8 +169,10 @@ export function mapStudentRows(
     first: locate("firstname", "primeironome"),
     last: locate("lastname", "sobrenome"),
     email: locate("email", "correioeletronico"),
-    username: locate("username", "usuario", "login"),
-    cpf: locate("cpf", "idnumber"),
+    username: locate("username", "usuario", "login", "nomedeusuario"),
+    // "Identificação do usuário" é como o Moodle em português rotula o login, e no IFCE o login é o CPF: planilhas já
+    // no formato de importação do Moodle trazem esse título para a coluna do CPF.
+    cpf: locate("cpf", "idnumber", "identificacaodousuario"),
     course: locate("disciplina", "curso", "course", "course1"),
   };
   if (
@@ -188,25 +201,36 @@ export function mapStudentRows(
     throw new Error("Uma coluna mapeada não existe na planilha.");
   const start = hasHeader ? 1 : 0;
   return matrix.slice(start).map((values, index) => {
+    // Espaço antes ou depois do valor (comum em planilha digitada) nunca faz parte dele; o original, abaixo, fica como veio.
     const field = (column: number) =>
-      column < 0 ? "" : String(values[column] ?? "");
-    const parts = field(columns.full).trim().split(/\s+/);
+      column < 0 ? "" : String(values[column] ?? "").trim();
+    const name = (column: number) => field(column).replace(/\s+/g, " ");
+    const parts = name(columns.full).split(" ");
     const email = field(columns.email);
+    const cpf = field(columns.cpf);
     return {
       id: `row-${index + start + 1}`,
       rowNumber: index + start + 1,
       original: Object.fromEntries(
         headers.map((header, column) => [header, String(values[column] ?? "")]),
       ),
-      firstName: columns.first < 0 ? (parts[0] ?? "") : field(columns.first),
+      // Com uma coluna de sobrenome, "Nome" é só o primeiro nome (como no Moodle): "Maria Clara" não perde o "Clara".
+      firstName:
+        columns.first >= 0
+          ? name(columns.first)
+          : columns.last >= 0
+            ? name(columns.full)
+            : (parts[0] ?? ""),
       lastName:
-        columns.last < 0 ? parts.slice(1).join(" ") : field(columns.last),
+        columns.last >= 0
+          ? name(columns.last)
+          : parts.slice(1).join(" "),
       email,
       username:
         columns.username < 0
-          ? (email.split("@")[0] ?? "")
+          ? deriveStudentUsername({ cpf, email })
           : field(columns.username),
-      cpf: field(columns.cpf),
+      cpf,
       course: field(columns.course),
     };
   });
@@ -236,6 +260,17 @@ function validCpf(value: string): boolean {
   }
   return true;
 }
+/** What is wrong with a CPF, in one sentence, or null when it is a valid one. A count of digits says more than "confira". */
+function cpfProblem(value: string): string | null {
+  if (validCpf(value)) return null;
+  const digits = value.replace(/\D/g, "").length;
+  return /^[\d.\-\s]+$/.test(value) && digits !== 11
+    ? `O CPF tem ${digits} ${digits === 1 ? "dígito" : "dígitos"}; precisa de 11.`
+    : "Confira os dígitos do CPF.";
+}
+const duplicateLabels = { email: "e-mail", username: "usuário", cpf: "CPF" } as const;
+const joinWords = (words: string[]) =>
+  words.length < 2 ? (words[0] ?? "") : `${words.slice(0, -1).join(", ")} e ${words.at(-1)}`;
 export function validateStudents(rows: readonly StudentRow[]): {
   valid: boolean;
   issues: StudentIssue[];
@@ -252,12 +287,19 @@ export function validateStudents(rows: readonly StudentRow[]): {
       })),
     };
   const issues: StudentIssue[] = [];
+  // Valor → linha da planilha em que apareceu primeiro, para dizer qual é a outra.
   const seen = {
-    id: new Set<string>(),
-    email: new Set<string>(),
-    username: new Set<string>(),
-    cpf: new Set<string>(),
+    id: new Map<string, number>(),
+    email: new Map<string, number>(),
+    username: new Map<string, number>(),
+    cpf: new Map<string, number>(),
   };
+  // Login escrito na planilha, sem CPF ao lado: quem usa o CPF como login tem quase todos iguais a um CPF válido. Nessa
+  // planilha, um login só de números que não é CPF (10 dígitos, dígito verificador errado) é quase sempre erro de
+  // digitação, e criaria uma conta com o login errado. Numa planilha de logins comuns (ana, bruno.lima) nada disso vale.
+  const loginOnly = rows.filter((row) => !row.cpf.trim());
+  const cpfUsers = loginOnly.filter((row) => validCpf(row.username)).length;
+  const usernamesAreCpf = cpfUsers > 0 && cpfUsers * 2 >= loginOnly.length;
   rows.forEach((row, index) => {
     const add = (code: string, field: string, message: string) =>
       issues.push({
@@ -272,27 +314,45 @@ export function validateStudents(rows: readonly StudentRow[]): {
         "username",
         "Informe um usuário sem espaços, usando letras, números, ponto, hífen ou sublinhado.",
       );
+    else if (usernamesAreCpf && !row.cpf.trim() && /^[\d.-]+$/.test(row.username)) {
+      const problem = cpfProblem(row.username);
+      if (problem) add("invalid_cpf", "username", problem);
+    }
     if (!row.firstName.trim())
       add("required_name", "firstName", "Preencha o primeiro nome.");
     if (!row.lastName.trim())
       add("required_name", "lastName", "Preencha o sobrenome.");
     if (!z.email().safeParse(row.email).success)
       add("invalid_email", "email", "Informe um e-mail válido.");
-    if (row.cpf.trim() && !validCpf(row.cpf))
-      add("invalid_cpf", "cpf", "Confira os dígitos do CPF.");
+    const cpfIssue = row.cpf.trim() ? cpfProblem(row.cpf) : null;
+    if (cpfIssue) add("invalid_cpf", "cpf", cpfIssue);
+    // Um aluno repetido costuma repetir e-mail, usuário e CPF de uma vez: uma frase só diz tudo, e cada campo continua
+    // marcado em vermelho (a tela junta as frases iguais da mesma linha numa pendência só).
+    const repeats = new Map<number, ("id" | "email" | "username" | "cpf")[]>();
     for (const field of ["id", "email", "username", "cpf"] as const) {
       const value =
         field === "cpf"
           ? row.cpf.replace(/[.\-\s]/g, "")
           : row[field].toLowerCase();
       if (!value) continue;
-      if (seen[field].has(value))
-        add(
-          `duplicate_${field}`,
-          field,
-          "Este valor já aparece em outra linha.",
-        );
-      seen[field].add(value);
+      const first = seen[field].get(value);
+      if (first !== undefined) repeats.set(first, [...(repeats.get(first) ?? []), field]);
+      else seen[field].set(value, row.rowNumber);
+    }
+    for (const [first, fields] of repeats) {
+      // O login que veio do CPF não é "usuário" para quem lê: é o CPF.
+      const loginIsCpf = row.cpf.trim() !== "" && row.username === deriveStudentUsername(row);
+      const what = [
+        ...new Set(
+          fields.flatMap((field) =>
+            field === "id" ? [] : [field === "username" && loginIsCpf ? "CPF" : duplicateLabels[field]],
+          ),
+        ),
+      ];
+      const message = what.length
+        ? `Repete a linha ${first}: mesmo ${joinWords(what)}.`
+        : "Este valor já aparece em outra linha.";
+      for (const field of fields) add(`duplicate_${field}`, field, message);
     }
   });
   return { valid: issues.length === 0, issues };

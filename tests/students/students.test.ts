@@ -5,6 +5,7 @@ import {
   mapStudentRows,
   validateStudents,
   buildStudentPreview,
+  deriveStudentUsername,
 } from "../../src/domain/students/index.ts";
 
 test("CSV preserva campos com aspas, separador e linhas internas", () => {
@@ -155,4 +156,125 @@ test("o hash da prévia não depende da ordem das chaves das linhas: a tela e o 
     );
     assert.deepEqual(fromScreen.preview.rows, schemaOrder);
   }
+});
+
+// Planilha já no formato de importação do Moodle (os títulos são os do Moodle em português): o CPF vem em
+// "Identificação do Usuário", "Nome" é só o primeiro nome e há espaço sobrando em algumas células.
+const MOODLE_HEADER = "Senha,Identificação do Usuário,Nome,Sobrenome,E-Mail,Cidade,Curso,Perfil";
+test("planilha no formato do Moodle: a identificação do usuário é o usuário, e não o começo do e-mail", () => {
+  const rows = mapStudentRows(
+    parseCsv(`${MOODLE_HEADER}\n,52998224725,Ana,Paz da Silva,pana37349@example.test,Fortaleza,DEMO,Aluno`),
+  );
+  assert.equal(rows[0]?.username, "52998224725");
+  assert.equal(rows[0]?.firstName, "Ana");
+  assert.equal(rows[0]?.lastName, "Paz da Silva");
+  assert.equal(rows[0]?.course, "DEMO");
+});
+test("com uma coluna de sobrenome, o Nome inteiro é o primeiro nome", () => {
+  const rows = mapStudentRows(
+    parseCsv(`${MOODLE_HEADER}\n,52998224725,Maria Clara,Souza,mc@example.test,,DEMO,Aluno`),
+  );
+  assert.equal(rows[0]?.firstName, "Maria Clara");
+  assert.equal(rows[0]?.lastName, "Souza");
+  // Sem sobrenome em coluna própria, o primeiro nome continua sendo só a primeira palavra.
+  const full = mapStudentRows(parseCsv("Nome completo,E-mail,curso\nMaria Clara Souza,mc@example.test,DEMO"));
+  assert.equal(full[0]?.firstName, "Maria");
+  assert.equal(full[0]?.lastName, "Clara Souza");
+});
+test("espaço antes ou depois do valor não vira pendência, e a linha original fica como veio", () => {
+  const rows = mapStudentRows(
+    parseCsv(`${MOODLE_HEADER}\n,"52998224725 ", Ana  Maria ,Silva,"ana@example.test ",,DEMO,Aluno`),
+  );
+  assert.equal(rows[0]?.username, "52998224725");
+  assert.equal(rows[0]?.email, "ana@example.test");
+  assert.equal(rows[0]?.firstName, "Ana Maria");
+  assert.equal(rows[0]?.original["Identificação do Usuário"], "52998224725 ");
+  assert.equal(validateStudents(rows).valid, true);
+});
+test("um aluno repetido diz qual linha ele repete e junta e-mail, usuário e CPF numa frase só", () => {
+  const rows = mapStudentRows(
+    parseCsv(
+      [
+        MOODLE_HEADER,
+        ",52998224725,Ana,Silva,ana@example.test,,DEMO,Aluno",
+        ",11144477735,Bruno,Lima,bruno@example.test,,DEMO,Aluno",
+        ",52998224725,Ana Maria,Silva,ana@example.test,,DEMO,Aluno",
+      ].join("\n"),
+    ),
+  );
+  const { issues } = validateStudents(rows);
+  // Os códigos e os campos continuam separados (cada campo fica em vermelho)...
+  assert.deepEqual(
+    issues.map((issue) => `${issue.rowId}:${issue.code}`),
+    ["row-4:duplicate_email", "row-4:duplicate_username", "row-4:duplicate_cpf"],
+  );
+  // ...mas a frase é a mesma, diz a linha e chama de CPF o login que veio do CPF.
+  assert.deepEqual([...new Set(issues.map((issue) => issue.message))], ["Repete a linha 2: mesmo e-mail e CPF."]);
+});
+
+// O login é o CPF (como no app original). Sem coluna de login, ele sai do CPF, só os dígitos; sem CPF, do começo do e-mail.
+test("o login sai do CPF, só os dígitos, e a planilha do Moodle em português traz o CPF em \"Identificação do Usuário\"", () => {
+  const rows = mapStudentRows(
+    parseCsv(`${MOODLE_HEADER}
+,529.982.247-25,Ana,Silva,ana@example.test,,DEMO,Aluno
+,,Bia,Souza,bia@example.test,,DEMO,Aluno`),
+  );
+  assert.deepEqual(
+    rows.map((row) => [row.cpf, row.username]),
+    [
+      ["529.982.247-25", "52998224725"],
+      ["", "bia"],
+    ],
+  );
+  assert.equal(deriveStudentUsername({ cpf: " 529.982.247-25 ", email: "x@y.z" }), "52998224725");
+  assert.equal(deriveStudentUsername({ cpf: "", email: "x.y@z.w" }), "x.y");
+  // Um login escrito na planilha (coluna "Usuário") continua sendo o que a planilha disse.
+  const own = mapStudentRows(parseCsv("Nome completo;E-mail;Usuário;CPF\nAna Silva;ana@example.test;ana.silva;529.982.247-25"));
+  assert.equal(own[0]?.username, "ana.silva");
+  assert.equal(own[0]?.cpf, "529.982.247-25");
+});
+test("um CPF com dígitos a menos ou com dígito verificador errado diz o que há de errado", () => {
+  const rows = mapStudentRows(
+    parseCsv(`${MOODLE_HEADER}
+,52998224725,Ana,A,a@example.test,,DEMO,Aluno
+,5299822472,Bia,B,b@example.test,,DEMO,Aluno
+,52998224724,Caio,C,c@example.test,,DEMO,Aluno`),
+  );
+  assert.deepEqual(
+    validateStudents(rows).issues.map((issue) => [issue.rowId, issue.code, issue.path.split(".").at(-1), issue.message]),
+    [
+      ["row-3", "invalid_cpf", "cpf", "O CPF tem 10 dígitos; precisa de 11."],
+      ["row-4", "invalid_cpf", "cpf", "Confira os dígitos do CPF."],
+    ],
+  );
+});
+
+// Login escrito na planilha, sem CPF ao lado: quem usa o CPF como login tem quase todos iguais a um CPF válido.
+const LOGIN_SHEET = (usernames: string[]) =>
+  [
+    "Usuário,Nome,Sobrenome,E-mail",
+    ...usernames.map((username, index) => `${username},Aluno,N${index},aluno${index}@example.test`),
+  ].join("\n");
+test("quando os logins da planilha são CPFs, um só de números que não é CPF vira pendência", () => {
+  const rows = mapStudentRows(
+    parseCsv(LOGIN_SHEET(["52998224725", "11144477735", "390.533.447-05", "5299822472", "52998224724"])),
+  );
+  assert.deepEqual(
+    validateStudents(rows).issues.map(
+      (issue) => `${issue.rowId}:${issue.code}:${issue.path.split(".").at(-1)}:${issue.message}`,
+    ),
+    [
+      "row-5:invalid_cpf:username:O CPF tem 10 dígitos; precisa de 11.",
+      "row-6:invalid_cpf:username:Confira os dígitos do CPF.",
+    ],
+  );
+});
+test("logins comuns, ou uma minoria de CPFs, não são tratados como CPF", () => {
+  const issues = (usernames: string[]) => validateStudents(mapStudentRows(parseCsv(LOGIN_SHEET(usernames)))).issues;
+  // Logins de gente: nada a conferir.
+  assert.deepEqual(issues(["ana", "bruno.lima", "carla-souza"]), []);
+  // Matrículas de 8 dígitos com um único CPF no meio: a minoria não define a regra.
+  assert.deepEqual(issues(["20240001", "20240002", "20240003", "52998224725"]), []);
+  // Login com letra numa planilha de CPFs é outra coisa (um professor, por exemplo), não um CPF errado.
+  assert.deepEqual(issues(["52998224725", "11144477735", "prof.joao"]), []);
 });
