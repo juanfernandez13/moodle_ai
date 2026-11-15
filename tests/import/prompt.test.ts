@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { chatReply, sentPrompt } from "./ai-fake.ts";
 import {
   buildImportPrompt,
   interpretText,
@@ -33,9 +34,9 @@ test("o perfil não define a organização: os prompts diferem só pelo nome do 
   assert.equal(weeks, topics.replace("docx-topicos-v1", "docx-semanal-v1"));
 });
 
-test("o provedor recebe exatamente o prompt de buildImportPrompt, nos dois providers e perfis", async () => {
+test("o provedor recebe exatamente o prompt de buildImportPrompt, em todas as IAs e perfis", async () => {
   const sample = await fixture("topics.txt");
-  for (const provider of ["openai", "gemini"] as const) {
+  for (const provider of ["openai", "gemini", "claude", "custom"] as const) {
     for (const profile of profiles) {
       let sent = "";
       await interpretText(
@@ -45,14 +46,13 @@ test("o provedor recebe exatamente o prompt de buildImportPrompt, nos dois provi
           provider,
           apiKey: "CHAVE-FICTICIA",
           model: "modelo-teste",
+          ...(provider === "custom"
+            ? { baseUrl: "https://ia.exemplo.com/v1" }
+            : {}),
         },
         {
           fetch: async (_url, options) => {
-            const body = JSON.parse(String(options?.body));
-            sent =
-              provider === "openai"
-                ? body.input[0].content
-                : body.systemInstruction.parts[0].text;
+            sent = sentPrompt(options);
             return new Response("", { status: 400 });
           },
         },
@@ -88,12 +88,7 @@ test("a organização devolvida pela IA não é trocada pelo perfil informado", 
       model: "modelo-teste",
     },
     {
-      fetch: async () =>
-        Response.json({
-          candidates: [
-            { finishReason: "STOP", content: { parts: [{ text: envelope }] } },
-          ],
-        }),
+      fetch: async () => chatReply(envelope),
     },
   );
   assert.equal(result.ok, true, JSON.stringify(result));

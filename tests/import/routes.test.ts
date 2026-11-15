@@ -8,6 +8,7 @@ import {
   interpretText,
 } from "../../src/server/import/index.ts";
 import { UPLOAD_MESSAGES } from "../../src/shared/upload-limits.ts";
+import { chatReply } from "./ai-fake.ts";
 
 const text = await readFile(
   new URL("../fixtures/import/topics.txt", import.meta.url),
@@ -153,20 +154,7 @@ test("solicitações externas e sem Origin não podem consumir chave sintética 
   let calls = 0;
   context.mock.method(globalThis, "fetch", async () => {
     calls++;
-    return Response.json({
-      status: "completed",
-      output: [
-        {
-          type: "message",
-          content: [
-            {
-              type: "output_text",
-              text: JSON.stringify({ draft: fixture.draft, fields: [] }),
-            },
-          ],
-        },
-      ],
-    });
+    return chatReply(JSON.stringify({ draft: fixture.draft, fields: [] }));
   });
   for (const origin of [
     "https://outside.example",
@@ -268,20 +256,7 @@ test("Origin legítimo e application/json mantêm provider funcional sem persist
         new Headers(options.headers).get("authorization"),
         "Bearer SYNTHETIC-CSRF-TEST-KEY",
       );
-      return Response.json({
-        status: "completed",
-        output: [
-          {
-            type: "message",
-            content: [
-              {
-                type: "output_text",
-                text: JSON.stringify({ draft: fixture.draft, fields: [] }),
-              },
-            ],
-          },
-        ],
-      });
+      return chatReply(JSON.stringify({ draft: fixture.draft, fields: [] }));
     },
   );
   const response = await interpretPost(

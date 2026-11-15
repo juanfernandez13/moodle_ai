@@ -11,6 +11,11 @@ const NAMES = [
   "OPENAI_MODEL",
   "GEMINI_API_KEY",
   "GEMINI_MODEL",
+  "ANTHROPIC_API_KEY",
+  "ANTHROPIC_MODEL",
+  "CUSTOM_AI_API_KEY",
+  "CUSTOM_AI_MODEL",
+  "CUSTOM_AI_BASE_URL",
 ] as const;
 
 // Isola o teste das variáveis de quem executa e as restaura ao terminar.
@@ -57,6 +62,8 @@ test("sem chaves nem modelos, nenhum provedor aparece como configurado", () => {
     providers: {
       openai: { configured: false, model: null },
       gemini: { configured: false, model: null },
+      claude: { configured: false, model: null },
+      custom: { configured: false, model: null },
     },
   });
 });
@@ -77,6 +84,28 @@ test("a chave de cada provedor conta separadamente", () => {
     [false, false],
     "Modelo e outras variáveis não substituem a chave.",
   );
+});
+
+test("Claude e a Outra IA têm chave e modelo próprios", () => {
+  const { providers } = readProviderStatus({
+    ANTHROPIC_API_KEY: "SYNTHETIC-ANTHROPIC-KEY-1234567890",
+    ANTHROPIC_MODEL: " claude-sonnet-5-5 ",
+    CUSTOM_AI_API_KEY: " ",
+    CUSTOM_AI_MODEL: "llama3.2:3b",
+    CUSTOM_AI_BASE_URL: "http://127.0.0.1:11434/v1",
+  });
+  assert.deepEqual(providers.claude, {
+    configured: true,
+    model: "claude-sonnet-5-5",
+  });
+  assert.deepEqual(providers.custom, { configured: false, model: "llama3.2:3b" });
+  assert.deepEqual(
+    [providers.openai.configured, providers.gemini.configured],
+    [false, false],
+  );
+  const text = JSON.stringify(providers);
+  assert.equal(text.includes("SYNTHETIC-ANTHROPIC"), false);
+  assert.equal(text.includes("11434"), false, "o endereço do servidor não sai");
 });
 
 test("chave vazia ou só com espaços não conta como configurada", () => {
@@ -128,6 +157,8 @@ test("o resultado traz só configured e model, nunca a chave", () => {
     providers: {
       openai: { configured: true, model: "modelo-openai" },
       gemini: { configured: true, model: "modelo-gemini" },
+      claude: { configured: false, model: null },
+      custom: { configured: false, model: null },
     },
   });
   const text = JSON.stringify(status);
@@ -154,6 +185,8 @@ test("chave sem modelo definido deixa model null e não vaza a chave", () => {
     providers: {
       openai: { configured: true, model: null },
       gemini: { configured: true, model: null },
+      claude: { configured: false, model: null },
+      custom: { configured: false, model: null },
     },
   });
   const text = JSON.stringify(status);
@@ -201,6 +234,8 @@ test("GET /api/import/providers informa o estado sem cache e sem a chave", async
     providers: {
       openai: { configured: true, model: "modelo-openai" },
       gemini: { configured: true, model: null },
+      claude: { configured: false, model: null },
+      custom: { configured: false, model: null },
     },
   });
   assertWithoutKey(text, OPENAI_KEY);
@@ -218,12 +253,16 @@ test("a resposta acompanha o servidor a cada chamada", async (context) => {
   assert.deepEqual(await read(), {
     openai: { configured: false, model: null },
     gemini: { configured: false, model: null },
+    claude: { configured: false, model: null },
+    custom: { configured: false, model: null },
   });
   process.env.GEMINI_API_KEY = GEMINI_KEY;
   process.env.GEMINI_MODEL = "modelo-gemini";
   assert.deepEqual(await read(), {
     openai: { configured: false, model: null },
     gemini: { configured: true, model: "modelo-gemini" },
+    claude: { configured: false, model: null },
+    custom: { configured: false, model: null },
   });
 });
 

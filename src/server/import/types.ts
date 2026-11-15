@@ -1,4 +1,5 @@
 import type { ContentBlock, CourseDraft } from "../../domain/course/index.ts";
+import type { AiProviderId } from "../../shared/ai-providers.ts";
 import { UPLOAD_LIMITS } from "../../shared/upload-limits.ts";
 
 export const IMPORT_LIMITS = Object.freeze({
@@ -19,7 +20,14 @@ export const IMPORT_LIMITS = Object.freeze({
   timeoutMs: 60_000,
 });
 export type ImportProfile = "docx-topicos-v1" | "docx-semanal-v1";
-export type ImportProvider = "offline" | "openai" | "gemini";
+export type ImportProvider = "offline" | AiProviderId;
+/** course: o planejamento vira um curso inteiro; quizzes: só os quizzes, para mesclar num curso que já existe. */
+export type ImportMode = "course" | "quizzes";
+export type PromptVersion =
+  | "moodle-import-v2"
+  | "moodle-import-v3"
+  | "moodle-quiz-import-v1"
+  | "moodle-quiz-import-v2";
 export interface ImportIssue {
   code: string;
   path: string;
@@ -41,7 +49,8 @@ export interface ImportProvenance {
   profile: ImportProfile;
   provider: ImportProvider;
   model?: string;
-  promptVersion: "moodle-import-v1";
+  // v2: o prompt manda a IA descobrir pelo documento se o curso é por tópicos ou por semanas (v1 seguia o perfil).
+  promptVersion: PromptVersion;
   schemaVersion: 1;
   fields: { path: string; sourceId: string; blockId: string }[];
 }
@@ -70,16 +79,26 @@ export interface ExtractedDocument extends DocumentInput {
 export interface ImportDependencies {
   apiKey?: string;
   model?: string;
+  /** Só na "Outra IA": o endereço do serviço (as demais têm o delas). */
+  baseUrl?: string;
   fetch?: typeof fetch;
   signal?: AbortSignal;
   timeoutMs?: number;
 }
+/** O que se devolve à IA para ela corrigir a resposta: o que ela escreveu e o que está errado nisso. */
+export interface RepairRequest {
+  previous: string;
+  problems: string[];
+}
 export class ImportError extends Error {
   readonly code: string;
-  constructor(code: string, message: string) {
+  /** Preenchido quando o erro é da resposta da IA (e não da conexão): dá para pedir a correção. Nunca vai à tela. */
+  readonly repair: RepairRequest | undefined;
+  constructor(code: string, message: string, repair?: RepairRequest) {
     super(message);
     this.name = "ImportError";
     this.code = code;
+    this.repair = repair;
   }
 }
 export const issue = (

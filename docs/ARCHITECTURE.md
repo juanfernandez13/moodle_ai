@@ -88,6 +88,8 @@ IDs de curso, seção, atividade, questão e anexo são estáveis durante a edi�
 
 Atividade usa uma união discriminada por `type`, começando pelo conjunto efetivamente suportado no MVP. Questões também possuem tipo explícito. Campos pedagógicos opcionais não são criados pelo formato de exportação. A ordem das listas define a apresentação; o número da aula é um rótulo, não uma chave de associação.
 
+**Pacote só de quizzes.** O mesmo contrato descreve um `.mbz` para mesclar num curso que já existe, sem a disciplina inteira: `metadata.quizOnly: true` marca o pacote e cada seção leva `targetNumber`, o número da seção do curso de destino (0 é a geral). As regras do domínio exigem só quizzes, um destino único por seção e nenhum `gradebook`. Fora do pacote, `targetNumber` é recusado. O exportador então não escreve `gradebook.xml`, deixa nome e resumo das seções vazios, zera o `idnumber` dos módulos e grava as notas na raiz com `aggregationcoef` 0: assim o Moodle de destino mantém a estrutura de notas, os nomes e as restrições que já tem. A seção de destino de cada arquivo sai do nome (“Quiz 3”), decidida em código por `src/shared/quiz-targets.ts`, nunca pela IA.
+
 Anexos são `AttachmentRef` com ID opaco, nome de exibição, tamanho e tipo de conteúdo. O JSON público não contém `filePath`, diretório temporário, segredo ou credencial. O adaptador de arquivos resolve os IDs para os recursos físicos durante a exportação e mantém esses detalhes no servidor.
 
 ```mermaid

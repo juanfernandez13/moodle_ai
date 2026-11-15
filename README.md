@@ -35,6 +35,7 @@ Além dos cursos, a aplicação cuida de duas tarefas repetitivas de quem admini
 
 - **Importação de documentos**: DOCX (por tópicos ou semanas), PDF com texto e TXT, preservando imagens, tabelas e a origem de cada trecho.
 - **Interpretação com IA**: OpenAI ou Gemini com saída estruturada e validação comum; a chave fica no servidor e nunca é salva em arquivos.
+- **Só quizzes**: sem Matriz, cada arquivo vira um quiz e o `.mbz` traz apenas os quizzes, para restaurar com “mesclar com este curso” numa disciplina que já existe. O número no nome (“Quiz 3”) escolhe a seção; as notas e a estrutura do curso de destino não são tocadas.
 - **Editor visual do curso**: metadados, unidades, atividades, questões, livro de notas, datas e anexos, em painéis paginados.
 - **Seis tipos de atividade**: fórum, tarefa, quiz, chat, wiki e glossário, com várias atividades do mesmo tipo na mesma unidade.
 - **Três tipos de questão**: múltipla escolha, associação e resposta discursiva.
@@ -117,8 +118,20 @@ Todas são opcionais. Copie `.env.example` para `.env.local` e reinicie o servid
 | `OPENAI_MODEL` | Modelo da OpenAI; sem valor, usa o padrão |
 | `GEMINI_API_KEY` | Chave do Gemini, usada só no servidor |
 | `GEMINI_MODEL` | Modelo do Gemini; sem valor, usa o padrão |
+| `ANTHROPIC_API_KEY` | Chave do Claude, usada só no servidor |
+| `ANTHROPIC_MODEL` | Modelo do Claude; sem valor, usa o padrão |
+| `CUSTOM_AI_API_KEY` | Chave de qualquer outro serviço compatível com OpenAI (OpenRouter, Groq, Ollama…) |
+| `CUSTOM_AI_BASE_URL` | Endereço desse serviço, por exemplo `https://openrouter.ai/api/v1` |
+| `CUSTOM_AI_MODEL` | Modelo desse serviço (não há padrão) |
+| `AI_ALLOWED_BASE_URLS` | Lista (separada por vírgula) dos únicos endereços que a "Outra IA" pode chamar; use em servidor publicado |
+| `AI_ALLOW_LOCAL_BASE_URLS` | `1` libera endereços da máquina local (Ollama) em produção; fora de produção já são aceitos |
+| `AI_COMPACT_SCHEMA` | `1` manda à IA o esquema do curso compacto (~70% menos tokens por chamada). Desligado por padrão: no Gemini 3.5 Flash, 4 de 11 primeiras respostas vieram com colchete errado, contra 0 de 5 por extenso (amostra pequena) |
 | `MOODLE_URL` | Endereço sugerido na tela de conexão com o Moodle |
 | `MOODLE_CAPABILITY_PROFILE` | Perfil de compatibilidade do Moodle conectado |
+
+Todas as IAs falam o mesmo formato (`POST {endereço}/chat/completions`, chave em `Authorization: Bearer`). O que muda de uma para outra — endereço, modelo padrão, nome do parâmetro do limite de saída e se aceitam o modo JSON — fica em `src/shared/ai-providers.ts`. O modelo de cada IA se escolhe na janela "Adicionar chave" ou pelas variáveis acima. O botão "Testar e usar" dessa janela faz uma chamada mínima de verdade (`POST /api/import/test`, pelo mesmo caminho da importação) e só guarda a IA se ela responder; se falhar, diz em português simples o que fazer (chave recusada, modelo inexistente, limite de uso, sem saldo, serviço fora do ar) e deixa "Usar assim mesmo". Nada do que o serviço responde volta para a tela.
+
+**Garantia do JSON.** O que a IA devolve nunca vira projeto sem passar pela validação do contrato (esquema, regras do domínio, origem de cada campo, imagens e anexos). Se não passar, a resposta volta à IA com a lista do que está errado, até duas vezes; se continuar errada, o erro aparece e nada é aplicado. O modo JSON do serviço (quando existe) reduz os erros, mas quem garante é essa validação.
 
 Sem chave no servidor, a pessoa pode informar uma chave só para a sessão: ela fica na memória da aba e some ao recarregar a página. Chaves nunca vão para projetos, downloads ou logs.
 

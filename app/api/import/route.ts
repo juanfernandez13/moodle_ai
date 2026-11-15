@@ -29,6 +29,8 @@ export async function POST(request: Request): Promise<Response> {
       "provider",
       "apiKey",
       "model",
+      "mode",
+      "baseUrl",
     ]);
     if ([...form.keys()].some((key) => !allowed.has(key)))
       return fail(
@@ -43,7 +45,14 @@ export async function POST(request: Request): Promise<Response> {
     )
       return fail("invalid_import_files", UPLOAD_MESSAGES.fileCount);
     const options: Record<string, unknown> = {};
-    for (const key of ["profile", "provider", "apiKey", "model"]) {
+    for (const key of [
+      "profile",
+      "provider",
+      "apiKey",
+      "model",
+      "mode",
+      "baseUrl",
+    ]) {
       const values = form.getAll(key);
       if (
         values.length > 1 ||

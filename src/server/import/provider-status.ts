@@ -1,3 +1,4 @@
+import { AI_PRESETS, AI_PROVIDER_IDS } from "../../shared/ai-providers.ts";
 import type { ImportProvider } from "./types.ts";
 
 /** Provedores que dependem de chave; o perfil offline não tem credencial. */
@@ -16,12 +17,6 @@ export interface ProviderStatusResponse {
 
 type Environment = Readonly<Record<string, string | undefined>>;
 
-// Mesmos nomes que src/server/import/providers.ts consulta ao interpretar.
-const VARIABLES: Record<KeyedProvider, { key: string; model: string }> = {
-  openai: { key: "OPENAI_API_KEY", model: "OPENAI_MODEL" },
-  gemini: { key: "GEMINI_API_KEY", model: "GEMINI_MODEL" },
-};
-
 function statusOf(
   environment: Environment,
   names: { key: string; model: string },
@@ -36,14 +31,19 @@ function statusOf(
 /**
  * Diz quais provedores de IA têm chave no servidor, sem expor a chave.
  * O ambiente é lido a cada chamada, então reflete o processo em execução.
+ * Os nomes das variáveis são os mesmos que src/server/import/providers.ts consulta ao interpretar
+ * (todos saem de src/shared/ai-providers.ts).
  */
 export function readProviderStatus(
   environment: Environment = process.env,
 ): ProviderStatusResponse {
-  return {
-    providers: {
-      openai: statusOf(environment, VARIABLES.openai),
-      gemini: statusOf(environment, VARIABLES.gemini),
-    },
-  };
+  const providers = {} as Record<KeyedProvider, ProviderStatus>;
+  for (const id of AI_PROVIDER_IDS) {
+    const preset = AI_PRESETS[id];
+    providers[id] = statusOf(environment, {
+      key: preset.keyVariable,
+      model: preset.modelVariable,
+    });
+  }
+  return { providers };
 }
