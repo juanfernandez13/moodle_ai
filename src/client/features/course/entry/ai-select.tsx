@@ -1,15 +1,14 @@
 "use client";
 import { useEffect, useId, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { KeyRound, TriangleAlert } from "lucide-react";
+import { KeyRound, Plus, TriangleAlert } from "lucide-react";
 import { z } from "zod";
+import { Dropdown } from "../../../components/dropdown.tsx";
 import { AI_PRESETS } from "../../../../shared/ai-providers.ts";
 import type { CourseBuilderModel } from "../hooks/use-course-builder.ts";
 import type { AiProblem, AiProvider, TabKeys } from "../hooks/use-course-import.ts";
 import { AddKeyDialog } from "./add-key-dialog.tsx";
 import { AI_NAME, AI_ORDER } from "./ai-names.ts";
-
-const ADD_KEY = "add-key";
 
 /* --- IAs com chave no servidor (só diz se há chave, nunca a chave) --- */
 const providerStatus = z.object({
@@ -27,7 +26,7 @@ const providersSchema = z.object({
 type ServerProviders = z.infer<typeof providersSchema>["providers"];
 let knownProviders: ServerProviders | null = null;
 
-// Pergunta uma vez: quando a pessoa abre o select, a resposta já chegou.
+// Pergunta uma vez: quando a pessoa abre a lista, a resposta já chegou.
 function useServerProviders(): ServerProviders | null {
   const [providers, setProviders] = useState<ServerProviders | null>(
     knownProviders,
@@ -50,7 +49,7 @@ function useServerProviders(): ServerProviders | null {
         knownProviders = parsed.data.providers;
         setProviders(parsed.data.providers);
       })
-      // Sem resposta, o select só oferece "Adicionar chave…".
+      // Sem resposta, a lista só oferece "Adicionar chave".
       .catch(() => undefined);
     return () => abort.abort();
   }, []);
@@ -58,7 +57,7 @@ function useServerProviders(): ServerProviders | null {
 }
 
 /**
- * As IAs que já têm chave, na ordem do select (Gemini, OpenAI, Claude, Outra IA), cada uma com a origem da chave.
+ * As IAs que já têm chave, na ordem da lista (Gemini, OpenAI, Claude, Outra IA), cada uma com a origem da chave.
  * A chave digitada nesta aba vale mais que a do servidor para a mesma IA.
  */
 export function useAiChoices(keys: TabKeys) {
@@ -71,7 +70,7 @@ export function useAiChoices(keys: TabKeys) {
         ? "do servidor"
         : null;
     return origin
-      ? [{ value: name, label: `${AI_NAME[name]} · chave ${origin}` }]
+      ? [{ value: name, label: AI_NAME[name], hint: `chave ${origin}` }]
       : [];
   });
   return { server, options };
@@ -97,11 +96,11 @@ type Props = Pick<
 };
 
 /**
- * A coluna da IA. A coruja fica apoiada no cartão e pergunta "Qual IA vamos usar?" (o balão é o rótulo do select).
- * O select traz as IAs que já têm chave e, por último, "Adicionar chave…". Sem nenhuma IA com chave, o balão diz o
- * que fazer ("Vamos cadastrar uma IA?" e o caminho sem IA) e no lugar do select fica um botão só: "Cadastrar IA".
+ * A coluna da IA. A coruja fica apoiada no cartão e pergunta "Qual IA vamos usar?" (o balão é o rótulo da lista).
+ * A lista traz as IAs que já têm chave e, por último, a ação "Adicionar chave". Sem nenhuma IA com chave, o balão diz o
+ * que fazer ("Vamos cadastrar uma IA?" e o caminho sem IA) e no lugar da lista fica um botão só: "Cadastrar IA".
  * Os dois caminhos abrem a mesma janelinha; ao salvar, a nova IA já fica escolhida.
- * Quando a IA recusa a chave, o aviso e o botão para trocá-la ficam logo abaixo do select.
+ * Quando a IA recusa a chave, o aviso e o botão para trocá-la ficam logo abaixo da lista.
  */
 export function AiSelect({
   provider,
@@ -115,13 +114,13 @@ export function AiSelect({
 }: Props) {
   const { options } = choices;
   const selectId = useId();
-  const selectRef = useRef<HTMLSelectElement>(null);
+  const selectRef = useRef<HTMLButtonElement>(null);
   const addRef = useRef<HTMLButtonElement>(null);
   // IA que a janelinha mostra primeiro; null: janelinha fechada.
   const [adding, setAdding] = useState<AiProvider | null>(null);
   // O servidor já respondeu e nenhuma IA tem chave: não há o que escolher, só cadastrar.
   const empty = choices.server !== null && options.length === 0;
-  // Ao salvar a primeira chave o botão dá lugar ao select: o foco vai para ele.
+  // Ao salvar a primeira chave o botão dá lugar à lista: o foco vai para ela.
   const focusSelect = useRef(false);
   useEffect(() => {
     if (empty || !focusSelect.current) return;
@@ -187,33 +186,23 @@ export function AiSelect({
               Cadastrar IA
             </button>
           ) : (
-            <select
+            <Dropdown
               id={selectId}
-              ref={selectRef}
-              className="entry-select"
-              value={provider ?? ""}
-              onChange={(event) => {
-                const value = event.target.value;
-                // "Adicionar chave…" é uma ação, não uma escolha: o select volta para o que estava.
-                if (value === ADD_KEY) openDialog();
-                else {
-                  const chosen = AI_ORDER.find((name) => name === value);
-                  if (chosen) setProvider(chosen);
-                }
-              }}
-            >
-              {provider === null && (
-                <option value="" disabled>
-                  Escolha uma IA
-                </option>
-              )}
-              {options.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-              <option value={ADD_KEY}>Adicionar chave…</option>
-            </select>
+              buttonRef={selectRef}
+              value={provider}
+              options={options}
+              onChange={setProvider}
+              placeholder="Escolha uma IA"
+              // "Adicionar chave" é uma ação, não uma escolha: a IA escolhida continua a mesma.
+              actions={[
+                {
+                  id: "add-key",
+                  label: "Adicionar chave",
+                  icon: <Plus size={16} />,
+                  onSelect: () => openDialog(),
+                },
+              ]}
+            />
           )}
           {/* Qual modelo vai ler os arquivos: o digitado nesta aba, senão o do servidor, senão o padrão da IA. */}
           {provider !== null && !empty && (

@@ -1,6 +1,5 @@
 import type { StudentIssue, StudentOptions, StudentRow } from "../../../domain/students/index.ts";
 
-export const STUDENT_PAGE_SIZE = 10;
 export const studentFields = [
   ["fullName", "Nome completo"], ["firstName", "Primeiro nome"],
   ["lastName", "Sobrenome"], ["email", "E-mail"], ["username", "Usuário"],
@@ -109,26 +108,4 @@ export function previewStatusLabel(status: string): string {
   if (/pend[eê]ncia/i.test(status)) return "Pendência";
   if (/^revisado/i.test(status)) return "Pronto";
   return status;
-}
-
-export function studentPage<T>(rows: T[], page: number, size: number = STUDENT_PAGE_SIZE): T[] {
-  return rows.slice(page * size, (page + 1) * size);
-}
-
-/** The review table never shows fewer than this many students per page, even when the window is too low for them. */
-export const STUDENT_MIN_PAGE_SIZE = 3;
-
-/**
- * How many students of the review table fit in `space` pixels (what is left of the window after everything else on
- * the screen), `rowHeight` pixels each. Between the minimum and the ten of a full page: so a page is always seen
- * whole, with no scroll inside the table.
- */
-export function studentRowsThatFit(space: number, rowHeight: number): number {
-  if (!Number.isFinite(space) || !Number.isFinite(rowHeight) || rowHeight <= 0) return STUDENT_PAGE_SIZE;
-  return Math.max(STUDENT_MIN_PAGE_SIZE, Math.min(STUDENT_PAGE_SIZE, Math.floor(space / rowHeight)));
-}
-
-/** After the page size changed, the page that still shows the first student the person was looking at. */
-export function studentPageAfterResize(page: number, oldSize: number, newSize: number): number {
-  return Math.floor((page * oldSize) / newSize);
 }

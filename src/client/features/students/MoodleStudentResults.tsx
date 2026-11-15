@@ -1,8 +1,6 @@
 "use client";
-import { Pagination } from "../../components/pagination.tsx";
 import { ScrollRegion } from "../../components/scroll-region.tsx";
 import { useStageFocus } from "./hooks/use-stage-focus.ts";
-import { STUDENT_PAGE_SIZE, studentPage } from "./helpers.ts";
 import type { MoodleStudentResult } from "./schemas.ts";
 
 const statusLabels: Record<MoodleStudentResult["status"], string> = {
@@ -21,12 +19,8 @@ const countLabels: Record<MoodleStudentResult["status"], [string, string]> = {
 /** The outcome for each student, with the totals first so the answer is in the first line. */
 export function MoodleStudentResults({
   results,
-  page,
-  onPageChange,
 }: {
   results: MoodleStudentResult[];
-  page: number;
-  onPageChange: (page: number) => void;
 }) {
   // O resultado chega depois do botão de cadastrar: o foco vai para o título dele.
   const heading = useStageFocus(true, false);
@@ -58,7 +52,7 @@ export function MoodleStudentResults({
             </tr>
           </thead>
           <tbody>
-            {studentPage(results, page).map((entry, index) => (
+            {results.map((entry, index) => (
               <tr key={`${entry.username}-${index}`}>
                 <td>{entry.username}</td>
                 <td>{statusLabels[entry.status] ?? entry.status}</td>
@@ -68,13 +62,6 @@ export function MoodleStudentResults({
           </tbody>
         </table>
       </ScrollRegion>
-      {results.length > STUDENT_PAGE_SIZE && (
-        <Pagination
-          page={page}
-          count={results.length}
-          onChange={onPageChange}
-        />
-      )}
     </section>
   );
 }

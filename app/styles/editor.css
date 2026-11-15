@@ -30,9 +30,9 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  gap: 8px 20px;
+  gap: 6px 20px;
   min-width: 0;
-  padding: 8px 14px 8px 10px;
+  padding: 6px 10px 6px 8px;
 }
 .editor-layout .title-with-back {
   display: flex;
@@ -50,13 +50,13 @@
   -webkit-line-clamp: 2;
   overflow: hidden;
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 0.9375rem;
   line-height: 1.25;
   overflow-wrap: anywhere;
 }
 .editor-layout .save-state {
-  margin: 1px 0 0;
-  font-size: 0.875rem;
+  margin: 0;
+  font-size: 0.8125rem;
   line-height: 1.4;
 }
 .editor-layout .editor-tools {
@@ -72,19 +72,28 @@
   align-items: center;
   justify-content: center;
   flex: none;
-  gap: 8px;
-  min-height: 44px;
-  padding: 8px 16px;
-  border: 1px solid var(--control-border);
+  gap: 6px;
+  min-height: var(--ctl);
+  padding: 0 12px;
+  border: 1px solid var(--button-border);
   border-radius: 99px;
   background: var(--surface);
   color: var(--text);
-  font-size: 0.9375rem;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: var(--w-medium);
   line-height: 1.2;
+  transition:
+    background-color 0.14s ease,
+    border-color 0.14s ease;
 }
 .editor-layout .editor-back svg {
+  width: 16px;
+  height: 16px;
   color: var(--action);
+}
+.editor-layout .editor-tools :is(.primary, .secondary) svg {
+  width: 16px;
+  height: 16px;
 }
 .editor-layout .editor-back:hover {
   border-color: var(--action);
@@ -108,7 +117,7 @@
 /* Sumário. */
 .editor-layout .course-nav {
   min-width: 0;
-  padding: 12px 10px 8px;
+  padding: 12px 8px 8px;
 }
 .editor-layout .nav-title {
   margin-bottom: 10px;
@@ -122,7 +131,7 @@
   container: editor-page / inline-size;
   min-width: 0;
   min-height: 0;
-  padding: 22px 28px 28px;
+  padding: 18px 22px 22px;
 }
 /* Páginas estreitas (largura útil do conteúdo): campos em uma coluna e atividades em duas. */
 @container editor-page (max-width: 440px) {
@@ -176,7 +185,7 @@
 .editor-layout .editor-main,
 .editor-layout .issues-body {
   scrollbar-width: thin;
-  scrollbar-color: var(--control-border) transparent;
+  scrollbar-color: var(--button-border) transparent;
   scroll-padding: 12px;
 }
 
@@ -237,13 +246,13 @@
     animation-range: calc(100% - 24px) 100%;
   }
   .editor-layout .course-nav {
-    --shade-bleed: 10px;
+    --shade-bleed: 8px;
     --shade-top: -12px;
     --shade-bottom: -8px;
   }
   .editor-layout .editor-content {
-    --shade-top: -22px;
-    --shade-bottom: -28px;
+    --shade-top: -18px;
+    --shade-bottom: -22px;
   }
   .editor-layout .issues-body {
     --shade-bleed: 6px;
@@ -280,7 +289,7 @@
   }
   .workspace-main > .delivery h2 {
     margin-bottom: 4px;
-    font-size: 1.0625rem;
+    font-size: 0.875rem;
   }
   .workspace-main > .delivery p {
     margin-bottom: 4px;
@@ -317,12 +326,12 @@
 @media (min-width: 1100px) {
   .editor-layout {
     grid-template-columns:
-      clamp(212px, 19vw, 280px)
+      clamp(204px, 17vw, 260px)
       minmax(0, 1fr)
-      clamp(236px, 19vw, 320px);
+      clamp(228px, 18vw, 300px);
   }
   .editor-layout.is-clear {
-    grid-template-columns: clamp(212px, 19vw, 280px) minmax(0, 1fr);
+    grid-template-columns: clamp(204px, 17vw, 260px) minmax(0, 1fr);
   }
   .editor-layout .editor-content,
   .editor-layout:not(.is-clear) .issues-panel {
@@ -418,7 +427,7 @@
 }
 @media (max-width: 600px) {
   .editor-layout .editor-heading h1 {
-    font-size: 1.1875rem;
+    font-size: 0.9375rem;
   }
   .editor-layout .editor-tools {
     display: grid;

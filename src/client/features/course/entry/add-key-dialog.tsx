@@ -1,13 +1,7 @@
 "use client";
-import { useEffect, useId, useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import type { FormEvent } from "react";
-import {
-  Check,
-  ExternalLink,
-  LoaderCircle,
-  Lock,
-  TriangleAlert,
-} from "lucide-react";
+import { ExternalLink, Lock, TriangleAlert } from "lucide-react";
 import { Modal } from "../../../components/modal.tsx";
 import { AI_PRESETS } from "../../../../shared/ai-providers.ts";
 import type { AiProvider, TabKey, TabKeys } from "../hooks/use-course-import.ts";
@@ -18,8 +12,10 @@ type Problem = { field: "key" | "model" | "baseUrl"; text: string };
 /**
  * "Adicionar chave": uma janelinha com a IA, a chave, o modelo e, na Outra IA, o endereço do serviço.
  * A chave só sobe para o estado da tela (nunca para localStorage, sessionStorage ou IndexedDB)
- * e some quando a aba fecha. O Modal prende o foco, fecha com Esc e devolve o foco ao select.
+ * e some quando a aba fecha. O Modal prende o foco, fecha com Esc e devolve o foco a quem a abriu.
  * Quem já tem chave (nesta aba ou no servidor) pode só trocar o modelo: a chave em branco mantém a que já vale.
+ * A janela só guarda: nenhuma chamada à IA é feita aqui (não gasta nada). Se a chave não valer, o aviso aparece
+ * ao enviar os arquivos, com o botão para trocá-la.
  */
 export function AddKeyDialog({
   initial,
@@ -43,13 +39,6 @@ export function AddKeyDialog({
   const [model, setModel] = useState(keys[initial]?.model ?? "");
   const [baseUrl, setBaseUrl] = useState(keys[initial]?.baseUrl ?? "");
   const [problem, setProblem] = useState<Problem | null>(null);
-  // O teste da chave: rodando, deu certo (a janela fecha logo depois) ou falhou (com a frase do que fazer).
-  const [testing, setTesting] = useState(false);
-  const [outcome, setOutcome] = useState<
-    { kind: "success" } | { kind: "failure"; text: string } | null
-  >(null);
-  const request = useRef<AbortController | null>(null);
-  const closing = useRef<ReturnType<typeof setTimeout> | null>(null);
   const keyRef = useRef<HTMLInputElement>(null);
   const modelRef = useRef<HTMLInputElement>(null);
   const urlRef = useRef<HTMLInputElement>(null);
@@ -67,26 +56,12 @@ export function AddKeyDialog({
   // A Outra IA não tem padrão: sem o servidor para completar, o modelo e o endereço precisam ser ditos.
   const needsDetails = name === "custom" && serverKey.custom !== true;
 
-  // Qualquer mudança nos campos apaga o aviso e o resultado do teste anterior: eles eram de outra combinação.
-  function clear() {
-    setProblem(null);
-    setOutcome(null);
-  }
-  // Fechar a janela (ou sair da tela) cancela um teste em andamento e a espera do "Funcionou!".
-  useEffect(
-    () => () => {
-      request.current?.abort();
-      if (closing.current) clearTimeout(closing.current);
-    },
-    [],
-  );
-
   function choose(next: AiProvider) {
     setName(next);
     setKey("");
     setModel(keys[next]?.model ?? "");
     setBaseUrl(keys[next]?.baseUrl ?? "");
-    clear();
+    setProblem(null);
   }
 
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -101,78 +76,28 @@ export function AddKeyDialog({
       setProblem({ field, text });
       ref.current?.focus();
     };
-    if (!typed && !hasKey) return fail("key", "Cole a chave.", keyRef);
     if (needsDetails && !baseUrl.trim())
       return fail("baseUrl", "Diga o endereço da IA.", urlRef);
+    if (!typed && !hasKey) return fail("key", "Cole a chave.", keyRef);
     if (needsDetails && !model.trim())
       return fail("model", "Diga o modelo.", modelRef);
-    void testAndUse();
-  }
-
-  /** O que a janela guarda: chave em branco fica com a que já vale (a desta aba, ou a do servidor, que não passa por aqui). */
-  function chosen(): TabKey {
-    return {
-      apiKey: key.trim() || (keys[name]?.apiKey ?? ""),
+    // Chave em branco fica com a que já vale (a desta aba, ou a do servidor, que não passa por aqui).
+    onSave(name, {
+      apiKey: typed || (keys[name]?.apiKey ?? ""),
       model: model.trim(),
       baseUrl: name === "custom" ? baseUrl.trim() : "",
-    };
-  }
-
-  /** Faz uma chamada mínima de verdade pelo app (/api/import/test); só guarda a IA se ela responder. */
-  async function testAndUse() {
-    const value = chosen();
-    const controller = new AbortController();
-    request.current = controller;
-    setTesting(true);
-    setOutcome(null);
-    try {
-      const response = await fetch("/api/import/test", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          provider: name,
-          ...(value.apiKey ? { apiKey: value.apiKey } : {}),
-          ...(value.model ? { model: value.model } : {}),
-          ...(value.baseUrl ? { baseUrl: value.baseUrl } : {}),
-        }),
-        signal: controller.signal,
-      });
-      const result: unknown = await response.json();
-      const text = (field: string): string | undefined => {
-        const found = (result as Record<string, unknown> | null)?.[field];
-        return typeof found === "string" ? found : undefined;
-      };
-      if ((result as { ok?: unknown } | null)?.ok === true) {
-        setOutcome({ kind: "success" });
-        // Um instante para a pessoa ver que funcionou, e então a janela guarda a IA e fecha.
-        closing.current = setTimeout(() => onSave(name, value), 900);
-        return;
-      }
-      const issues = (result as { issues?: { message?: unknown }[] } | null)
-        ?.issues;
-      const fromIssue =
-        typeof issues?.[0]?.message === "string" ? issues[0].message : undefined;
-      setOutcome({
-        kind: "failure",
-        text: text("message") ?? fromIssue ?? "Não consegui testar agora.",
-      });
-    } catch {
-      if (!controller.signal.aborted)
-        setOutcome({
-          kind: "failure",
-          text: "Não consegui falar com o aplicativo. Confira a conexão e tente de novo.",
-        });
-    } finally {
-      if (request.current === controller) request.current = null;
-      setTesting(false);
-    }
+    });
   }
 
   const describedBy = (field: Problem["field"]) =>
     problem?.field === field ? `${errorId} ${noteId}` : noteId;
 
   return (
-    <Modal title="Adicionar chave" onClose={onClose} returnFocus={returnFocus}>
+    <Modal
+      title={hasKey ? "Chave da IA" : "Adicionar chave"}
+      onClose={onClose}
+      returnFocus={returnFocus}
+    >
       <form
         className="entry-key-dialog"
         noValidate
@@ -191,16 +116,8 @@ export function AddKeyDialog({
                   value={value}
                   checked={name === value}
                   onChange={() => choose(value)}
-                  // O foco abre na escolha da IA (a janelinha só olha o atributo, o React não o escreve).
-                  ref={(node) => {
-                    if (node && value === initial)
-                      node.setAttribute("autofocus", "");
-                  }}
                 />
-                <span>
-                  {name === value && <Check size={18} aria-hidden="true" />}
-                  {AI_NAME[value]}
-                </span>
+                <span>{AI_NAME[value]}</span>
               </label>
             ))}
           </div>
@@ -227,37 +144,43 @@ export function AddKeyDialog({
               aria-describedby={describedBy("baseUrl")}
               onChange={(event) => {
                 setBaseUrl(event.target.value);
-                clear();
+                setProblem(null);
               }}
             />
             {problem?.field === "baseUrl" && (
               <p className="entry-error" id={errorId} role="alert">
-                <TriangleAlert size={16} aria-hidden="true" />
+                <TriangleAlert size={14} aria-hidden="true" />
                 {problem.text}
               </p>
             )}
           </div>
         )}
         <div className="entry-field">
-          <label className="entry-label" htmlFor={keyId}>
-            Chave
-            {hasKey && <span className="entry-optional"> (já tem uma)</span>}
-          </label>
-          {/* Quem nunca usou uma chave não sabe onde ela nasce: o caminho fica ao lado do campo. */}
-          {preset.keyUrl && (
-            <a
-              className="entry-inline entry-key-help"
-              href={preset.keyUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Onde pego a chave?
-              <ExternalLink size={14} aria-hidden="true" />
-            </a>
-          )}
+          <div className="entry-key-row">
+            <label className="entry-label" htmlFor={keyId}>
+              Chave
+              {hasKey && <span className="entry-optional"> (já tem uma)</span>}
+            </label>
+            {/* Quem nunca usou uma chave não sabe onde ela nasce: o caminho fica ao lado do rótulo. */}
+            {preset.keyUrl && (
+              <a
+                className="entry-inline entry-key-help"
+                href={preset.keyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Onde pego a chave?
+                <ExternalLink size={13} aria-hidden="true" />
+              </a>
+            )}
+          </div>
           <input
             id={keyId}
-            ref={keyRef}
+            ref={(node) => {
+              keyRef.current = node;
+              // O foco abre na chave, que é o que a pessoa veio colar (a janelinha só olha o atributo, o React não o escreve).
+              node?.setAttribute("autofocus", "");
+            }}
             className="entry-input"
             type="password"
             required={!hasKey}
@@ -270,17 +193,18 @@ export function AddKeyDialog({
             data-lpignore="true"
             data-bwignore="true"
             data-form-type="other"
+            placeholder={hasKey ? "Em branco, fica a que já vale" : "Cole aqui"}
             value={key}
             aria-invalid={problem?.field === "key" ? true : undefined}
             aria-describedby={describedBy("key")}
             onChange={(event) => {
               setKey(event.target.value);
-              clear();
+              setProblem(null);
             }}
           />
           {problem?.field === "key" && (
             <p className="entry-error" id={errorId} role="alert">
-              <TriangleAlert size={16} aria-hidden="true" />
+              <TriangleAlert size={14} aria-hidden="true" />
               {problem.text}
             </p>
           )}
@@ -306,7 +230,7 @@ export function AddKeyDialog({
             aria-describedby={describedBy("model")}
             onChange={(event) => {
               setModel(event.target.value);
-              clear();
+              setProblem(null);
             }}
           />
           {preset.suggestions.length > 0 && (
@@ -318,54 +242,21 @@ export function AddKeyDialog({
           )}
           {problem?.field === "model" && (
             <p className="entry-error" id={errorId} role="alert">
-              <TriangleAlert size={16} aria-hidden="true" />
+              <TriangleAlert size={14} aria-hidden="true" />
               {problem.text}
             </p>
           )}
         </div>
         <p className="entry-note" id={noteId}>
-          <Lock size={16} aria-hidden="true" />
+          <Lock size={14} aria-hidden="true" />
           Fica só nesta aba.
         </p>
-        {/* Sempre na página, vazia até haver resultado: o leitor de tela fala o resultado quando ele entra. */}
-        <div className="entry-test-result" role="status" aria-live="polite">
-          {testing && <p className="entry-note">Testando a chave…</p>}
-          {outcome?.kind === "success" && (
-            <p className="entry-note entry-success">
-              <Check size={16} aria-hidden="true" />
-              Funcionou! A IA respondeu.
-            </p>
-          )}
-          {outcome?.kind === "failure" && (
-            <p className="entry-error">
-              <TriangleAlert size={16} aria-hidden="true" />
-              {outcome.text}
-            </p>
-          )}
-        </div>
         <div className="entry-dialog-actions">
-          <button
-            type="submit"
-            className="primary entry-send"
-            disabled={testing || outcome?.kind === "success"}
-          >
-            {testing && (
-              <LoaderCircle className="spinner" size={20} aria-hidden="true" />
-            )}
-            {testing ? "Testando…" : "Testar e usar"}
-          </button>
-          {/* Se o teste falhou, quem sabe o que está fazendo (rede da escola, serviço fora do ar) ainda pode seguir. */}
-          {outcome?.kind === "failure" && (
-            <button
-              type="button"
-              className="entry-btn"
-              onClick={() => onSave(name, chosen())}
-            >
-              Usar assim mesmo
-            </button>
-          )}
           <button type="button" className="entry-btn" onClick={onClose}>
             Cancelar
+          </button>
+          <button type="submit" className="primary entry-send">
+            {hasKey ? "Salvar" : "Adicionar"}
           </button>
         </div>
       </form>

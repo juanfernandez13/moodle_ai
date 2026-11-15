@@ -1,9 +1,8 @@
 "use client";
 import { Loader2, Send } from "lucide-react";
 import { useStageFocus } from "./hooks/use-stage-focus.ts";
-import { Pagination } from "../../components/pagination.tsx";
 import { ScrollRegion } from "../../components/scroll-region.tsx";
-import { previewStatusLabel, STUDENT_PAGE_SIZE, studentPage } from "./helpers.ts";
+import { previewStatusLabel } from "./helpers.ts";
 import type { MoodleStudentPreview } from "./schemas.ts";
 
 const defaultLabels: Record<string, string> = { city: "Cidade", country: "País" };
@@ -11,17 +10,13 @@ const defaultLabels: Record<string, string> = { city: "Cidade", country: "País"
 /** What Moodle would do, before it does anything. The one button here is the only one that registers the students. */
 export function MoodleStudentConfirmation({
   preview,
-  page,
   busy,
   authenticated,
-  onPageChange,
   onConfirm,
 }: {
   preview: MoodleStudentPreview;
-  page: number;
   busy: boolean;
   authenticated: boolean;
-  onPageChange: (page: number) => void;
   onConfirm: () => Promise<void>;
 }) {
   const options = preview.effectiveOptions;
@@ -47,7 +42,7 @@ export function MoodleStudentConfirmation({
             </tr>
           </thead>
           <tbody>
-            {studentPage(preview.rows, page).map((row, index) => (
+            {preview.rows.map((row, index) => (
               <tr key={`${row.username}-${index}`}>
                 <td>{row.username}</td>
                 <td>{row.name}</td>
@@ -58,9 +53,6 @@ export function MoodleStudentConfirmation({
           </tbody>
         </table>
       </ScrollRegion>
-      {total > STUDENT_PAGE_SIZE && (
-        <Pagination page={page} count={total} onChange={onPageChange} />
-      )}
       <details className="stu-details">
         <summary>Ver detalhes</summary>
         <p>
@@ -121,9 +113,9 @@ export function MoodleStudentConfirmation({
         }}
       >
         {busy ? (
-          <Loader2 size={20} className="spinner" aria-hidden="true" />
+          <Loader2 size={16} className="spinner" aria-hidden="true" />
         ) : (
-          <Send size={20} aria-hidden="true" />
+          <Send size={16} aria-hidden="true" />
         )}
         {busy ? "Enviando…" : `${options.mode === "update" ? "Atualizar" : "Cadastrar"} ${total} ${total === 1 ? "aluno" : "alunos"}`}
       </button>

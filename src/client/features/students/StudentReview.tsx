@@ -1,12 +1,10 @@
 "use client";
-import { useLayoutEffect, useRef } from "react";
 import { AlertCircle, ArrowLeft, ArrowRight, Check, Loader2 } from "lucide-react";
 import type { StudentRow, StudentIssue, StudentOptions } from "../../../domain/students/index.ts";
 import { EditableStudentTable } from "./EditableStudentTable.tsx";
 import { deriveStudentUsername } from "../../../domain/students/index.ts";
-import { studentCourseGaps, studentPageAfterResize } from "./helpers.ts";
+import { studentCourseGaps } from "./helpers.ts";
 import type { StudentEditField } from "./helpers.ts";
-import { useReviewPageSize } from "./hooks/use-review-page-size.ts";
 import { useStageFocus } from "./hooks/use-stage-focus.ts";
 
 const MODES = [
@@ -14,16 +12,14 @@ const MODES = [
   ["update", "Atualizar existentes"],
 ] as const;
 
-/** Second step: the list as the system understood it. What is wrong is red, and the options sit under the table. */
+/** Second step: the whole list as the system understood it, in one table that scrolls. What is wrong is red. */
 export function StudentReview({
   rows,
   typed,
   validation,
-  page,
   options,
   destinations,
   busy,
-  onPageChange,
   onRowChange,
   onOptionsChange,
   onDestinationsChange,
@@ -37,11 +33,9 @@ export function StudentReview({
     valid: boolean;
     issues: StudentIssue[]
   };
-  page: number;
   options: StudentOptions;
   destinations: string;
   busy: boolean;
-  onPageChange: (page: number) => void;
   onRowChange: (id: string, field: StudentEditField, value: string) => void;
   onOptionsChange: (options: StudentOptions) => void;
   onDestinationsChange: (value: string) => void;
@@ -49,16 +43,6 @@ export function StudentReview({
   onBack: () => void;
 }) {
   const heading = useStageFocus(true, false);
-  // The table shows as many students per page as fit the window, so a page is always seen whole.
-  const section = useRef<HTMLElement>(null);
-  const size = useReviewPageSize(section);
-  const sizeBefore = useRef(size);
-  // A new page size keeps the first student the person was looking at on screen.
-  useLayoutEffect(() => {
-    if (sizeBefore.current === size) return;
-    onPageChange(studentPageAfterResize(page, sizeBefore.current, size));
-    sizeBefore.current = size;
-  }, [size, page, onPageChange]);
   const gaps = studentCourseGaps(rows, options, destinations);
   // Um aluno repetido repete e-mail, usuário e CPF com a mesma frase: uma pendência, não três (cada campo segue em vermelho).
   const listed = validation.issues.filter(
@@ -78,21 +62,19 @@ export function StudentReview({
     options.enrol &&
     (rows.some((row) => !row.course.trim()) || destinations.trim() !== "");
 
+  /** A pendência leva à linha dela: a tabela rola até o aluno e o foco vai para o campo em vermelho. */
   function open(issue: StudentIssue) {
-    const index = rows.findIndex((row) => row.id === issue.rowId);
-    if (index < 0) return;
-    onPageChange(Math.floor(index / size));
-    setTimeout(() => {
-      const node = document.getElementById(`student-${issue.rowId}`);
-      node?.scrollIntoView({ block: "center" });
-      (
-        node?.querySelector("[aria-invalid=true]") as HTMLElement | null
-      )?.focus();
-    }, 50);
+    const node = document.getElementById(`student-${issue.rowId}`);
+    if (!node) return;
+    node.scrollIntoView({
+      block: "center",
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+    });
+    node.querySelector<HTMLElement>("[aria-invalid=true]")?.focus({ preventScroll: true });
   }
 
   return (
-    <section className="stu-review" aria-labelledby="student-review-title" ref={section}>
+    <section className="stu-review" aria-labelledby="student-review-title">
       <header className="stu-stage-head">
         <div>
           <h2 id="student-review-title" tabIndex={-1} ref={heading}>
@@ -106,9 +88,9 @@ export function StudentReview({
         </div>
         <p className={`stu-chip ${bad ? "bad" : "ok"}`} role="status">
           {bad ? (
-            <AlertCircle size={20} aria-hidden="true" />
+            <AlertCircle size={16} aria-hidden="true" />
           ) : (
-            <Check size={20} aria-hidden="true" />
+            <Check size={16} aria-hidden="true" />
           )}
           {count
             ? `${count} ${count === 1 ? "pendência" : "pendências"}`
@@ -131,9 +113,6 @@ export function StudentReview({
                   onChange={() => onOptionsChange({ ...options, mode: value })}
                 />
                 <span>
-                  {options.mode === value && (
-                    <Check size={18} aria-hidden="true" />
-                  )}
                   {label}
                 </span>
               </label>
@@ -176,10 +155,7 @@ export function StudentReview({
           rows={rows}
           typed={typed}
           issues={[...validation.issues, ...gaps]}
-          page={page}
-          size={size}
           login={login}
-          onPageChange={onPageChange}
           onRowChange={onRowChange}
         />
       </div>
@@ -200,7 +176,7 @@ export function StudentReview({
       )}
       <div className="stu-actions">
         <button type="button" className="text-button" onClick={onBack}>
-          <ArrowLeft size={20} aria-hidden="true" />
+          <ArrowLeft size={16} aria-hidden="true" />
           Voltar
         </button>
         {blocked && (
@@ -220,10 +196,10 @@ export function StudentReview({
           }}
         >
           {busy ? (
-            <Loader2 size={20} className="spinner" aria-hidden="true" />
+            <Loader2 size={16} className="spinner" aria-hidden="true" />
           ) : null}
           {busy ? "Preparando…" : "Preparar arquivos"}
-          {busy ? null : <ArrowRight size={20} aria-hidden="true" />}
+          {busy ? null : <ArrowRight size={16} aria-hidden="true" />}
         </button>
       </div>
     </section>

@@ -83,11 +83,9 @@ export function StudentsWorkspace() {
               rows={source.rows}
               typed={source.typed}
               validation={validation}
-              page={source.page}
               options={csv.options}
               destinations={csv.destinations}
               busy={busy}
-              onPageChange={source.setPage}
               onRowChange={source.changeRow}
               onOptionsChange={csv.changeOptions}
               onDestinationsChange={csv.changeDestinations}

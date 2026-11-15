@@ -25,7 +25,6 @@ export function useStudentMoodle({
     useState<MoodleStudentPreview | null>(null);
   const [results, setResults] = useState<MoodleStudentResult[]>([]);
   const [unknownResult, setUnknownResult] = useState(false);
-  const [opsPage, setOpsPage] = useState(0);
   const currentPreview = useRef<MoodleStudentPreview | null>(null);
   const unknown = useRef(false);
   const confirming = useRef(false);
@@ -58,7 +57,6 @@ export function useStudentMoodle({
         );
       currentPreview.current = parsed;
       setMoodlePreview(parsed);
-      setOpsPage(0);
     } catch (failure) {
       if (expectedSession !== sessionGeneration.current) return;
       setError(
@@ -120,7 +118,6 @@ export function useStudentMoodle({
   function clearPreview() {
     currentPreview.current = null;
     setMoodlePreview(null);
-    setOpsPage(0);
   }
   function invalidateConnection() {
     clearPreview();
@@ -136,8 +133,6 @@ export function useStudentMoodle({
     moodlePreview,
     results,
     unknownResult,
-    opsPage,
-    setOpsPage,
     previewMoodle,
     confirmMoodle,
     clear,

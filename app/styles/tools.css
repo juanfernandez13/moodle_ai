@@ -36,7 +36,7 @@
 }
 .tool-top > .tool-title h1 {
   margin: 0;
-  font-size: 1.625rem;
+  font-size: 1.25rem;
   line-height: 1.25;
 }
 .tool-top > .tool-title p {
@@ -49,7 +49,7 @@
 .tool-top > a {
   grid-area: back;
   justify-self: end;
-  min-height: 44px;
+  min-height: var(--ctl);
   margin-right: -12px;
   padding-inline: 12px;
 }
@@ -66,10 +66,10 @@
 }
 .tool-top .panel-tabs button,
 .tool-top .steps button {
-  min-height: 44px;
+  min-height: var(--ctl);
   padding: 8px 16px;
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: var(--w-medium);
 }
 /* Etapas do cadastro: o botão inteiro é a cápsula (alvo de 44 px), a lista só agrupa. */
 .tool-top .steps li {
@@ -128,7 +128,7 @@
 .tool-foot .tool-link {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
+  min-height: var(--ctl);
 }
 
 /* ---------- Tabelas: linhas finas, cabeçalho fixo, rolagem própria ---------- */
@@ -241,7 +241,7 @@
 .date-plan-side .form-details summary {
   display: flex;
   align-items: center;
-  min-height: 44px;
+  min-height: var(--ctl);
   padding: 0;
 }
 .date-plan-side .form-details .field-help {
@@ -318,7 +318,7 @@
 .date-results > .review-title h2,
 .date-results > .review-title h3 {
   margin: 0 0 2px;
-  font-size: 1.25rem;
+  font-size: 1rem;
   line-height: 1.3;
 }
 .date-results > .review-title p {
@@ -415,7 +415,7 @@
 }
 .mapping-editor h2 {
   margin: 0 0 4px;
-  font-size: 1.125rem;
+  font-size: 0.9375rem;
 }
 .mapping-editor p {
   margin-bottom: 4px;
@@ -461,7 +461,7 @@
 }
 .review-stage > .section-heading h2 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1rem;
   line-height: 1.3;
 }
 .review-stage > .section-heading > div {
@@ -514,7 +514,7 @@
   line-height: 1.45;
 }
 .review-side .check-row {
-  min-height: 44px;
+  min-height: var(--ctl);
   margin: 0;
 }
 .review-side > .primary {
@@ -628,7 +628,7 @@
 }
 .download-rail > .delivery h2 {
   margin-bottom: 4px;
-  font-size: 1.125rem;
+  font-size: 0.9375rem;
 }
 .download-rail > .delivery p {
   margin-bottom: 4px;
@@ -681,7 +681,7 @@
 }
 .moodle-students-output .notice h3 {
   margin: 0 0 4px;
-  font-size: 1.125rem;
+  font-size: 0.9375rem;
 }
 .moodle-students-output .notice p {
   margin: 0 0 8px;
@@ -719,7 +719,7 @@
 .moodle-confirm .confirm-side .form-details summary {
   display: flex;
   align-items: center;
-  min-height: 44px;
+  min-height: var(--ctl);
   padding: 0;
 }
 .moodle-confirm .confirm-side .form-details p {
@@ -928,7 +928,7 @@
     gap: 6px;
   }
   .tool-top > .tool-title h1 {
-    font-size: 1.4375rem;
+    font-size: 1.0625rem;
   }
   .tool-top > a {
     justify-self: start;

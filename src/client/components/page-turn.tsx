@@ -3,10 +3,9 @@ import { createElement, useEffect, useState } from "react";
 import type { HTMLAttributes, ReactNode, Ref } from "react";
 
 /**
- * PageTurn: when the step changes, the page of the new step turns into place like a page of the notebook, as the
- * design system describes it (PageTurn): going forward the new page swings in from the right, hinged on its right
- * edge; going back it swings in from the left, hinged on its left edge. Only the step area turns: header, steps and
- * background stay where they are.
+ * PageTurn: when the step changes, the new step slides a few pixels into place and fades in: going forward it comes
+ * from the right, going back from the left. Only the step area moves: header, steps and background stay where they
+ * are. (It used to be a 600ms 3D page flip; a short slide reads as "next step" without making the person wait.)
  *
  * - `<PageTurn step={n}>` is the step container itself: it takes the container's own classes, `ref` and aria props, so
  *   the screen's CSS keeps working. A higher `step` than before turns forward, a lower one turns back.
@@ -28,8 +27,11 @@ export type Turn = {
   to: number;
 };
 
-/** The animation lasts 600ms; the new page stays out of reach of the pointer a moment longer than that. */
-const TURN_MS = 700;
+/**
+ * The animation lasts 240ms; the new page stays out of reach of the pointer for as long as a slow double click
+ * takes (about half a second), so the second click never lands on the next step.
+ */
+const TURN_MS = 500;
 /** A step that changes while the page is still opening (a session found, a course restored) is not a turn. */
 const QUIET_MS = 1200;
 

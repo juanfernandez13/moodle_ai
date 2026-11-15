@@ -1,22 +1,19 @@
-/* Virada de folha entre passos (PageTurn e usePageTurn, src/client/components/page-turn.tsx).
-   Como no design system (README, Movimento; PageTurn): ao trocar de passo, a folha do passo novo vira para o lugar
-   dela. Ao avançar ela vem da direita, presa pela borda direita (mi-turn-next); ao voltar, vem da esquerda, presa
-   pela borda esquerda (mi-turn-back). Dura 600ms, com cubic-bezier(0.2, 0.7, 0.2, 1). Só a área do passo vira:
-   cabeçalho, passos e fundo ficam parados. Não há folha em branco por cima: é o próprio passo que vira, então o
-   trabalho da pessoa nunca some. A folha se abre se afastando de quem olha (a borda solta vai para trás, não para
-   a frente): assim ela encolhe em direção à borda presa e fica sempre dentro do painel, em vez de crescer por cima
-   dele.
+/* Troca de passo (PageTurn e usePageTurn, src/client/components/page-turn.tsx).
+   Ao trocar de passo, o passo novo entra com um deslize curto e ganha opacidade: ao avançar vem da direita
+   (mi-turn-next), ao voltar vem da esquerda (mi-turn-back). Dura 240ms, com a curva --ease-out de globals.css.
+   Só a área do passo se move: cabeçalho, passos e fundo ficam parados, e nada cobre o trabalho da pessoa.
+   (Antes era uma virada de folha em 3D de 600ms: bonita uma vez, cansativa a cada passo.)
    Carregado depois dos outros arquivos de tela.
 
    Contrato:
    - A classe vai no elemento do passo que entra (o contêiner do passo, ou o bloco novo: entrada, editor, entrega) e
-     o componente a tira 700ms depois. Nada aqui muda o layout; .mi-turn só ganha position: relative.
+     o componente a tira 500ms depois. Nada aqui muda o layout; .mi-turn só ganha position: relative.
    - Enquanto a classe está lá o elemento não recebe o ponteiro (pointer-events: none): o segundo clique de um duplo
      clique em "Continuar" cairia no que o passo novo desenha embaixo do cursor (outro botão, uma caixa de marcar). A
      tela atrás é o painel, que não faz nada. O teclado não é afetado.
-   - Com prefers-reduced-motion: reduce não há rotação: só um fade de 200ms. A regra com !important vence a regra
+   - Com prefers-reduced-motion: reduce não há deslize: só um fade de 160ms. A regra com !important vence a regra
      global de globals.css (animation: none !important) só para esta classe, que é um fade, não movimento. A
-     proteção do ponteiro continua pelos mesmos 700ms. */
+     proteção do ponteiro continua pelos mesmos 500ms. */
 
 .mi-turn {
   position: relative;
@@ -25,69 +22,46 @@
 .mi-turn-next,
 .mi-turn-back {
   pointer-events: none;
-  /* O duplo clique que cai na folha que está virando não seleciona uma palavra dela. */
+  /* O duplo clique que cai no passo que está entrando não seleciona uma palavra dele. */
   -webkit-user-select: none;
   user-select: none;
-  backface-visibility: hidden;
-  will-change: transform, opacity;
-  animation-duration: 600ms;
-  animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+  animation-duration: 240ms;
+  animation-timing-function: var(--ease-out, cubic-bezier(0.2, 0.7, 0.2, 1));
   animation-fill-mode: both;
 }
 .mi-turn-next {
-  transform-origin: right center;
   animation-name: mi-turn-next;
 }
 .mi-turn-back {
-  transform-origin: left center;
   animation-name: mi-turn-back;
 }
 
-/* A perspectiva vai na própria função: o elemento que vira é o próprio contêiner do passo. */
 @keyframes mi-turn-next {
   from {
-    transform: perspective(1800px) rotateY(-78deg);
+    translate: 14px 0;
     opacity: 0;
-  }
-  35% {
-    opacity: 1;
-  }
-  to {
-    transform: perspective(1800px) rotateY(0deg);
-    opacity: 1;
   }
 }
 @keyframes mi-turn-back {
   from {
-    transform: perspective(1800px) rotateY(78deg);
+    translate: -14px 0;
     opacity: 0;
-  }
-  35% {
-    opacity: 1;
-  }
-  to {
-    transform: perspective(1800px) rotateY(0deg);
-    opacity: 1;
   }
 }
 @keyframes mi-turn-fade {
   from {
     opacity: 0;
   }
-  to {
-    opacity: 1;
-  }
 }
 
-/* Menos movimento: sem rotação, só um fade de 200ms. */
+/* Menos movimento: sem deslize, só um fade de 160ms. */
 @media (prefers-reduced-motion: reduce) {
   .mi-turn-next,
   .mi-turn-back {
-    transform: none;
-    animation: mi-turn-fade 200ms ease-out both !important;
+    animation: mi-turn-fade 160ms ease-out both !important;
   }
 }
-/* Alto contraste do sistema: nada vira, e a proteção do ponteiro continua. Na impressão nada fica sem ponteiro. */
+/* Alto contraste do sistema: nada se move, e a proteção do ponteiro continua. Na impressão nada fica sem ponteiro. */
 @media (forced-colors: active) {
   .mi-turn-next,
   .mi-turn-back {

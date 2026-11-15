@@ -19,24 +19,23 @@
    faltar altura, só .entry-view rola por dentro (nunca a página). Fora disso é uma coluna só, com a altura do
    conteúdo, e a página rola como qualquer outra.
 
-   Medidas: tudo parte de variáveis (--ctl, --fs...). Janelas baixas encolhem os respiros sem passar de 44px
-   nos alvos; telas grandes aumentam letra e botões. */
+   Medidas: tudo parte de variáveis (--ctl de globals.css, --fs...). Texto de 14px, apoio de 13px, controles de 36px;
+   janelas baixas só encolhem os respiros. */
 
 .application .entry-panel {
-  --ctl: 44px;
-  --fs: 1.0625rem;
-  --fs-sm: 1rem;
-  --fs-card: 1.125rem;
-  /* Título da página: o mesmo tamanho de Alunos e Datas (27px, o "title" do design system). */
-  --fs-h1: 1.6875rem;
-  --icon: 40px;
-  --gap: 16px;
+  --fs: 0.875rem;
+  --fs-sm: 0.8125rem;
+  --fs-card: 0.9375rem;
+  /* Título da página: o mesmo tamanho de Alunos e Datas (20px). */
+  --fs-h1: 1.25rem;
+  --icon: 30px;
+  --gap: 14px;
   /* Piso das áreas de arrastar. Quem manda na altura da linha é a caixa da IA: as áreas esticam até ela. */
-  --zone-min: 150px;
-  /* Altura máxima da lista de arquivos de uma área: passando disso, só a lista rola. Cada arquivo ocupa 46px mais 4px de
-     intervalo, e a lista tem 8px de folga: 3 arquivos pedem 154px. O piso de 154px mostra 3 arquivos inteiros, sem cortar
-     o último; o que passar de 3 rola dentro da lista. Cresce com a altura que sobra na janela. */
-  --list-max: max(154px, calc(100dvh - 600px));
+  --zone-min: 130px;
+  /* Altura máxima da lista de arquivos de uma área: passando disso, só a lista rola. Cada arquivo ocupa a altura de um
+     controle mais 4px de intervalo, e a lista tem 8px de folga: o piso mostra 3 arquivos inteiros, sem cortar o último;
+     o que passar de 3 rola dentro da lista. Cresce com a altura que sobra na janela. */
+  --list-max: max(calc(3 * var(--ctl) + 16px), calc(100dvh - 560px));
   /* Largura da coluna da IA; as abas do alto usam a mesma medida. */
   --entry-ai: clamp(360px, 30vw, 420px);
   --entry-pad: clamp(16px, 2vw, 28px);
@@ -112,27 +111,18 @@
 @media screen and (min-width: 1100px) and (max-height: 640px) {
   .application .entry-panel {
     --gap: 10px;
-    --zone-min: 120px;
-    /* Dois arquivos inteiros (2 x 46px, 4px de intervalo e 8px de folga). */
-    --list-max: 104px;
-    --fs-h1: 1.625rem;
+    --zone-min: 110px;
+    /* Dois arquivos inteiros (4px de intervalo e 8px de folga). */
+    --list-max: calc(2 * var(--ctl) + 12px);
   }
 }
-/* Tela grande: letra e botões maiores, e mais ar. */
+/* Tela grande: só mais ar; letra e botões ficam do mesmo tamanho. */
 @media screen and (min-width: 1500px) and (min-height: 900px) {
   .application .entry-panel {
-    --ctl: 48px;
-    --fs: 1.125rem;
-    --fs-sm: 1.0625rem;
-    --fs-card: 1.25rem;
-    --fs-h1: 1.875rem;
-    --icon: 44px;
-    --gap: 20px;
+    --gap: 18px;
     --zone-min: 160px;
-    /* Quatro arquivos inteiros, e mais quando a janela é alta. */
-    --list-max: max(204px, calc(100dvh - 600px));
-    padding-top: 24px;
-    padding-bottom: 16px;
+    padding-top: 22px;
+    padding-bottom: 14px;
   }
 }
 
@@ -150,7 +140,7 @@
   grid-area: title;
   margin: 0;
   font-size: var(--fs-h1);
-  font-weight: 600;
+  font-weight: var(--w-strong);
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
@@ -168,48 +158,56 @@
   justify-self: end;
   width: 100%;
   min-width: max-content;
-  gap: 4px;
-  padding: 4px;
+  gap: 2px;
+  padding: 3px;
   border: 1px solid var(--line);
   border-radius: 99px;
   background: var(--support);
 }
-/* A marca da aba escolhida é uma peça só, que desliza de uma aba para a outra. */
+/* A marca da aba escolhida é uma peça só, que desliza de uma aba para a outra: um cartão claro com sombra leve. */
 .entry-modes::before {
   content: "";
   position: absolute;
-  top: 4px;
-  bottom: 4px;
-  left: 4px;
-  width: calc((100% - 16px) / 3);
-  border: 1px solid var(--action);
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc((100% - 10px) / 3);
+  border: 1px solid var(--line);
   border-radius: 99px;
-  background: var(--selected);
-  transition: transform 0.28s cubic-bezier(0.3, 0.7, 0.2, 1);
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgba(23, 62, 48, 0.08);
+  transition: transform 0.24s var(--ease-out);
 }
 .entry-modes[data-active="manual"]::before {
-  transform: translateX(calc(100% + 4px));
+  transform: translateX(calc(100% + 2px));
 }
 .entry-modes[data-active="quizzes"]::before {
-  transform: translateX(calc(200% + 8px));
+  transform: translateX(calc(200% + 4px));
 }
 .entry-modes button {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-height: var(--ctl);
-  padding: 6px 14px;
+  gap: 6px;
+  min-height: var(--ctl-sm);
+  padding: 0 12px;
   border: 1px solid transparent;
   border-radius: 99px;
   background: transparent;
   color: var(--muted);
   font-size: var(--fs-sm);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.2;
   white-space: nowrap;
   transition: color 0.2s ease;
+}
+.entry-modes button[aria-selected="true"] {
+  font-weight: var(--w-medium);
+}
+.entry-modes button svg {
+  width: 16px;
+  height: 16px;
 }
 .entry-modes button:hover,
 .entry-modes button[aria-selected="true"] {
@@ -248,15 +246,15 @@
   align-items: center;
   justify-content: center;
   justify-self: end;
-  gap: 8px;
+  gap: 6px;
   min-height: var(--ctl);
-  padding: 8px 20px;
-  border: 1px solid var(--control-border);
+  padding: 0 14px;
+  border: 1px solid var(--button-border);
   border-radius: 99px;
   background: var(--surface);
   color: var(--text);
   font-size: var(--fs);
-  font-weight: 500;
+  font-weight: var(--w-medium);
   line-height: 1.2;
 }
 .entry-back svg {
@@ -283,20 +281,21 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   min-height: var(--ctl);
-  padding: 8px 20px;
-  border: 1px solid var(--control-border);
+  padding: 0 14px;
+  border: 1px solid var(--button-border);
   border-radius: 99px;
   background: var(--surface);
   color: var(--text);
   font-size: var(--fs);
-  font-weight: 500;
+  font-weight: var(--w-medium);
   line-height: 1.25;
   white-space: nowrap;
   transition:
-    background-color 0.15s ease,
-    border-color 0.15s ease;
+    background-color 0.14s ease,
+    border-color 0.14s ease,
+    scale 0.1s ease;
 }
 .entry-btn svg {
   color: var(--action);
@@ -312,17 +311,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
-  min-height: calc(var(--ctl, 44px) + 4px);
-  padding: 10px 20px;
+  min-height: var(--ctl-lg, 40px);
+  padding: 0 16px;
   border: 1px solid var(--action);
   border-radius: 99px;
   background: var(--action);
   color: var(--on-action);
-  font-size: var(--fs, 1rem);
-  font-weight: 500;
+  font-size: var(--fs, 0.875rem);
+  font-weight: var(--w-medium);
   line-height: 1.25;
+  transition:
+    filter 0.14s ease,
+    scale 0.1s ease;
+}
+.application .entry-panel .entry-send:hover:not(:disabled, [aria-disabled="true"]),
+.modal .entry-send:hover:not(:disabled, [aria-disabled="true"]) {
+  filter: brightness(0.94);
 }
 
 /* Remover, fechar: só o ícone, com aria-label. O alvo tem 44px. */
@@ -330,8 +336,8 @@
   display: inline-grid;
   place-items: center;
   flex: none;
-  width: 44px;
-  height: 44px;
+  width: var(--ctl);
+  height: var(--ctl);
   border: 0;
   border-radius: 50%;
   background: transparent;
@@ -347,14 +353,14 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  min-height: 44px;
+  min-height: var(--ctl);
   padding: 0 6px;
   border: 0;
   border-radius: 8px;
   background: transparent;
   color: var(--action);
   font-size: var(--fs-sm);
-  font-weight: 500;
+  font-weight: var(--w-medium);
   line-height: 1.2;
   text-decoration: underline;
   text-decoration-thickness: 1px;
@@ -370,13 +376,13 @@
 .entry-inline {
   display: inline;
   margin: 0;
-  padding: 11px 2px;
+  padding: 8px 2px;
   border: 0;
   border-radius: 6px;
   background: transparent;
   color: var(--action);
   font: inherit;
-  font-weight: 500;
+  font-weight: var(--w-medium);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
@@ -406,7 +412,7 @@
 .entry-label {
   color: var(--text);
   font-size: var(--fs-sm);
-  font-weight: 500;
+  font-weight: var(--w-medium);
   line-height: 1.3;
 }
 .entry-optional {
@@ -414,42 +420,28 @@
   font-size: var(--fs-sm);
   font-weight: 400;
 }
-.entry-input,
-.entry-select {
+.entry-input {
   width: 100%;
   min-height: var(--ctl);
-  padding: 8px 14px;
+  padding: 6px 12px;
   border: 1px solid var(--control-border);
-  border-radius: var(--control-radius, 12px);
+  border-radius: var(--control-radius, 9px);
   background-color: var(--surface);
   color: var(--text);
   font-size: var(--fs);
   font-weight: 400;
   line-height: 1.4;
+  transition: border-color 0.14s ease;
 }
 .entry-input::placeholder {
   color: var(--placeholder);
   opacity: 1;
 }
-.entry-input:hover,
-.entry-select:hover {
+.entry-input:hover {
   border-color: var(--action);
 }
 .entry-input[aria-invalid="true"] {
   border-color: var(--error);
-}
-.entry-select {
-  -webkit-appearance: none;
-  appearance: none;
-  padding-right: 44px;
-  background-image: var(--select-icon);
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  cursor: pointer;
-}
-.entry-select option {
-  color: var(--text);
-  background: var(--surface);
 }
 .entry-help {
   margin: 0;
@@ -484,7 +476,7 @@
 }
 .entry-model strong {
   color: var(--text);
-  font-weight: 500;
+  font-weight: var(--w-medium);
   overflow-wrap: anywhere;
 }
 .entry-error {
@@ -494,7 +486,7 @@
   margin: 0;
   color: var(--error);
   font-size: var(--fs-sm);
-  font-weight: 500;
+  font-weight: var(--w-medium);
   line-height: 1.35;
 }
 .entry-error svg {
@@ -545,7 +537,7 @@
   display: block;
   margin: 0;
   font-size: var(--fs-card);
-  font-weight: 600;
+  font-weight: var(--w-strong);
   line-height: 1.25;
   letter-spacing: -0.005em;
 }
@@ -563,7 +555,7 @@
   background: color-mix(in srgb, var(--format, var(--muted)) 12%, var(--surface));
   color: var(--format, var(--muted));
   font-size: 0.6875rem;
-  font-weight: 600;
+  font-weight: var(--w-strong);
   letter-spacing: 0.04em;
   line-height: 1;
 }
@@ -586,7 +578,7 @@
 .entry-file-name {
   display: flex;
   min-width: 0;
-  font-weight: 500;
+  font-weight: var(--w-medium);
 }
 .entry-file-stem {
   overflow: hidden;
@@ -609,7 +601,7 @@
   background: var(--selected);
   color: var(--text);
   font-size: var(--fs-sm);
-  font-weight: 500;
+  font-weight: var(--w-medium);
   line-height: 1.3;
   white-space: nowrap;
 }
@@ -701,7 +693,7 @@
 }
 [data-big] .entry-file-size {
   color: var(--error);
-  font-weight: 500;
+  font-weight: var(--w-medium);
 }
 
 /* Tarefas e Quizzes: áreas de arrastar iguais, tracejado de 1px. O título fica no alto, à esquerda; vazia, o convite
@@ -742,7 +734,7 @@
   background: var(--selected);
   color: var(--text);
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: var(--w-medium);
   font-variant-numeric: tabular-nums;
   line-height: 1;
 }
@@ -769,14 +761,14 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  min-height: 44px;
+  min-height: var(--ctl);
   padding: 8px 16px;
   border: 0;
   border-radius: 99px;
   background: var(--support);
   color: var(--action);
   font-size: var(--fs-sm);
-  font-weight: 500;
+  font-weight: var(--w-medium);
   line-height: 1.2;
   white-space: nowrap;
   transition:
@@ -809,7 +801,7 @@
   flex: none;
   align-items: center;
   gap: 8px;
-  min-height: 44px;
+  min-height: var(--ctl);
   padding: 0 0 0 8px;
   border: 1px solid var(--line);
   border-radius: var(--control-radius, 12px);
@@ -862,7 +854,7 @@
   background: var(--selected);
   color: var(--text);
   font-size: var(--fs-card);
-  font-weight: 500;
+  font-weight: var(--w-medium);
   line-height: 1.3;
   text-align: center;
   text-wrap: balance;
@@ -880,7 +872,7 @@
   background: var(--action);
   color: var(--on-action);
   font-size: var(--fs-sm);
-  font-weight: 500;
+  font-weight: var(--w-medium);
   line-height: 1.3;
   text-align: center;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
@@ -954,9 +946,9 @@
   position: relative;
   z-index: 1;
   flex: none;
-  width: 84px;
-  height: 92px;
-  margin-bottom: -7px;
+  width: 64px;
+  height: 70px;
+  margin-bottom: -6px;
   background: url("/brand-owl.svg") center bottom / contain no-repeat;
 }
 /* O balão fica sobre o vidro, então é opaco: o texto nunca fica sobre a pauta. */
@@ -964,10 +956,10 @@
   position: relative;
   flex: 0 1 auto;
   min-width: 0;
-  margin-bottom: 14px;
-  padding: 10px 16px;
+  margin-bottom: 12px;
+  padding: 8px 14px;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 14px;
   background: var(--surface);
   color: var(--text);
   text-align: left;
@@ -988,8 +980,8 @@
 .entry-bubble-say {
   display: block;
   margin: 0;
-  font-size: var(--fs-card);
-  font-weight: 600;
+  font-size: var(--fs);
+  font-weight: var(--w-medium);
   line-height: 1.25;
   letter-spacing: -0.005em;
   text-wrap: balance;
@@ -1004,8 +996,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 16px;
+  gap: 12px;
+  padding: 14px;
 }
 @media screen and (min-width: 1100px) {
   .entry-board {
@@ -1066,7 +1058,7 @@
 }
 .entry-reason[data-problem] {
   color: var(--error);
-  font-weight: 500;
+  font-weight: var(--w-medium);
 }
 .entry-reason[data-problem] svg {
   color: var(--error);
@@ -1082,23 +1074,33 @@
 
 /* ---------- Janelinha "Adicionar chave" (o Modal é o mesmo das outras janelas) ---------- */
 .modal:has(.entry-key-dialog) {
-  width: min(420px, calc(100vw - 32px));
-  padding: 24px;
+  width: min(400px, calc(100vw - 32px));
+  padding: 20px;
 }
 .modal:has(.entry-key-dialog) .modal-title h2 {
-  font-size: 1.3125rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: var(--w-strong);
   letter-spacing: -0.01em;
 }
 .entry-key-dialog {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  font-size: 1rem;
+  gap: 14px;
+  font-size: 0.875rem;
+}
+/* Rótulo e "Onde pego a chave?" na mesma linha, um em cada ponta. */
+.entry-key-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.entry-key-row .entry-key-help {
+  padding-block: 0;
 }
 .entry-key-dialog .entry-input {
-  min-height: 44px;
-  font-size: 1rem;
+  min-height: var(--ctl);
+  font-size: 0.875rem;
 }
 .entry-pick {
   min-width: 0;
@@ -1112,8 +1114,12 @@
 }
 .entry-pills {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: var(--support);
 }
 .entry-pill {
   display: block;
@@ -1122,26 +1128,28 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 6px 14px;
-  border: 1px solid var(--control-border);
+  min-height: var(--ctl-sm);
+  padding: 0 8px;
+  border: 1px solid transparent;
   border-radius: 99px;
-  background: var(--surface);
-  color: var(--text);
-  font-weight: 500;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  white-space: nowrap;
   cursor: pointer;
   transition:
     background-color 0.15s ease,
-    border-color 0.15s ease;
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 .entry-pill:hover span {
-  border-color: var(--action);
+  color: var(--text);
 }
 .entry-pill input:checked + span {
-  border-color: var(--action);
-  background: var(--selected);
+  border-color: var(--line);
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgba(23, 62, 48, 0.08);
   color: var(--text);
+  font-weight: var(--w-medium);
 }
 .entry-pill input:focus-visible + span {
   outline: 2px solid var(--focus);
@@ -1151,12 +1159,12 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 44px;
+  min-height: var(--ctl);
   padding: 0 6px;
   border-radius: 8px;
   color: var(--action);
   font-size: var(--fs-sm, 0.9375rem);
-  font-weight: 500;
+  font-weight: var(--w-medium);
   cursor: pointer;
   list-style: none;
 }
@@ -1180,15 +1188,20 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-end;
   gap: 8px;
+  margin-top: 2px;
 }
-.entry-dialog-actions .entry-send {
-  flex: 1 1 140px;
+/* A janela nasce dentro do painel da entrada: o seletor precisa vencer o do botão principal do painel (largura toda). */
+.modal .entry-dialog-actions .entry-send {
+  flex: 0 0 auto;
   width: auto;
+  min-width: 112px;
+  min-height: var(--ctl);
 }
 .entry-dialog-actions .entry-btn {
   flex: 0 0 auto;
-  min-height: 48px;
+  min-height: var(--ctl);
 }
 
 /* ---------- Criar manualmente ---------- */
@@ -1227,7 +1240,7 @@
 @media screen and (min-width: 1100px) and (max-height: 600px) {
   .entry-owl-art {
     width: 44px;
-    height: 48px;
+    height: 44px;
   }
   .entry-bubble {
     margin-bottom: 6px;
@@ -1242,8 +1255,8 @@
 .modal:has(.entry-preview) .modal-title h2 {
   min-width: 0;
   overflow: hidden;
-  font-size: 1.1875rem;
-  font-weight: 600;
+  font-size: 0.9375rem;
+  font-weight: var(--w-strong);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1263,7 +1276,7 @@
   overflow: auto;
   color: #173e30;
   font-family: inherit;
-  font-size: 1rem;
+  font-size: 0.875rem;
   line-height: 1.5;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -1376,7 +1389,7 @@
     gap: 12px;
   }
   .entry-title {
-    font-size: 1.625rem;
+    font-size: 1.25rem;
   }
   .entry-back,
   .entry-modes {
@@ -1421,12 +1434,8 @@
     flex: none;
   }
   /* "Gemini · chave do servidor" cabe inteiro na largura de um celular. */
-  .entry-select {
-    padding-left: 12px;
-    padding-right: 38px;
-    background-position: right 10px center;
+  .entry-ai .dropdown-button {
     font-size: var(--fs-sm);
-    text-overflow: ellipsis;
   }
   .application .entry-panel .entry-json-actions .entry-send {
     width: 100%;
@@ -1440,7 +1449,7 @@
 }
 @media (max-width: 380px) {
   .entry-title {
-    font-size: 1.5rem;
+    font-size: 1.125rem;
   }
   .entry-modes button svg {
     display: none;

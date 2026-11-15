@@ -148,8 +148,6 @@ export function MoodleStudentOutput({
   preview,
   results,
   unknownResult,
-  page,
-  onPageChange,
   onConfirm,
 }: {
   authenticated: boolean;
@@ -158,8 +156,6 @@ export function MoodleStudentOutput({
   preview: MoodleStudentPreview | null;
   results: MoodleStudentResult[];
   unknownResult: boolean;
-  page: number;
-  onPageChange: (page: number) => void;
   onConfirm: () => Promise<void>;
 }) {
   if (!preview && results.length === 0 && !unknownResult && !sending)
@@ -169,10 +165,8 @@ export function MoodleStudentOutput({
       {preview && (
         <MoodleStudentConfirmation
           preview={preview}
-          page={page}
           busy={busy}
           authenticated={authenticated}
-          onPageChange={onPageChange}
           onConfirm={onConfirm}
         />
       )}
@@ -183,11 +177,7 @@ export function MoodleStudentOutput({
         </p>
       )}
       {results.length > 0 && (
-        <MoodleStudentResults
-          results={results}
-          page={page}
-          onPageChange={onPageChange}
-        />
+        <MoodleStudentResults results={results} />
       )}
       {unknownResult && (
         <p className="error-text stu-lock" role="alert">

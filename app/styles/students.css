@@ -1,4 +1,5 @@
-/* Alunos (/cadastro-lote): três passos, pouco texto, um botão principal por passo.
+/* Alunos (/cadastro-lote): três passos, pouco texto, um botão principal por passo. Medidas enxutas: texto de 14px,
+   apoio de 13px, controles com a altura de --ctl (globals.css) e linhas de tabela de 32px.
    Carregado depois de globals.css, shell.css e tools.css; tudo aqui é escopado em .students-panel (classes stu-*),
    então Datas e as outras telas não mudam. O painel é vidro (.surface-panel, globals.css); campos, tabelas e
    cartões dentro dele ficam opacos (var(--surface)) para o texto nunca ficar sobre as linhas do caderno.
@@ -10,16 +11,18 @@
 
 /* ---------- Painel e cabeçalho ---------- */
 .application .students-panel.tool-panel {
+  /* Altura de uma linha de tabela: 32px com o mouse, 40px no toque. */
+  --row: max(32px, calc(var(--ctl) - 4px));
   gap: 12px;
-  padding: 16px 28px 12px;
-  font-size: 1rem;
+  padding: 14px 20px 12px;
+  font-size: 0.875rem;
 }
 /* Título e alternância na primeira linha, passos na segunda: a mesma ordem da entrada e de Datas. A primeira linha
    tem a altura da alternância, para o painel não pular quando ela some (só o passo 1 a mostra). */
 .students-panel .stu-head {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-rows: minmax(54px, auto) auto;
+  grid-template-rows: minmax(var(--ctl), auto) auto;
   grid-template-areas:
     "title modes"
     "steps steps";
@@ -31,7 +34,7 @@
 .students-panel .stu-head h1 {
   grid-area: title;
   margin: 0;
-  font-size: 1.6875rem;
+  font-size: 1.25rem;
   line-height: 1.2;
 }
 .students-panel .stu-head .stu-modes {
@@ -42,13 +45,13 @@
   grid-area: steps;
 }
 
-/* Como informar os alunos: duas opções iguais, a mesma dupla da entrada (arquivo ou à mão): a escolhida tem fundo suave e
-   linha de 1px na cor da ação. */
+/* Como informar os alunos: duas opções iguais, a mesma dupla da entrada (arquivo ou à mão): a escolhida é um cartão claro
+   com sombra leve, como nas abas da entrada. */
 .stu-modes {
   display: inline-flex;
   flex: 0 0 auto;
-  gap: 4px;
-  padding: 4px;
+  gap: 2px;
+  padding: 3px;
   border: 1px solid var(--line);
   border-radius: 99px;
   background: var(--support);
@@ -56,35 +59,43 @@
 .stu-modes button {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 0 18px;
+  gap: 6px;
+  min-height: var(--ctl-sm);
+  padding: 0 12px;
   border: 1px solid transparent;
   border-radius: 99px;
   background: transparent;
   color: var(--muted);
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 0.8125rem;
+  font-weight: 400;
   line-height: 1.2;
   white-space: nowrap;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+.stu-modes button svg {
+  width: 16px;
+  height: 16px;
 }
 .stu-modes button:hover:not([aria-selected="true"]) {
-  background: var(--selected);
   color: var(--text);
 }
+/* O peso não muda com a escolha: os botões têm a largura do texto, e um peso diferente faria a dupla tremer. */
 .stu-modes button[aria-selected="true"] {
-  border-color: var(--action);
-  background: var(--selected);
+  border-color: var(--line);
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgba(23, 62, 48, 0.08);
   color: var(--text);
 }
 
 /* Aviso de erro: legível e sem sumir. */
 .students-panel > .status-banner {
   align-items: center;
-  padding: 12px 16px;
-  border-radius: 12px;
+  padding: 8px 12px;
+  border-radius: 10px;
   background: var(--surface);
-  font-size: 1rem;
+  font-size: 0.875rem;
   line-height: 1.45;
 }
 
@@ -126,7 +137,7 @@
 }
 .stu-stage-head h2 {
   margin: 0;
-  font-size: 1.4375rem;
+  font-size: 0.9375rem;
   line-height: 1.25;
 }
 .stu-stage-head h2:focus {
@@ -135,35 +146,36 @@
 .students-panel .stu-help {
   margin: 0;
   color: var(--muted);
-  font-size: 1rem;
+  font-size: 0.8125rem;
   line-height: 1.4;
 }
 .students-panel .stu-hint {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   margin: 0;
   color: var(--muted);
-  font-size: 1rem;
+  font-size: 0.8125rem;
   line-height: 1.4;
 }
 .students-panel .stu-hint.error-text {
   color: var(--error);
-  font-weight: 500;
+  font-weight: var(--w-medium);
 }
 .stu-chip {
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  min-height: 26px;
   margin: 0;
-  padding: 8px 16px;
-  border: 1px solid var(--action);
+  padding: 0 10px;
+  border: 1px solid color-mix(in srgb, var(--action) 45%, transparent);
   border-radius: 99px;
   background: var(--selected);
   color: var(--text);
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 0.8125rem;
+  font-weight: var(--w-medium);
   line-height: 1.2;
   white-space: nowrap;
 }
@@ -173,55 +185,65 @@
   color: var(--error);
 }
 
-/* Botões do painel: grandes, com ícone e palavra. */
+/* Botões do painel: ícone e palavra, na altura de um controle. */
 .students-panel .primary,
 .students-panel .secondary {
-  min-height: 48px;
-  padding: 10px 24px;
-  font-size: 1.0625rem;
-  font-weight: 500;
+  min-height: var(--ctl);
+  padding: 0 14px;
+  font-size: 0.875rem;
+  font-weight: var(--w-medium);
   line-height: 1.2;
 }
 .students-panel .text-button {
-  min-height: 44px;
-  padding: 8px 12px;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 500;
+  min-height: var(--ctl);
+  padding: 0 8px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: var(--w-medium);
   line-height: 1.2;
 }
+.students-panel :is(.primary, .secondary, .text-button) svg {
+  width: 16px;
+  height: 16px;
+}
 
-/* Campos: rótulo sempre à vista, 16px, alvo de 48px. */
+/* Campos: rótulo sempre à vista. */
 .students-panel .field {
   margin: 0;
 }
 .students-panel .field > span:not(.field-help) {
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 0.8125rem;
+  font-weight: var(--w-medium);
   line-height: 1.3;
 }
 .students-panel .field input,
 .students-panel .field select {
-  min-height: 48px;
-  padding: 10px 14px;
-  font-size: 1rem;
+  min-height: var(--ctl);
+  padding: 6px 10px;
+  font-size: 0.875rem;
 }
 .students-panel .field select {
-  padding-right: 44px;
+  padding-right: 36px;
+}
+/* Com o <select> desenhado pelo app (globals.css) a seta é uma peça dele, não um fundo: sem o recuo da direita. */
+@supports (appearance: base-select) {
+  .students-panel .field select {
+    padding-right: 10px;
+  }
 }
 .students-panel .field-help {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.8125rem;
   line-height: 1.4;
 }
 .students-panel .check-row {
   margin: 0;
-  gap: 12px;
-  font-size: 1rem;
+  gap: 8px;
+  font-size: 0.875rem;
 }
 .students-panel .check-row input {
-  width: 22px;
-  height: 22px;
+  width: 16px;
+  height: 16px;
 }
 
 /* Linha de botões no fim de um passo: voltar à esquerda, ação principal à direita. */
@@ -253,8 +275,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  min-height: 300px;
+  gap: 10px;
+  min-height: 220px;
   padding: 20px 24px;
   border: 1px dashed var(--control-border);
   border-radius: 12px;
@@ -278,16 +300,20 @@
   display: grid;
   place-items: center;
   flex: 0 0 auto;
-  width: 72px;
-  height: 72px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: var(--selected);
   color: var(--action);
 }
+.stu-zone-icon svg {
+  width: 22px;
+  height: 22px;
+}
 .stu-zone-title {
   margin: 0;
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 0.9375rem;
+  font-weight: var(--w-medium);
   line-height: 1.25;
 }
 .stu-touch-text {
@@ -302,15 +328,15 @@
   }
 }
 .students-panel .stu-pick {
-  min-height: 56px;
-  padding: 12px 32px;
-  font-size: 1.125rem;
+  min-height: var(--ctl);
+  padding: 0 16px;
+  font-size: 0.875rem;
 }
 .stu-zone-help,
 .students-panel .stu-zone-file {
   margin: 0;
   color: var(--muted);
-  font-size: 1rem;
+  font-size: 0.8125rem;
   line-height: 1.4;
 }
 .students-panel .stu-zone-file {
@@ -320,7 +346,7 @@
   max-width: 100%;
   overflow-wrap: anywhere;
   color: var(--text);
-  font-weight: 500;
+  font-weight: var(--w-medium);
 }
 .stu-links {
   display: flex;
@@ -328,10 +354,12 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 4px 24px;
+  gap: 4px 20px;
 }
 .stu-links .text-button {
+  font-size: 0.8125rem;
   text-decoration: underline;
+  text-decoration-thickness: 1px;
   text-underline-offset: 4px;
 }
 .stu-sheet-pick {
@@ -351,8 +379,8 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 4px 12px;
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: var(--w-medium);
 }
 .stu-file-row > span {
   min-width: 0;
@@ -372,7 +400,7 @@
 }
 .stu-mapping h2 {
   margin: 0;
-  font-size: 1.4375rem;
+  font-size: 1.0625rem;
 }
 .stu-mapping-preview {
   display: flex;
@@ -399,11 +427,11 @@
 .stu-more summary {
   display: flex;
   align-items: center;
-  min-height: 44px;
+  min-height: var(--ctl);
   padding: 0;
   color: var(--action);
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: var(--w-medium);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -416,8 +444,8 @@
 .stu-sheet td {
   max-width: 220px;
   overflow: hidden;
-  padding: 8px 12px;
-  font-size: 0.9375rem;
+  padding: 6px 10px;
+  font-size: 0.8125rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -469,30 +497,39 @@
   color: var(--error);
 }
 
-/* ---------- Tabelas: opacas, cabeçalho fixo, linhas de 56px ---------- */
+/* ---------- Tabelas: opacas, cabeçalho sempre à vista, linhas baixas ---------- */
 .students-panel .stu-table {
+  margin: 0;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 10px;
   background: var(--surface);
+  scrollbar-width: thin;
+  scrollbar-color: var(--button-border) transparent;
 }
 .students-panel .stu-table table {
   width: 100%;
-  font-size: 1rem;
+  font-size: 0.875rem;
 }
+/* O cabeçalho fica parado enquanto a lista rola. A linha de baixo é uma sombra: com as bordas juntas
+   (border-collapse) a borda de uma célula fixa rolaria junto com a tabela. */
 .students-panel .stu-table th {
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 7px 10px;
+  border-bottom: 0;
+  box-shadow: inset 0 -1px 0 var(--line);
   background: var(--support);
-  color: var(--text);
-  font-size: 0.9375rem;
-  font-weight: 500;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: var(--w-medium);
   line-height: 1.3;
   text-align: left;
 }
 .students-panel .stu-table td {
   padding: 4px 8px;
   border-bottom: 1px solid var(--line);
-  font-size: 1rem;
+  font-size: 0.875rem;
   line-height: 1.4;
   vertical-align: middle;
 }
@@ -506,13 +543,13 @@
 .students-panel .stu-table input {
   width: 100%;
   min-width: 0;
-  min-height: 44px;
-  padding: 8px 12px;
+  min-height: var(--row);
+  padding: 4px 10px;
   border: 1px solid var(--control-border);
-  border-radius: 12px;
+  border-radius: 8px;
   background: var(--surface);
   color: var(--text);
-  font-size: 1rem;
+  font-size: 0.875rem;
   line-height: 1.4;
 }
 .students-panel .stu-table input[aria-invalid="true"] {
@@ -521,46 +558,39 @@
 }
 
 /* ---------- Passo 2: conferir ---------- */
-/* A tabela nunca rola na vertical: StudentReview mede a altura que sobra na janela e mostra só os alunos que cabem
-   (hooks/use-review-page-size.ts), com a paginação logo abaixo. Se nem o mínimo couber, quem rola é o corpo do passo. */
+/* A turma inteira numa tabela só, sem páginas (como no app original). Nas telas de altura fixa a tabela ocupa a altura
+   que sobra e rola por dentro, com o cabeçalho parado; o título, as opções e os botões ficam sempre à vista. No celular
+   e em janelas baixas a página rola e os botões ficam presos embaixo. */
 .stu-review-table {
   display: flex;
-  flex: 0 0 auto;
+  flex: 1 1 auto;
   flex-direction: column;
-  gap: 8px;
+  min-height: 0;
 }
 .stu-review-table > .stu-table {
-  flex: 0 0 auto;
+  flex: 1 1 auto;
+  min-height: 0;
 }
-.students-panel .stu-review-table .pagination {
-  flex: 0 0 auto;
-  margin: 0;
-}
-.students-panel .stu-review-table .pagination .field-help {
-  font-size: 1rem;
-  white-space: nowrap;
+@media (min-width: 720px) and (min-height: 540px) {
+  /* Nunca menos que o cabeçalho e três alunos: daí para baixo quem rola é o corpo do passo. */
+  .stu-review-table {
+    min-height: calc(4 * var(--row) + 8px);
+  }
 }
 .stu-review .stu-table table {
-  min-width: 940px;
+  min-width: 860px;
 }
 /* Cara de tabela (de 641px em diante): linhas e colunas à vista e o campo ocupa a célula inteira. Ele só ganha moldura
    quando o mouse passa, quando recebe o foco ou quando está com problema, como no app original. No celular cada aluno
    é um cartão (mais abaixo). */
 @media (min-width: 641px) {
-  .students-panel .stu-review .stu-table {
-    border-radius: 8px;
-  }
   .students-panel .stu-review .stu-table th {
-    height: 40px;
-    padding: 0 12px;
-    border-bottom: 1px solid var(--control-border);
-    color: var(--muted);
-    font-size: 0.875rem;
-    font-weight: 600;
+    height: var(--row);
+    padding: 0 10px;
     white-space: nowrap;
   }
   .students-panel .stu-review .stu-table td {
-    height: 45px;
+    height: calc(var(--row) + 1px);
     padding: 0;
   }
   .students-panel .stu-review .stu-table th + th,
@@ -572,9 +602,9 @@
     background: color-mix(in srgb, var(--support) 55%, var(--surface));
   }
   .students-panel .stu-review .stu-table td input {
-    height: 44px;
-    min-height: 44px;
-    padding: 0 12px;
+    height: var(--row);
+    min-height: var(--row);
+    padding: 0 10px;
     border: 0;
     border-radius: 0;
     background: transparent;
@@ -588,8 +618,8 @@
     background: var(--surface);
   }
   .students-panel .stu-review .stu-table td input[aria-invalid="true"] {
-    background: color-mix(in srgb, var(--error) 10%, var(--surface));
-    box-shadow: inset 0 0 0 2px var(--error);
+    background: color-mix(in srgb, var(--error) 9%, var(--surface));
+    box-shadow: inset 0 0 0 1px var(--error);
   }
   .students-panel .stu-review .stu-table td.stu-row-number {
     color: var(--muted);
@@ -603,7 +633,8 @@
 /* Larguras: o CPF cabe "000.000.000-00" inteiro e o e-mail ganha a maior fatia. */
 .stu-review .stu-table th:first-child,
 .stu-review .stu-table td:first-child {
-  width: 56px;
+  width: 52px;
+  font-size: 0.8125rem;
   text-align: center;
 }
 .stu-review .stu-table th[data-field="cpf"] { width: 16%; }
@@ -615,7 +646,7 @@
 /* A coluna "Original" só existe quando há uma planilha por trás. */
 .stu-review .stu-table th.stu-col-original,
 .stu-review .stu-table td.stu-original {
-  width: 92px;
+  width: 76px;
 }
 .stu-review .stu-table tbody tr {
   position: relative;
@@ -624,15 +655,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
+  min-height: calc(var(--row) - 6px);
   padding: 0 8px;
-  border-radius: 10px;
+  border-radius: 6px;
   color: var(--action);
   cursor: pointer;
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 0.8125rem;
+  font-weight: 400;
   text-decoration: underline;
-  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 .stu-original summary:hover {
   background: var(--selected);
@@ -644,21 +676,21 @@
 /* Os valores originais cobrem a própria linha, sem mudar a altura da tabela. */
 .stu-original-body {
   position: absolute;
-  inset: 3px 100px 3px 3px;
-  z-index: 2;
+  inset: 2px 80px 2px 2px;
+  z-index: 1;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 2px 20px;
-  padding: 4px 14px;
+  gap: 2px 16px;
+  padding: 2px 10px;
   overflow: auto;
   border: 1px solid var(--action);
-  border-radius: 12px;
+  border-radius: 6px;
   background: var(--selected);
 }
 .stu-original-body p {
   margin: 0;
-  font-size: 0.9375rem;
+  font-size: 0.8125rem;
   line-height: 1.35;
   overflow-wrap: anywhere;
 }
@@ -668,17 +700,17 @@
   display: flex;
   flex: 0 0 auto;
   flex-wrap: wrap;
-  gap: 8px;
-  max-height: 112px;
+  gap: 6px;
+  max-height: 72px;
   margin: 0;
-  padding: 8px;
+  padding: 6px;
   overflow: auto;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 10px;
   background: var(--surface);
   list-style: none;
   scrollbar-width: thin;
-  scrollbar-color: var(--control-border) transparent;
+  scrollbar-color: var(--button-border) transparent;
 }
 .stu-issues li {
   display: flex;
@@ -688,14 +720,14 @@
 .students-panel .stu-issues .issue-link {
   display: block;
   width: auto;
-  min-height: 44px;
-  padding: 8px 14px;
-  border: 1px solid var(--error);
-  border-radius: 12px;
+  min-height: max(26px, calc(var(--ctl) - 10px));
+  padding: 3px 10px;
+  border: 1px solid color-mix(in srgb, var(--error) 55%, transparent);
+  border-radius: 99px;
   background: var(--surface);
   color: var(--error);
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 0.8125rem;
+  font-weight: 400;
   line-height: 1.35;
   text-align: left;
   overflow-wrap: anywhere;
@@ -704,13 +736,13 @@
   background: color-mix(in srgb, var(--error) 8%, var(--surface));
 }
 
-/* Opções: duas pílulas, cursos e matrícula na mesma faixa. */
+/* Opções: o tipo de cadastro, a matrícula e (quando falta) a disciplina, na mesma faixa. */
 .stu-options {
   display: flex;
   flex: 0 0 auto;
   flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 10px 28px;
+  align-items: center;
+  gap: 8px 20px;
 }
 .stu-mode {
   min-width: 0;
@@ -718,17 +750,25 @@
   padding: 0;
   border: 0;
 }
+/* "Tipo de cadastro" é dito pelas duas opções; só o leitor de tela ouve a legenda. */
 .stu-mode legend {
-  margin: 0 0 6px;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
   padding: 0;
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.3;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
 }
 .stu-pills {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: var(--support);
 }
 .stu-pill {
   position: relative;
@@ -746,47 +786,44 @@
 .stu-pill span {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-height: 48px;
-  padding: 0 20px;
-  border: 1px solid var(--control-border);
+  gap: 6px;
+  min-height: var(--ctl-sm);
+  padding: 0 12px;
+  border: 1px solid transparent;
   border-radius: 99px;
-  background: var(--surface);
-  color: var(--text);
-  font-size: 1rem;
-  font-weight: 500;
+  color: var(--muted);
+  font-size: 0.8125rem;
   line-height: 1.2;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 .stu-pill:hover input:not(:checked) + span {
-  border-color: var(--focus);
-  background: var(--support);
+  color: var(--text);
 }
 .stu-pill input:checked + span {
-  border-color: var(--action);
-  background: var(--selected);
+  border-color: var(--line);
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgba(23, 62, 48, 0.08);
+  color: var(--text);
 }
 .stu-pill input:focus-visible + span {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
 .stu-courses {
-  flex: 1 1 280px;
-  max-width: 440px;
+  flex: 1 1 260px;
+  max-width: 400px;
 }
 .stu-courses input[aria-invalid="true"] {
   border-color: var(--error);
 }
 .stu-courses .error-text {
-  font-weight: 500;
+  font-weight: var(--w-medium);
 }
 .students-panel .stu-enrol {
   flex: 0 0 auto;
-  min-height: 48px;
-}
-@media (min-width: 1200px) {
-  .students-panel .stu-enrol {
-    margin-top: 28px;
-  }
+  min-height: var(--ctl-sm);
 }
 
 /* ---------- Passo 3: enviar ---------- */
@@ -795,46 +832,49 @@
   flex: 1 1 auto;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-template-rows: minmax(0, 1fr);
-  gap: 16px;
-  min-height: 220px;
+  gap: 14px;
 }
 .stu-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   align-self: start;
-  gap: 12px;
+  gap: 10px;
   max-height: 100%;
   min-width: 0;
-  padding: 20px;
+  padding: 18px;
   overflow: auto;
   border: 1px solid var(--line);
   border-radius: 12px;
   background: var(--surface);
   text-align: center;
   scrollbar-width: thin;
-  scrollbar-color: var(--control-border) transparent;
+  scrollbar-color: var(--button-border) transparent;
 }
 .stu-card-icon {
   display: grid;
   place-items: center;
   flex: 0 0 auto;
-  width: 64px;
-  height: 64px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: var(--selected);
   color: var(--action);
 }
+.stu-card-icon svg {
+  width: 20px;
+  height: 20px;
+}
 .stu-card-title {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 0.9375rem;
+  font-weight: var(--w-strong);
 }
 .students-panel .stu-big {
   width: 100%;
-  max-width: 380px;
-  min-height: 60px;
-  font-size: 1.1875rem;
+  max-width: 320px;
+  min-height: var(--ctl);
+  font-size: 0.875rem;
 }
 .stu-card > .stu-help {
   margin: 0;
@@ -853,10 +893,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 8px 8px 8px 14px;
+  gap: 10px;
+  padding: 4px 4px 4px 12px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 10px;
 }
 .stu-files li > span {
   display: flex;
@@ -867,7 +907,7 @@
 .stu-files small {
   margin: 0;
   color: var(--muted);
-  font-size: 1rem;
+  font-size: 0.8125rem;
 }
 .stu-chevron {
   margin-left: auto;
@@ -907,14 +947,14 @@
 .students-panel .stu-sending {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   margin: 0;
-  padding: 16px;
-  border: 1px solid var(--action);
-  border-radius: 12px;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--action) 45%, transparent);
+  border-radius: 10px;
   background: var(--selected);
-  font-size: 1.125rem;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: var(--w-medium);
 }
 
 /* Conexão compartilhada com Datas: aqui sem moldura, só os campos e um botão. As frases longas ficam de fora. */
@@ -923,12 +963,12 @@
   padding: 0;
   border: 0;
   background: transparent;
-  font-size: 1rem;
+  font-size: 0.875rem;
   line-height: 1.45;
 }
 .students-panel .stu-moodle-body .moodle-connection h3 {
   margin: 0 0 8px;
-  font-size: 1.125rem;
+  font-size: 0.9375rem;
 }
 /* Já conectado, o título "Conectar ao Moodle" só confunde: a frase "Conectado como ..." basta. */
 .students-panel .stu-moodle-body .moodle-connection:not(:has(form)) > h3 {
@@ -936,7 +976,7 @@
 }
 .students-panel .stu-moodle-body .moodle-connection p {
   margin: 0 0 8px;
-  font-size: 1rem;
+  font-size: 0.875rem;
 }
 .students-panel .stu-moodle-body .moodle-connection .field > .field-help,
 .students-panel .stu-moodle-body .moodle-connection > p.field-help:not(.preserve-text):not([role="status"]) {
@@ -954,25 +994,25 @@
   margin: 0;
 }
 .students-panel .stu-moodle-body .moodle-connection .field-help {
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
 }
 .students-panel .stu-moodle-body .moodle-connection .button-row {
   margin-top: 4px;
   gap: 4px 12px;
 }
 .students-panel .stu-moodle-body .moodle-connection .secondary {
-  min-height: 44px;
-  padding: 8px 16px;
-  font-size: 1rem;
+  min-height: var(--ctl);
+  padding: 0 14px;
+  font-size: 0.875rem;
 }
 .students-panel .stu-moodle-body .moodle-connection button[type="submit"] {
-  min-height: 48px;
-  padding: 10px 24px;
+  min-height: var(--ctl);
+  padding: 0 16px;
   border-color: transparent;
   background: var(--action);
   color: var(--on-action);
-  font-size: 1.0625rem;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: var(--w-medium);
 }
 .students-panel .stu-moodle-body .moodle-connection button[type="submit"]:hover:not(:disabled) {
   background: var(--action);
@@ -996,46 +1036,38 @@
 .stu-confirm h3,
 .stu-results h3 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 0.9375rem;
 }
+/* Todos os alunos na mesma lista, sem páginas: ela rola por dentro, com o cabeçalho parado. */
 .stu-confirm .stu-table,
 .stu-results .stu-table {
-  max-height: 260px;
+  max-height: min(46vh, 420px);
+  max-height: min(46dvh, 420px);
 }
-.stu-confirm .stu-table th,
-.stu-results .stu-table th,
 .stu-confirm .stu-table td,
 .stu-results .stu-table td {
-  padding: 8px 12px;
-}
-.stu-confirm .pagination,
-.stu-results .pagination {
-  margin: 0;
-}
-.stu-confirm .pagination .field-help,
-.stu-results .pagination .field-help {
-  font-size: 1rem;
-  white-space: nowrap;
+  padding: 6px 10px;
+  font-size: 0.8125rem;
 }
 .stu-details {
   margin: 0;
-  padding: 0 14px 4px;
+  padding: 0 12px 2px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 10px;
   background: var(--surface);
 }
 .stu-details summary {
   display: flex;
   align-items: center;
-  min-height: 44px;
+  min-height: var(--ctl);
   padding: 0;
   color: var(--action);
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: var(--w-medium);
 }
 .stu-details p {
-  margin: 0 0 8px;
-  font-size: 1rem;
+  margin: 0 0 6px;
+  font-size: 0.8125rem;
 }
 .stu-details dl {
   display: grid;
@@ -1054,9 +1086,9 @@
 }
 .students-panel .stu-confirm-button {
   align-self: flex-start;
-  min-height: 56px;
-  padding: 12px 28px;
-  font-size: 1.125rem;
+  min-height: var(--ctl-lg);
+  padding: 0 18px;
+  font-size: 0.875rem;
 }
 .stu-results .stu-table td:nth-child(2) {
   white-space: nowrap;
@@ -1070,12 +1102,12 @@
   list-style: none;
 }
 .stu-counts li {
-  padding: 6px 14px;
-  border: 1px solid var(--action);
+  padding: 3px 10px;
+  border: 1px solid color-mix(in srgb, var(--action) 45%, transparent);
   border-radius: 99px;
   background: var(--selected);
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 0.8125rem;
+  font-weight: var(--w-medium);
 }
 .stu-counts li.error,
 .stu-counts li.unknown {
@@ -1085,12 +1117,12 @@
 }
 .students-panel .stu-lock {
   margin: 0;
-  padding: 12px 16px;
+  padding: 8px 12px;
   border: 1px solid var(--error);
-  border-radius: 12px;
+  border-radius: 10px;
   background: var(--surface);
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: var(--w-medium);
 }
 
 /* ---------- Aviso de privacidade (passo 1) ---------- */
@@ -1099,10 +1131,10 @@
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   margin: auto 0 0;
   color: var(--muted);
-  font-size: 1rem;
+  font-size: 0.8125rem;
   line-height: 1.4;
 }
 
@@ -1115,10 +1147,9 @@
   }
 }
 
-/* ---------- Janela baixa (notebook, até 1000px de altura): o que cerca a tabela de conferir ocupa o mínimo ----------
-   Acima disso cabem os dez alunos de uma página com o espaçamento largo. Abaixo, cada linha a menos em volta da tabela
-   é um aluno a mais por página. */
-@media (min-width: 720px) and (max-height: 1000px) {
+/* ---------- Janela baixa (notebook, até 800px de altura): o que cerca a tabela de conferir ocupa o mínimo ----------
+   Cada linha a menos em volta da tabela é um aluno a mais à vista. */
+@media (min-width: 720px) and (max-height: 800px) {
   .application .students-panel.tool-panel {
     gap: 8px;
     padding-block: 12px 10px;
@@ -1126,36 +1157,26 @@
   .students-panel .stu-body > .stu-review {
     gap: 8px;
   }
-  /* "Tipo de cadastro" é dito pelas duas opções; só o leitor de tela continua ouvindo a legenda. */
-  .students-panel .stu-mode legend {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-  }
-  /* Sem a legenda, a matrícula não precisa mais do recuo que a alinhava com as opções. */
-  .students-panel .stu-enrol {
-    margin-top: 0;
-  }
   /* Uma linha de pendências à vista; as outras rolam dentro do quadro. */
   .stu-issues {
-    max-height: 62px;
+    max-height: 42px;
   }
-  /* Se o passo não couber, quem rola é o corpo; os botões de voltar e preparar ficam sempre à vista, num cartão opaco. */
+}
+/* Quando a página rola (celular, janela muito baixa), os botões de voltar e preparar ficam presos embaixo, num cartão
+   opaco: com a turma inteira na tela, ninguém precisa rolar até o fim para continuar. */
+@media (max-width: 719px), (max-height: 539px) {
   .students-panel .stu-review > .stu-actions {
     position: sticky;
-    bottom: 0;
+    bottom: 8px;
     z-index: 3;
-    padding: 4px 8px;
+    padding: 6px 8px;
     border: 1px solid var(--line);
     border-radius: 12px;
     background: var(--surface);
+    box-shadow: var(--shadow-pop);
   }
 }
-@media (min-width: 900px) and (max-height: 1000px) {
+@media (min-width: 900px) {
   /* Passos 2 e 3 (sem a alternância do passo 1): título e passos na mesma linha. */
   .students-panel .stu-head:has(> .stu-modes[hidden]) {
     grid-template-columns: auto minmax(0, 1fr);
@@ -1196,7 +1217,7 @@
       "steps";
   }
   .students-panel .stu-head h1 {
-    font-size: 1.625rem;
+    font-size: 1.25rem;
   }
   .students-panel .stu-head .stu-modes {
     justify-self: stretch;
@@ -1222,7 +1243,7 @@
     padding: 20px 14px;
   }
   .stu-zone-title {
-    font-size: 1.3125rem;
+    font-size: 1rem;
   }
   .stu-mapping-grid {
     grid-template-columns: minmax(0, 1fr);
@@ -1235,13 +1256,21 @@
     max-width: none;
   }
 
-  .stu-pills,
+  /* As duas opções lado a lado, cada uma com metade da largura. */
+  .stu-mode,
   .stu-pill,
   .stu-pill span {
     width: 100%;
   }
+  .stu-pills {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
   .stu-pill span {
     justify-content: center;
+    padding-inline: 6px;
+    text-align: center;
   }
   .stu-actions > * {
     flex: 1 1 100%;
@@ -1253,6 +1282,20 @@
   .stu-actions > .stu-hint {
     justify-content: flex-start;
     text-align: left;
+  }
+  /* Conferir: a barra presa embaixo fica numa linha só (Voltar e o botão principal). O motivo do botão desligado já
+     está no alto, no selo de pendências, e continua sendo lido pelo leitor de tela (aria-describedby). */
+  .students-panel .stu-review > .stu-actions {
+    flex-wrap: nowrap;
+  }
+  .students-panel .stu-review > .stu-actions > * {
+    flex: 0 0 auto;
+  }
+  .students-panel .stu-review > .stu-actions > .primary {
+    flex: 1 1 auto;
+  }
+  .students-panel .stu-review > .stu-actions > .stu-hint {
+    display: none;
   }
   .students-panel .stu-moodle-body .moodle-connection .field-grid {
     grid-template-columns: minmax(0, 1fr);
@@ -1297,15 +1340,15 @@
   .stu-review .stu-table td[data-label]::before {
     content: attr(data-label);
     display: block;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     color: var(--muted);
-    font-size: 0.9375rem;
-    font-weight: 500;
+    font-size: 0.8125rem;
+    font-weight: 400;
   }
   .stu-review .stu-table td.stu-row-number {
     color: var(--text);
-    font-size: 1.0625rem;
-    font-weight: 500;
+    font-size: 0.875rem;
+    font-weight: var(--w-medium);
   }
   .stu-review .stu-table td.stu-row-number::before {
     display: inline;
@@ -1313,8 +1356,7 @@
     color: inherit;
     font-size: inherit;
   }
-  /* O cartão do aluno em duas colunas para os campos curtos (nome e sobrenome): três cartões por página
-     cabem em dois toques de rolagem, em vez de quatro. */
+  /* O cartão do aluno em duas colunas para os campos curtos (nome e sobrenome): cada aluno ocupa menos altura. */
   .stu-review .stu-table tbody tr {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1357,7 +1399,7 @@
 /* Telas de 360px: os dois nomes da alternância cabem numa linha só, cada um dentro da sua pílula. */
 @media (max-width: 400px) {
   .students-panel .stu-head h1 {
-    font-size: 1.5rem;
+    font-size: 1.125rem;
   }
   .stu-modes button {
     padding-inline: 6px;
@@ -1375,7 +1417,7 @@
 @media (min-width: 1500px) and (min-height: 860px) {
   .application .students-panel.tool-panel {
     gap: 14px;
-    padding: 24px 28px 16px;
+    padding: 20px 24px 14px;
   }
 }
 

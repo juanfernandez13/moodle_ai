@@ -51,7 +51,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 8px var(--workspace-end) 8px var(--workspace-start);
+  padding: 8px var(--workspace-end) 6px var(--workspace-start);
 }
 .brand {
   line-height: 1.2;
@@ -97,13 +97,13 @@
 /* Botões do cabeçalho: texto de 16px, ícone sempre junto da palavra. A página aberta fica marcada
    por fundo suave e borda de 1px na cor da ação, não só pela cor do texto. */
 .header-action {
-  min-height: 44px;
-  font-size: 1rem;
+  min-height: var(--ctl);
+  font-size: 0.875rem;
   white-space: nowrap;
 }
 .header-action svg {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
 }
 .header-action[aria-pressed="true"],
 .header-action[aria-current="page"] {
@@ -121,10 +121,8 @@
   position: relative;
 }
 .header-menu-button {
-  gap: 8px;
-  padding-right: 12px;
-  background: var(--selected);
-  border-color: var(--action);
+  gap: 6px;
+  padding-right: 10px;
 }
 /* O botão de tema traz as duas opções e a folha de estilos esconde a que não vale: assim ele já nasce certo, sem
    esperar o app carregar para trocar "Escuro" por "Claro". */
@@ -134,9 +132,6 @@
 .theme-dark .header-theme-option[data-to="dark"],
 :root:not(.theme-dark) .header-theme-option[data-to="light"] {
   display: none;
-}
-.theme-dark .header-menu-button {
-  background: var(--selected);
 }
 .header-menu-chevron {
   color: var(--action);
@@ -153,11 +148,11 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  min-width: 200px;
+  min-width: 180px;
   margin: 0;
-  padding: 6px;
+  padding: 4px;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: 12px;
   background: var(--surface);
   box-shadow: var(--shadow-pop);
   list-style: none;
@@ -165,29 +160,44 @@
 .header-menu-list[hidden] {
   display: none;
 }
+/* A lista desce uns pixels ao abrir, como as listas de escolha. */
+@media (prefers-reduced-motion: no-preference) {
+  .header-menu-list:not([hidden]) {
+    animation: header-menu-in 0.12s ease-out both;
+  }
+}
+@keyframes header-menu-in {
+  from {
+    opacity: 0;
+    translate: 0 -4px;
+  }
+}
 .header-menu-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-height: 48px;
-  padding: 8px 14px;
+  gap: 8px;
+  min-height: max(32px, calc(var(--ctl) - 4px));
+  padding: 0 10px 0 8px;
   border: 1px solid transparent;
-  border-radius: 11px;
+  border-radius: 8px;
   color: var(--text);
-  font-size: 1.0625rem;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: 400;
   line-height: 1.2;
+  transition: background-color 0.12s ease;
 }
 .header-menu-item svg {
   flex: none;
+  width: 16px;
+  height: 16px;
   color: var(--action);
 }
 .header-menu-item:hover {
   background: var(--support);
 }
 .header-menu-item[aria-current="page"] {
-  border-color: var(--action);
   background: var(--selected);
+  font-weight: var(--w-medium);
 }
 
 .workspace-main {
@@ -198,7 +208,7 @@
   flex-direction: column;
   min-width: 0;
   min-height: 0;
-  padding: 4px var(--workspace-end) 14px var(--workspace-start);
+  padding: 2px var(--workspace-end) 12px var(--workspace-start);
   /* Quem recebe foco ou é rolado até aqui não fica colado na borda (o anel de foco não é cortado). */
   scroll-padding-block: 12px;
 }
@@ -263,12 +273,12 @@
   .header-action {
     flex-direction: row;
     gap: 7px;
-    min-height: 48px;
+    min-height: var(--ctl);
     padding: 8px 12px;
-    font-size: 1rem;
+    font-size: 0.875rem;
   }
   .header-theme {
-    width: 48px;
+    width: max(44px, var(--ctl));
     padding: 0;
   }
   .header-theme-word {
@@ -282,7 +292,7 @@
    para os três caberem numa linha sem quebrar "Moodle IA". */
 @media (max-width: 420px) {
   .brand {
-    font-size: 1.3125rem;
+    font-size: 1rem;
     white-space: nowrap;
   }
   .header-menu-button {
@@ -296,6 +306,6 @@
   .brand {
     gap: 7px;
     padding-right: 10px;
-    font-size: 1.25rem;
+    font-size: 1rem;
   }
 }

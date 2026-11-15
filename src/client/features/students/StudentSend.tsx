@@ -74,8 +74,6 @@ export function StudentSend({
             preview={remote.moodlePreview}
             results={remote.results}
             unknownResult={remote.unknownResult}
-            page={remote.opsPage}
-            onPageChange={remote.setOpsPage}
             onConfirm={() => wait("confirm", remote.confirmMoodle)}
           />
         </MoodleStudentPanel>

@@ -26,7 +26,6 @@ export function useStudentSource({
     columns: {},
   });
   const [mappingOpen, setMappingOpen] = useState(false);
-  const [page, setPage] = useState(0);
   // The list was typed by hand: its lines have no spreadsheet to point back to (no "original" cells to show).
   const [typed, setTyped] = useState(false);
   function changeRow(
@@ -88,7 +87,6 @@ export function useStudentSource({
       }
       setRows(result.rows);
       setTyped(false);
-      setPage(0);
       onReview();
       setMappingOpen(false);
     } catch (failure) {
@@ -108,7 +106,6 @@ export function useStudentSource({
     setMatrix(source);
     setRows(mapStudentRows(source));
     setTyped(false);
-    setPage(0);
     setSheets([]);
     onReview();
     setMappingOpen(false);
@@ -135,7 +132,6 @@ export function useStudentSource({
     setMatrix(typed);
     setRows(mapped);
     setTyped(true);
-    setPage(0);
     setSheets([]);
     onReview();
     setMappingOpen(false);
@@ -147,7 +143,6 @@ export function useStudentSource({
       onInvalidate();
       setRows(next);
       setTyped(false);
-      setPage(0);
       onReview();
       setMappingOpen(false);
     } catch (failure) {
@@ -166,7 +161,6 @@ export function useStudentSource({
     sheets,
     mapping,
     mappingOpen,
-    page,
     typed,
     parse,
     example,
@@ -174,7 +168,6 @@ export function useStudentSource({
     changeRow,
     changeSheet,
     applyMapping,
-    setPage,
     setMapping,
     toggleMapping: () => setMappingOpen(!mappingOpen)
   };
