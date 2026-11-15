@@ -16,6 +16,7 @@ import {
   buildStudentBatches,
   createStudentExample,
   editableStudentFields,
+  sheetCourses,
   studentFieldLabels,
 } from "../../src/client/features/students/helpers.ts";
 import {
@@ -110,6 +111,8 @@ function workflowFixture(
         },
       }),
       validateStudents,
+      buildStudentBatches,
+      sheetCourses,
       useStudentSource: publicFunction(
         `${hooks}use-student-source.ts`,
         "useStudentSource",
@@ -176,7 +179,7 @@ test("course batches preserve edited source and reject spreadsheet formulas with
   rows[1]!.email = "bruno@example.org";
   const before = structuredClone(rows);
   const options = { mode: "create" as const, enrol: true };
-  const batches = buildStudentBatches(rows, options, " A ;B\nA, =formula() ");
+  const batches = buildStudentBatches(rows, options, [" A ", "B", "A", "", "=formula() "]);
   assert.deepEqual(
     batches.map((batch) => batch[0]!.course),
     ["A", "B", "=formula()"],
@@ -191,7 +194,7 @@ test("course batches preserve edited source and reject spreadsheet formulas with
     );
   assert.equal(batches[2]![0]!.course, "=formula()");
   assert.deepEqual(
-    buildStudentBatches(rows, { ...options, enrol: false }, "A;B"),
+    buildStudentBatches(rows, { ...options, enrol: false }, ["A", "B"]),
     [rows],
   );
 });
@@ -392,7 +395,7 @@ test("student confirmation that was already sent remains locked across a connect
   assert.equal(confirms, 1);
 });
 
-test("editable student table shows every student with stable targets, original cells and precise accessible labels", () => {
+test("editable student table shows every student with stable targets and precise accessible labels", () => {
   const rows = Array.from({ length: 12 }, (_, index) => ({
     ...mapStudentRows(createStudentExample())[0]!,
     id: `student-${index}`,
@@ -441,8 +444,49 @@ test("editable student table shows every student with stable targets, original c
     ),
     "Ana",
   );
-  assert.match(
-    $("#student-student-0 details").text(),
-    /Nome completo: Ana Lima/,
+  // The discipline is one list for the whole class and the spreadsheet cells are not repeated: neither is a column.
+  assert.deepEqual(
+    $("thead th").map((_, cell) => $(cell).text()).get(),
+    ["Linha", "CPF (usuário)", "Primeiro nome", "Sobrenome", "E-mail"],
+  );
+  assert.equal($("details").length, 0);
+});
+
+// As in the original app: the discipline is one list for the whole class, and each one gets a file with every student.
+test("the list of disciplines starts with the spreadsheet's and every student goes to each one", async () => {
+  const render = workflowFixture(async () => ({}));
+  let workflow = render();
+  workflow.source.example();
+  workflow = render();
+  assert.deepEqual(workflow.csv.destinations, ["PROG-2026"]);
+  workflow.source.changeRow(workflow.source.rows[1]!.id, "email", "bruno@example.org");
+  workflow = render();
+  workflow.csv.changeDestinations(["PROG-2026", " REDES-101 ", "PROG-2026"]);
+  workflow = render();
+  await workflow.csv.prepare();
+  workflow = render();
+  assert.equal(workflow.stage, 3);
+  assert.deepEqual(
+    workflow.csv.previews.map((preview) => [preview.count, [...new Set(preview.rows.map((row) => row.course))]]),
+    [
+      [2, ["PROG-2026"]],
+      [2, ["REDES-101"]],
+    ],
+  );
+});
+test("the same student written under two disciplines is a repeat, not a conflict: the list decides the discipline", () => {
+  const render = workflowFixture(async () => ({}));
+  let workflow = render();
+  workflow.source.fromManual([
+    ["Nome completo", "E-mail", "CPF", "Disciplina"],
+    ["Ana Lima", "ana@example.org", "", "TURMA-A"],
+    ["Ana Lima", "ana@example.org", "", "TURMA-B"],
+  ]);
+  workflow = render();
+  assert.deepEqual(workflow.csv.destinations, ["TURMA-A", "TURMA-B"]);
+  assert.equal(workflow.validation.valid, true);
+  assert.deepEqual(
+    workflow.validation.repeats.map((repeat) => [repeat.rowNumber, repeat.first]),
+    [[2, 1]],
   );
 });

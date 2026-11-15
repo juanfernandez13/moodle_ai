@@ -22,7 +22,8 @@ export function useStudentCsv({
   onPreviewChange: () => void;
 }) {
   const [options, setOptions] = useState<StudentOptions>({ mode: "create", enrol: true });
-  const [destinations, setDestinations] = useState("");
+  // As disciplinas da turma: os mesmos alunos vão para cada uma, num arquivo por disciplina.
+  const [destinations, setDestinations] = useState<string[]>([]);
   const [previews, setPreviews] = useState<StudentPreview[]>([]);
   const [previewIndex, setPreviewIndex] = useState(0);
   async function prepare() {
@@ -86,7 +87,7 @@ export function useStudentCsv({
     onInvalidate();
     setOptions(next);
   }
-  function changeDestinations(next: string) {
+  function changeDestinations(next: string[]) {
     onInvalidate();
     setDestinations(next);
   }
@@ -104,6 +105,8 @@ export function useStudentCsv({
     clear,
     changeOptions,
     changeDestinations,
+    /** A lista nova começa pelas disciplinas que a planilha traz (quem chama já invalidou o que havia). */
+    seedDestinations: setDestinations,
     selectPreview
   };
 }

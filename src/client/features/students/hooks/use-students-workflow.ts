@@ -2,6 +2,7 @@
 import { useMemo, useRef, useState } from "react";
 import { useMoodle } from "../../../components/moodle-connection.tsx";
 import { validateStudents } from "../../../../domain/students/index.ts";
+import { buildStudentBatches, sheetCourses } from "../helpers.ts";
 import { useStudentSource } from "./use-student-source.ts";
 import { useStudentCsv } from "./use-student-csv.ts";
 import { useStudentMoodle } from "./use-student-moodle.ts";
@@ -36,7 +37,11 @@ export function useStudentsWorkflow() {
     setBusy,
     setError,
     onInvalidate: invalidate,
-    onReview: () => setStage(2),
+    onReview(rows) {
+      // A lista de disciplinas começa pelas que a planilha traz.
+      csv.seedDestinations(sheetCourses(rows));
+      setStage(2);
+    },
   });
   const csv = useStudentCsv({
     rows: source.rows,
@@ -54,12 +59,14 @@ export function useStudentsWorkflow() {
     setBusy,
     setError,
   });
+  // Confere a lista como ela vai sair: a disciplina é a da lista, não a de cada linha. Assim o mesmo aluno escrito em
+  // duas linhas com disciplinas diferentes é um aluno repetido (vai uma vez a cada disciplina), não um conflito.
   const validation = useMemo(
     () =>
       source.rows.length
-        ? validateStudents(source.rows)
-        : { valid: false, issues: [] },
-    [source.rows],
+        ? validateStudents(buildStudentBatches(source.rows, csv.options, csv.destinations)[0] ?? source.rows)
+        : { valid: false, issues: [], repeats: [] },
+    [source.rows, csv.options, csv.destinations],
   );
   return {
     busy,

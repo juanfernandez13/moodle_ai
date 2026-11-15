@@ -63,7 +63,8 @@ export function StudentSend({
           unknownResult={remote.unknownResult}
           hasPreview={remote.moodlePreview !== null}
           onToggle={() => setOpen(!open)}
-          onDestinationsChange={csv.changeDestinations}
+          // Escolher uma disciplina do Moodle troca a lista por ela (e volta à conferência, como antes).
+          onDestinationsChange={(course) => csv.changeDestinations([course])}
           onPreviewSelect={csv.selectPreview}
           onPreview={() => wait("preview", remote.previewMoodle)}
         >

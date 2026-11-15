@@ -278,3 +278,79 @@ test("logins comuns, ou uma minoria de CPFs, não são tratados como CPF", () =>
   // Login com letra numa planilha de CPFs é outra coisa (um professor, por exemplo), não um CPF errado.
   assert.deepEqual(issues(["52998224725", "11144477735", "prof.joao"]), []);
 });
+
+// O mesmo aluno escrito duas vezes (comum em lista de inscrição) não é erro de digitação: não há o que corrigir.
+test("o mesmo aluno escrito duas vezes não é pendência e vai uma vez só no CSV", async () => {
+  const rows = mapStudentRows(
+    parseCsv(
+      [
+        MOODLE_HEADER,
+        ",52998224725,Ana Paula,Lima,ana@example.test,Fortaleza,DEMO,Aluno",
+        ",11144477735,Bruno,Costa,bruno@example.test,Fortaleza,DEMO,Aluno",
+        // O primeiro nome termina em outro lugar; a pessoa é a mesma.
+        ",529.982.247-25,Ana,Paula Lima,ana@example.test,Fortaleza,DEMO,Aluno",
+        // Maiúsculas e acento também não fazem outra pessoa.
+        ",11144477735,BRUNO,Cósta,Bruno@Example.test,Fortaleza,demo,Aluno",
+      ].join("\n"),
+    ),
+  );
+  const validation = validateStudents(rows);
+  assert.deepEqual(validation.issues, []);
+  assert.equal(validation.valid, true);
+  assert.deepEqual(validation.repeats, [
+    { rowId: "row-4", rowNumber: 4, first: 2 },
+    { rowId: "row-5", rowNumber: 5, first: 3 },
+  ]);
+  const result = await buildStudentPreview(rows, { mode: "create", enrol: true });
+  assert.ok(result.ok, JSON.stringify(result));
+  assert.equal(result.preview.count, 2);
+  assert.deepEqual(result.preview.rows.map((row) => row.id), ["row-2", "row-3"]);
+  assert.equal(
+    result.preview.csv,
+    "username,firstname,lastname,email,idnumber,course1\r\n" +
+      '"52998224725","Ana Paula","Lima","ana@example.test","52998224725","DEMO"\r\n' +
+      '"11144477735","Bruno","Costa","bruno@example.test","11144477735","DEMO"\r\n',
+  );
+  // O servidor refaz a conta com a lista que recebeu (já sem as repetidas) e chega à mesma identificação.
+  const again = await buildStudentPreview(result.preview.rows, result.preview.options);
+  assert.ok(again.ok);
+  assert.equal(again.preview.hash, result.preview.hash);
+});
+test("mesmo CPF e e-mail com outro nome ou outra disciplina continua sendo pendência", () => {
+  const sheet = (last: string) =>
+    mapStudentRows(
+      parseCsv(
+        [
+          MOODLE_HEADER,
+          ",52998224725,Ana,Lima,ana@example.test,,DEMO,Aluno",
+          last,
+        ].join("\n"),
+      ),
+    );
+  // Outro nome: tirar a linha poderia perder um aluno que ficou com o CPF e o e-mail da linha de cima.
+  const otherName = validateStudents(sheet(",52998224725,Carla,Souza,ana@example.test,,DEMO,Aluno"));
+  assert.deepEqual(otherName.repeats, []);
+  assert.deepEqual([...new Set(otherName.issues.map((issue) => issue.message))], ["Repete a linha 2: mesmo e-mail e CPF."]);
+  // Outra disciplina: a segunda linha pede outra matrícula, não é a mesma coisa escrita de novo.
+  const otherCourse = validateStudents(sheet(",52998224725,Ana,Lima,ana@example.test,,OUTRA,Aluno"));
+  assert.deepEqual(otherCourse.repeats, []);
+  assert.equal(otherCourse.valid, false);
+});
+// A regra do e-mail é a do app original: um arroba, sem espaços, domínio com ponto.
+test("o e-mail segue a regra do app original, e o recusado diz o que há de errado nele", () => {
+  const message = (email: string) =>
+    validateStudents(
+      mapStudentRows([
+        ["Nome completo", "E-mail"],
+        ["Ana Lima", email],
+      ]),
+    ).issues.filter((issue) => issue.code === "invalid_email").map((issue) => issue.message);
+  assert.deepEqual(message("ana.lima@example.test"), []);
+  // Letra com acento passa, como no original (decisão do dono do projeto: o único erro da planilha dele era um CPF).
+  assert.deepEqual(message("josé.lima@example.test"), []);
+  assert.deepEqual(message("ana@example"), ["Informe um e-mail válido."]);
+  assert.deepEqual(message("ana lima@example.test"), ["O e-mail tem espaço."]);
+  assert.deepEqual(message("ana.example.test"), ["Falta o @ no e-mail."]);
+  assert.deepEqual(message("ana@"), ["Informe um e-mail válido."]);
+  assert.deepEqual(message(""), ["Informe um e-mail válido."]);
+});

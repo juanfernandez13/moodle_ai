@@ -14,7 +14,8 @@ export function useStudentSource({
   setBusy: (busy: boolean) => void;
   setError: (error: string) => void;
   onInvalidate: () => void;
-  onReview: () => void;
+  /** The students are ready to be reviewed; the rows go along because the state has not been rendered yet. */
+  onReview: (rows: StudentRow[]) => void;
 }) {
   const [file, setFile] = useState<File | null>(null);
   const [matrix, setMatrix] = useState<string[][]>([]);
@@ -26,8 +27,6 @@ export function useStudentSource({
     columns: {},
   });
   const [mappingOpen, setMappingOpen] = useState(false);
-  // The list was typed by hand: its lines have no spreadsheet to point back to (no "original" cells to show).
-  const [typed, setTyped] = useState(false);
   function changeRow(
     id: string,
     field: StudentEditField,
@@ -86,8 +85,7 @@ export function useStudentSource({
         );
       }
       setRows(result.rows);
-      setTyped(false);
-      onReview();
+      onReview(result.rows);
       setMappingOpen(false);
     } catch (failure) {
       setError(
@@ -104,10 +102,10 @@ export function useStudentSource({
     onInvalidate();
     setFile(null);
     setMatrix(source);
-    setRows(mapStudentRows(source));
-    setTyped(false);
+    const mapped = mapStudentRows(source);
+    setRows(mapped);
     setSheets([]);
-    onReview();
+    onReview(mapped);
     setMappingOpen(false);
   }
   /** Typed students arrive as the matrix the example uses, so mapping, validation and review work the same. */
@@ -131,9 +129,8 @@ export function useStudentSource({
     setFile(null);
     setMatrix(typed);
     setRows(mapped);
-    setTyped(true);
     setSheets([]);
-    onReview();
+    onReview(mapped);
     setMappingOpen(false);
   }
 
@@ -142,8 +139,7 @@ export function useStudentSource({
       const next = mapStudentRows(matrix, mapping);
       onInvalidate();
       setRows(next);
-      setTyped(false);
-      onReview();
+      onReview(next);
       setMappingOpen(false);
     } catch (failure) {
       setError(failure instanceof Error ? failure.message : "Confira as colunas.");
@@ -161,7 +157,6 @@ export function useStudentSource({
     sheets,
     mapping,
     mappingOpen,
-    typed,
     parse,
     example,
     fromManual,

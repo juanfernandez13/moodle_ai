@@ -18,6 +18,8 @@ export type StudentIssue = {
   rowId: string;
   message: string;
 };
+/** A row that writes again a student already in the list; `first` is the spreadsheet line that goes in its place. */
+export type StudentRepeat = { rowId: string; rowNumber: number; first: number };
 export type StudentOptions = { mode: "create" | "update"; enrol: boolean };
 export type StudentPreview = {
   hash: string;
@@ -268,12 +270,54 @@ function cpfProblem(value: string): string | null {
     ? `O CPF tem ${digits} ${digits === 1 ? "dígito" : "dígitos"}; precisa de 11.`
     : "Confira os dígitos do CPF.";
 }
+/**
+ * What is wrong with an e-mail, in one sentence, or null when it is one. The rule is the original app's, by the owner's
+ * decision: one "@", no spaces, a domain with a dot. An address with an accented letter passes, as it does there (Moodle
+ * creates that account with a warning); a stricter check made the review report errors the teacher does not count as one.
+ */
+function emailProblem(value: string): string | null {
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) return null;
+  if (/\s/.test(value)) return "O e-mail tem espaço.";
+  if (value && !value.includes("@")) return "Falta o @ no e-mail.";
+  return "Informe um e-mail válido.";
+}
 const duplicateLabels = { email: "e-mail", username: "usuário", cpf: "CPF" } as const;
 const joinWords = (words: string[]) =>
   words.length < 2 ? (words[0] ?? "") : `${words.slice(0, -1).join(", ")} e ${words.at(-1)}`;
+/**
+ * The same student written twice in the list: same login, e-mail, CPF, name and course. Capitals, accents and where the
+ * first name ends ("Ana | Paula Lima" or "Ana Paula | Lima") do not make it another person. Such a row is nothing to fix:
+ * the student goes once, by the first row. A row that shares the CPF or the e-mail under ANOTHER name is a conflict and
+ * stays a pendência, because leaving it out could lose a student.
+ * Returns, for each row, the spreadsheet line it repeats (undefined when it repeats none).
+ */
+function repeatedStudents(rows: readonly StudentRow[]): (number | undefined)[] {
+  const firsts = new Map<string, number>();
+  return rows.map((row) => {
+    if (!row.username.trim() || !row.email.trim()) return undefined;
+    const key = JSON.stringify([
+      row.username.toLowerCase(),
+      row.email.toLowerCase(),
+      row.cpf.replace(/[.\-\s]/g, ""),
+      `${row.firstName} ${row.lastName}`
+        .normalize("NFD")
+        .replace(/[̀-ͯ]/g, "")
+        .toLowerCase()
+        .split(/\s+/)
+        .filter(Boolean)
+        .join(" "),
+      row.course.trim().toLowerCase(),
+    ]);
+    const first = firsts.get(key);
+    if (first === undefined) firsts.set(key, row.rowNumber);
+    return first;
+  });
+}
 export function validateStudents(rows: readonly StudentRow[]): {
   valid: boolean;
   issues: StudentIssue[];
+  /** Rows that repeat a student of an earlier row. They block nothing and stay out of the CSV. */
+  repeats: StudentRepeat[];
 } {
   const structure = z.array(studentSchema).min(1).max(10_000).safeParse(rows);
   if (!structure.success)
@@ -285,8 +329,10 @@ export function validateStudents(rows: readonly StudentRow[]): {
         rowId: "",
         message: "Confira a estrutura e os limites desta linha.",
       })),
+      repeats: [],
     };
   const issues: StudentIssue[] = [];
+  const repeated = repeatedStudents(rows);
   // Valor → linha da planilha em que apareceu primeiro, para dizer qual é a outra.
   const seen = {
     id: new Map<string, number>(),
@@ -322,14 +368,17 @@ export function validateStudents(rows: readonly StudentRow[]): {
       add("required_name", "firstName", "Preencha o primeiro nome.");
     if (!row.lastName.trim())
       add("required_name", "lastName", "Preencha o sobrenome.");
-    if (!z.email().safeParse(row.email).success)
-      add("invalid_email", "email", "Informe um e-mail válido.");
+    const emailIssue = emailProblem(row.email);
+    if (emailIssue) add("invalid_email", "email", emailIssue);
     const cpfIssue = row.cpf.trim() ? cpfProblem(row.cpf) : null;
     if (cpfIssue) add("invalid_cpf", "cpf", cpfIssue);
-    // Um aluno repetido costuma repetir e-mail, usuário e CPF de uma vez: uma frase só diz tudo, e cada campo continua
-    // marcado em vermelho (a tela junta as frases iguais da mesma linha numa pendência só).
+    // Duas linhas com o mesmo CPF ou e-mail e nomes diferentes: uma frase só diz tudo, e cada campo continua marcado em
+    // vermelho (a tela junta as frases iguais da mesma linha numa pendência só). O mesmo aluno escrito de novo não entra
+    // aqui: os valores dele já foram vistos na primeira linha, e só o id (que é da linha, não do aluno) é conferido.
     const repeats = new Map<number, ("id" | "email" | "username" | "cpf")[]>();
-    for (const field of ["id", "email", "username", "cpf"] as const) {
+    for (const field of repeated[index] === undefined
+      ? (["id", "email", "username", "cpf"] as const)
+      : (["id"] as const)) {
       const value =
         field === "cpf"
           ? row.cpf.replace(/[.\-\s]/g, "")
@@ -355,7 +404,14 @@ export function validateStudents(rows: readonly StudentRow[]): {
       for (const field of fields) add(`duplicate_${field}`, field, message);
     }
   });
-  return { valid: issues.length === 0, issues };
+  return {
+    valid: issues.length === 0,
+    issues,
+    repeats: rows.flatMap((row, index) => {
+      const first = repeated[index];
+      return first === undefined ? [] : [{ rowId: row.id, rowNumber: row.rowNumber, first }];
+    }),
+  };
 }
 
 const cell = (value: string) => '"' + value.replace(/"/g, '""') + '"';
@@ -415,9 +471,12 @@ export async function buildStudentPreview(
       })),
   );
   if (unsafe.length) return { ok: false, issues: unsafe };
+  // O mesmo aluno escrito duas vezes vai uma vez só, pela primeira linha. Com as duas no CSV, o Moodle recusa a segunda
+  // em "criar novos" ("já cadastrado") e o resultado, que é por login, marcaria erro num aluno que foi criado.
+  const repeated = new Set(validation.repeats.map((repeat) => repeat.rowId));
   // Ordem fixa das chaves: a planilha monta a linha de um jeito e o servidor, ao validá-la, de outro. O hash é do texto
   // JSON, então sem isso a tela e o servidor discordariam da mesma lista e toda prévia viria como "desatualizada".
-  const copied = structuredClone([...rows]).map(
+  const copied = structuredClone(rows.filter((row) => !repeated.has(row.id))).map(
     (row): StudentRow => ({
       id: row.id,
       rowNumber: row.rowNumber,

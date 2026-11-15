@@ -8,14 +8,14 @@ export function EditableStudentTable({
   rows,
   issues,
   onRowChange,
-  typed,
   login,
+  repeated,
 }: {
   rows: StudentRow[];
   issues: StudentIssue[];
+  /** Rows that write again a student of an earlier row: shown softer, because they go only once. */
+  repeated?: ReadonlySet<string> | undefined;
   onRowChange: (id: string, field: StudentEditField, value: string) => void;
-  /** The students were typed by hand: there is no spreadsheet row to show as "original". */
-  typed?: boolean | undefined;
   /** The spreadsheet brought a login of its own: show it. Otherwise the login is the CPF (or the e-mail) and has no column. */
   login?: boolean | undefined;
 }) {
@@ -24,7 +24,6 @@ export function EditableStudentTable({
     lastName: "Sobrenome",
     email: "E-mail",
     cpf: login ? "CPF" : "CPF (usuário)",
-    course: "Disciplina",
     username: "Usuário (login)",
   };
   const fields = editableStudentFields.filter((field) => login || field !== "username");
@@ -34,7 +33,7 @@ export function EditableStudentTable({
   );
   return (
     <div className="table-scroll stu-table">
-      <table aria-label="Alunos para conferir" data-typed={typed || undefined}>
+      <table aria-label="Alunos para conferir">
         <thead>
           <tr>
             <th scope="col">Linha</th>
@@ -43,16 +42,15 @@ export function EditableStudentTable({
                 {headings[field]}
               </th>
             ))}
-            {!typed && (
-              <th scope="col" className="stu-col-original">
-                Original
-              </th>
-            )}
           </tr>
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr key={row.id} id={`student-${row.id}`}>
+            <tr
+              key={row.id}
+              id={`student-${row.id}`}
+              data-repeat={repeated?.has(row.id) ? "" : undefined}
+            >
               <td className="stu-row-number" data-label="Linha">
                 {row.rowNumber}
               </td>
@@ -68,24 +66,6 @@ export function EditableStudentTable({
                   />
                 </td>
               ))}
-              {!typed && (
-                <td className="stu-original" data-label="Original">
-                  <details>
-                    <summary
-                      aria-label={`Ver original da linha ${row.rowNumber}`}
-                    >
-                      Ver
-                    </summary>
-                    <div className="stu-original-body">
-                      {Object.entries(row.original).map(([key, value]) => (
-                        <p key={key}>
-                          {key}: {value}
-                        </p>
-                      ))}
-                    </div>
-                  </details>
-                </td>
-              )}
             </tr>
           ))}
         </tbody>

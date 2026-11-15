@@ -1,12 +1,15 @@
-import type { StudentIssue, StudentOptions, StudentRow } from "../../../domain/students/index.ts";
+import type { StudentOptions, StudentRow } from "../../../domain/students/index.ts";
 
 export const studentFields = [
   ["fullName", "Nome completo"], ["firstName", "Primeiro nome"],
   ["lastName", "Sobrenome"], ["email", "E-mail"], ["username", "Usuário"],
   ["cpf", "CPF"], ["course", "Disciplina"],
 ] as const;
-/** In the order of the review table: the CPF first (it is the login), then the name, the e-mail and the course. */
-export const editableStudentFields = ["cpf", "firstName", "lastName", "email", "course", "username"] as const;
+/**
+ * In the order of the review table: the CPF first (it is the login), then the name and the e-mail. The discipline is not
+ * a column: it is one list for the whole class, above the table (as in the original app).
+ */
+export const editableStudentFields = ["cpf", "firstName", "lastName", "email", "username"] as const;
 export type StudentEditField = typeof editableStudentFields[number];
 export const studentFieldLabels: Record<StudentEditField, string> = {
   username: "usuário",
@@ -14,7 +17,6 @@ export const studentFieldLabels: Record<StudentEditField, string> = {
   lastName: "sobrenome",
   email: "e-mail",
   cpf: "CPF",
-  course: "disciplina",
 };
 
 /** The columns of the example spreadsheet. The typed table, the template file and the example share them. */
@@ -61,27 +63,25 @@ export function manualStudentsToMatrix(students: readonly ManualStudent[]): stri
   ];
 }
 
-/** Course codes typed once for the whole batch (comma, semicolon or line break), without repeats. */
-export function studentCourses(destinations: string): string[] {
-  return [...new Set(destinations.split(/[,;\n]/).map((value) => value.trim()).filter(Boolean))];
+/** The disciplines of the class as listed in the review: trimmed, without blanks or repeats. */
+export function studentCourses(destinations: readonly string[]): string[] {
+  return [...new Set(destinations.map((value) => value.trim()).filter(Boolean))];
 }
 
-/** Course overrides create independent batches; the edited source stays intact. */
-export function buildStudentBatches(rows: StudentRow[], options: StudentOptions, destinations: string) {
+/** The disciplines the spreadsheet itself names, in the order they first appear: the list of the review starts with them. */
+export function sheetCourses(rows: readonly StudentRow[]): string[] {
+  return studentCourses(rows.map((row) => row.course));
+}
+
+/**
+ * The same students go to every discipline of the list, one file each (as in the original app); what a row says about
+ * its own discipline only starts the list. The edited source stays intact.
+ */
+export function buildStudentBatches(rows: StudentRow[], options: StudentOptions, destinations: readonly string[]) {
   const courses = studentCourses(destinations);
   return options.enrol && courses.length
     ? courses.map((course) => rows.map((row) => ({ ...row, course })))
     : [rows];
-}
-
-/** Rows that would fail enrolment because no course is typed for the batch and none is in the row. */
-export function studentCourseGaps(rows: StudentRow[], options: StudentOptions, destinations: string): StudentIssue[] {
-  if (!options.enrol || studentCourses(destinations).length) return [];
-  return rows.flatMap((row, index) =>
-    row.course.trim()
-      ? []
-      : [{ code: "required_course", path: `rows[${index}].course`, rowId: row.id, message: "Informe a disciplina." }],
-  );
 }
 
 /**

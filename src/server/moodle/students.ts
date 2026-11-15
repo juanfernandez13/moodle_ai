@@ -24,7 +24,9 @@ export async function previewStudents(client: MoodleClient, rows: StudentRow[], 
   const checked = await buildStudentPreview(rows, options);
   if (!checked.ok) throw new MoodleError('invalid_students', 'Corrija a validação dos alunos antes de enviar a prévia.');
   if (expectedHash !== checked.preview.hash) throw new MoodleError('stale_preview', 'A planilha ou as opções mudaram desde a revisão. Revise novamente.');
-  const enrolments = options.enrol ? await inspectStudentEnrolments(client, rows) : [];
+  // Daqui em diante vale a lista que vai no CSV: o mesmo aluno escrito duas vezes entra uma vez só.
+  const sent = checked.preview.rows;
+  const enrolments = options.enrol ? await inspectStudentEnrolments(client, sent) : [];
   const html = await client.http.text(PATH); requirePage(html);
   const first = readForm(html, 'form:has([name="userfile"])');
   first.action = new URL(first.action || PATH, client.http.url(PATH)).toString(); client.http.url(first.action);
@@ -51,7 +53,7 @@ export async function previewStudents(client: MoodleClient, rows: StudentRow[], 
     const username = cells.eq(columns.indexOf('username')).text().trim();
     if (username) usernames.set(username.toLowerCase(), cells.last().text().trim() !== '');
   });
-  if (!columns.includes('username') || rows.some(row => !usernames.has(row.username.toLowerCase()))) throw new MoodleError('moodle_preview_mismatch', 'A prévia Moodle não confirmou todas as linhas do CSV revisado. Nenhuma conta foi criada.');
+  if (!columns.includes('username') || sent.some(row => !usernames.has(row.username.toLowerCase()))) throw new MoodleError('moodle_preview_mismatch', 'A prévia Moodle não confirmou todas as linhas do CSV revisado. Nenhuma conta foi criada.');
   const pairs = form.fields;
   // Moodle 4.1 core constants, checked against the actual select values before posting.
   const settings: Record<string, string> = { uutype: options.mode === 'create' ? '0' : '3', uupasswordnew: '1', uuupdatetype: options.mode === 'create' ? '0' : '1', uupasswordold: '0' };
@@ -63,7 +65,7 @@ export async function previewStudents(client: MoodleClient, rows: StudentRow[], 
   const defaults = Object.fromEntries(pairs.pairs.filter(([name]) => !name.startsWith('uu') && !name.startsWith('_qf') && !name.startsWith('mform_') && !['sesskey', 'iid', 'previewrows'].includes(name) && !name.endsWith('[itemid]')));
   const effectiveOptions: EffectiveStudentOptions = { mode: options.mode, enrol: options.enrol, newPassword: options.mode === 'create' ? 'generated-by-moodle-and-email' : 'not-created', existingPasswords: 'preserved', updateFields: 'csv-only', allowDelete: false, allowRename: false, allowSuspend: false, defaults, enrolments };
   const issues = [{ code: 'moodle_options_review', message: options.mode === 'create' ? 'Criação apenas de novos usuários. Sem senha no CSV, o Moodle gera senha e agenda e-mail; a entrega depende do Moodle. Revise os padrões efetivos apresentados antes de confirmar.' : 'Atualização apenas de usuários existentes, somente pelos campos do CSV. Senhas, renomeação, exclusão e suspensão são preservadas. Revise os padrões efetivos antes de confirmar.' }];
-  return { operation: { kind: 'students', hash: checked.preview.hash, rows: checked.preview.rows, options: checked.preview.options, form, enrolments }, rows: rows.map(row => ({ username: row.username, name: `${row.firstName} ${row.lastName}`, email: row.email, status: usernames.get(row.username.toLowerCase()) ? 'Moodle informou pendência nesta linha. Revise antes de confirmar.' : 'Revisado; nenhuma conta criada nesta prévia.' })), effectiveOptions, issues };
+  return { operation: { kind: 'students', hash: checked.preview.hash, rows: checked.preview.rows, options: checked.preview.options, form, enrolments }, rows: sent.map(row => ({ username: row.username, name: `${row.firstName} ${row.lastName}`, email: row.email, status: usernames.get(row.username.toLowerCase()) ? 'Moodle informou pendência nesta linha. Revise antes de confirmar.' : 'Revisado; nenhuma conta criada nesta prévia.' })), effectiveOptions, issues };
 }
 export async function confirmStudents(client: MoodleClient, operation: StudentOperation): Promise<{ rows: StudentResult[]; counts: Record<StudentResult['status'], number> }> {
   if (operation.options.enrol && JSON.stringify(await inspectStudentEnrolments(client, operation.rows)) !== JSON.stringify(operation.enrolments)) throw new MoodleError('moodle_state_changed', 'As opções de matrícula Moodle mudaram após a prévia. Revise uma nova prévia.');
