@@ -47,7 +47,12 @@ const wiki = z.strictObject({ ...activityFields, type: z.literal('wiki'), settin
 const glossaryEntry = z.strictObject({ id, concept: name, definition: requiredText, definitionBlocks: blocks.optional() });
 const glossary = z.strictObject({ ...activityFields, type: z.literal('glossary'), settings: z.strictObject({ allowDuplicates: z.boolean(), requireApproval: z.boolean(), entriesPerPage: z.number().int().min(1).max(100) }), entries: z.array(glossaryEntry).max(500) });
 const activity = z.discriminatedUnion('type', [forum, assignment, quiz, chat, wiki, glossary]);
-const section = z.strictObject({ id, title: name, summary: text, summaryBlocks: blocks.optional(), activities: z.array(activity).max(200) });
+// targetNumber: só no pacote de quizzes (metadata.quizOnly). É o número da seção do curso que já existe e vai receber
+// os quizzes ao mesclar o backup; 0 é a seção geral. Fora desse pacote, a posição da seção continua sendo o número.
+const section = z.strictObject({
+  id, title: name, summary: text, summaryBlocks: blocks.optional(), activities: z.array(activity).max(200),
+  targetNumber: z.number().int().min(0).max(200).optional(),
+});
 const attachment = z.strictObject({ id, name, size: z.number().int().min(0), mediaType: name });
 const gradeCategory = z.strictObject({ id, name, weight: z.number().positive().max(100), activityIds: z.array(id).min(1).max(500) });
 
@@ -56,6 +61,8 @@ export const courseDraftSchema = z.strictObject({
   metadata: z.strictObject({
     fullName: name, shortName: name, summary: text,
     organization: z.enum(['topics', 'weeks']), startDate: timestamp.optional(),
+    // Pacote só de quizzes, para mesclar num curso que já existe. Ausente: curso inteiro.
+    quizOnly: z.literal(true).optional(),
     summaryBlocks: blocks.optional(), teacher: z.strictObject({ name, email: z.email().optional(), qualification: text.optional() }).optional(),
     workloadHours: z.number().int().positive().optional(), semester: name.optional(), className: name.optional(),
   }),

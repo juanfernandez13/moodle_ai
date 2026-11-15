@@ -31,6 +31,45 @@ export function validateDomainRules(draft: CourseDraft): ValidationIssue[] {
   }
 
   registerId(draft.id, 'id');
+  // O pacote só de quizzes vai mesclado num curso que já existe: só leva quizzes, cada seção aponta para a seção de
+  // destino, e as notas ficam por conta do curso de destino. Fora dele, a seção de destino não tem sentido.
+  function inspectQuizPackage(): void {
+    if (draft.metadata.quizOnly !== true) {
+      draft.sections.forEach((section, index) => {
+        if (section.targetNumber !== undefined) {
+          add('target_outside_quiz_package', `sections[${index}].targetNumber`,
+            'A seção de destino só vale em Só quizzes.');
+        }
+      });
+      return;
+    }
+    const seen = new Set<number>();
+    let quizzes = 0;
+    draft.sections.forEach((section, index) => {
+      const target = section.targetNumber;
+      if (target === undefined) {
+        add('missing_target_section', `sections[${index}].targetNumber`,
+          'Diga em qual seção do Moodle estes quizzes entram.');
+      } else if (seen.has(target)) {
+        add('duplicate_target_section', `sections[${index}].targetNumber`,
+          'Outra seção já usa este número. Junte os quizzes numa seção só.');
+      } else {
+        seen.add(target);
+      }
+      section.activities.forEach((activity, activityIndex) => {
+        if (activity.type === 'quiz') quizzes += 1;
+        else {
+          add('quiz_package_only_quizzes', `sections[${index}].activities[${activityIndex}]`,
+            'Em Só quizzes entram apenas quizzes.');
+        }
+      });
+    });
+    if (quizzes === 0) add('quiz_package_empty', 'sections', 'Adicione pelo menos um quiz.');
+    if (draft.gradebook !== undefined) {
+      add('quiz_package_gradebook', 'gradebook',
+        'Só quizzes não leva notas: o Moodle de destino mantém as dele.');
+    }
+  }
   function inspectBlocks(blocks: readonly (ContentBlock | InlineBlock)[] | undefined, path: string): void {
     blocks?.forEach((block, index) => {
       const blockPath = `${path}[${index}]`;
@@ -97,6 +136,7 @@ export function validateDomainRules(draft: CourseDraft): ValidationIssue[] {
     });
   });
   draft.attachments.forEach((attachment, index) => registerId(attachment.id, `attachments[${index}].id`));
+  inspectQuizPackage();
   const categorizedActivities = new Set<string>();
   draft.gradebook?.categories.forEach((category, index) => {
     const categoryPath = `gradebook.categories[${index}]`;

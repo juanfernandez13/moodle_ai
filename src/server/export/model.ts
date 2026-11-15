@@ -100,9 +100,12 @@ export class ExportModel {
   readonly attachments: Map<string, AttachmentRef>;
   readonly draft: CourseDraft;
   readonly bytes: Map<string, Uint8Array>;
+  /** Pacote só de quizzes: vai mesclado num curso que já existe e não leva nada que seja do curso. */
+  readonly quizOnly: boolean;
   constructor(draft: CourseDraft, bytes: Map<string, Uint8Array>) {
     this.draft = draft;
     this.bytes = bytes;
+    this.quizOnly = draft.metadata.quizOnly === true;
     this.attachments = new Map(draft.attachments.map((ref) => [ref.id, ref]));
     for (const category of draft.gradebook?.categories ?? [])
       this.categories.push({
@@ -115,7 +118,8 @@ export class ExportModel {
       const sec = {
         source: section,
         id: this.allocate(),
-        number: index + 1,
+        // No pacote de quizzes o número é o da seção do curso de destino (0 = geral), não a posição.
+        number: this.quizOnly ? (section.targetNumber ?? index + 1) : index + 1,
         activities: [] as ActivityModel[],
       };
       this.sections.push(sec);

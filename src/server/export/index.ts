@@ -173,6 +173,14 @@ export async function exportCourse(
         message: `Perfil verificado por restauração e comparação semântica de fixtures no Moodle Lab local ${PROFILE_VALIDATION.release} (Build: ${PROFILE_VALIDATION.build}). A evidência não abrange outras versões, plugins ou instâncias.`,
       },
     ];
+    if (model.quizOnly)
+      warnings.push({
+        code: "quiz_package_merge",
+        path: "$",
+        severity: "warning",
+        message:
+          "Pacote só de quizzes: restaure com “mesclar com este curso” num curso que já existe. Restaurar como curso novo ou apagando o conteúdo não é o uso previsto.",
+      });
     if (
       model.activities.some(
         (activity) =>
@@ -192,7 +200,9 @@ export async function exportCourse(
       revision: validation.draft.revision,
       profileId: options.profileId,
       artifact: {
-        filename: `moodle-${validation.draft.id}.mbz`,
+        filename: model.quizOnly
+          ? `questionarios-${validation.draft.id}.mbz`
+          : `moodle-${validation.draft.id}.mbz`,
         mediaType: "application/gzip",
         bytes,
         sha256: createHash("sha256").update(bytes).digest("hex"),

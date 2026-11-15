@@ -55,7 +55,11 @@ function availability(activity: ActivityModel): string {
       })
     : nil;
 }
-function moduleXml(activity: ActivityModel, now: number): string {
+function moduleXml(
+  activity: ActivityModel,
+  now: number,
+  quizOnly: boolean,
+): string {
   return document(
     tagged(
       "module",
@@ -64,7 +68,8 @@ function moduleXml(activity: ActivityModel, now: number): string {
         modulename: moduleName(activity.source),
         sectionid: activity.sectionId,
         sectionnumber: activity.sectionNumber,
-        idnumber: activity.source.id,
+        // Num curso que já existe o idnumber é do destino: o do rascunho poderia colidir com um que já está lá.
+        idnumber: quizOnly ? "" : activity.source.id,
         added: now,
         score: 0,
         indent: 0,
@@ -567,7 +572,9 @@ function activityGrades(model: ExportModel, activity: ActivityModel): string {
       : 0;
   return empty(
     "activity_gradebook",
-    `<grade_items>${gradeItem(activity.gradeId, { categoryid: activity.gradeCategory!, itemname: source.title, itemtype: "mod", itemmodule: moduleName(source), iteminstance: activity.id, itemnumber: 0, grademax: max, sortorder: activity.gradeSort! }, model.now)}</grade_items><grade_letters/>`,
+    // Pacote só de quizzes: sem peso herdado. Em agregação natural aggregationcoef é o flag de crédito extra, e
+    // um 1 herdado viraria nota extra no curso de destino sem aviso.
+    `<grade_items>${gradeItem(activity.gradeId, { categoryid: activity.gradeCategory!, itemname: source.title, itemtype: "mod", itemmodule: moduleName(source), iteminstance: activity.id, itemnumber: 0, grademax: max, sortorder: activity.gradeSort!, ...(model.quizOnly ? { aggregationcoef: 0 } : {}) }, model.now)}</grade_items><grade_letters/>`,
   );
 }
 function gradebook(model: ExportModel): string {
@@ -683,27 +690,44 @@ export function buildBackup(model: ExportModel): Map<string, Uint8Array> {
       name,
       typeof value === "string" ? Buffer.from(value, "utf8") : value,
     );
-  const sections = [
-    {
-      id: model.sectionZero,
-      number: 0,
-      title: "Geral",
-      summary: "",
-      activities: [] as ActivityModel[],
-    },
-    ...model.sections.map((sec) => ({
-      id: sec.id,
-      number: sec.number,
-      title: sec.source.title,
-      summary: model.content(sec.source.summary, sec.source.summaryBlocks, {
-        context: model.courseContext,
-        component: "course",
-        area: "section",
-        item: sec.id,
-      }),
-      activities: sec.activities,
-    })),
-  ];
+  // title: como a seção aparece no assistente de restauração; name: o que vai para a seção do Moodle.
+  const sections = model.quizOnly
+    ? model.sections
+        .map((sec) => ({
+          id: sec.id,
+          number: sec.number,
+          title: sec.number === 0 ? "Seção geral (0)" : `Seção ${sec.number}`,
+          // Vazio é não tocar: ao mesclar, o Moodle só preenche nome e resumo de uma seção que já existe quando
+          // estão em branco, e nunca mexe na restrição de acesso dela.
+          name: nil,
+          summary: "",
+          activities: sec.activities,
+        }))
+        // Uma seção além da última faz o Moodle criar também as do meio: do menor destino para o maior.
+        .sort((a, b) => a.number - b.number)
+    : [
+        {
+          id: model.sectionZero,
+          number: 0,
+          title: "Geral",
+          name: "Geral",
+          summary: "",
+          activities: [] as ActivityModel[],
+        },
+        ...model.sections.map((sec) => ({
+          id: sec.id,
+          number: sec.number,
+          title: sec.source.title,
+          name: sec.source.title,
+          summary: model.content(sec.source.summary, sec.source.summaryBlocks, {
+            context: model.courseContext,
+            component: "course",
+            area: "section",
+            item: sec.id,
+          }),
+          activities: sec.activities,
+        })),
+      ];
   const acts = model.activities
     .map(
       (activity) =>
@@ -804,7 +828,7 @@ export function buildBackup(model: ExportModel): Map<string, Uint8Array> {
           sec.id,
           fields({
             number: sec.number,
-            name: sec.title,
+            name: sec.name,
             summary: sec.summary,
             summaryformat: 1,
             sequence: sec.activities.map((a) => a.id).join(","),
@@ -818,7 +842,7 @@ export function buildBackup(model: ExportModel): Map<string, Uint8Array> {
   }
   for (const activity of model.activities) {
     const dir = `activities/${moduleName(activity.source)}_${activity.id}`;
-    write(`${dir}/module.xml`, moduleXml(activity, model.now));
+    write(`${dir}/module.xml`, moduleXml(activity, model.now, model.quizOnly));
     write(
       `${dir}/${moduleName(activity.source)}.xml`,
       activityXml(model, activity),
@@ -858,7 +882,8 @@ export function buildBackup(model: ExportModel): Map<string, Uint8Array> {
       );
   }
   write("questions.xml", questionsXml(model));
-  write("gradebook.xml", gradebook(model));
+  // Sem gradebook.xml o Moodle não mexe na estrutura de notas do curso de destino; com ele, criaria categorias lá.
+  if (!model.quizOnly) write("gradebook.xml", gradebook(model));
   write("files.xml", filesXml(model));
   for (const file of model.files)
     write(`files/${file.hash.slice(0, 2)}/${file.hash}`, file.bytes);
