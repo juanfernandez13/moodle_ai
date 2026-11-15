@@ -1,7 +1,16 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
-import { ArrowLeft, Copy, FileJson, Hand, Upload } from "lucide-react";
+import {
+  ArrowLeft,
+  Copy,
+  FileJson,
+  FolderOpen,
+  Hand,
+  ListChecks,
+  Upload,
+} from "lucide-react";
+import { Trail } from "../../../components/trail.tsx";
 import type { CourseBuilderModel } from "../hooks/use-course-builder.ts";
 import { ImportFilesPanel } from "./import-files-panel.tsx";
 import { ManualCourseForm } from "./manual-course-form.tsx";
@@ -18,9 +27,11 @@ type Props = Pick<
   | "setProvider"
   | "keys"
   | "setKeys"
+  | "aiProblem"
   | "pasteText"
   | "setPasteText"
   | "busy"
+  | "controller"
   | "importDocuments"
   | "name"
   | "firstSection"
@@ -32,16 +43,29 @@ type Props = Pick<
   | "importJson"
   | "example"
   | "setShowPrompt"
+  | "setShowProjects"
+  | "projects"
   | "proposalTrigger"
   | "portableInput"
->;
+> & {
+  /** The class of the page turn, while this page comes in. */
+  turnClass?: string | undefined;
+};
 
-// Só dois caminhos no alto da tela (abas, como no design system); o JSON abre pelo rodapé e volta pelo "Voltar".
+// Só três caminhos no alto da tela (abas, como no design system); o JSON abre pelo rodapé e volta pelo "Voltar".
+// O terceiro texto é o rótulo curto, para o celular, onde três abas com o rótulo inteiro não cabem.
 const MODES = [
-  ["files", "Importar arquivos", Upload],
-  ["manual", "Criar manualmente", Hand],
+  ["files", "Importar arquivos", Upload, "Arquivos"],
+  ["manual", "Criar manualmente", Hand, "Manual"],
+  ["quizzes", "Só quizzes", ListChecks, "Quizzes"],
 ] as const;
-const STEPS = ["Arquivos", "Revisão", "Baixar"];
+// Sem arquivos não há "Arquivos": criar manualmente começa pelos dados.
+const STEP_NAMES = {
+  files: ["Arquivos", "Revisão", "Baixar"],
+  quizzes: ["Arquivos", "Revisão", "Baixar"],
+  json: ["Arquivos", "Revisão", "Baixar"],
+  manual: ["Dados", "Revisão", "Baixar"],
+} as const;
 
 export function EntryPanel({
   entry,
@@ -53,9 +77,11 @@ export function EntryPanel({
   setProvider,
   keys,
   setKeys,
+  aiProblem,
   pasteText,
   setPasteText,
   busy,
+  controller,
   importDocuments,
   name,
   firstSection,
@@ -67,8 +93,11 @@ export function EntryPanel({
   importJson,
   example,
   setShowPrompt,
+  setShowProjects,
+  projects,
   proposalTrigger,
   portableInput,
+  turnClass,
 }: Props) {
   // Colar o texto da matriz: o caminho começa no Importar JSON, mas o texto é lido pela mesma tela e pela mesma IA.
   const [pasting, setPasting] = useState(false);
@@ -106,6 +135,8 @@ export function EntryPanel({
   }
 
   const json = entry === "json";
+  const manual = entry === "manual";
+  const quizzes = entry === "quizzes";
   const viewProps = json
     ? { "aria-labelledby": "entry-title" }
     : {
@@ -115,10 +146,13 @@ export function EntryPanel({
       };
 
   return (
-    <main className="entry-panel surface-panel" data-entry={entry}>
+    <main
+      className={`entry-panel surface-panel${turnClass ? ` ${turnClass}` : ""}`}
+      data-entry={entry}
+    >
       <div className="entry-top">
         <h1 id="entry-title" className="entry-title">
-          {json ? "Importar JSON" : "Criar disciplina"}
+          {json ? "Importar JSON" : quizzes ? "Criar quizzes" : "Criar disciplina"}
         </h1>
         {json ? (
           <button
@@ -130,8 +164,13 @@ export function EntryPanel({
             Voltar
           </button>
         ) : (
-          <div className="entry-modes" role="tablist" aria-label="Como começar">
-            {MODES.map(([value, label, Icon], index) => (
+          <div
+            className="entry-modes"
+            role="tablist"
+            aria-label="Como começar"
+            data-active={entry}
+          >
+            {MODES.map(([value, label, Icon, short], index) => (
               <button
                 key={value}
                 type="button"
@@ -144,38 +183,55 @@ export function EntryPanel({
                 onClick={() => selectMode(value)}
               >
                 <Icon size={16} aria-hidden="true" />
-                {label}
+                <span className="entry-tab-full">{label}</span>
+                <span className="entry-tab-short">{short}</span>
               </button>
             ))}
           </div>
         )}
-        <ol className="entry-steps" aria-label="Etapas">
-          {STEPS.map((step, index) => (
-            <li key={step} aria-current={index === 0 ? "step" : undefined}>
-              <span aria-hidden="true">{index + 1}</span>
-              {step}
-            </li>
-          ))}
-        </ol>
+        <Trail
+          className="entry-steps"
+          label="Etapas"
+          steps={STEP_NAMES[entry].map((label, index) => ({
+            id: label,
+            label,
+            state: index === 0 ? "current" : "todo",
+          }))}
+        />
+        {/* Cursos que este navegador guarda: sem este caminho, um curso salvo não teria como ser reaberto. */}
+        {projects.length > 0 && (
+          <button
+            type="button"
+            className="entry-link entry-courses"
+            onClick={() => setShowProjects(true)}
+          >
+            <FolderOpen size={18} aria-hidden="true" />
+            Suas disciplinas ({projects.length})
+          </button>
+        )}
       </div>
       <section className="entry-view" {...viewProps}>
-        {entry === "files" && (
+        {(entry === "files" || quizzes) && (
           <ImportFilesPanel
+            quizzesOnly={quizzes}
             setSelectedFiles={setSelectedFiles}
             selectedFiles={selectedFiles}
             provider={provider}
             setProvider={setProvider}
             keys={keys}
             setKeys={setKeys}
+            aiProblem={aiProblem}
             pasteText={pasteText}
             setPasteText={setPasteText}
             busy={busy}
+            controller={controller}
             importDocuments={importDocuments}
             pasting={pasting}
             setPasting={setPasting}
+            onManual={() => selectMode("manual")}
           />
         )}
-        {entry === "manual" && (
+        {manual && (
           <ManualCourseForm
             name={name}
             firstSection={firstSection}
@@ -212,14 +268,17 @@ export function EntryPanel({
             <FileJson size={18} aria-hidden="true" />
             Importar JSON
           </button>
-          <button
-            type="button"
-            className="entry-link"
-            onClick={() => setShowPrompt(true)}
-          >
-            <Copy size={18} aria-hidden="true" />
-            Copiar prompt
-          </button>
+          {/* O prompt é para quem usa outra IA com a Matriz; criar manualmente e só quizzes não o usam. */}
+          {!manual && !quizzes && (
+            <button
+              type="button"
+              className="entry-link"
+              onClick={() => setShowPrompt(true)}
+            >
+              <Copy size={18} aria-hidden="true" />
+              Copiar prompt
+            </button>
+          )}
         </div>
       )}
     </main>

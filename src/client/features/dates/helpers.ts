@@ -172,7 +172,7 @@ export function nextMonday(now: Date): string {
 
 /** First thing wrong with the answers of "Novas datas", in plain words; empty when the plan can be built. */
 export function scheduleProblem(input: DatePlanInput): string {
-  if (!longDate(input.startDate)) return "Escolha o dia em que o curso começa.";
+  if (!longDate(input.startDate)) return "Escolha o dia em que a disciplina começa.";
   const year = Number(input.startDate.slice(0, 4));
   if (year < 1900 || year > 2100) return "Escolha um dia entre 1900 e 2100.";
   if (
@@ -211,15 +211,15 @@ const PLAIN: Record<string, string> = {
   "Confira data, horários, quantidade de unidades e alvos do cronograma.":
     "Confira o dia e os horários.",
   "A unidade não está no intervalo do cronograma.":
-    "O curso tem mais unidades do que o previsto. Leia o curso de novo.",
-  "O mesmo alvo não pode ser aplicado duas vezes.": "O curso tem itens repetidos.",
+    "A disciplina tem mais unidades do que o previsto. Leia a disciplina de novo.",
+  "O mesmo alvo não pode ser aplicado duas vezes.": "A disciplina tem itens repetidos.",
   "O fechamento deve ocorrer depois da abertura.": "Fechar precisa ser depois de abrir.",
   "As restrições atuais não puderam ser lidas; elas não serão substituídas.":
-    "Uma regra de acesso do curso não pôde ser lida.",
+    "Uma regra de acesso da disciplina não pôde ser lida.",
   "A prévia está obsoleta, expirada ou já foi consumida. Gere e revise outra prévia.":
     "Esta conferência não vale mais. Veja como fica de novo.",
   "O curso Moodle mudou depois da prévia. Gere e revise um novo plano.":
-    "O curso mudou no Moodle. Veja como fica de novo.",
+    "A disciplina mudou no Moodle. Veja como fica de novo.",
   "Há prévias demais nesta sessão. Aguarde a expiração ou reconecte.":
     "Há conferências demais abertas. Entre no Moodle de novo.",
   "Já existe uma operação Moodle em andamento nesta sessão.":
@@ -259,9 +259,9 @@ const PLAIN: Record<string, string> = {
   "O Moodle recusou a operação. Confira permissões e dados do formulário.":
     "O Moodle recusou. Confira suas permissões.",
   "Não há permissão de edição para um alvo do cronograma.":
-    "Você não pode editar um item deste curso.",
+    "Você não pode editar um item desta disciplina.",
   "Este curso excede o limite de 2.000 alvos de datas.":
-    "Este curso tem itens demais (mais de 2.000).",
+    "Esta disciplina tem itens demais (mais de 2.000).",
   "Não foi possível determinar o fuso Moodle para editar as datas.":
     "Não foi possível saber o horário do Moodle.",
   "O fuso configurado no Moodle não é suportado. Ajuste o perfil Moodle antes da prévia.":
@@ -269,7 +269,7 @@ const PLAIN: Record<string, string> = {
   "Uma data do Moodle cai em um horário inválido no fuso configurado.":
     "Uma data cai em um horário que o Moodle não aceita.",
   "As restrições Moodle não puderam ser lidas. Nenhuma alteração será enviada.":
-    "Uma regra de acesso do curso não pôde ser lida. Nada foi enviado.",
+    "Uma regra de acesso da disciplina não pôde ser lida. Nada foi enviado.",
   "Confira o cronograma.": "Confira o dia e os horários.",
 };
 

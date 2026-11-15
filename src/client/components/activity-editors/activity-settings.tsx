@@ -1,18 +1,17 @@
 "use client";
 import type { Activity } from "../../../domain/course/index.ts";
-import { utcFieldValue, utcTimestamp } from "../../dates.ts";
+import { localFieldValue, localTimestamp } from "../../dates.ts";
 
-const dateValue = utcFieldValue;
-const timestamp = utcTimestamp;
+const dateValue = localFieldValue;
+const timestamp = localTimestamp;
 type Props = {
   activity: Activity;
-  pane: string;
   onChange: (activity: Activity) => void
 };
 
-export function ActivitySettings({ activity, pane, onChange }: Props) {
+export function ActivitySettings({ activity, onChange }: Props) {
   return (
-    <>{activity.type === "forum" && pane === "settings" && (
+    <>{activity.type === "forum" && (
       <label className="field">
         <span>Tipo de fórum</span>
         <select
@@ -32,7 +31,7 @@ export function ActivitySettings({ activity, pane, onChange }: Props) {
         </select>
       </label>
     )}
-      {activity.type === "assignment" && pane === "settings" && (
+      {activity.type === "assignment" && (
         <div className="field-grid">
           <label className="field">
             <span>Nota máxima</span>
@@ -78,10 +77,10 @@ export function ActivitySettings({ activity, pane, onChange }: Props) {
           </label>
         </div>
       )}
-      {activity.type === "chat" && pane === "settings" && (
+      {activity.type === "chat" && (
         <>
           <label className="field">
-            <span>Primeira sessão (UTC)</span>
+            <span>Primeira sessão</span>
             <input
               type="datetime-local"
               data-field="settings.sessionAt"
@@ -138,7 +137,7 @@ export function ActivitySettings({ activity, pane, onChange }: Props) {
           </div>
         </>
       )}
-      {activity.type === "wiki" && pane === "settings" && (
+      {activity.type === "wiki" && (
         <div className="field-grid">
           <label className="field">
             <span>Modo da wiki</span>

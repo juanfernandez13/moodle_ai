@@ -60,6 +60,6 @@ export async function readMoodleCourses(): Promise<MoodleCourse[]> {
     .object({ ok: z.literal(true), courses: z.array(moodleCourseSchema) })
     .safeParse(value);
   if (!response.ok || !courses.success)
-    throw new Error(issuesMessage(value, "Não foi possível ler os cursos."));
+    throw new Error(issuesMessage(value, "Não foi possível ler as disciplinas."));
   return courses.data.courses;
 }

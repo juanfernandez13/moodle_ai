@@ -53,7 +53,7 @@ export function useCourseBuilder() {
     workspace.setArtifact(null);
     workspace.setLastCopy(null);
     setError("");
-    setMessage("Curso aberto. Confira o conteúdo antes de exportar.");
+    setMessage("Disciplina aberta.");
   }
   async function openSaved(id: string) {
     try {

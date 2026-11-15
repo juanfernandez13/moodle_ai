@@ -36,14 +36,14 @@
 }
 .tool-top > .tool-title h1 {
   margin: 0;
-  font-size: 26px;
+  font-size: 1.625rem;
   line-height: 1.25;
 }
 .tool-top > .tool-title p {
   margin: 0;
   max-width: none;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.5;
 }
 .tool-top > a {
@@ -68,7 +68,7 @@
 .tool-top .steps button {
   min-height: 44px;
   padding: 8px 16px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 500;
 }
 /* Etapas do cadastro: o botão inteiro é a cápsula (alvo de 44 px), a lista só agrupa. */
@@ -77,7 +77,7 @@
   border: 0;
   border-radius: 0;
   background: none;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 .tool-top .steps button {
   border: 1px solid var(--control-border);
@@ -92,12 +92,6 @@
   background: var(--selected);
   border-color: var(--action);
   color: var(--text);
-}
-.tool-top .panel-tabs button:disabled,
-.tool-top .steps button:disabled {
-  border-color: var(--line);
-  background: transparent;
-  color: var(--muted);
 }
 
 .tool-panel > .status-banner {
@@ -129,7 +123,7 @@
 }
 .tool-foot p {
   margin: 8px 0;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 .tool-foot .tool-link {
   display: inline-flex;
@@ -324,12 +318,12 @@
 .date-results > .review-title h2,
 .date-results > .review-title h3 {
   margin: 0 0 2px;
-  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 1.3;
 }
 .date-results > .review-title p {
   margin: 0;
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.5;
 }
 .date-results > .table-scroll {
@@ -346,7 +340,7 @@
   padding: 14px;
 }
 .date-results .date-preview td {
-  font-size: 13px;
+  font-size: 0.8125rem;
   white-space: nowrap;
 }
 .date-results .date-preview td:first-child {
@@ -358,7 +352,7 @@
 .date-results .date-preview td small {
   display: inline;
   margin: 0 0 0 8px;
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 @media (min-width: 900px) {
   .tool-panel .date-results {
@@ -421,7 +415,7 @@
 }
 .mapping-editor h2 {
   margin: 0 0 4px;
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 .mapping-editor p {
   margin-bottom: 4px;
@@ -467,7 +461,7 @@
 }
 .review-stage > .section-heading h2 {
   margin: 0;
-  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 1.3;
 }
 .review-stage > .section-heading > div {
@@ -516,7 +510,7 @@
 }
 .review-side .field-grid .field-help {
   margin: 0;
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.45;
 }
 .review-side .check-row {
@@ -592,7 +586,7 @@
   white-space: nowrap;
 }
 .student-table td:last-child details[open] p {
-  font-size: 12px;
+  font-size: 0.75rem;
   margin: 0 0 4px;
 }
 @media (min-width: 1100px) {
@@ -634,7 +628,7 @@
 }
 .download-rail > .delivery h2 {
   margin-bottom: 4px;
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 .download-rail > .delivery p {
   margin-bottom: 4px;
@@ -687,7 +681,7 @@
 }
 .moodle-students-output .notice h3 {
   margin: 0 0 4px;
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 .moodle-students-output .notice p {
   margin: 0 0 8px;
@@ -791,7 +785,7 @@
 }
 .tool-panel .moodle-connection .field > .field-help {
   margin: 0;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 400;
 }
 
@@ -934,7 +928,7 @@
     gap: 6px;
   }
   .tool-top > .tool-title h1 {
-    font-size: 23px;
+    font-size: 1.4375rem;
   }
   .tool-top > a {
     justify-self: start;
@@ -947,7 +941,7 @@
   .tool-top .panel-tabs button,
   .tool-top .steps button {
     padding: 8px 11px;
-    font-size: 12px;
+    font-size: 0.75rem;
   }
   .tool-foot {
     flex-direction: column;

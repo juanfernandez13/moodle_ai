@@ -85,10 +85,14 @@ export function StudentSend({
           <ArrowLeft size={20} aria-hidden="true" />
           Voltar
         </button>
-        <Link className="text-button" href="/datas">
-          <CalendarDays size={20} aria-hidden="true" />
-          Ajustar as datas
-        </Link>
+        {/* O caminho para Datas só aparece depois de enviar: antes, ele ficaria no lugar do botão principal do passo
+            anterior e um clique duplo em "Preparar arquivos" cairia aqui. O cabeçalho tem Datas o tempo todo. */}
+        {remote.results.length > 0 && (
+          <Link className="text-button" href="/datas">
+            <CalendarDays size={20} aria-hidden="true" />
+            Ajustar as datas
+          </Link>
+        )}
       </div>
     </section>
   );

@@ -43,7 +43,7 @@ export function useStudentCsv({
           lastName: "sobrenome",
           email: "e-mail",
           cpf: "CPF",
-          course: "curso",
+          course: "disciplina",
         };
         const lines = failed.issues.map((issue) => {
           const line = rows.find((row) => row.id === issue.rowId)?.rowNumber ?? "?";

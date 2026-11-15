@@ -10,7 +10,7 @@ import { reorder } from "./editor-helpers.ts";
 type GlossaryActivity = Extract<Activity, { type: "glossary" }>;
 type Props = {
   activity: GlossaryActivity;
-  pane: string;
+  part: "settings" | "entries";
   assets: ProjectFile[];
   onChange: (activity: Activity) => void;
   focusPath?: string | undefined;
@@ -20,7 +20,7 @@ type Props = {
 
 export function GlossaryEditor({
   activity,
-  pane,
+  part,
   assets,
   onChange,
   focusPath,
@@ -29,7 +29,8 @@ export function GlossaryEditor({
 }: Props) {
   return (
     <>
-      <div hidden={pane !== "settings"}>
+      {part === "settings" && (
+      <div>
         <label className="check-row">
           <input
             type="checkbox"
@@ -84,7 +85,9 @@ export function GlossaryEditor({
           />
         </label>
       </div>
-      <div hidden={pane !== "entries"}>
+      )}
+      {part === "entries" && (
+      <div>
         <label className="field">
           <span>Conceito em edição</span>
           <select
@@ -209,6 +212,7 @@ export function GlossaryEditor({
           Conceito
         </button>
       </div>
+      )}
     </>
   );
 }

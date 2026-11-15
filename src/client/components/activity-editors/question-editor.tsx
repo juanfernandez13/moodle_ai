@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useId, useState } from "react";
 import type { Question } from "../../../domain/course/index.ts";
 import type { ProjectFile } from "../../project.ts";
 import { RichEditor } from "../content.tsx";
+import { PanelTabs, tabPanelProps } from "../panel-tabs.tsx";
 import { richBlockFocus } from "../../navigation.ts";
 import { Trash2 } from "lucide-react";
 import { OrderControls } from "./order-controls.tsx";
@@ -37,6 +38,7 @@ export function QuestionEditor({
         : "statement",
   );
   const questionPath = focusPath?.match(/^(.*\.questions\[\d+\])/)?.[1] ?? "";
+  const tabs = useId();
   return (
     <fieldset className="question-editor" id={`entity-${question.id}`}>
       <legend>
@@ -55,27 +57,26 @@ export function QuestionEditor({
           move={onMove}
         />
         <button className="text-button danger" type="button" onClick={onRemove}>
-          <Trash2 size={16} />
+          <Trash2 size={16} aria-hidden="true" />
           Remover questão
         </button>
       </div>
-      <nav className="panel-tabs compact" aria-label="Campos da questão">
-        {[
-          ["statement", "Enunciado"],
-          ["answers", question.type === "essay" ? "Resposta" : "Alternativas"],
-          ["feedback", "Feedback"],
-        ].map(([id, label]) => (
-          <button
-            key={id}
-            type="button"
-            aria-pressed={pane === id}
-            onClick={() => setPane(id!)}
-          >
-            {label}
-          </button>
-        ))}
-      </nav>
-      <div hidden={pane !== "statement"}>
+      <PanelTabs
+        base={tabs}
+        compact
+        label="Campos da questão"
+        tabs={[
+          { id: "statement", label: "Enunciado" },
+          {
+            id: "answers",
+            label: question.type === "essay" ? "Resposta" : "Alternativas",
+          },
+          { id: "feedback", label: "Feedback" },
+        ]}
+        value={pane}
+        onChange={setPane}
+      />
+      <div {...tabPanelProps(tabs, "statement", pane)}>
         <label className="field">
           <span>Enunciado</span>
           <textarea
@@ -100,8 +101,21 @@ export function QuestionEditor({
             onChange({ ...question, statementBlocks: blocks })
           }
         />
+        <label className="field short">
+          <span>Peso da questão</span>
+          <input
+            type="number"
+            min="0.01"
+            step="0.01"
+            data-field="maxMark"
+            value={question.maxMark ?? 1}
+            onChange={(event) =>
+              onChange({ ...question, maxMark: Number(event.target.value) })
+            }
+          />
+        </label>
       </div>
-      <div hidden={pane !== "feedback"}>
+      <div {...tabPanelProps(tabs, "feedback", pane)}>
         <label className="field">
           <span>Feedback geral</span>
           <textarea
@@ -127,40 +141,29 @@ export function QuestionEditor({
           }
         />
       </div>
-      <label className="field short" hidden={pane !== "statement"}>
-        <span>Peso da questão</span>
-        <input
-          type="number"
-          min="0.01"
-          step="0.01"
-          data-field="maxMark"
-          value={question.maxMark ?? 1}
-          onChange={(event) =>
-            onChange({ ...question, maxMark: Number(event.target.value) })
-          }
-        />
-      </label>
-      {question.type === "multiple-choice" && pane === "answers" && (
-        <MultipleChoiceAnswers
-          question={question}
-          onChange={onChange}
-          assets={assets}
-          focusPath={focusPath}
-          questionPath={questionPath}
-        />
-      )}
-      {question.type === "matching" && pane === "answers" && (
-        <MatchingAnswers
-          question={question}
-          onChange={onChange}
-          assets={assets}
-          focusPath={focusPath}
-          questionPath={questionPath}
-        />
-      )}
-      {question.type === "essay" && pane === "answers" && (
-        <EssayAnswerSettings question={question} onChange={onChange} />
-      )}
+      <div {...tabPanelProps(tabs, "answers", pane)}>
+        {question.type === "multiple-choice" && pane === "answers" && (
+          <MultipleChoiceAnswers
+            question={question}
+            onChange={onChange}
+            assets={assets}
+            focusPath={focusPath}
+            questionPath={questionPath}
+          />
+        )}
+        {question.type === "matching" && pane === "answers" && (
+          <MatchingAnswers
+            question={question}
+            onChange={onChange}
+            assets={assets}
+            focusPath={focusPath}
+            questionPath={questionPath}
+          />
+        )}
+        {question.type === "essay" && pane === "answers" && (
+          <EssayAnswerSettings question={question} onChange={onChange} />
+        )}
+      </div>
     </fieldset>
   );
 }

@@ -16,6 +16,22 @@ export const safeIssue = z.strictObject({
   message: z.string(),
 });
 
+/**
+ * What goes in a banner: the message of each problem. The place is shown only when it names one (a field of the
+ * course); "$" means the whole answer and says nothing to the person.
+ */
+export function issueLines(
+  issues: readonly { path: string; message: string }[],
+): string {
+  return issues
+    .map((issue) =>
+      !issue.path || issue.path === "$"
+        ? issue.message
+        : `${issue.path}: ${issue.message}`,
+    )
+    .join("\n");
+}
+
 export function projectIssues(project: CourseProject): UiIssue[] {
   const issues: UiIssue[] = [...validateDraft(project.draft).issues];
   for (const attachment of project.draft.attachments) {
@@ -54,18 +70,21 @@ export function createExampleProject(): CourseProject {
   const next = createProject("Introdução à programação", "Primeiros passos");
   next.draft.metadata.shortName = "PROG-2026";
   next.draft.metadata.summary =
-    "Um curso de exemplo para explorar atividades, questões e revisão.";
+    "Uma disciplina de exemplo para explorar atividades, questões e revisão.";
   next.draft.sections.push(makeSection(2));
   next.draft.sections[1]!.title = "Praticar e construir";
-  for (const type of [
-    "forum",
-    "assignment",
-    "quiz",
-    "chat",
-    "wiki",
-    "glossary",
-  ])
-    next.draft.sections[0]!.activities.push(makeActivity(type));
+  const named = (type: string, title: string) => ({
+    ...makeActivity(type),
+    title,
+  });
+  next.draft.sections[0]!.activities.push(
+    named("forum", "Apresente-se à turma"),
+    named("assignment", "Meu primeiro algoritmo"),
+    named("quiz", "Repetição e decisão"),
+    named("chat", "Plantão de dúvidas"),
+    named("wiki", "Caderno da turma"),
+    named("glossary", "Palavras da programação"),
+  );
   const quiz = next.draft.sections[0]!.activities.find(
     (entry) => entry.type === "quiz",
   );
@@ -75,8 +94,8 @@ export function createExampleProject(): CourseProject {
     quiz.questions.push(makeQuestion("matching"), makeQuestion("essay"));
   }
   next.draft.sections[1]!.activities.push(
-    makeActivity("assignment"),
-    makeActivity("quiz"),
+    named("assignment", "Projeto da unidade"),
+    named("quiz", "Revisão final"),
   );
   const bytes = new TextEncoder().encode(
     "Material de apoio fictício. Leia, pratique e revise seu algoritmo.",

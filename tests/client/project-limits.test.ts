@@ -85,7 +85,7 @@ test("anexos continuam em 16 MB cada e 64 MB no total, sem contar as fontes", ()
       validateProject(
         projectWith([...assets, file("asset-5", zeros(1))], []),
       ),
-    { message: "Os anexos do curso podem somar até 64 MB." },
+    { message: "Os anexos da disciplina podem somar até 64 MB." },
   );
   // O maior projeto possível: 64 MB de anexos e 80 MB de documentos.
   validateProject(

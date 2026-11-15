@@ -81,6 +81,7 @@ export function StudentsWorkspace() {
           {source.rows.length > 0 && stage === 2 && (
             <StudentReview
               rows={source.rows}
+              typed={source.typed}
               validation={validation}
               page={source.page}
               options={csv.options}

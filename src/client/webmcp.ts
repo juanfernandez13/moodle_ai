@@ -35,19 +35,27 @@ const proposalSchema = z.strictObject({
       },
     ),
 });
+interface ExecuteOptions {
+  signal?: AbortSignal;
+}
 interface Tool {
   name: string;
   description: string;
   inputSchema: object;
-  execute: (input: unknown) => Promise<unknown>;
+  annotations: { readOnlyHint: boolean; untrustedContentHint?: boolean };
+  execute: (input: unknown, options?: ExecuteOptions) => Promise<unknown>;
 }
 interface ModelContext {
-  registerTool: (tool: Tool) => void | Promise<void>;
-  unregisterTool?: (name: string) => void | Promise<void>;
+  // Não existe unregisterTool(): a ferramenta sai da página quando o sinal do registro é abortado.
+  registerTool: (
+    tool: Tool,
+    options?: { signal?: AbortSignal },
+  ) => void | Promise<void>;
 }
 interface Registration {
   users: number;
   context: ModelContext;
+  controller?: AbortController;
   names: Set<string>;
   queue: Promise<void>;
   getProject: () => CourseProject | null;
@@ -105,6 +113,27 @@ export function buildProposal(
   };
 }
 
+/** O agente só recebe o que a ferramenta devolve: a mensagem de uma exceção não chega até ele. */
+function readable(error: unknown): string {
+  if (error instanceof z.ZodError)
+    return `Entrada inválida: ${error.issues
+      .map((issue) => `${issue.path.join(".") || "entrada"}: ${issue.message}`)
+      .join("; ")}`;
+  return error instanceof Error ? error.message : "Não foi possível concluir.";
+}
+function answering(
+  run: (input: unknown) => unknown,
+): (input: unknown, options?: ExecuteOptions) => Promise<unknown> {
+  return async (input, options) => {
+    try {
+      return await run(input);
+    } catch (error) {
+      if (options?.signal?.aborted) throw error;
+      return { error: readable(error) };
+    }
+  };
+}
+
 export function registerBuilderTools(
   getProject: () => CourseProject | null,
   propose: (proposal: CourseProposal) => void,
@@ -138,7 +167,9 @@ export function registerBuilderTools(
         properties: {},
         additionalProperties: false,
       },
-      execute: async () => {
+      // Títulos e textos vêm dos arquivos que a pessoa importou: o agente deve tratá-los como dado, não como ordem.
+      annotations: { readOnlyHint: true, untrustedContentHint: true },
+      execute: answering(() => {
         const project = current();
         return {
           revision: project.draft.revision,
@@ -154,7 +185,7 @@ export function registerBuilderTools(
           })),
           issues: validateDraft(project.draft).issues,
         };
-      },
+      }),
     },
     {
       name: "get_activity",
@@ -162,29 +193,41 @@ export function registerBuilderTools(
         "Ler uma atividade do projeto aberto sem caminhos ou credenciais.",
       inputSchema: {
         type: "object",
-        properties: { activityId: { type: "string" } },
+        properties: {
+          activityId: {
+            type: "string",
+            description: "ID da atividade, como aparece no resumo do curso.",
+          },
+        },
         required: ["activityId"],
         additionalProperties: false,
       },
-      execute: async (input) => {
+      annotations: { readOnlyHint: true, untrustedContentHint: true },
+      execute: answering((input) => {
         const parsed = z.strictObject({ activityId: z.string() }).parse(input);
         const activity = current()
           .draft.sections.flatMap((section) => section.activities)
           .find((entry) => entry.id === parsed.activityId);
         if (!activity) throw new Error("Atividade não encontrada.");
         return structuredClone(activity);
-      },
+      }),
     },
     {
       name: "validate_course",
       description: "Validar a revisão solicitada sem modificar o curso.",
       inputSchema: {
         type: "object",
-        properties: { expectedRevision: { type: "integer" } },
+        properties: {
+          expectedRevision: {
+            type: "integer",
+            description: "Revisão do curso lida no resumo mais recente.",
+          },
+        },
         required: ["expectedRevision"],
         additionalProperties: false,
       },
-      execute: async (input) => {
+      annotations: { readOnlyHint: true },
+      execute: answering((input) => {
         const parsed = z
           .strictObject({ expectedRevision: z.number().int() })
           .parse(input);
@@ -192,7 +235,7 @@ export function registerBuilderTools(
         if (parsed.expectedRevision !== project.draft.revision)
           return { error: "stale_revision" };
         return validateDraft(project.draft);
-      },
+      }),
     },
     {
       name: "propose_course_changes",
@@ -201,15 +244,26 @@ export function registerBuilderTools(
       inputSchema: {
         type: "object",
         properties: {
-          expectedRevision: { type: "integer" },
+          expectedRevision: {
+            type: "integer",
+            description: "Revisão do curso lida no resumo mais recente.",
+          },
           changes: {
             type: "array",
+            description: "Uma entrada por atividade a alterar.",
             items: {
               type: "object",
               properties: {
-                activityId: { type: "string" },
-                title: { type: "string" },
-                description: { type: "string" },
+                activityId: {
+                  type: "string",
+                  description:
+                    "ID da atividade, como aparece no resumo do curso.",
+                },
+                title: { type: "string", description: "Novo título." },
+                description: {
+                  type: "string",
+                  description: "Nova descrição, que substitui a atual.",
+                },
               },
               required: ["activityId"],
               additionalProperties: false,
@@ -219,7 +273,9 @@ export function registerBuilderTools(
         required: ["expectedRevision", "changes"],
         additionalProperties: false,
       },
-      execute: async (input) => {
+      // Não altera o curso: abre a proposta na tela, e só a pessoa aplica.
+      annotations: { readOnlyHint: false },
+      execute: answering((input) => {
         const proposal = buildProposal(current(), input);
         registration.propose(proposal);
         return {
@@ -227,7 +283,7 @@ export function registerBuilderTools(
           revision: proposal.expectedRevision,
           changes: proposal.summary,
         };
-      },
+      }),
     },
     {
       name: "get_export_preview",
@@ -238,7 +294,8 @@ export function registerBuilderTools(
         properties: {},
         additionalProperties: false,
       },
-      execute: async () => {
+      annotations: { readOnlyHint: true },
+      execute: answering(() => {
         const project = current();
         return {
           revision: project.draft.revision,
@@ -258,7 +315,7 @@ export function registerBuilderTools(
             ),
           })),
         };
-      },
+      }),
     },
   ];
   const synchronize = () => {
@@ -266,31 +323,25 @@ export function registerBuilderTools(
       .catch(() => {})
       .then(async () => {
         if (registration.users > 0) {
+          const controller = (registration.controller ??=
+            new AbortController());
           for (const tool of tools) {
             if (registration.names.has(tool.name)) continue;
-            // Clear registrations left by a previous development hot reload, if supported.
             try {
-              await context.unregisterTool?.(tool.name);
-            } catch {
-              /* absent tools are harmless */
-            }
-            try {
-              await context.registerTool(tool);
+              await context.registerTool(tool, { signal: controller.signal });
               registration.names.add(tool.name);
             } catch {
-              /* optional API failure preserves all manual actions */
+              // API opcional: a falha não tira nenhuma ação manual. Num navegador antigo, que ignora o sinal, o nome
+              // repetido cai aqui e a ferramenta que já estava na página continua valendo, porque lê `registration`.
             }
           }
         } else {
+          // Fora da tela do curso nenhuma ferramenta fica na página; a que sobrar num navegador antigo responde
+          // "Abra um projeto".
           registration.getProject = () => null;
-          for (const name of registration.names) {
-            try {
-              await context.unregisterTool?.(name);
-            } catch {
-              /* optional API may have been removed */
-            }
-          }
-          if (context.unregisterTool) registration.names.clear();
+          registration.controller?.abort();
+          delete registration.controller;
+          registration.names.clear();
         }
       });
   };

@@ -109,6 +109,23 @@ export class ProjectStore {
         reject(new Error("Não foi possível listar os projetos."));
     });
   }
+  /**
+   * Apaga um curso salvo neste navegador. Apagar o que já não existe não é erro.
+   * A cópia de recuperação da versão antiga do armazenamento ("projects") não é tocada: ela nunca é relida.
+   */
+  async remove(id: string): Promise<void> {
+    const database = await this.database;
+    return new Promise((resolve, reject) => {
+      const transaction = database.transaction("workspaces", "readwrite");
+      transaction.objectStore("workspaces").delete(id);
+      transaction.oncomplete = () => resolve();
+      transaction.onabort = () =>
+        reject(new Error("Não foi possível excluir esta disciplina."));
+      transaction.onerror = () => {
+        /* onabort reports the failure */
+      };
+    });
+  }
   async close(): Promise<void> {
     (await this.database).close();
   }

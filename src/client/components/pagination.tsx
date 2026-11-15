@@ -24,6 +24,10 @@ export function Pagination({
       <span className="field-help">
         {page + 1} de {pages} · {count} itens
       </span>
+      {/* Só a página é falada, e só quando ela muda: filtrar uma lista a cada tecla muda a contagem, não a página. */}
+      <span className="visually-hidden" role="status">
+        {page + 1} de {pages}
+      </span>
       <button
         type="button"
         className="secondary"

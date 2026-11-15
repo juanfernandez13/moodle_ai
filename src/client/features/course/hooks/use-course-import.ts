@@ -1,15 +1,17 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { validateDraft } from "../../../../domain/course/index.ts";
 import { createProject, validateProject } from "../../../project.ts";
 import type { ProjectFile } from "../../../project.ts";
 import { fromBase64 } from "../../../download.ts";
+import type { AiProviderId } from "../../../../shared/ai-providers.ts";
 import { checkUploadLimits } from "../../../../shared/upload-limits.ts";
 import { captureProvenance, importProvenanceSchema, sourcePreviewSchema } from "../../../provenance.ts";
 import type { CourseTransfers } from "./use-course-transfers.ts";
 import type { CourseDialogs } from "./use-course-dialogs.ts";
-import { apiFile, safeIssue, projectIssues } from "../helpers.ts";
+import { apiFile, safeIssue, projectIssues, issueLines } from "../helpers.ts";
+import { workspaceSession } from "../workspace-session.ts";
 
 type Options = Pick<
   CourseTransfers,
@@ -24,14 +26,25 @@ type Options = Pick<
     setMessage: (message: string) => void
   };
 
-/** As IAs que a entrada oferece. "Sem IA" é o mesmo que Criar manualmente e não aparece mais. */
-export type AiProvider = "gemini" | "openai";
-/** Chave (e modelo, se a pessoa quis) digitada nesta aba. Vive só neste estado do React: nunca vai para o armazenamento do navegador. */
+/** As IAs que a entrada oferece (src/shared/ai-providers.ts). "Sem IA" é o mesmo que Criar manualmente e não aparece mais. */
+export type AiProvider = AiProviderId;
+/**
+ * Chave, modelo e (na Outra IA) endereço digitados nesta aba; cada um pode ficar em branco, e então vale o do servidor ou
+ * o padrão. Vive só na memória da aba: nunca vai para o armazenamento do navegador.
+ */
 export interface TabKey {
   apiKey: string;
   model: string;
+  baseUrl: string;
 }
 export type TabKeys = Partial<Record<AiProvider, TabKey>>;
+/** O que a IA respondeu sobre a chave: "invalid" (não funcionou) ou "missing" (a IA escolhida está sem chave). */
+export type AiProblem = "" | "invalid" | "missing";
+/** Respostas do servidor que são sobre a chave, não sobre o documento: o aviso fica no cartão da IA. */
+const KEY_PROBLEMS: Record<string, Exclude<AiProblem, "">> = {
+  provider_authentication: "invalid",
+  provider_unconfigured: "missing",
+};
 
 // "Tópicos ou semanas" não é mais perguntado: a IA descobre pelo documento e a pessoa muda no Caderno.
 // A API ainda pede um perfil, então vai sempre o padrão.
@@ -45,7 +58,9 @@ export function useCourseImport({
   setError,
   setMessage
 }: Options) {
-  const [entry, setEntry] = useState<"files" | "manual" | "json">("files");
+  const [entry, setEntry] = useState<"files" | "manual" | "json" | "quizzes">(
+    "files",
+  );
   const [name, setName] = useState("");
   const [firstSection, setFirstSection] = useState("Unidade 1");
   const [jsonText, setJsonText] = useState("");
@@ -55,9 +70,22 @@ export function useCourseImport({
     quizzes: File[];
   }>({ planning: [], tasks: [], quizzes: [] });
   const profile = DEFAULT_PROFILE;
-  // null: ainda não há IA escolhida. A entrada escolhe sozinha a do servidor, se houver.
-  const [provider, setProvider] = useState<AiProvider | null>(null);
-  const [keys, setKeys] = useState<TabKeys>({});
+  // null: ainda não há IA escolhida. A entrada escolhe sozinha a primeira que já tem chave, se houver.
+  const [provider, setProvider] = useState<AiProvider | null>(
+    () => workspaceSession.provider,
+  );
+  // A chave vale para esta aba: sobrevive a uma troca de tela dentro do app (Alunos, Datas e de volta), some ao
+  // recarregar ou fechar a aba e nunca vai para o armazenamento do navegador.
+  const [keys, setKeys] = useState<TabKeys>(() => workspaceSession.keys);
+  useEffect(() => {
+    workspaceSession.keys = keys;
+    workspaceSession.provider = provider;
+  }, [keys, provider]);
+  const [aiProblem, setAiProblem] = useState<AiProblem>("");
+  // Trocou a IA ou a chave: o aviso da chave antiga não vale mais.
+  useEffect(() => {
+    setAiProblem("");
+  }, [provider, keys]);
   const [pasteText, setPasteText] = useState("");
   function importJson(trigger: HTMLElement) {
     proposalTrigger.current = trigger;
@@ -65,21 +93,25 @@ export function useCourseImport({
       const value: unknown = JSON.parse(jsonText);
       const result = validateDraft(value);
       if (!result.valid) {
-        setError(
-          result.issues
-            .map((issue) => `${issue.path}: ${issue.message}`)
-            .join("\n"),
-        );
+        setError(issueLines(result.issues));
         return;
       }
       const next = createProject();
       next.draft = result.draft;
       setProposal({ project: next, issues: projectIssues(next), preview: [] });
     } catch {
-      setError("JSON inválido. Confira vírgulas, aspas e a versão do curso.");
+      setError("JSON inválido. Confira vírgulas, aspas e a versão da disciplina.");
     }
   }
-  async function importDocuments(textOnly = false, trigger?: HTMLElement) {
+  /**
+   * course: a Matriz (e os anexos) viram uma disciplina. quizzes: só os quizzes, para mesclar numa disciplina que já
+   * existe no Moodle.
+   */
+  async function importDocuments(
+    textOnly = false,
+    trigger?: HTMLElement,
+    mode: "course" | "quizzes" = "course",
+  ) {
     proposalTrigger.current =
       trigger ??
       (document.activeElement instanceof HTMLElement
@@ -87,24 +119,34 @@ export function useCourseImport({
         : null);
     setError("");
     setMessage("");
-    if (!textOnly && selectedFiles.planning.length === 0) {
-      setError("Envie a matriz ou crie o curso manualmente.");
+    setAiProblem("");
+    const quizzesOnly = mode === "quizzes" && !textOnly;
+    if (quizzesOnly && selectedFiles.quizzes.length === 0) {
+      setError("Envie os quizzes.");
+      return;
+    }
+    if (!textOnly && !quizzesOnly && selectedFiles.planning.length === 0) {
+      setError("Envie a Matriz ou crie a disciplina manualmente.");
       return;
     }
     if (textOnly && !pasteText.trim()) {
-      setError("Cole o texto da matriz antes de enviar.");
+      setError("Cole o texto da Matriz antes de enviar.");
       return;
     }
     if (!provider) {
       setError("Escolha uma IA.");
       return;
     }
+    // Só quizzes: a Matriz e as tarefas que estiverem escolhidas ficam de fora do envio.
+    const sent = quizzesOnly
+      ? selectedFiles.quizzes
+      : [
+          ...selectedFiles.planning,
+          ...selectedFiles.tasks,
+          ...selectedFiles.quizzes,
+        ];
     if (!textOnly) {
-      const problem = checkUploadLimits([
-        ...selectedFiles.planning,
-        ...selectedFiles.tasks,
-        ...selectedFiles.quizzes,
-      ]);
+      const problem = checkUploadLimits(sent);
       if (problem) {
         setError(problem);
         return;
@@ -117,6 +159,8 @@ export function useCourseImport({
     const tabKey = keys[provider];
     const typedKey = tabKey?.apiKey.trim() ?? "";
     const typedModel = tabKey?.model.trim() ?? "";
+    // O endereço só existe na Outra IA; nas demais ele nunca vai.
+    const typedBaseUrl = provider === "custom" ? (tabKey?.baseUrl.trim() ?? "") : "";
     try {
       let response: Response;
       if (textOnly)
@@ -129,21 +173,19 @@ export function useCourseImport({
             provider,
             ...(typedKey ? { apiKey: typedKey } : {}),
             ...(typedModel ? { model: typedModel } : {}),
+            ...(typedBaseUrl ? { baseUrl: typedBaseUrl } : {}),
           }),
           signal: abort.signal,
         });
       else {
         const data = new FormData();
-        for (const file of [
-          ...selectedFiles.planning,
-          ...selectedFiles.tasks,
-          ...selectedFiles.quizzes,
-        ])
-          data.append("files", file);
+        for (const file of sent) data.append("files", file);
+        if (quizzesOnly) data.set("mode", "quizzes");
         data.set("profile", profile);
         data.set("provider", provider);
         if (typedKey) data.set("apiKey", typedKey);
         if (typedModel) data.set("model", typedModel);
+        if (typedBaseUrl) data.set("baseUrl", typedBaseUrl);
         response = await fetch("/api/import", {
           method: "POST",
           body: data,
@@ -163,17 +205,23 @@ export function useCourseImport({
         })
         .parse(value);
       if (!response.ok || !envelope.ok) {
+        // A chave recusada tem lugar próprio, no cartão da IA, com o botão para trocá-la; o resto vai para o aviso do alto.
+        const keyProblem = envelope.issues
+          .map((issue) => KEY_PROBLEMS[issue.code])
+          .find(Boolean);
+        if (keyProblem) {
+          setAiProblem(keyProblem);
+          return;
+        }
         setError(
-          envelope.issues
-            .map((issue) => `${issue.path}: ${issue.message}`)
-            .join("\n") ||
-          "Não reconhecemos este documento. Tente outro arquivo.",
+          issueLines(envelope.issues) ||
+            "Não reconhecemos este documento. Tente outro arquivo.",
         );
         return;
       }
       const draft = validateDraft(envelope.draft);
       if (!draft.valid)
-        throw new Error("A proposta recebida não atende ao contrato do curso.");
+        throw new Error("A proposta recebida não atende ao contrato da disciplina.");
       const convert = (file: z.infer<typeof apiFile>): ProjectFile => ({
         id: file.id,
         name: file.name,
@@ -233,6 +281,7 @@ export function useCourseImport({
     setProvider,
     keys,
     setKeys,
+    aiProblem,
     pasteText,
     setPasteText,
     importJson,

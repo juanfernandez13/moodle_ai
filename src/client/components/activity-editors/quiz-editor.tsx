@@ -7,7 +7,7 @@ import { QuestionEditor } from "./question-editor.tsx";
 import { reorder } from "./editor-helpers.ts";
 type Props = {
   activity: Extract<Activity, { type: "quiz" }>;
-  pane: string;
+  part: "settings" | "questions";
   assets: ProjectFile[];
   onChange: (activity: Activity) => void;
   focusPath?: string | undefined;
@@ -17,7 +17,7 @@ type Props = {
 
 export function QuizEditor({
   activity,
-  pane,
+  part,
   assets,
   onChange,
   focusPath,
@@ -26,7 +26,8 @@ export function QuizEditor({
 }: Props) {
   return (
     <>
-      <div hidden={pane !== "settings"}>
+      {part === "settings" && (
+      <div>
         <div className="field-grid">
           <label className="field">
             <span>Nota máxima do quiz</span>
@@ -85,7 +86,9 @@ export function QuizEditor({
           Embaralhar questões
         </label>
       </div>
-      <div hidden={pane !== "questions"}>
+      )}
+      {part === "questions" && (
+      <div>
         <div className="question-navigation">
           <label className="field">
             <span>Questão em edição</span>
@@ -177,6 +180,7 @@ export function QuizEditor({
           </div>
         </div>
       </div>
+      )}
     </>
   );
 }

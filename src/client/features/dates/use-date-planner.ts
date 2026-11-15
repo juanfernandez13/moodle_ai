@@ -167,7 +167,7 @@ export function useDatePlanner() {
         JSON.stringify(calculated.plan) !== JSON.stringify(parsed.plan)
       )
         throw new Error(
-          "O Moodle devolveu datas diferentes do esperado. Leia o curso de novo.",
+          "O Moodle devolveu datas diferentes do esperado. Leia a disciplina de novo.",
         );
       if (expected !== revision.current)
         throw new Error("As datas mudaram. Veja como fica de novo.");
@@ -262,11 +262,11 @@ export function useDatePlanner() {
         .safeParse(value);
       if (!response.ok || !parsed.success)
         throw new Error(
-          issuesMessage(value, "Não foi possível ler as datas do curso."),
+          issuesMessage(value, "Não foi possível ler as datas da disciplina."),
         );
       const targets = parsed.data.targets as DateTarget[];
       if (!targets.length)
-        throw new Error("Este curso não tem datas para ajustar.");
+        throw new Error("Esta disciplina não tem datas para ajustar.");
       const count = Math.max(
         ...targets.map((item) => item.sectionIndex + 1),
       );
@@ -286,7 +286,7 @@ export function useDatePlanner() {
         throw new Error(check.issues.map((issue) => issue.message).join("\n"));
       if (expected !== revision.current)
         throw new Error(
-          "O curso ou as datas mudaram durante a leitura. Leia de novo.",
+          "A disciplina ou as datas mudaram durante a leitura. Leia de novo.",
         );
       change("unitCount", count);
       remoteTargets.current = true;
@@ -296,7 +296,7 @@ export function useDatePlanner() {
       setError(
         failure instanceof Error
           ? failure.message
-          : "Não foi possível ler o curso.",
+          : "Não foi possível ler a disciplina.",
       );
     } finally {
       if (expectedSession === sessionGeneration.current) setBusy(false);

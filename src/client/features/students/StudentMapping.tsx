@@ -1,6 +1,7 @@
 "use client";
 import { ArrowLeft, Check } from "lucide-react";
 import type { StudentMapping } from "../../../domain/students/index.ts";
+import { ScrollRegion } from "../../components/scroll-region.tsx";
 import { studentFields } from "./helpers.ts";
 
 type FieldKey = (typeof studentFields)[number][0];
@@ -60,7 +61,7 @@ export function StudentMappingEditor({
           />
           <span>A primeira linha tem os títulos</span>
         </label>
-        <div className="table-scroll stu-sheet">
+        <ScrollRegion className="table-scroll stu-sheet" label="Primeiras linhas da planilha">
           <table>
             <tbody>
               {matrix.slice(0, 4).map((row, index) => (
@@ -72,7 +73,7 @@ export function StudentMappingEditor({
               ))}
             </tbody>
           </table>
-        </div>
+        </ScrollRegion>
       </div>
       <div className="stu-mapping-fields">
         <div className="stu-mapping-grid">

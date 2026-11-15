@@ -1,0 +1,300 @@
+{
+ "title": "Quadro 2 · Jornada principal: do planejamento ao curso no Moodle",
+ "purpose": "Contar a jornada completa do curso, do planejamento até a restauração no Moodle e os próximos passos. Mostra as três formas de começar, o portão da conferência, as duas falhas mais importantes com volta (leitura e geração) e as voltas para continuar editando. É o quadro principal para o professor e para a construção das telas /curso/novo e /curso/[id]/entregar.",
+ "nodes": [
+  {
+   "id": "inicio",
+   "kind": "interchange",
+   "label": "Início: Preparar um curso",
+   "detail": "Vem do Quadro 1. Também abre por 'Preparar curso' na fita."
+  },
+  {
+   "id": "comecar",
+   "kind": "screen",
+   "label": "Como você quer começar?",
+   "detail": "Carimbo 1. Chips: 'Tenho um planejamento' (principal) · 'Começar do zero' · 'Ver um curso de exemplo'. Logo abaixo, dobrado e sempre visível: 'Outras formas de começar'."
+  },
+  {
+   "id": "zero",
+   "kind": "screen",
+   "label": "Começar do zero ou pelo exemplo",
+   "detail": "Carimbo 1a. Do zero: nome do curso, 'Organizar por: tópicos ou semanas' e primeira unidade, depois 'Criar curso'. Exemplo: abre marcado 'Exemplo', com dados fictícios. Não precisa de IA nem de chave."
+  },
+  {
+   "id": "outras",
+   "kind": "screen",
+   "label": "Outras formas de começar",
+   "detail": "Carimbo 1b. 'Colar o texto do planejamento' · 'Copiar instruções para outra IA' · 'Colar a resposta da outra IA'. Tudo passa pela mesma leitura e pelo mesmo 'O que encontramos'."
+  },
+  {
+   "id": "enviar",
+   "kind": "screen",
+   "label": "Envie o planejamento",
+   "detail": "Carimbo 2. Sempre à vista, sem precisar abrir nada: 'Planejamento (obrigatório)', com 'Ler a partir de…' dentro do próprio arquivo, 'Tarefas (opcional)' e 'Quizzes (opcional)'. Pergunta 'Organizado por: tópicos ou semanas'. Pergunta 'Quem vai ler?': 'Sem IA, no seu computador' (padrão) · OpenAI · Gemini. Se a pessoa escolher uma IA, aparece uma nota --info: 'O documento será enviado ao serviço escolhido. A chave fica só nesta sessão.' Link 'Veja como o planejamento deve estar'. Botão 'Ler o planejamento'."
+  },
+  {
+   "id": "lendo",
+   "kind": "system",
+   "label": "Lendo o planejamento…",
+   "detail": "'Abrindo o arquivo…' → 'Procurando unidades e atividades…' → 'Conferindo…'. Mostra uma etapa real de cada vez, sem porcentagem. O chip 'Cancelar' volta ao passo 2 com tudo mantido."
+  },
+  {
+   "id": "leu",
+   "kind": "decision",
+   "label": "Deu para ler o planejamento?"
+  },
+  {
+   "id": "err_leitura",
+   "kind": "error",
+   "label": "Se não der para ler o planejamento",
+   "detail": "O que houve: o PDF é uma foto das páginas, o documento não segue um formato que reconhecemos, ou a IA não respondeu. O que fica guardado: seus arquivos e suas escolhas; nenhum curso muda. Como voltar: 'Tentar de novo' · 'Continuar à mão'. As outras saídas estão no Quadro 6."
+  },
+  {
+   "id": "encontramos",
+   "kind": "screen",
+   "label": "O que encontramos",
+   "detail": "Carimbo 3. Lado a lado: 'No seu documento' | 'No curso'. 'Encontramos 8 unidades e 14 atividades.' Anexos com destino que dá para trocar ('tarefa_1.pdf → Unidade 2 › Tarefa 1 · trocar'). Avisos em marca-texto, que não impedem ('A Unidade 3 não tem datas'). Botões: 'Abrir como novo curso' · 'Voltar e ajustar' (volta ao passo 2 com tudo mantido). Nada vira curso vazio em silêncio."
+  },
+  {
+   "id": "caderno",
+   "kind": "screen",
+   "label": "Caderno do curso",
+   "detail": "Carimbo 4. O detalhe está no Quadro 3 (ponte '→ Quadro 3' no canto do cartão). Salva neste navegador mesmo com correções. Se você mudar algo depois de conferir: 'Você mudou o curso depois de conferir. Confira de novo para gerar.'"
+  },
+  {
+   "id": "conferir",
+   "kind": "screen",
+   "label": "Conferir o curso",
+   "detail": "Carimbo 5. Boletim: Unidades ✓ · Atividades ✓ · Arquivos ✓ · Datas ✓ (no horário de Brasília, ex.: '20 out, 23:59') · Notas ✓. Os avisos ficam à vista, sem bloquear. 'Conferido às 14:32'. Com correções pendentes: 'Faltam 2 correções' + 'Voltar e corrigir'."
+  },
+  {
+   "id": "falta",
+   "kind": "decision",
+   "label": "Falta alguma correção?"
+  },
+  {
+   "id": "gerando",
+   "kind": "system",
+   "label": "Gerando o arquivo do curso…",
+   "detail": "Chip 'Cancelar'. Se cancelar: 'Geração cancelada. Nada mudou no curso.'"
+  },
+  {
+   "id": "gerou",
+   "kind": "decision",
+   "label": "O arquivo ficou pronto?"
+  },
+  {
+   "id": "err_gerar",
+   "kind": "error",
+   "label": "Se não der para gerar o arquivo",
+   "detail": "O que houve: o gerador falhou. O que fica guardado: o curso, do jeito que estava, e a conferência. Como voltar: 'Tentar de novo'."
+  },
+  {
+   "id": "pronto",
+   "kind": "screen",
+   "label": "Seu curso está pronto!",
+   "detail": "Carimbo 6. A coruja comemora (96 px, desenhada na faixa O, ao lado do cartão). '8 unidades · 14 atividades · 5 arquivos' · 'Testado no Moodle 4.1 (laboratório)' · 'Este arquivo é da versão conferida às 14:32'. Botão 'Baixar curso (.mbz)': o download só acontece com o clique."
+  },
+  {
+   "id": "levar",
+   "kind": "screen",
+   "label": "Como levar ao Moodle",
+   "detail": "Carimbo 7. Quatro passos ilustrados: 1. No Moodle, crie um curso novo e vazio. 2. Abra 'Restaurar'. 3. Envie o arquivo .mbz. 4. Confira o curso restaurado. Nota: 'Se o curso tem glossário, deixe marcada a opção Informação de usuário.' Botão 'Copiar estes passos'."
+  },
+  {
+   "id": "restaurar",
+   "kind": "action",
+   "label": "Restaurar no Moodle",
+   "detail": "Fora do app (aba laranja, ícone de mão). O app não verifica a restauração e nunca diz 'publicado'. O erro mais comum está no Quadro 6."
+  },
+  {
+   "id": "no_moodle",
+   "kind": "end",
+   "label": "Curso no Moodle",
+   "detail": "Só aparece quando você marca 'Já restaurei no Moodle'. Em Seus cursos, o curso passa a mostrar 'No Moodle (você confirmou)'."
+  },
+  {
+   "id": "agora",
+   "kind": "screen",
+   "label": "E agora?",
+   "detail": "Carimbo 8. Três caminhos, na ordem do semestre: 'Matricular os alunos' · 'Ajustar as datas' · 'Continuar editando'. 'Último arquivo: hoje, 14:35' continua disponível; se o curso mudar, o arquivo fica marcado 'versão anterior'."
+  },
+  {
+   "id": "alunos",
+   "kind": "interchange",
+   "label": "Alunos → Quadro 4"
+  },
+  {
+   "id": "datas",
+   "kind": "interchange",
+   "label": "Datas → Quadro 5"
+  }
+ ],
+ "edges": [
+  {
+   "from": "inicio",
+   "to": "comecar",
+   "label": "Preparar um curso",
+   "style": "main"
+  },
+  {
+   "from": "comecar",
+   "to": "enviar",
+   "label": "Tenho um planejamento",
+   "style": "main"
+  },
+  {
+   "from": "comecar",
+   "to": "zero",
+   "label": "Começar do zero",
+   "style": "alternative"
+  },
+  {
+   "from": "comecar",
+   "to": "outras",
+   "label": "Outras formas",
+   "style": "alternative"
+  },
+  {
+   "from": "zero",
+   "to": "caderno",
+   "label": "Criar curso",
+   "style": "alternative"
+  },
+  {
+   "from": "outras",
+   "to": "lendo",
+   "label": "Ler o texto colado",
+   "style": "alternative"
+  },
+  {
+   "from": "enviar",
+   "to": "lendo",
+   "label": "Ler o planejamento",
+   "style": "main"
+  },
+  {
+   "from": "lendo",
+   "to": "leu",
+   "style": "main"
+  },
+  {
+   "from": "leu",
+   "to": "encontramos",
+   "label": "sim",
+   "style": "main"
+  },
+  {
+   "from": "leu",
+   "to": "err_leitura",
+   "label": "não",
+   "style": "error"
+  },
+  {
+   "from": "err_leitura",
+   "to": "enviar",
+   "label": "Tentar de novo",
+   "style": "error"
+  },
+  {
+   "from": "err_leitura",
+   "to": "caderno",
+   "label": "Continuar à mão",
+   "style": "error"
+  },
+  {
+   "from": "encontramos",
+   "to": "caderno",
+   "label": "Abrir como novo curso",
+   "style": "main"
+  },
+  {
+   "from": "caderno",
+   "to": "conferir",
+   "label": "Conferir o curso",
+   "style": "main"
+  },
+  {
+   "from": "conferir",
+   "to": "falta",
+   "style": "main"
+  },
+  {
+   "from": "falta",
+   "to": "caderno",
+   "label": "sim: corrigir",
+   "style": "loop"
+  },
+  {
+   "from": "falta",
+   "to": "gerando",
+   "label": "não",
+   "style": "main"
+  },
+  {
+   "from": "gerando",
+   "to": "gerou",
+   "style": "main"
+  },
+  {
+   "from": "gerou",
+   "to": "pronto",
+   "label": "sim",
+   "style": "main"
+  },
+  {
+   "from": "gerou",
+   "to": "err_gerar",
+   "label": "não",
+   "style": "error"
+  },
+  {
+   "from": "err_gerar",
+   "to": "gerando",
+   "label": "Tentar de novo",
+   "style": "error"
+  },
+  {
+   "from": "pronto",
+   "to": "levar",
+   "label": "Baixar curso (.mbz)",
+   "style": "main"
+  },
+  {
+   "from": "levar",
+   "to": "agora",
+   "style": "main"
+  },
+  {
+   "from": "levar",
+   "to": "restaurar",
+   "label": "No Moodle",
+   "style": "alternative"
+  },
+  {
+   "from": "restaurar",
+   "to": "no_moodle",
+   "label": "Já restaurei no Moodle",
+   "style": "main"
+  },
+  {
+   "from": "agora",
+   "to": "caderno",
+   "label": "Continuar editando",
+   "style": "loop"
+  },
+  {
+   "from": "agora",
+   "to": "alunos",
+   "label": "Matricular os alunos",
+   "style": "alternative"
+  },
+  {
+   "from": "agora",
+   "to": "datas",
+   "label": "Ajustar as datas",
+   "style": "alternative"
+  }
+ ],
+ "layout_hint": "PRANCHA: vertical, 1440 × 3240.\n\nCABEÇALHO 'Plano de aula':\n- Título: 'Do planejamento ao curso no Moodle'.\n- Objetivo: 'No fim, você terá o arquivo do curso pronto para o Moodle'.\n- Quando usar: 'Antes das aulas'.\n- Você vai precisar: 'Seu planejamento (.docx, .pdf ou .txt); tarefas e quizzes, se tiver'.\n\nFAIXAS: as da seção 5 da linguagem dos diagramas.\n\nLINHAS (y do topo):\n- r1 380: inicio.\n- r2 520: comecar; zero na faixa O.\n- r3 720: enviar (cartão 320 × 180); outras na faixa O.\n- r4 940: lendo.\n- r5 1080: leu; err_leitura na faixa E (260 × 220, ocupa r5 e r6).\n- r6 1240: encontramos.\n- r7 1440: caderno (altura de pelo menos 120).\n- r8 1620: conferir.\n- r9 1800: falta.\n- r10 1940: gerando.\n- r11 2080: gerou; err_gerar na faixa E.\n- r12 2240: pronto; coruja de 96 px na faixa O, ao lado.\n- r13 2440: levar.\n- r14 2620: agora (altura de pelo menos 160); na faixa N, as pontes alunos (centro em y 2684) e datas (centro em y 2744).\n\nPORTA E FAIXA DO MOODLE: porta em y 2860; faixa de y 2880 a 3160. Dentro dela: restaurar na faixa E (x 48–328, y 2960) e no_moodle na faixa C (y 2950).\n\nDIVISORES DE ETAPA: 'Começar' acima de r2 · 'Montar' acima de r7 · 'Conferir' acima de r8 · 'Baixar' acima de r10 · 'Levar ao Moodle' acima de r13.\n\nROTAS (entradas medidas a partir do topo do cartão de destino):\n- comecar→zero: horizontal, saindo pela direita de comecar 40 px abaixo do topo.\n- comecar→outras: sai pela direita de comecar 120 px abaixo do topo, desce por G2 e entra pela esquerda de outras 40 px abaixo do topo.\n- zero→caderno: sai pela direita de zero, desce pela faixa N (x 1290) e entra pela direita de caderno a +24 px.\n- outras→lendo: desce pela faixa O (x 908) e entra pela direita de lendo.\n- err_leitura→enviar: sobe pela faixa E (x 120) e entra pela esquerda de enviar a +40 px.\n- err_leitura→caderno: desce pela faixa E (x 188) e entra pela esquerda de caderno a +40 px.\n- falta→caderno: trilho V em x 1088; entra pela direita de caderno a +88 px.\n- agora→caderno: sai pela direita de agora a +24 px, sobe pelo trilho V em x 1128 e entra em caderno a +56 px.\n- agora→alunos e agora→datas: saem da direita de agora a +64 e +124 px.\n- err_gerar→gerando: sobe pela faixa E e entra pela esquerda de gerando.\n- levar→restaurar: sai pela esquerda de levar e desce pela faixa E (x 188), atravessando a porta.\n\nCadeado de 24 px sobre a seta falta→gerando, com a legenda 'só abre sem correções'. Nenhuma linha cruza outra."
+}

@@ -75,7 +75,7 @@ export function ManualStudentEntry({
     <form className="stu-manual" onSubmit={submit} noValidate>
       <p className="stu-help">Preencha uma linha para cada aluno.</p>
       <div className="table-scroll stu-table stu-manual-table">
-        <table>
+        <table aria-label="Alunos para cadastrar">
           <thead>
             <tr>
               {manualStudentFields.map(([field, label]) => (

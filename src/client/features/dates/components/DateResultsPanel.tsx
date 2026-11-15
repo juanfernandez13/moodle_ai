@@ -41,21 +41,9 @@ export function DateResultsPanel({
   onBack(): void;
 }) {
   const [limit, setLimit] = useState(PAGE);
-  if (busy && results.length === 0)
-    return (
-      <div className="dw-body">
-        <h2 className="visually-hidden">Resultado</h2>
-        <div className="dw-result" data-tone="wait" role="status">
-          <span className="dw-seal" aria-hidden="true">
-            <LoaderCircle className="spinner" size={32} />
-          </span>
-          <div>
-            <p className="dw-big">Aplicando no Moodle…</p>
-            <p className="dw-help">Não feche esta página.</p>
-          </div>
-        </div>
-      </div>
-    );
+  // Esperando o Moodle e a tela de resultado são a mesma tela: o título e a região ao vivo ficam no lugar, então o
+  // foco não se perde e o leitor de tela fala o resultado quando ele chega.
+  const waiting = busy && results.length === 0;
 
   const sorted = [...results].sort(
     (a, b) => (ORDER[a.status] ?? 1) - (ORDER[b.status] ?? 1),
@@ -78,24 +66,38 @@ export function DateResultsPanel({
       : "";
   return (
     <>
-      <div className="dw-body dw-body-table">
+      <div className={waiting ? "dw-body" : "dw-body dw-body-table"}>
         <h2 className="visually-hidden">Resultado</h2>
-        <div className="dw-result" data-tone={tone}>
-          <span className="dw-seal" aria-hidden="true">
-            {tone === "ok" ? (
-              <CircleCheck size={32} />
-            ) : tone === "error" ? (
-              <CircleX size={32} />
-            ) : (
-              <CircleAlert size={32} />
-            )}
-          </span>
-          <div>
-            <p className="dw-big">{title}</p>
-            {detail && <p className="dw-help">{detail}</p>}
-          </div>
+        <div role="status" aria-atomic="true">
+          {waiting ? (
+            <div className="dw-result" data-tone="wait">
+              <span className="dw-seal" aria-hidden="true">
+                <LoaderCircle className="spinner" size={32} />
+              </span>
+              <div>
+                <p className="dw-big">Aplicando no Moodle…</p>
+                <p className="dw-help">Não feche esta página.</p>
+              </div>
+            </div>
+          ) : (
+            <div className="dw-result" data-tone={tone}>
+              <span className="dw-seal" aria-hidden="true">
+                {tone === "ok" ? (
+                  <CircleCheck size={32} />
+                ) : tone === "error" ? (
+                  <CircleX size={32} />
+                ) : (
+                  <CircleAlert size={32} />
+                )}
+              </span>
+              <div>
+                <p className="dw-big">{title}</p>
+                {detail && <p className="dw-help">{detail}</p>}
+              </div>
+            </div>
+          )}
         </div>
-        {results.length > 0 && (
+        {!waiting && results.length > 0 && (
           <div className="dw-table-wrap" tabIndex={0} role="region" aria-label="Resultado de cada item">
             <table className="dw-table dw-results" role="table">
               <thead role="rowgroup">
@@ -135,6 +137,7 @@ export function DateResultsPanel({
           </div>
         )}
       </div>
+      {!waiting && (
       <div className="dw-actions">
         {unknown ? (
           <button
@@ -147,14 +150,15 @@ export function DateResultsPanel({
           </button>
         ) : (
           <>
+            {!everything && <DateBackLink onClick={onBack} label="Tentar de novo" />}
             <button type="button" className="primary dw-primary" onClick={onNext}>
-              Escolher outro curso
+              Escolher outra disciplina
               <ArrowRight size={22} aria-hidden="true" />
             </button>
-            {!everything && <DateBackLink onClick={onBack} label="Tentar de novo" />}
           </>
         )}
       </div>
+      )}
     </>
   );
 }

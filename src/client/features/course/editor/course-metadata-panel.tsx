@@ -1,8 +1,10 @@
 "use client";
+import { useId } from "react";
 import { RichEditor } from "../../../components/content.tsx";
+import { PanelTabs, tabPanelProps } from "../../../components/panel-tabs.tsx";
 import type { CourseProject } from "../../../project.ts";
 import { richBlockFocus } from "../../../navigation.ts";
-import { utcFieldValue, utcTimestamp } from "../../../dates.ts";
+import { localFieldValue, localTimestamp } from "../../../dates.ts";
 import type { CourseBuilderModel } from "../hooks/use-course-builder.ts";
 
 type Props = Pick<
@@ -18,34 +20,29 @@ export function CourseMetadataPanel({
   commands,
   issueFocus
 }: Props) {
+  const tabs = useId();
   return (
     <>
       <div className="section-heading">
         <div>
-          <p className="subtle">Disciplina</p>
-          <h2>Dados do curso</h2>
+          <h2>Dados da disciplina</h2>
         </div>
       </div>
-      <nav className="panel-tabs" aria-label="Dados do curso">
-        {[
-          ["discipline", "Disciplina"],
-          ["organization", "Organização"],
-          ["teacher", "Professor"],
-        ].map(([id, label]) => (
-          <button
-            key={id}
-            type="button"
-            aria-pressed={coursePane === id}
-            onClick={() => setCoursePane(id!)}
-          >
-            {label}
-          </button>
-        ))}
-      </nav>
-      <div hidden={coursePane !== "discipline"}>
+      <PanelTabs
+        base={tabs}
+        label="Dados da disciplina"
+        tabs={[
+          { id: "discipline", label: "Disciplina" },
+          { id: "organization", label: "Organização" },
+          { id: "teacher", label: "Professor" },
+        ]}
+        value={coursePane}
+        onChange={setCoursePane}
+      />
+      <div {...tabPanelProps(tabs, "discipline", coursePane)}>
         <div className="field-grid">
           <label className="field">
-            <span>Nome completo do curso</span>
+            <span>Nome completo da disciplina</span>
             <input
               data-field="metadata.fullName"
               value={project.draft.metadata.fullName}
@@ -123,7 +120,7 @@ export function CourseMetadataPanel({
           }
         />
       </div>
-      <div hidden={coursePane !== "organization"}>
+      <div {...tabPanelProps(tabs, "organization", coursePane)}>
         <div className="field-grid">
           <label className="field">
             <span>Organização</span>
@@ -149,14 +146,14 @@ export function CourseMetadataPanel({
             </select>
           </label>
           <label className="field">
-            <span>Início do curso (UTC)</span>
+            <span>Início da disciplina</span>
             <input
               type="datetime-local"
               data-field="metadata.startDate"
-              value={utcFieldValue(project.draft.metadata.startDate)}
+              value={localFieldValue(project.draft.metadata.startDate)}
               onChange={(event) => {
                 const metadata = { ...project.draft.metadata };
-                const timestamp = utcTimestamp(event.target.value);
+                const timestamp = localTimestamp(event.target.value);
                 if (timestamp) metadata.startDate = timestamp;
                 else delete metadata.startDate;
                 commands([{ type: "set_metadata", metadata }]);
@@ -209,7 +206,7 @@ export function CourseMetadataPanel({
           </label>
         </div>
       </div>
-      <div hidden={coursePane !== "teacher"}>
+      <div {...tabPanelProps(tabs, "teacher", coursePane)}>
         <h3>Professor ou tutor</h3>
         <div className="field-grid">
           {[

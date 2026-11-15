@@ -14,6 +14,7 @@ const MODES = [
 /** Second step: the list as the system understood it. What is wrong is red, and the options sit under the table. */
 export function StudentReview({
   rows,
+  typed,
   validation,
   page,
   options,
@@ -27,6 +28,8 @@ export function StudentReview({
   onBack,
 }: {
   rows: StudentRow[];
+  /** The students were typed by hand (no spreadsheet behind them). */
+  typed: boolean;
   validation: {
     valid: boolean;
     issues: StudentIssue[]
@@ -47,6 +50,11 @@ export function StudentReview({
   const count = validation.issues.length;
   const blocked = !validation.valid || gaps.length > 0;
   const bad = count > 0 || gaps.length > 0;
+  // The course is written once, in the table. This field shows only when some student has none (or the person already
+  // used it): one idea, one place.
+  const askCourse =
+    options.enrol &&
+    (rows.some((row) => !row.course.trim()) || destinations.trim() !== "");
 
   function open(issue: StudentIssue) {
     const index = rows.findIndex((row) => row.id === issue.rowId);
@@ -83,13 +91,14 @@ export function StudentReview({
           {count
             ? `${count} ${count === 1 ? "pendência" : "pendências"}`
             : gaps.length
-              ? "Falta o curso"
+              ? "Falta a disciplina"
               : "Tudo certo"}
         </p>
       </header>
       <div className={`stu-review-table${rows.length > 2 ? " tall" : ""}`}>
         <EditableStudentTable
           rows={rows}
+          typed={typed}
           issues={[...validation.issues, ...gaps]}
           page={page}
           onPageChange={onPageChange}
@@ -134,25 +143,26 @@ export function StudentReview({
             ))}
           </div>
         </fieldset>
-        <label className="field stu-courses">
-          <span>Cursos (opcional)</span>
-          <input
-            value={destinations}
-            disabled={!options.enrol}
-            aria-invalid={gaps.length > 0}
-            aria-describedby="student-courses-help"
-            placeholder="PROG-2026, LOGICA-2026"
-            onChange={(event) => onDestinationsChange(event.target.value)}
-          />
-          <small
-            id="student-courses-help"
-            className={`field-help${gaps.length > 0 ? " error-text" : ""}`}
-          >
-            {gaps.length > 0
-              ? "Falta o curso. Escreva aqui ou na tabela."
-              : "Código do curso. Vários: separe por vírgula."}
-          </small>
-        </label>
+        {askCourse && (
+          <label className="field stu-courses">
+            <span>Em qual disciplina?</span>
+            <input
+              value={destinations}
+              aria-invalid={gaps.length > 0}
+              aria-describedby="student-courses-help"
+              placeholder="Ex.: PROG-2026"
+              onChange={(event) => onDestinationsChange(event.target.value)}
+            />
+            <small
+              id="student-courses-help"
+              className={`field-help${gaps.length > 0 ? " error-text" : ""}`}
+            >
+              {gaps.length > 0
+                ? "Falta a disciplina. Escreva aqui ou na tabela."
+                : "Várias disciplinas: separe por vírgula."}
+            </small>
+          </label>
+        )}
         <label className="check-row stu-enrol">
           <input
             type="checkbox"
@@ -161,7 +171,7 @@ export function StudentReview({
               onOptionsChange({ ...options, enrol: event.target.checked })
             }
           />
-          <span>Matricular nos cursos</span>
+          <span>Matricular na disciplina de cada aluno</span>
         </label>
       </div>
       <div className="stu-actions">
@@ -171,15 +181,17 @@ export function StudentReview({
         </button>
         {blocked && (
           <p className="stu-hint" id="student-prepare-hint">
-            {count ? "Resolva as pendências para continuar." : "Informe o curso para continuar."}
+            {count ? "Resolva as pendências para continuar." : "Informe a disciplina para continuar."}
           </p>
         )}
         <button
           type="button"
           className="primary"
-          disabled={busy || blocked}
+          disabled={blocked}
+          aria-disabled={busy ? true : undefined}
           aria-describedby={blocked ? "student-prepare-hint" : undefined}
           onClick={() => {
+            if (busy) return;
             void onPrepare();
           }}
         >

@@ -20,9 +20,16 @@ export const sourcePreviewSchema = z.strictObject({
 });
 export const importProvenanceSchema = z.strictObject({
   profile: z.enum(["docx-topicos-v1", "docx-semanal-v1"]),
-  provider: z.enum(["offline", "openai", "gemini"]),
+  provider: z.enum(["offline", "gemini", "openai", "claude", "custom"]),
   model: z.string().min(1).max(200).optional(),
-  promptVersion: z.literal("moodle-import-v1"),
+  // Projetos salvos antes do v2 continuam válidos.
+  promptVersion: z.enum([
+    "moodle-import-v1",
+    "moodle-import-v2",
+    "moodle-import-v3",
+    "moodle-quiz-import-v1",
+    "moodle-quiz-import-v2",
+  ]),
   schemaVersion: z.literal(1),
   fields: z
     .array(z.strictObject({ path, sourceId: identifier, blockId: identifier }))
@@ -39,8 +46,15 @@ const originSchema = z.strictObject({
 });
 export const projectProvenanceSchema = importProvenanceSchema.extend({
   profile: z.enum(["docx-topicos-v1", "docx-semanal-v1", "unknown"]),
-  provider: z.enum(["offline", "openai", "gemini", "unknown"]),
-  promptVersion: z.enum(["moodle-import-v1", "unknown"]),
+  provider: z.enum(["offline", "gemini", "openai", "claude", "custom", "unknown"]),
+  promptVersion: z.enum([
+    "moodle-import-v1",
+    "moodle-import-v2",
+    "moodle-import-v3",
+    "moodle-quiz-import-v1",
+    "moodle-quiz-import-v2",
+    "unknown",
+  ]),
   preview: z.array(sourcePreviewSchema).max(100).optional(),
   origins: z.array(originSchema).max(50_000),
 });

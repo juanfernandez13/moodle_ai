@@ -39,7 +39,7 @@ export function JsonImportPanel({
     <div className="entry-json">
       <div className="entry-json-card">
         <label className="entry-card-title" htmlFor="entry-json">
-          JSON do curso
+          JSON da disciplina
         </label>
         <p className="entry-help" id={helpId}>
           Cole o que a outra IA devolveu.
@@ -71,7 +71,7 @@ export function JsonImportPanel({
           </button>
           <button type="button" className="entry-link" onClick={onPasteText}>
             <ClipboardPaste size={18} aria-hidden="true" />
-            Colar texto
+            Colar a Matriz
           </button>
           <button
             type="button"
@@ -88,6 +88,7 @@ export function JsonImportPanel({
         <button
           type="button"
           className="primary entry-send"
+          disabled={!jsonText.trim()}
           onClick={(event) => importJson(event.currentTarget)}
         >
           <Braces size={20} aria-hidden="true" />

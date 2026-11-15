@@ -68,7 +68,7 @@ export function ProjectFilesPanel({
           </label>
         )}
       <label className="file-button add-file">
-        <Upload size={18} />
+        <Upload size={18} aria-hidden="true" />
         {missingTarget
           ? "Fornecer arquivo desta referência"
           : "Adicionar arquivos"}
@@ -76,7 +76,11 @@ export function ProjectFilesPanel({
           className="visually-hidden"
           type="file"
           multiple={!missingTarget}
-          aria-label="Adicionar arquivos ao projeto"
+          aria-label={
+            missingTarget
+              ? "Fornecer arquivo desta referência"
+              : "Adicionar arquivos ao projeto"
+          }
           onChange={(event) => {
             void addFiles(event.target.files);
             event.target.value = "";
@@ -87,7 +91,7 @@ export function ProjectFilesPanel({
       <ul className="file-list project-file-list">
         {project.assets.map((file) => (
           <li key={file.id}>
-            <Paperclip size={19} />
+            <Paperclip size={19} aria-hidden="true" />
             <span>
               {file.name}
               <small>
@@ -108,7 +112,7 @@ export function ProjectFilesPanel({
                 downloadFile(file.bytes, file.name, file.mediaType)
               }
             >
-              <Download size={18} />
+              <Download size={18} aria-hidden="true" />
             </button>
             <button
               type="button"
@@ -144,7 +148,7 @@ export function ProjectFilesPanel({
                 }
               }}
             >
-              <Trash2 size={18} />
+              <Trash2 size={18} aria-hidden="true" />
             </button>
           </li>
         ))}
@@ -152,13 +156,13 @@ export function ProjectFilesPanel({
       <h3>Documentos de origem</h3>
       {project.sources.length === 0 ? (
         <p className="field-help">
-          Este curso foi criado sem documento de origem.
+          Esta disciplina foi criada sem documento de origem.
         </p>
       ) : (
         <ul className="file-list">
           {project.sources.map((file) => (
             <li key={file.id}>
-              <FileText size={18} />
+              <FileText size={18} aria-hidden="true" />
               <span>
                 {file.name}
                 <small>{formatBytes(file.bytes.length)}</small>
@@ -171,18 +175,19 @@ export function ProjectFilesPanel({
                   downloadFile(file.bytes, file.name, file.mediaType)
                 }
               >
-                <Download size={18} />
+                <Download size={18} aria-hidden="true" />
               </button>
             </li>
           ))}
         </ul>
       )}
       <div className="notice">
-        Última cópia portátil:{" "}
         {lastCopy === null
-          ? "ainda não exportada nesta sessão"
-          : `revisão ${lastCopy}`}
-        . Salvar no navegador não substitui uma cópia em outro local.
+          ? "Você ainda não baixou uma cópia nesta sessão."
+          : lastCopy === project.draft.revision
+            ? "Cópia baixada nesta sessão."
+            : "Cópia baixada, mas a disciplina mudou depois."}{" "}
+        Salvar no navegador não substitui uma cópia em outro lugar.
       </div>
       <ProvenanceViewer project={project} />
     </>

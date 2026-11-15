@@ -117,7 +117,7 @@ export function useDateWizard() {
       ]
     : [
         ["login", "Entrar no Moodle"],
-        ["course", "Escolher o curso"],
+        ["course", "Escolher a disciplina"],
         ["plan", "Novas datas"],
         ["preview", "Conferir"],
       ];

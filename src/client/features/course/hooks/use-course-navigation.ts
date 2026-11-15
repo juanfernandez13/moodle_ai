@@ -13,7 +13,13 @@ type Options = {
 
 export function useCourseNavigation({ project, setShowReview, setError }: Options) {
   const [coursePane, setCoursePane] = useState("discipline");
-  const [view, setView] = useState<View>("course");
+  const [chosenView, setView] = useState<View>("course");
+  // Pacote só de quizzes: não há dados da disciplina nem notas para editar, então essas telas abrem na primeira seção.
+  const view: View =
+    project?.draft.metadata.quizOnly === true &&
+    (chosenView === "course" || chosenView === "grades")
+      ? (project.draft.sections[0]?.id ?? chosenView)
+      : chosenView;
   const [activityId, setActivityId] = useState<string | null>(null);
   const [activityPages, setActivityPages] = useState<Record<string, number>>(
     {},

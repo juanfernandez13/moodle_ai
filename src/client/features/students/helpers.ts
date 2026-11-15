@@ -4,7 +4,7 @@ export const STUDENT_PAGE_SIZE = 10;
 export const studentFields = [
   ["fullName", "Nome completo"], ["firstName", "Primeiro nome"],
   ["lastName", "Sobrenome"], ["email", "E-mail"], ["username", "Usuário"],
-  ["cpf", "CPF"], ["course", "Curso"],
+  ["cpf", "CPF"], ["course", "Disciplina"],
 ] as const;
 export const editableStudentFields = ["firstName", "lastName", "email", "cpf", "course", "username"] as const;
 export type StudentEditField = typeof editableStudentFields[number];
@@ -14,7 +14,7 @@ export const studentFieldLabels: Record<StudentEditField, string> = {
   lastName: "sobrenome",
   email: "e-mail",
   cpf: "CPF",
-  course: "curso",
+  course: "disciplina",
 };
 
 /** The columns of the example spreadsheet. The typed table, the template file and the example share them. */
@@ -22,7 +22,7 @@ export const manualStudentFields = [
   ["fullName", "Nome completo"],
   ["email", "E-mail"],
   ["cpf", "CPF"],
-  ["course", "Curso"],
+  ["course", "Disciplina"],
 ] as const;
 export type ManualStudentField = typeof manualStudentFields[number][0];
 export type ManualStudent = { id: number } & Record<ManualStudentField, string>;
@@ -80,7 +80,7 @@ export function studentCourseGaps(rows: StudentRow[], options: StudentOptions, d
   return rows.flatMap((row, index) =>
     row.course.trim()
       ? []
-      : [{ code: "required_course", path: `rows[${index}].course`, rowId: row.id, message: "Informe o curso." }],
+      : [{ code: "required_course", path: `rows[${index}].course`, rowId: row.id, message: "Informe a disciplina." }],
   );
 }
 

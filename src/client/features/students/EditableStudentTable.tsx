@@ -10,25 +10,28 @@ export function EditableStudentTable({
   page,
   onPageChange,
   onRowChange,
+  typed,
 }: {
   rows: StudentRow[];
   issues: StudentIssue[];
   page: number;
   onPageChange: (page: number) => void;
   onRowChange: (id: string, field: StudentEditField, value: string) => void;
+  /** The students were typed by hand: there is no spreadsheet row to show as "original". */
+  typed?: boolean | undefined;
 }) {
   const headings: Record<StudentEditField, string> = {
     firstName: "Primeiro nome",
     lastName: "Sobrenome",
     email: "E-mail",
     cpf: "CPF",
-    course: "Curso",
+    course: "Disciplina",
     username: "Usuário",
   };
   return (
     <>
       <div className="table-scroll stu-table">
-        <table>
+        <table aria-label="Alunos para conferir" data-typed={typed || undefined}>
           <thead>
             <tr>
               <th scope="col">Linha</th>
@@ -37,7 +40,11 @@ export function EditableStudentTable({
                   {headings[field]}
                 </th>
               ))}
-              <th scope="col">Original</th>
+              {!typed && (
+                <th scope="col" className="stu-col-original">
+                  Original
+                </th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -62,20 +69,24 @@ export function EditableStudentTable({
                     />
                   </td>
                 ))}
-                <td className="stu-original" data-label="Original">
-                  <details>
-                    <summary aria-label={`Ver original da linha ${row.rowNumber}`}>
-                      Ver
-                    </summary>
-                    <div className="stu-original-body">
-                      {Object.entries(row.original).map(([key, value]) => (
-                        <p key={key}>
-                          {key}: {value}
-                        </p>
-                      ))}
-                    </div>
-                  </details>
-                </td>
+                {!typed && (
+                  <td className="stu-original" data-label="Original">
+                    <details>
+                      <summary
+                        aria-label={`Ver original da linha ${row.rowNumber}`}
+                      >
+                        Ver
+                      </summary>
+                      <div className="stu-original-body">
+                        {Object.entries(row.original).map(([key, value]) => (
+                          <p key={key}>
+                            {key}: {value}
+                          </p>
+                        ))}
+                      </div>
+                    </details>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

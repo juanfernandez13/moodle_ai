@@ -4,6 +4,7 @@ import type { CourseProject } from "../project.ts";
 import { originRows } from "../provenance.ts";
 import { ContentPreview } from "./content.tsx";
 import { Pagination } from "./pagination.tsx";
+import { ScrollRegion } from "./scroll-region.tsx";
 
 export function ProvenanceViewer({ project }: { project: CourseProject }) {
   const rows = useMemo(() => originRows(project), [project]);
@@ -37,13 +38,13 @@ export function ProvenanceViewer({ project }: { project: CourseProject }) {
           placeholder="Ex.: metadata, title, questions"
         />
       </label>
-      <div className="table-scroll">
+      <ScrollRegion className="table-scroll" label="Origem dos campos">
         <table>
           <thead>
             <tr>
-              <th>Campo atual</th>
-              <th>Origem</th>
-              <th>Referência</th>
+              <th scope="col">Campo atual</th>
+              <th scope="col">Origem</th>
+              <th scope="col">Referência</th>
             </tr>
           </thead>
           <tbody>
@@ -68,7 +69,7 @@ export function ProvenanceViewer({ project }: { project: CourseProject }) {
             ))}
           </tbody>
         </table>
-      </div>
+      </ScrollRegion>
       <Pagination page={page} count={filtered.length} onChange={setPage} />
       {selectedSource && (
         <details className="form-details">

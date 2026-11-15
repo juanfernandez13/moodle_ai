@@ -1,0 +1,248 @@
+{
+ "title": "Quadro 4 · Alunos: cadastrar a turma em lote",
+ "purpose": "Mostrar a ferramenta Alunos de ponta a ponta: planilha, colunas, conferência com erros por célula e por linha, cursos do lote e as duas formas de entregar (um CSV por curso ou envio direto ao Moodle). O envio segue a regra de toda operação no Moodle: prévia, confirmação explícita, resultado por aluno e bloqueio quando não se sabe se terminou.",
+ "nodes": [
+  {
+   "id": "entrada",
+   "kind": "interchange",
+   "label": "Alunos",
+   "detail": "Pela fita ('Alunos · na matrícula'), pelo Início ('Matricular alunos') ou por 'E agora?'. Ao voltar para o Curso, o curso fica intacto."
+  },
+  {
+   "id": "planilha",
+   "kind": "screen",
+   "label": "Escolha a planilha",
+   "detail": "Carimbo 1. '.xlsx, .xls ou .csv, até 8 MB' · 'Usar planilha de exemplo' (dados fictícios). Nota --info: 'A planilha fica só nesta janela do navegador. Não vai para Seus cursos.'"
+  },
+  {
+   "id": "colunas_ok",
+   "kind": "decision",
+   "label": "Reconhecemos as colunas?"
+  },
+  {
+   "id": "mapear",
+   "kind": "screen",
+   "label": "Diga o que é cada coluna",
+   "detail": "Carimbo 1a. Prévia de 4 linhas e um seletor por coluna ('Coluna B: Nome completo') para nome, sobrenome, e-mail e identificação."
+  },
+  {
+   "id": "confira",
+   "kind": "screen",
+   "label": "Confira os alunos",
+   "detail": "Carimbo 2. Tabela editável e paginada. O erro aparece na própria célula e na lista 'Linha 12: e-mail sem @'. Repetidos ficam marcados ('Maria Silva aparece 2 vezes'). Escolha: 'Criar contas novas' · 'Atualizar contas existentes'."
+  },
+  {
+   "id": "tem_erro",
+   "kind": "decision",
+   "label": "Algum aluno com erro?",
+   "detail": "Os arquivos e o envio só ficam disponíveis sem erros."
+  },
+  {
+   "id": "cursos",
+   "kind": "screen",
+   "label": "Em quais cursos matricular?",
+   "detail": "Carimbo 3. Todos os alunos entram em todos os cursos escolhidos, com a conta à vista: '32 alunos × 2 cursos = 2 arquivos'. O curso do caderno aparece como sugestão. Mudar os cursos não apaga nada: os arquivos já feitos ficam marcados 'refazer'."
+  },
+  {
+   "id": "como",
+   "kind": "decision",
+   "label": "Como você quer entregar?",
+   "detail": "Na tela, as duas saídas têm o mesmo peso. No quadro, o envio segue reto só porque tem mais passos."
+  },
+  {
+   "id": "baixar",
+   "kind": "screen",
+   "label": "Baixar um arquivo por curso",
+   "detail": "Carimbo 4a. Um botão por arquivo ('Baixar CSV de Introdução à programação'). Cada download só acontece com o clique."
+  },
+  {
+   "id": "baixado",
+   "kind": "end",
+   "label": "Arquivos baixados",
+   "detail": "Termina aqui, sem precisar do Moodle."
+  },
+  {
+   "id": "conectar",
+   "kind": "interchange",
+   "label": "Conectar ao Moodle → Quadro 5",
+   "detail": "Carimbo 4b. Se já estiver conectado, passa direto. Volta para cá com a lista de cursos."
+  },
+  {
+   "id": "previa",
+   "kind": "screen",
+   "label": "Ver o que o Moodle vai fazer",
+   "detail": "Carimbo 5. Enquanto prepara: 'Preparando a prévia…'. Para cada aluno: se será criado ou atualizado, e em quais cursos. 'Nada foi alterado ainda.' A prévia vale uma vez e expira. Se você mudar a lista, os cursos ou as opções, ou trocar de Moodle: 'Veja a prévia de novo'."
+  },
+  {
+   "id": "confirmar",
+   "kind": "action",
+   "label": "Confirmar cadastro de 32 alunos",
+   "detail": "Botão que muda o Moodle: borda dupla laranja e escudo. Nada é enviado ao abrir ou recarregar a página."
+  },
+  {
+   "id": "enviando",
+   "kind": "system",
+   "label": "Enviando ao Moodle…"
+  },
+  {
+   "id": "resultado",
+   "kind": "screen",
+   "label": "Resultado por aluno",
+   "detail": "Carimbo 6. Criado · Atualizado · Erro · Não sabemos. Resumo: '30 criados · 2 com erro'. Paginação própria, separada da prévia."
+  },
+  {
+   "id": "incerto",
+   "kind": "decision",
+   "label": "Algum 'Não sabemos'?"
+  },
+  {
+   "id": "err_incerto",
+   "kind": "error",
+   "label": "Se não soubermos se terminou",
+   "detail": "O que houve: o Moodle não respondeu depois do envio. O que fica guardado: a lista, os cursos e o resultado. Como voltar: 'Conferir no Moodle'. Enviar de novo fica bloqueado até você conferir, mesmo que saia da página."
+  },
+  {
+   "id": "fim",
+   "kind": "end",
+   "label": "Turma cadastrada",
+   "detail": "No seu Moodle. Próximos passos: 'Fazer outro lote' · 'Ajustar as datas'."
+  },
+  {
+   "id": "datas",
+   "kind": "interchange",
+   "label": "Datas → Quadro 5"
+  }
+ ],
+ "edges": [
+  {
+   "from": "entrada",
+   "to": "planilha",
+   "style": "main"
+  },
+  {
+   "from": "planilha",
+   "to": "colunas_ok",
+   "style": "main"
+  },
+  {
+   "from": "colunas_ok",
+   "to": "confira",
+   "label": "sim",
+   "style": "main"
+  },
+  {
+   "from": "colunas_ok",
+   "to": "mapear",
+   "label": "não",
+   "style": "alternative"
+  },
+  {
+   "from": "mapear",
+   "to": "confira",
+   "label": "Pronto",
+   "style": "alternative"
+  },
+  {
+   "from": "confira",
+   "to": "tem_erro",
+   "style": "main"
+  },
+  {
+   "from": "tem_erro",
+   "to": "confira",
+   "label": "sim: corrigir",
+   "style": "loop"
+  },
+  {
+   "from": "tem_erro",
+   "to": "cursos",
+   "label": "não",
+   "style": "main"
+  },
+  {
+   "from": "cursos",
+   "to": "como",
+   "style": "main"
+  },
+  {
+   "from": "como",
+   "to": "baixar",
+   "label": "Baixar arquivos",
+   "style": "alternative"
+  },
+  {
+   "from": "baixar",
+   "to": "baixado",
+   "style": "alternative"
+  },
+  {
+   "from": "como",
+   "to": "conectar",
+   "label": "Enviar ao Moodle",
+   "style": "main"
+  },
+  {
+   "from": "conectar",
+   "to": "previa",
+   "label": "Conectado",
+   "style": "main"
+  },
+  {
+   "from": "previa",
+   "to": "confira",
+   "label": "Voltar e mudar",
+   "style": "loop"
+  },
+  {
+   "from": "previa",
+   "to": "confirmar",
+   "style": "main"
+  },
+  {
+   "from": "confirmar",
+   "to": "enviando",
+   "style": "main"
+  },
+  {
+   "from": "enviando",
+   "to": "resultado",
+   "style": "main"
+  },
+  {
+   "from": "resultado",
+   "to": "incerto",
+   "style": "main"
+  },
+  {
+   "from": "incerto",
+   "to": "fim",
+   "label": "não",
+   "style": "main"
+  },
+  {
+   "from": "incerto",
+   "to": "err_incerto",
+   "label": "sim",
+   "style": "error"
+  },
+  {
+   "from": "err_incerto",
+   "to": "previa",
+   "label": "Conferir no Moodle",
+   "style": "error"
+  },
+  {
+   "from": "fim",
+   "to": "planilha",
+   "label": "Fazer outro lote",
+   "style": "loop"
+  },
+  {
+   "from": "fim",
+   "to": "datas",
+   "label": "Ajustar as datas",
+   "style": "alternative"
+  }
+ ],
+ "layout_hint": "PRANCHA: vertical, 1440 × 2960.\n\nCABEÇALHO 'Plano de aula':\n- Título: 'Cadastrar alunos em lote'.\n- Objetivo: 'Cadastrar a turma no Moodle a partir de uma planilha'.\n- Quando usar: 'Na matrícula, em qualquer curso que já está no Moodle'.\n- Você vai precisar: 'A planilha da turma; acesso ao Moodle só para enviar direto'.\n\nFAIXAS: as mesmas do Quadro 2.\n\nLINHAS (y do topo):\n- r1 300: entrada.\n- r2 420: planilha.\n- r3 600: colunas_ok; mapear na faixa O.\n- r4 780: confira (altura de pelo menos 130).\n- r5 960: tem_erro.\n- r6 1120: cursos.\n- r7 1300: como; baixar na faixa O.\n- r8 1480: conectar; baixado na faixa O.\n- r9 1620: previa (altura de pelo menos 150).\n- r10 1820: confirmar.\n- r11 1940: enviando.\n- r12 2060: resultado.\n- r13 2240: incerto; err_incerto na faixa E.\n\nPORTA E FAIXA DO MOODLE: porta em y 2420; faixa de y 2440 a 2700, com fim na faixa C (y 2500) e datas na faixa N (y 2520).\n\nDIVISORES DE ETAPA: 'Planilha' acima de r2 · 'Conferir' acima de r4 · 'Cursos' acima de r6 · 'Entregar' acima de r7 · 'Prévia' acima de r9 · 'Resultado' acima de r12.\n\nROTAS (entradas medidas a partir do topo do cartão):\n- colunas_ok→mapear: horizontal.\n- mapear→confira: desce pela faixa O (x 908) e entra pela direita de confira a +24 px.\n- tem_erro→confira: trilho V em x 1088; entra a +88 px.\n- previa→confira: trilho V em x 1108; sai da direita de previa a +40 px e entra em confira a +56 px.\n- como→baixar: horizontal.\n- baixar→baixado: desce pela faixa O.\n- err_incerto→previa: sobe pela faixa E (x 188) e entra pela esquerda de previa a +100 px.\n- fim→planilha: sai da direita de fim a +20 px, sobe pelo trilho V em x 1148 (o mais externo) e entra pela direita de planilha a +40 px.\n- fim→datas: sai da direita de fim a +60 px.\n\nNenhuma linha cruza outra."
+}

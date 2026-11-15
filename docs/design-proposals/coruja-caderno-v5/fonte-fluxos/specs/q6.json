@@ -1,0 +1,247 @@
+{
+ "title": "Quadro 6 · Erros e recuperação: nenhum erro sem saída",
+ "purpose": "Reunir em um só lugar todos os 'e se der errado' da jornada, agrupados pelo momento em que acontecem. Cada etiqueta diz o que houve, o que fica guardado e como voltar, e tem uma seta para a tela de volta. Serve de checklist para a equipe: todo erro tem saída, nenhum apaga trabalho e nenhum muda o curso anterior.",
+ "nodes": [
+  {
+   "id": "x1",
+   "kind": "error",
+   "label": "Se o arquivo não puder ser usado",
+   "detail": "Ao começar. O que houve: o arquivo passa de 10 MB, são mais de 10 arquivos ou mais de 20 MB no total, ou não é .docx, .pdf ou .txt. O que fica guardado: os outros arquivos e as escolhas. Como voltar: 'Trocar o arquivo'. O aviso aparece no próprio arquivo."
+  },
+  {
+   "id": "r1",
+   "kind": "interchange",
+   "label": "Envie o planejamento · Quadro 2"
+  },
+  {
+   "id": "x2",
+   "kind": "error",
+   "label": "Se o PDF for uma foto das páginas",
+   "detail": "Ao começar. O que houve: não há texto para ler. O que fica guardado: os arquivos e as escolhas; nenhum curso muda. Como voltar: chips 'Enviar o .docx' · 'Colar o texto' · 'Continuar à mão'. O chip 'Continuar à mão' leva ícone de mão e é a saída segura para o Caderno."
+  },
+  {
+   "id": "r2",
+   "kind": "interchange",
+   "label": "Envie o planejamento · Quadro 2"
+  },
+  {
+   "id": "x3",
+   "kind": "error",
+   "label": "Se não encontrarmos as unidades",
+   "detail": "Ao começar. O que houve: o documento não segue um formato que a leitura sem IA reconhece. O que fica guardado: os arquivos e as escolhas. Como voltar: chips 'Ver o modelo' (mostra títulos como 'Tópico 1: Introdução') · 'Ler com IA' · 'Continuar à mão'."
+  },
+  {
+   "id": "r3",
+   "kind": "interchange",
+   "label": "Veja como o planejamento deve estar"
+  },
+  {
+   "id": "x4",
+   "kind": "error",
+   "label": "Se a leitura com IA falhar",
+   "detail": "Ao começar. O que houve: o serviço não respondeu, respondeu algo que não dá para usar, ou a chave não foi aceita. O que fica guardado: os arquivos e as escolhas; a chave continua só nesta sessão. Como voltar: chips 'Tentar de novo' (com o mesmo serviço; o app nunca troca sozinho) · 'Ler sem IA' · 'Continuar à mão'."
+  },
+  {
+   "id": "r4",
+   "kind": "interchange",
+   "label": "Lendo o planejamento… · Quadro 2"
+  },
+  {
+   "id": "x5",
+   "kind": "error",
+   "label": "Se a resposta da outra IA vier fora do formato",
+   "detail": "Ao começar. O que houve: o texto colado não está no formato esperado. O que fica guardado: o texto colado. Como voltar: 'Colar de novo', com a dica 'Peça para a IA responder só com o bloco de código'."
+  },
+  {
+   "id": "r5",
+   "kind": "interchange",
+   "label": "Outras formas de começar · Quadro 2"
+  },
+  {
+   "id": "x6",
+   "kind": "error",
+   "label": "Se a cópia do computador não abrir",
+   "detail": "Ao começar. O que houve: o arquivo .moodleai está danificado ou não é do Moodle IA, ou esse curso já está em Seus cursos. O que fica guardado: Seus cursos não mudam. Como voltar: chips 'Escolher outro arquivo' · 'Abrir o que já está guardado' · 'Guardar como outro curso'."
+  },
+  {
+   "id": "r6",
+   "kind": "interchange",
+   "label": "Seus cursos · Quadro 1"
+  },
+  {
+   "id": "x7",
+   "kind": "error",
+   "label": "Se não der para salvar neste navegador",
+   "detail": "No caderno. O que houve: o navegador está cheio, em modo privado ou com o armazenamento bloqueado. No Início aparece: 'Este navegador não está guardando cursos. Ao terminar, guarde uma cópia no computador.' O que fica guardado: o curso aberto na tela. Como voltar: 'Guardar cópia no computador'."
+  },
+  {
+   "id": "r7",
+   "kind": "interchange",
+   "label": "Caderno do curso · Quadro 3"
+  },
+  {
+   "id": "x8",
+   "kind": "error",
+   "label": "Se o curso mudar em outra aba",
+   "detail": "No caderno. O que houve: outra aba salvou uma versão mais nova. O que fica guardado: a sua versão, até você escolher. Como voltar: chips 'Abrir a versão mais nova' · 'Guardar a minha como cópia'."
+  },
+  {
+   "id": "r8",
+   "kind": "interchange",
+   "label": "Caderno do curso · Quadro 3"
+  },
+  {
+   "id": "x9",
+   "kind": "error",
+   "label": "Se você mudar o curso depois de conferir",
+   "detail": "No caderno. O que houve: a conferência vale para a versão das 14:32. O que fica guardado: tudo; o último arquivo continua, marcado 'versão anterior'. Como voltar: 'Conferir de novo'."
+  },
+  {
+   "id": "r9",
+   "kind": "interchange",
+   "label": "Conferir o curso · Quadro 2"
+  },
+  {
+   "id": "x10",
+   "kind": "error",
+   "label": "Se não der para gerar o arquivo",
+   "detail": "Ao gerar. O que houve: o gerador falhou. O que fica guardado: o curso e a conferência. Como voltar: 'Tentar de novo'. Cancelar também não muda nada."
+  },
+  {
+   "id": "r10",
+   "kind": "interchange",
+   "label": "Gerando o arquivo do curso… · Quadro 2"
+  },
+  {
+   "id": "x11",
+   "kind": "error",
+   "label": "Se a restauração no Moodle der erro",
+   "detail": "Ao levar ao Moodle. O que houve: o motivo mais comum é restaurar num curso que já tinha conteúdo. O que fica guardado: o arquivo .mbz e o curso no caderno. Como voltar: 'Restaurar num curso novo e vazio'."
+  },
+  {
+   "id": "r11",
+   "kind": "interchange",
+   "label": "Como levar ao Moodle · Quadro 2"
+  },
+  {
+   "id": "x12",
+   "kind": "error",
+   "label": "Se não der para entrar ou a conexão acabar",
+   "detail": "Com o Moodle. O que houve: senha não aceita, endereço não permitido, o Moodle não respondeu, ou passaram os 30 minutos. O que fica guardado: o endereço, o usuário, a planilha e o plano; a senha é apagada e as prévias são descartadas. Como voltar: 'Entrar de novo'."
+  },
+  {
+   "id": "r12",
+   "kind": "interchange",
+   "label": "Entrar no Moodle · Quadro 5"
+  },
+  {
+   "id": "x13",
+   "kind": "error",
+   "label": "Se você mudar algo depois da prévia",
+   "detail": "Com o Moodle. O que houve: os alunos, os cursos, as opções ou o plano mudaram, a prévia expirou ou o endereço do Moodle mudou. O que fica guardado: tudo o que você editou. Como voltar: 'Ver a prévia de novo'."
+  },
+  {
+   "id": "r13",
+   "kind": "interchange",
+   "label": "Prévia · Quadros 4 e 5"
+  },
+  {
+   "id": "x14",
+   "kind": "error",
+   "label": "Se não soubermos se o Moodle terminou",
+   "detail": "Com o Moodle. O que houve: a resposta não chegou depois do envio. O que fica guardado: a lista ou o plano, e o resultado. Como voltar: 'Conferir no Moodle' (em Datas, 'Reler as datas'). Repetir fica bloqueado até isso, mesmo que você saia da página. Nada é reenviado ao recarregar."
+  },
+  {
+   "id": "r14",
+   "kind": "interchange",
+   "label": "Conferir no Moodle, depois nova prévia"
+  }
+ ],
+ "edges": [
+  {
+   "from": "x1",
+   "to": "r1",
+   "label": "Trocar o arquivo",
+   "style": "error"
+  },
+  {
+   "from": "x2",
+   "to": "r2",
+   "label": "Enviar o .docx",
+   "style": "error"
+  },
+  {
+   "from": "x3",
+   "to": "r3",
+   "label": "Ver o modelo",
+   "style": "error"
+  },
+  {
+   "from": "x4",
+   "to": "r4",
+   "label": "Tentar de novo",
+   "style": "error"
+  },
+  {
+   "from": "x5",
+   "to": "r5",
+   "label": "Colar de novo",
+   "style": "error"
+  },
+  {
+   "from": "x6",
+   "to": "r6",
+   "label": "Escolher outro arquivo",
+   "style": "error"
+  },
+  {
+   "from": "x7",
+   "to": "r7",
+   "label": "Guardar cópia",
+   "style": "error"
+  },
+  {
+   "from": "x8",
+   "to": "r8",
+   "label": "Abrir versão nova",
+   "style": "error"
+  },
+  {
+   "from": "x9",
+   "to": "r9",
+   "label": "Conferir de novo",
+   "style": "error"
+  },
+  {
+   "from": "x10",
+   "to": "r10",
+   "label": "Tentar de novo",
+   "style": "error"
+  },
+  {
+   "from": "x11",
+   "to": "r11",
+   "label": "Usar curso vazio",
+   "style": "error"
+  },
+  {
+   "from": "x12",
+   "to": "r12",
+   "label": "Entrar de novo",
+   "style": "error"
+  },
+  {
+   "from": "x13",
+   "to": "r13",
+   "label": "Nova prévia",
+   "style": "error"
+  },
+  {
+   "from": "x14",
+   "to": "r14",
+   "label": "Conferir no Moodle",
+   "style": "error"
+  }
+ ],
+ "layout_hint": "PRANCHA: vertical, 1440 × 3400, lida como uma tabela.\n\nSUBTÍTULO DO QUADRO: 'Nenhum erro sem saída: toda etiqueta tem uma volta e diz o que ficou guardado'.\n\nCOLUNAS:\n- Momento: x 48–248 (rótulo Switzer 600 16 com ícone).\n- Etiqueta: x 280–700 (420 de largura, altura de 160 a 190).\n- Seta: x 700–800.\n- Volta: x 800–1100 (pílula de ponte 300 × 56, com 'Quadro N' em Switzer 400 14).\n- Regra: x 1140–1392 (nota --info curta, opcional, ex.: 'Nenhum curso muda').\n\nLINHAS: uma linha de 210 px por erro, nesta ordem de grupos:\n- 'Ao começar' (x1 a x6);\n- 'No caderno' (x7 a x9);\n- 'Ao gerar e levar ao Moodle' (x10 e x11);\n- 'Com o Moodle, em Alunos e Datas' (x12 a x14).\nOs grupos são separados por uma linha de 1 px em --line e 40 px de espaço.\n\nSETAS: cada seta é horizontal e curta, sólida em --error, com o texto do botão como rótulo. As saídas extras de cada etiqueta aparecem como chips dentro da linha 'Como voltar'.\n\nVERSÃO DE 360 PX: cada linha vira a etiqueta seguida da pílula de volta, logo abaixo dela."
+}

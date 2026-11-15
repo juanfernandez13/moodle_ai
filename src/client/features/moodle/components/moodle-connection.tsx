@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Globe, LogIn, LogOut, RefreshCw } from "lucide-react";
 import type { useMoodle } from "../hooks/use-moodle.ts";
 
+/** Entrar no Moodle, com as mesmas palavras da página Datas: Endereço do Moodle, Usuário, Senha, Entrar. */
 export function MoodleConnection({
   moodle,
 }: {
@@ -24,7 +25,7 @@ export function MoodleConnection({
       className="moodle-connection notice"
       aria-label="Conexão com Moodle"
     >
-      <h3>Conectar ao Moodle</h3>
+      <h3>Entrar no Moodle</h3>
       {moodle.error && (
         <p className="error-text preserve-text" role="alert">
           {moodle.error}
@@ -32,7 +33,7 @@ export function MoodleConnection({
       )}
       {!moodle.status && !moodle.error ? (
         <p className="field-help" role="status">
-          Consultando a conexão…
+          Verificando…
         </p>
       ) : moodle.status?.authenticated ? (
         <>
@@ -53,7 +54,7 @@ export function MoodleConnection({
                 void moodle.loadCourses();
               }}
             >
-              <RefreshCw size={16} /> Carregar cursos
+              <RefreshCw size={16} /> Carregar disciplinas
             </button>
             <button
               type="button"
@@ -63,7 +64,7 @@ export function MoodleConnection({
                 void moodle.logout();
               }}
             >
-              <LogOut size={16} /> Desconectar / trocar Moodle
+              <LogOut size={16} /> Trocar de conta
             </button>
           </div>
         </>
@@ -76,22 +77,25 @@ export function MoodleConnection({
               .finally(() => setPassword(""));
           }}
         >
-          <p className="field-help">
-            Informe o endereço e use o login padrão da sua instalação. A sessão
-            expira em 30 minutos e não é salva nos projetos.
-          </p>
           {moodle.status?.issues?.map((issue, index) => (
             <p className="field-help" key={index}>
               {issue.message}
             </p>
           ))}
-          <label className="field">
-            <span>URL do Moodle</span>
+          {/* id e name fixos: é por eles que o navegador e o gerenciador de senhas guardam e preenchem o login. */}
+          <label className="field" htmlFor="moodle-login-url">
+            <span>Endereço do Moodle</span>
             <input
+              id="moodle-login-url"
+              name="url"
               type="url"
               inputMode="url"
               autoComplete="url"
-              placeholder="https://moodle.exemplo.edu.br"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
+              enterKeyHint="next"
+              placeholder="Ex.: https://moodle.suaescola.edu.br"
               value={url}
               disabled={moodle.busy}
               required
@@ -100,33 +104,36 @@ export function MoodleConnection({
                 setUrl(event.target.value);
               }}
             />
-            <span className="field-help">
-              Inclua a pasta da instalação, se houver:
-              https://exemplo.edu.br/moodle.
-            </span>
           </label>
           {url.trim().toLowerCase().startsWith("http:") && (
-            <p className="field-help">
-              HTTP envia os dados sem criptografia. Prefira HTTPS quando
-              disponível.
-            </p>
+            <p className="field-help">Este endereço não protege a senha.</p>
           )}
           <div className="field-grid">
-            <label className="field">
-              <span>Usuário Moodle</span>
+            <label className="field" htmlFor="moodle-login-username">
+              <span>Usuário</span>
               <input
+                id="moodle-login-username"
+                name="username"
+                type="text"
                 autoComplete="username"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
+                enterKeyHint="next"
                 value={username}
                 disabled={moodle.busy}
                 onChange={(event) => setUsername(event.target.value)}
                 required
               />
             </label>
-            <label className="field">
-              <span>Senha Moodle</span>
+            <label className="field" htmlFor="moodle-login-password">
+              <span>Senha</span>
               <input
+                id="moodle-login-password"
+                name="password"
                 type="password"
                 autoComplete="current-password"
+                enterKeyHint="done"
                 value={password}
                 disabled={moodle.busy}
                 onChange={(event) => setPassword(event.target.value)}
@@ -135,13 +142,9 @@ export function MoodleConnection({
             </label>
           </div>
           <button type="submit" className="secondary" disabled={moodle.busy}>
-            <LogIn size={16} />{" "}
-            {moodle.busy ? "Conectando…" : "Conectar Moodle"}
+            <LogIn size={16} /> {moodle.busy ? "Entrando…" : "Entrar"}
           </button>
-          <p className="field-help">
-            A compatibilidade de cada instalação depende da versão, dos plugins
-            e das permissões. Revise as prévias antes de confirmar alterações.
-          </p>
+          <p className="field-help">A senha não é guardada.</p>
         </form>
       )}
     </section>

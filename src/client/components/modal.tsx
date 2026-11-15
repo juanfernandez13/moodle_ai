@@ -33,23 +33,8 @@ export function Modal({
       ref={ref}
       className="modal surface-panel"
       aria-labelledby={titleId}
-      onKeyDown={(event) => {
-        if (event.key !== "Tab") return;
-        const controls = Array.from(
-          ref.current?.querySelectorAll<HTMLElement>(
-            'button:not([disabled]),a[href],input:not([disabled]),textarea:not([disabled]),select:not([disabled]),[tabindex="0"]',
-          ) ?? [],
-        ).filter((node) => node.getClientRects().length > 0);
-        const first = controls[0];
-        const last = controls.at(-1);
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault();
-          last?.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault();
-          first?.focus();
-        }
-      }}
+      // Sem armadilha de Tab feita à mão: showModal() já prende o foco na janela. A armadilha antiga só conhecia
+      // botões e campos, então o Tab nunca chegava ao quadro do "Ver arquivo" (PDF e Word) para rolar o conteúdo.
       onCancel={(event) => {
         event.preventDefault();
         onClose();
@@ -63,7 +48,7 @@ export function Modal({
           aria-label="Fechar diálogo"
           onClick={onClose}
         >
-          <X size={20} />
+          <X size={20} aria-hidden="true" />
         </button>
       </div>
       {children}

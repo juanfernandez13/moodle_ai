@@ -21,7 +21,10 @@ import {
   makeActivity,
   makeQuestion,
 } from "../../src/client/project.ts";
-import { utcFieldValue, utcTimestamp } from "../../src/client/dates.ts";
+import { localFieldValue, localTimestamp } from "../../src/client/dates.ts";
+
+// O computador do professor destes testes fica em Fortaleza (UTC−3); cada arquivo de teste roda em processo próprio.
+process.env.TZ = "America/Fortaleza";
 
 // Native Node strips .ts; compile the actual client TSX for behavior-level rendered output.
 registerHooks({
@@ -128,7 +131,7 @@ test("a hundred-row table has a five-row preview and its issue opens exactly the
   );
 });
 
-test("actual activity and chat datetime controls display UTC while retaining original offset strings", () => {
+test("actual activity and chat datetime controls display the computer's local time while retaining original offset strings", () => {
   const assignment = makeActivity("assignment");
   assignment.schedule = {
     opensAt: "2026-10-12T09:00:00-03:00",
@@ -143,8 +146,8 @@ test("actual activity and chat datetime controls display UTC while retaining ori
       onChange() {},
     }),
   );
-  assert.ok(html.includes('value="2026-10-12T12:00"'));
-  assert.ok(html.includes('value="2026-10-12T18:00"'));
+  assert.ok(html.includes('value="2026-10-12T09:00"'));
+  assert.ok(html.includes('value="2026-10-12T15:00"'));
   assert.deepEqual(assignment, before);
   const chat = makeActivity("chat");
   assert.equal(chat.type, "chat");
@@ -158,7 +161,7 @@ test("actual activity and chat datetime controls display UTC while retaining ori
       onChange() {},
     }),
   );
-  assert.ok(chatHtml.includes('value="2026-10-12T12:00"'));
+  assert.ok(chatHtml.includes('value="2026-10-12T09:00"'));
   assert.equal(chat.settings.sessionAt, "2026-10-12T09:00:00-03:00");
 });
 
@@ -277,7 +280,7 @@ test("showIssue focuses the real maximum-grade control rather than the activity 
   assert.equal(issueFocusProbe(project, path, html), "Nota máxima");
 });
 
-test("showIssue focuses the real closing UTC control for an end-before-start issue", () => {
+test("showIssue focuses the real closing date control for an end-before-start issue", () => {
   const project = createProject();
   const assignment = makeActivity("assignment");
   assignment.schedule = {
@@ -297,7 +300,7 @@ test("showIssue focuses the real closing UTC control for an end-before-start iss
       onChange() {},
     }),
   );
-  assert.equal(issueFocusProbe(project, path, html), "Fechamento (UTC)");
+  assert.equal(issueFocusProbe(project, path, html), "Fechamento");
 });
 
 test("question, option and matching controls use stable entity/field pairs and structural fallback", () => {
@@ -362,8 +365,8 @@ test("actual metadata labels focus their own fields rather than the first course
   );
   const controls: string[] = [];
   for (const [field, label] of [
-    ["metadata.fullName", "Nome completo do curso"],
-    ["metadata.startDate", "Início do curso (UTC)"],
+    ["metadata.fullName", "Nome completo da disciplina"],
+    ["metadata.startDate", "Início da disciplina"],
   ]) {
     let jsx = "";
     const find = (node: ts.Node) => {
@@ -390,15 +393,15 @@ test("actual metadata labels focus their own fields rather than the first course
       "React",
       "project",
       "commands",
-      "utcFieldValue",
-      "utcTimestamp",
+      "localFieldValue",
+      "localTimestamp",
       `${compiled};return Control;`,
     )(
       React,
       project,
       () => {},
-      utcFieldValue,
-      utcTimestamp,
+      localFieldValue,
+      localTimestamp,
     ) as React.ComponentType;
     controls.push(renderToStaticMarkup(createElement(Control)));
     const html = `<section class="editor-content" id="entity-${project.draft.id}">${controls.join("")}</section>`;

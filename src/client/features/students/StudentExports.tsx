@@ -3,7 +3,10 @@ import { Download, FileDown } from "lucide-react";
 import { downloadFile } from "../../download.ts";
 import type { StudentPreview } from "../../../domain/students/index.ts";
 
-/** The first of the two ways to finish: save the checked list as a CSV file, one per course. */
+/**
+ * The first of the two ways to finish: save the checked list as a spreadsheet (a CSV file that Excel opens), one per
+ * course. It is a secondary button: "Enviar ao Moodle" is the only main button of the step.
+ */
 export function StudentExports({
   previews,
 }: { previews: StudentPreview[] }) {
@@ -18,14 +21,14 @@ export function StudentExports({
   return (
     <section
       className="stu-card stu-csv"
-      aria-label={many ? "Baixar arquivos CSV" : "Baixar arquivo CSV"}
+      aria-label={many ? "Baixar planilhas" : "Baixar planilha"}
     >
       <span className="stu-card-icon" aria-hidden="true">
         <FileDown size={32} />
       </span>
       {many ? (
         <>
-          <p className="stu-card-title">Baixar arquivos CSV</p>
+          <p className="stu-card-title">Baixar planilhas</p>
           <ul className="stu-files">
             {previews.map((preview, index) => (
               <li key={preview.hash}>
@@ -39,8 +42,8 @@ export function StudentExports({
                 </span>
                 <button
                   type="button"
-                  className="primary"
-                  aria-label={`Baixar ${preview.rows[0]?.course || `arquivo ${index + 1}`}`}
+                  className="secondary"
+                  aria-label={`Baixar ${preview.rows[0]?.course || `planilha ${index + 1}`}`}
                   onClick={() => save(preview, index)}
                 >
                   <Download size={20} aria-hidden="true" />
@@ -53,14 +56,14 @@ export function StudentExports({
       ) : (
         <button
           type="button"
-          className="primary stu-big"
+          className="secondary stu-big"
           onClick={() => {
             const only = previews[0];
             if (only) save(only, 0);
           }}
         >
           <Download size={22} aria-hidden="true" />
-          Baixar arquivo CSV
+          Baixar planilha
         </button>
       )}
       <p className="stu-help">Guarde e envie depois.</p>

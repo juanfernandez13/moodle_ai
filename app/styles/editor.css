@@ -50,13 +50,13 @@
   -webkit-line-clamp: 2;
   overflow: hidden;
   margin: 0;
-  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 1.25;
   overflow-wrap: anywhere;
 }
 .editor-layout .save-state {
   margin: 1px 0 0;
-  font-size: 12px;
+  font-size: 0.875rem;
   line-height: 1.4;
 }
 .editor-layout .editor-tools {
@@ -65,6 +65,44 @@
   justify-content: flex-end;
   gap: 8px;
   flex: 0 0 auto;
+}
+/* Voltar: uma pílula de contorno fino com a palavra (ícone sozinho só serve para mover, remover e fechar). */
+.editor-layout .editor-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 1px solid var(--control-border);
+  border-radius: 99px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.editor-layout .editor-back svg {
+  color: var(--action);
+}
+.editor-layout .editor-back:hover {
+  border-color: var(--action);
+  background: var(--support);
+}
+/* O passo a passo (Trail) divide a linha com o título e as ações; sem espaço, desce para uma linha própria. */
+.editor-layout .editor-heading {
+  flex-wrap: wrap;
+}
+.editor-layout .title-with-back {
+  flex: 1 1 280px;
+  gap: 12px;
+}
+.editor-layout .editor-steps {
+  flex: 0 1 auto;
+}
+.editor-layout .editor-heading .editor-tools {
+  margin-left: auto;
 }
 
 /* Sumário. */
@@ -112,27 +150,34 @@
 .editor-layout .issues-panel h2 {
   margin-bottom: 4px;
 }
-.editor-layout .revision-label {
-  margin-bottom: 12px;
-}
 .editor-layout .issues-body {
   flex: 1 1 auto;
   min-height: 0;
 }
-.editor-layout .issues-body > .field-help:first-child {
-  margin-top: 12px;
-}
-.editor-layout .issues-panel > .secondary {
-  margin-top: 12px;
+
+/* Sem pendência a coluna some da tela e a página aberta fica com a largura dela. O texto continua na página para o
+   leitor de tela ouvir "Tudo certo para conferir"; as pendências também aparecem em "Conferir curso". */
+.editor-layout.is-clear .issues-panel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
-/* Rolagem fina e discreta nas áreas que rolam. */
+/* Rolagem fina e discreta nas áreas que rolam. O scroll-padding deixa folga quando o teclado leva um botão até a
+   borda da área: o anel de foco (2px mais 2px de afastamento) aparece inteiro, não cortado pela rolagem. */
 .editor-layout .course-nav,
 .editor-layout .editor-content,
 .editor-layout .editor-main,
 .editor-layout .issues-body {
   scrollbar-width: thin;
   scrollbar-color: var(--control-border) transparent;
+  scroll-padding: 12px;
 }
 
 /* Sombras de rolagem: aparecem na borda de cima ou de baixo quando há mais conteúdo naquela direção.
@@ -235,7 +280,7 @@
   }
   .workspace-main > .delivery h2 {
     margin-bottom: 4px;
-    font-size: 17px;
+    font-size: 1.0625rem;
   }
   .workspace-main > .delivery p {
     margin-bottom: 4px;
@@ -276,8 +321,11 @@
       minmax(0, 1fr)
       clamp(236px, 19vw, 320px);
   }
+  .editor-layout.is-clear {
+    grid-template-columns: clamp(212px, 19vw, 280px) minmax(0, 1fr);
+  }
   .editor-layout .editor-content,
-  .editor-layout .issues-panel {
+  .editor-layout:not(.is-clear) .issues-panel {
     min-height: 0;
     overflow: auto;
     overscroll-behavior: contain;
@@ -348,6 +396,11 @@
     align-items: stretch;
     padding: 12px 14px;
   }
+  /* Em coluna a base de 280px viraria altura: o título ocupa só o que precisa. */
+  .editor-layout .title-with-back,
+  .editor-layout .editor-steps {
+    flex: 0 0 auto;
+  }
   .editor-layout .course-nav {
     display: none;
   }
@@ -365,7 +418,7 @@
 }
 @media (max-width: 600px) {
   .editor-layout .editor-heading h1 {
-    font-size: 19px;
+    font-size: 1.1875rem;
   }
   .editor-layout .editor-tools {
     display: grid;

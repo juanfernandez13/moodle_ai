@@ -56,7 +56,7 @@ export function DateCourseStep({
   return (
     <>
       <div className="dw-body dw-body-list">
-        <h2 className="visually-hidden">Escolher o curso</h2>
+        <h2 className="visually-hidden">Escolher a disciplina</h2>
         <div
           className="dw-choice"
           role="group"
@@ -64,11 +64,11 @@ export function DateCourseStep({
           aria-describedby={`${id}-status`}
         >
           <h3 id={`${id}-prompt`} className="dw-prompt">
-            Qual curso?
+            Qual disciplina?
           </h3>
           {courses.length > 8 && (
             <div className="dw-field dw-search">
-              <label htmlFor={`${id}-search`}>Buscar curso</label>
+              <label htmlFor={`${id}-search`}>Buscar disciplina</label>
               <div className="dw-search-box">
                 <Search size={20} aria-hidden="true" />
                 <input
@@ -88,9 +88,9 @@ export function DateCourseStep({
               Procurando seus cursos…
             </p>
           ) : courses.length === 0 && loaded ? (
-            <p className="dw-empty">Nenhum curso encontrado.</p>
+            <p className="dw-empty">Nenhuma disciplina encontrada.</p>
           ) : shown.length === 0 && courses.length > 0 ? (
-            <p className="dw-empty">Nenhum curso com esse nome.</p>
+            <p className="dw-empty">Nenhuma disciplina com esse nome.</p>
           ) : (
             <div className="dw-courses">
               {shown.map((course) => {
@@ -158,6 +158,7 @@ export function DateCourseStep({
         </div>
       </div>
       <div className="dw-actions">
+        <DateBackLink onClick={onBack} />
         <button
           type="button"
           className="primary dw-primary"
@@ -167,7 +168,6 @@ export function DateCourseStep({
           Continuar
           <ArrowRight size={22} aria-hidden="true" />
         </button>
-        <DateBackLink onClick={onBack} />
       </div>
     </>
   );

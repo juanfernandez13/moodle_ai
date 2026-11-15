@@ -13,6 +13,7 @@ import { downloadFile } from "../../../download.ts";
 import { withDraft } from "../../../provenance.ts";
 import type { CourseWorkspace } from "./use-course-workspace.ts";
 import type { ImportProposal, UiIssue } from "../types.ts";
+import { issueLines } from "../helpers.ts";
 
 type Options = Pick<
   CourseWorkspace,
@@ -65,26 +66,24 @@ export function useCourseTransfers({
         );
         if (existing)
           throw new Error(
-            "Este projeto já está salvo neste navegador. Reabra em Projetos salvos; a importação não substituiu a versão existente.",
+            "Esta disciplina já está salva neste navegador. Reabra em Suas disciplinas; a cópia não substituiu o que está salvo.",
           );
         setProposal({ project: next, issues: [], preview: [] });
       } else if (project) {
         const bytes = await createPortable(project);
         downloadFile(
           bytes,
-          `${project.draft.metadata.shortName || "curso"}.moodleai`,
+          `${project.draft.metadata.shortName || "disciplina"}.moodleai`,
           "application/zip",
         );
         setLastCopy(project.draft.revision);
-        setMessage(
-          `Cópia portátil da revisão ${project.draft.revision} pronta, com arquivos e presets.`,
-        );
+        setMessage("Cópia baixada.");
       }
     } catch (failure) {
       setError(
         failure instanceof Error
           ? failure.message
-          : "A cópia não foi importada. Seu curso anterior está intacto.",
+          : "A cópia não foi importada. Sua disciplina anterior está intacta.",
       );
     } finally {
       setBusy(null);
@@ -117,7 +116,7 @@ export function useCourseTransfers({
           0,
         ) > PROJECT_FILE_LIMITS.attachmentsTotalBytes
       )
-        throw new Error("Os anexos do curso podem somar até 64 MB.");
+        throw new Error("Os anexos da disciplina podem somar até 64 MB.");
       const attachments = [
         ...current.draft.attachments.filter(
           (entry) => !additions.some((file) => file.id === entry.id),
@@ -159,7 +158,7 @@ export function useCourseTransfers({
       validatedRevision !== project.draft.revision ||
       issues.some((issue) => issue.severity === "error")
     ) {
-      setError("Confira e valide a revisão atual antes de gerar o curso.");
+      setError("Confira a disciplina antes de gerar o arquivo.");
       return;
     }
     const snapshot = structuredClone(project);
@@ -184,9 +183,8 @@ export function useCourseTransfers({
       if (!response.ok) {
         const body = (await response.json()) as { issues?: ValidationIssue[] };
         throw new Error(
-          body.issues
-            ?.map((issue) => `${issue.path}: ${issue.message}`)
-            .join("\n") || "Não foi possível gerar o backup.",
+          (body.issues && issueLines(body.issues)) ||
+            "Não foi possível gerar a disciplina.",
         );
       }
       const bytes = new Uint8Array(await response.arrayBuffer());
@@ -197,13 +195,22 @@ export function useCourseTransfers({
         current.draft.revision !== snapshot.draft.revision
       )
         throw new Error(
-          "O projeto mudou durante a geração. Confira a revisão atual e gere o backup novamente.",
+          "A disciplina mudou durante a geração. Confira de novo e gere outra vez.",
         );
-      const filename =
-        response.headers
-          .get("content-disposition")
-          ?.match(/filename="?([^";]+)"?/)?.[1] ??
-        `${snapshot.draft.metadata.shortName}-r${snapshot.draft.revision}.mbz`;
+      // Named after the course ("Matemática básica.mbz") so the teacher finds
+      // it in Downloads; the server's id-based name is only the fallback.
+      const courseName = (
+        snapshot.draft.metadata.fullName || snapshot.draft.metadata.shortName
+      )
+        .replace(/[^\p{L}\p{N} ._-]/gu, "")
+        .replace(/^[.\s]+|[.\s]+$/g, "")
+        .slice(0, 80);
+      const filename = courseName
+        ? `${courseName}.mbz`
+        : (response.headers
+            .get("content-disposition")
+            ?.match(/filename="?([^";]+)"?/)?.[1] ??
+          `disciplina-r${snapshot.draft.revision}.mbz`);
       setArtifact({
         bytes,
         name: filename,
@@ -212,16 +219,14 @@ export function useCourseTransfers({
           response.headers.get("x-moodleai-glossary-userinfo") === "required",
       });
       setShowReview(false);
-      setMessage(
-        `Backup da revisão ${snapshot.draft.revision} pronto para baixar.`,
-      );
+      setMessage("Arquivo gerado.");
     } catch (failure) {
       setError(
         abort.signal.aborted
-          ? "Geração cancelada. O curso foi mantido."
+          ? "Geração cancelada. A disciplina foi mantida."
           : failure instanceof Error
             ? failure.message
-            : "Falha na geração. O curso foi mantido.",
+            : "Falha na geração. A disciplina foi mantida.",
       );
     } finally {
       setBusy(null);

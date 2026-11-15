@@ -401,3 +401,27 @@ test("version-one storage and portable copies acquire a stable identity without 
   assert.deepEqual(preserved, legacy);
   database.close();
 });
+
+test("excluir um curso salvo remove só ele, e o mesmo curso pode ser salvo de novo do zero", async () => {
+  const store = new ProjectStore(new IDBFactory(), "remove-project-test");
+  const kept = await fixture();
+  const gone = createProject("Curso para apagar", "Unidade 1");
+  await store.save(kept, null);
+  await store.save(gone, null);
+  assert.equal((await store.list()).length, 2);
+
+  await store.remove(projectIdentity(gone));
+
+  const left = await store.list();
+  assert.deepEqual(
+    left.map((entry) => projectIdentity(entry)),
+    [projectIdentity(kept)],
+  );
+  assert.equal(await store.load(projectIdentity(gone)), null);
+  // Apagar de novo (ou um curso que nunca existiu) não é erro: o resultado pedido já é o estado atual.
+  await store.remove(projectIdentity(gone));
+  // Depois de apagado, salvar o mesmo curso é uma criação (sem revisão esperada), não um conflito de abas.
+  await store.save(gone, null);
+  assert.equal((await store.list()).length, 2);
+  await store.close();
+});

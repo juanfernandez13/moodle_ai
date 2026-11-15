@@ -1,8 +1,13 @@
 "use client";
+import { useEffect, useId, useState } from "react";
 import { Plus, Trash2, ArrowUp, ArrowDown, ArrowLeft } from "lucide-react";
 import { ActivityEditor } from "../../../components/activity-editor.tsx";
 import { RichEditor } from "../../../components/content.tsx";
-import { makeActivity, activityLabels } from "../../../project.ts";
+import {
+  makeActivity,
+  activityLabels,
+  quizSectionTitle,
+} from "../../../project.ts";
 import type { CourseProject } from "../../../project.ts";
 import { Pagination } from "../../../components/pagination.tsx";
 import { richBlockFocus } from "../../../navigation.ts";
@@ -24,6 +29,52 @@ type Props = Pick<
     section: NonNullable<CourseBuilderModel["section"]>;
   };
 
+/**
+ * Só quizzes: o número da seção do Moodle que recebe estes quizzes (0 é a geral). O texto fica à parte do número
+ * válido para dar para apagar o campo e digitar de novo; só um número inteiro de 0 a 200 chega à disciplina.
+ */
+function TargetNumberField({
+  section,
+  commands,
+}: Pick<Props, "commands"> & { section: Props["section"] }) {
+  const [text, setText] = useState(String(section.targetNumber ?? ""));
+  useEffect(() => {
+    setText(String(section.targetNumber ?? ""));
+  }, [section.id, section.targetNumber]);
+  const parsed = /^\d{1,3}$/.test(text.trim()) ? Number(text) : NaN;
+  const valid = Number.isInteger(parsed) && parsed >= 0 && parsed <= 200;
+  return (
+    <label className="field">
+      <span>Seção no Moodle (0 é a geral)</span>
+      <input
+        data-field="targetNumber"
+        type="text"
+        inputMode="numeric"
+        autoComplete="off"
+        value={text}
+        aria-invalid={valid ? undefined : true}
+        onChange={(event) => {
+          setText(event.target.value);
+          const next = /^\d{1,3}$/.test(event.target.value.trim())
+            ? Number(event.target.value)
+            : NaN;
+          if (Number.isInteger(next) && next >= 0 && next <= 200)
+            commands([
+              {
+                type: "set_section",
+                sectionId: section.id,
+                title: quizSectionTitle(next),
+                summary: section.summary,
+                targetNumber: next,
+              },
+            ]);
+        }}
+      />
+      {!valid && <small className="field-help">Use um número de 0 a 200.</small>}
+    </label>
+  );
+}
+
 export function SectionPanel({
   project,
   section,
@@ -36,54 +87,69 @@ export function SectionPanel({
   visibleActivities,
   activityPage,
 }: Props) {
+  const choicesId = useId();
+  // Só quizzes: a seção é o destino no Moodle; só há quiz para adicionar e a ordem das seções não conta.
+  const quizOnly = project.draft.metadata.quizOnly === true;
+  // Os seis tipos de atividade ficam recolhidos até a pessoa pedir; numa unidade vazia eles já vêm abertos.
+  const [addingFor, setAddingFor] = useState<string | null>(null);
+  const empty = section.activities.length === 0;
+  const adding = empty || addingFor === section.id;
   return (
     <>
       <div className="section-heading">
         <div>
           <p className="subtle">
-            Unidade {project.draft.sections.indexOf(section) + 1}
+            {quizOnly
+              ? "Seção do Moodle"
+              : `Unidade ${project.draft.sections.indexOf(section) + 1}`}
           </p>
           <h2>{activity ? activity.title : section.title}</h2>
         </div>
-        <div className="icon-actions">
+        {/* Com uma atividade aberta o título é o dela: subir, descer e a lixeira da UNIDADE ao lado dele pareciam agir
+            sobre a atividade. Eles ficam só na tela da unidade. */}
+        <div className="icon-actions" hidden={Boolean(activity)}>
+          {!quizOnly && (
+            <button
+              type="button"
+              aria-label="Subir unidade"
+              disabled={project.draft.sections.indexOf(section) === 0}
+              onClick={() =>
+                commands([
+                  {
+                    type: "move_section",
+                    sectionId: section.id,
+                    to: project.draft.sections.indexOf(section) - 1,
+                  },
+                ])
+              }
+            >
+              <ArrowUp size={17} />
+            </button>
+          )}
+          {!quizOnly && (
+            <button
+              type="button"
+              aria-label="Descer unidade"
+              disabled={
+                project.draft.sections.indexOf(section) ===
+                project.draft.sections.length - 1
+              }
+              onClick={() =>
+                commands([
+                  {
+                    type: "move_section",
+                    sectionId: section.id,
+                    to: project.draft.sections.indexOf(section) + 1,
+                  },
+                ])
+              }
+            >
+              <ArrowDown size={17} />
+            </button>
+          )}
           <button
             type="button"
-            aria-label="Subir unidade"
-            disabled={project.draft.sections.indexOf(section) === 0}
-            onClick={() =>
-              commands([
-                {
-                  type: "move_section",
-                  sectionId: section.id,
-                  to: project.draft.sections.indexOf(section) - 1,
-                },
-              ])
-            }
-          >
-            <ArrowUp size={17} />
-          </button>
-          <button
-            type="button"
-            aria-label="Descer unidade"
-            disabled={
-              project.draft.sections.indexOf(section) ===
-              project.draft.sections.length - 1
-            }
-            onClick={() =>
-              commands([
-                {
-                  type: "move_section",
-                  sectionId: section.id,
-                  to: project.draft.sections.indexOf(section) + 1,
-                },
-              ])
-            }
-          >
-            <ArrowDown size={17} />
-          </button>
-          <button
-            type="button"
-            aria-label="Remover unidade"
+            aria-label={quizOnly ? "Remover seção" : "Remover unidade"}
             disabled={project.draft.sections.length === 1}
             onClick={() => {
               if (
@@ -110,7 +176,9 @@ export function SectionPanel({
             onClick={() => setActivityId(null)}
           >
             <ArrowLeft size={16} />
-            Todas as atividades da unidade
+            {quizOnly
+              ? "Todos os quizzes da seção"
+              : "Todas as atividades da unidade"}
           </button>
           <ActivityEditor
             key={`${activity.id}-${issueFocus?.request ?? 0}`}
@@ -134,10 +202,33 @@ export function SectionPanel({
         </>
       ) : (
         <>
-          <div className="add-activities">
-            <h3>Adicionar atividade</h3>
-            <div className="activity-choices">
-              {Object.entries(activityLabels).map(([type, label]) => (
+          {quizOnly && (
+            <TargetNumberField section={section} commands={commands} />
+          )}
+          <div className="activities-head">
+            <h3>{quizOnly ? "Quizzes" : "Atividades"}</h3>
+            {!empty && (
+              <button
+                type="button"
+                className="secondary"
+                aria-expanded={adding}
+                aria-controls={choicesId}
+                onClick={() => setAddingFor(adding ? null : section.id)}
+              >
+                <Plus size={16} aria-hidden="true" />
+                {quizOnly ? "Adicionar quiz" : "Adicionar atividade"}
+              </button>
+            )}
+          </div>
+          <div className="add-activities" id={choicesId} hidden={!adding}>
+            <div
+              className="activity-choices"
+              role="group"
+              aria-label="Tipo da atividade"
+            >
+              {Object.entries(activityLabels)
+                .filter(([type]) => !quizOnly || type === "quiz")
+                .map(([type, label]) => (
                 <button
                   type="button"
                   key={type}
@@ -151,6 +242,7 @@ export function SectionPanel({
                         activity: next,
                       },
                     ]);
+                    setAddingFor(null);
                     setActivityId(next.id);
                     setActivityPages((previous) => ({
                       ...previous,
@@ -166,11 +258,11 @@ export function SectionPanel({
               ))}
             </div>
           </div>
-          <h3>Atividades</h3>
-          {section.activities.length === 0 && (
+          {empty && (
             <p className="empty-state">
-              Esta unidade está pronta para receber sua primeira
-              atividade.
+              {quizOnly
+                ? "Esta seção ainda não tem quiz."
+                : "Esta unidade está pronta para receber sua primeira atividade."}
             </p>
           )}
           <div className="activity-list">
@@ -187,11 +279,16 @@ export function SectionPanel({
                     {activityLabels[entry.type]}
                   </span>
                   <strong>{entry.title}</strong>
-                  <small>
-                    {entry.type === "quiz"
-                      ? `${entry.questions.length} ${entry.questions.length === 1 ? "questão" : "questões"}`
-                      : `${entry.attachmentIds.length} anexos`}
-                  </small>
+                  {/* "0 anexos" em toda linha era só ruído: a contagem aparece quando há o que contar. */}
+                  {(entry.type === "quiz" || entry.attachmentIds.length > 0) && (
+                    <small>
+                      {entry.type === "quiz"
+                        ? `${entry.questions.length} ${entry.questions.length === 1 ? "questão" : "questões"}`
+                        : entry.attachmentIds.length === 1
+                          ? "1 anexo"
+                          : `${entry.attachmentIds.length} anexos`}
+                    </small>
+                  )}
                 </button>
                 <span className="icon-actions">
                   <button
@@ -266,6 +363,8 @@ export function SectionPanel({
               }
             />
           )}
+          {!quizOnly && (
+            <>
           <h3>Título e resumo da unidade</h3>
           <label className="field">
             <span>Título da unidade</span>
@@ -324,6 +423,8 @@ export function SectionPanel({
               ])
             }
           />
+            </>
+          )}
         </>
       )}
     </>

@@ -172,3 +172,13 @@ As seções anteriores e o catálogo [`design-system.html`](../design-system.htm
 - **Entrada em grade.** O planejamento é sempre um arquivo só, numa faixa compacta. Tarefas e Quizzes aceitam vários arquivos e são áreas abertas: arrastar para dentro, ou escolher por botão (acessível pelo teclado); cada área lista nome, tamanho e remover. Soltar um arquivo fora das áreas não abre o arquivo nem tira a pessoa da tela.
 - **Chave de IA.** O caminho seguro é a chave no servidor (`.env.local`, veja `.env.example`): a tela diz se o servidor já tem chave e qual é o modelo padrão, sem nunca receber a chave. Quem quiser usar outra pode digitá-la só na memória da aba; ela é apagada ao fechar, ao trocar de provedor e nunca vai para o projeto, para as cópias nem para os registros.
 - **Limites.** Até 30 arquivos por importação, 25 MB cada e 80 MB no total. Tamanhos aparecem sempre em B, KB ou MB; anexos do backup continuam em 16 MB cada e 64 MB no total, e os documentos de origem ficam à parte.
+
+## Vidro, menos texto e virada de folha — 19 e 20/10/2026
+
+- **Vidro de volta.** A pedido do usuário, os painéis voltam a ser de vidro leve sobre o caderno (blur 3px); campos, tabelas e cartões internos continuam opacos. Com menos transparência, alto contraste ou sem suporte, o painel fica opaco.
+- **Para um idoso sem contexto.** Pouco texto, um botão principal por passo, passos numerados e nenhum jargão. Linhas de 1px e pesos 600/500/400. Botão desativado é cinza.
+- **Entrada pelo esboço do usuário.** Criar disciplina com Importar arquivos | Criar manualmente; Matriz com “Enviar arquivo”; Tarefas e Quizzes para arrastar; IA num select com “Adicionar chave…”; rodapé só com Importar JSON e Copiar prompt. Saíram “Sem IA”, “Tópicos ou semanas” e “Ver seus últimos cursos”.
+- **Alunos e Datas.** Alunos com Enviar planilha | Preencher à mão e as colunas da planilha de exemplo. Datas virou um assistente de quatro passos com duas perguntas.
+- **Virada de folha** entre passos, para a frente e para trás; fade com movimento reduzido.
+
+Telas finais, fluxogramas, decisões e o gerador dos quadros: [coruja e caderno (v5)](design-proposals/coruja-caderno-v5/README.md). Esta seção substitui “superfícies opacas” da revisão de 18/10/2026.

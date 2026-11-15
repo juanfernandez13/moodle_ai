@@ -39,7 +39,7 @@ const fileSchema = z.strictObject({
 });
 const profiles = z.strictObject({
   importProfile: z.enum(["docx-topicos-v1", "docx-semanal-v1"]),
-  provider: z.enum(["offline", "openai", "gemini"]),
+  provider: z.enum(["offline", "gemini", "openai", "claude", "custom"]),
   pedagogy: text,
   compatibility: z.literal("moodle-4.1-core-v1"),
 });
@@ -186,7 +186,7 @@ export async function readPortable(bytes: Uint8Array): Promise<CourseProject> {
   const result = validateDraft(draftValue);
   if (!result.valid)
     throw new Error(
-      `Curso inválido na cópia: ${result.issues[0]?.message ?? "contrato inválido"}`,
+      `Disciplina inválida na cópia: ${result.issues[0]?.message ?? "contrato inválido"}`,
     );
   const presetValue: unknown = JSON.parse(
     decoder.decode(await requireBytes("presets.json", manifest.presets.sha256)),

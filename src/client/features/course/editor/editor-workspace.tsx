@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { useCalmText } from "../../../components/calm-text.ts";
 import type { CourseProject } from "../../../project.ts";
 import type { CourseBuilderModel } from "../hooks/use-course-builder.ts";
 import { EditorHeader } from "./editor-header.tsx";
@@ -41,7 +42,13 @@ type Props = Pick<
   | "lastCopy"
   | "showIssue"
 >
-  & { project: CourseProject; };
+  & {
+    project: CourseProject;
+    /** The course file has been generated: the last step of the trail is the one that is open. */
+    fileReady: boolean;
+    /** The class of the page turn, while this page comes in. */
+    turnClass?: string | undefined;
+  };
 
 export function EditorWorkspace({
   setProject,
@@ -73,6 +80,8 @@ export function EditorWorkspace({
   addFiles,
   lastCopy,
   showIssue,
+  fileReady,
+  turnClass,
 }: Props) {
   const main = useRef<HTMLDivElement>(null);
   const content = useRef<HTMLElement>(null);
@@ -81,8 +90,14 @@ export function EditorWorkspace({
     main.current?.scrollTo({ top: 0 });
     content.current?.scrollTo({ top: 0 });
   }, [view, activity?.id]);
+  // A coluna de Pendências só ocupa lugar quando há pendência. A troca espera a pessoa parar de digitar: apagar um
+  // título para reescrevê-lo não faz a coluna aparecer e sumir no meio da digitação.
+  const clear = useCalmText(issues.length ? "pending" : "clear") === "clear";
+  const layoutClass = ["editor-layout", clear ? "is-clear" : "", turnClass ?? ""]
+    .filter(Boolean)
+    .join(" ");
   return (
-    <main className="editor-layout">
+    <main className={layoutClass}>
       <EditorHeader
         setProject={setProject}
         setError={setError}
@@ -94,6 +109,7 @@ export function EditorWorkspace({
         setShowReview={setShowReview}
         setValidatedRevision={setValidatedRevision}
         issues={issues}
+        fileReady={fileReady}
       />
       <CourseNavigation
         view={view}
@@ -156,13 +172,7 @@ export function EditorWorkspace({
             />
           )}
         </section>
-        <ReviewSidebar
-          project={project}
-          issues={issues}
-          showIssue={showIssue}
-          setShowReview={setShowReview}
-          setValidatedRevision={setValidatedRevision}
-        />
+        <ReviewSidebar issues={issues} showIssue={showIssue} />
       </div>
     </main>
   );

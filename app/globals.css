@@ -18,10 +18,21 @@
 }
 :root {
   font-family: Switzer, "Segoe UI", system-ui, sans-serif;
+  /* Sem escolha da pessoa, a página acompanha o sistema. O script do <head> (src/client/theme.ts) marca o <html>
+     com theme-dark ou theme-light antes da primeira pintura; o botão do cabeçalho troca a marca. */
+  color-scheme: light dark;
+}
+:root.theme-light {
   color-scheme: light;
+}
+:root.theme-dark {
+  color-scheme: dark;
 }
 * {
   box-sizing: border-box;
+  /* Folga em toda área que rola: quando o teclado leva um controle até a borda dela, o anel de foco (2px mais 2px de
+     afastamento) aparece inteiro. Regras com classe (o editor, a janela, Datas) mudam esse valor onde precisam. */
+  scroll-padding: 8px;
 }
 body {
   margin: 0;
@@ -47,14 +58,41 @@ a {
 button {
   cursor: pointer;
   color: inherit;
+  /* O nome de um botão não se seleciona: um duplo clique ao lado dele não pinta uma palavra dele de azul. */
+  -webkit-user-select: none;
+  user-select: none;
 }
-button:disabled {
-  cursor: not-allowed;
-  opacity: 1;
-  color: var(--muted);
-  background: var(--support);
-  border-color: var(--line);
-  box-shadow: none;
+/* Botão desligado: sempre cinza, em qualquer tela. É a única regra de botão desligado do app (button:disabled
+   e aria-disabled="true"): fundo, texto e linha cinzas, sem sombra, sem mudança ao passar o mouse, e o cursor
+   diz que não dá para clicar. As regras de cada tela (.primary, .secondary, pílulas, "Enviar para análise",
+   "Aplicar", passos...) têm mais especificidade, por isso aqui vale !important. As cores ficam em --disabled-*:
+   texto #5a6760 sobre #e4e9e6 (4,8:1); no escuro, #a9b8b0 sobre #2a3a31 (5,8:1). */
+.application
+  :is(
+    button:disabled,
+    button[aria-disabled="true"],
+    [role="button"][aria-disabled="true"],
+    a[aria-disabled="true"],
+    input:is([type="button"], [type="submit"], [type="reset"]):disabled
+  ) {
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+  filter: none !important;
+  background: var(--disabled-bg) !important;
+  color: var(--disabled-text) !important;
+  border: 1px solid var(--disabled-line) !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+}
+.application
+  :is(
+    button:disabled,
+    button[aria-disabled="true"],
+    [role="button"][aria-disabled="true"],
+    a[aria-disabled="true"]
+  )
+  svg {
+  color: inherit !important;
 }
 a {
   color: inherit;
@@ -70,9 +108,49 @@ input:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
 summary:focus-visible,
+[tabindex="0"]:focus-visible,
 .file-button:focus-within {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
+}
+/* Título ou área que recebe o foco por programa (tabindex="-1") ao abrir uma tela: sem anel, ele não é um controle. */
+h1[tabindex="-1"]:focus,
+h2[tabindex="-1"]:focus,
+h3[tabindex="-1"]:focus,
+main[tabindex="-1"]:focus {
+  outline: none;
+}
+/* Pular para o conteúdo: só aparece quando recebe o foco do teclado. */
+.skip-link {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 20px;
+  border: 1px solid var(--action);
+  border-radius: 99px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 500;
+  transform: translateY(-300%);
+}
+.skip-link:focus {
+  transform: none;
+}
+.skip-target {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+.skip-target:focus {
+  outline: none;
 }
 h1,
 h2,
@@ -82,19 +160,19 @@ p {
 }
 /* Pesos leves: títulos 600, rótulos e botões 500, texto 400. Nada em 700. */
 h1 {
-  font-size: 26px;
+  font-size: 1.625rem;
   font-weight: 600;
   line-height: 1.25;
   letter-spacing: -0.02em;
 }
 h2 {
-  font-size: 23px;
+  font-size: 1.4375rem;
   font-weight: 600;
   line-height: 1.3;
   letter-spacing: -0.015em;
 }
 h3 {
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 600;
   margin-bottom: 16px;
 }
@@ -115,10 +193,17 @@ hr {
   --support: #f3f8f4;
   --text: #173e30;
   --muted: #345347;
+  /* Texto de exemplo dentro do campo: mais claro que o texto escrito (11,9:1), para não parecer já preenchido, e ainda
+     com mais de 4,5:1 sobre o campo (5,1:1 sobre branco, 4,7:1 sobre --support). */
+  --placeholder: #5a7466;
   --action: #26764f;
   --on-action: #fff;
   --line: #bbd4c6;
-  --control-border: #789583;
+  /* Borda de campos e botões: 3:1 ou mais sobre a folha, a pauta, a margem laranja e o vidro (era #789583, 2,3:1 sobre a margem). */
+  --control-border: #647d6d;
+  --disabled-bg: #e4e9e6;
+  --disabled-text: #5a6760;
+  --disabled-line: #d2dad5;
   --reading: var(--surface);
   --chrome: var(--surface);
   --notebook-line: #d7e6dc;
@@ -155,18 +240,22 @@ hr {
       var(--notebook-line) 32px
     );
   position: relative;
-  font-size: 16px;
+  font-size: 1rem;
 }
-.theme-dark {
+.theme-dark .application {
   --base: #14241c;
   --surface: #20362a;
   --support: #284233;
   --text: #f0f7f2;
   --muted: #c5d9ce;
+  --placeholder: #a9bfb1;
   --action: #b6d8be;
   --on-action: #183728;
   --line: #486653;
   --control-border: #8dac95;
+  --disabled-bg: #2a3a31;
+  --disabled-text: #a9b8b0;
+  --disabled-line: #3c4d43;
   --reading: var(--surface);
   --chrome: var(--surface);
   --notebook-line: #1c3026;
@@ -176,6 +265,9 @@ hr {
   --error: #ffbdc6;
   --selected: #365b45;
   --glass: rgba(28, 48, 37, 0.66);
+  /* Sem desfoque no escuro: a pauta (#1c3026 sobre #14241c) já é pouco contrastada, e com 1px de desfoque ela some atrás do
+     vidro (1,9 de 255 de diferença, contra 3,1 no claro). Sem desfoque ela aparece, bem fraca, como no tema claro. */
+  --glass-blur: 0px;
   --shadow-card:
     0 1px 2px rgba(0, 0, 0, 0.24), 0 4px 16px rgba(0, 0, 0, 0.18);
   --shadow-pop: 0 10px 28px rgba(0, 0, 0, 0.4);
@@ -198,7 +290,7 @@ hr {
   align-items: center;
   gap: 9px;
   min-height: 44px;
-  font-size: 25px;
+  font-size: 1.5625rem;
   font-weight: 600;
   letter-spacing: -0.02em;
   padding: 4px 12px 4px 7px;
@@ -221,7 +313,7 @@ hr {
   border-radius: var(--action-radius);
   background: var(--chrome);
   color: var(--text);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
 }
 .header-action[aria-pressed="true"],
@@ -258,6 +350,151 @@ hr {
     backdrop-filter: none;
   }
 }
+/* Passos numerados (Trail, src/client/components/trail.tsx): um só desenho para as três ferramentas e o editor.
+   O número fica no centro do círculo (grid, line-height 1, tabulares, peso 500); círculo e ligação com 1px.
+   Passo feito: check no círculo e link para voltar. Passo aberto: círculo cheio. Próximos: só o número, sem link,
+   sem botão desligado e sem fundo. No celular os passos viram colunas iguais, o número em cima e o nome embaixo. */
+.trail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+.trail-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.trail-step + .trail-step::before {
+  content: "";
+  flex: none;
+  width: 32px;
+  height: 1px;
+  background: var(--line);
+}
+.trail-step[data-state="done"] + .trail-step::before {
+  background: var(--action);
+}
+.trail-step[data-state="done"],
+.trail-step[data-state="current"] {
+  color: var(--text);
+}
+.trail-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 99px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+/* Só o passo feito é botão: a área de toque tem 44px, sem esticar a fita (a folga sai da margem). */
+button.trail-item {
+  min-height: 44px;
+  margin: -6px 0 -6px -6px;
+  padding: 6px 14px 6px 6px;
+}
+button.trail-item:hover {
+  background: color-mix(in srgb, var(--selected) 70%, transparent);
+}
+button.trail-item:hover .trail-label {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.trail-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--control-border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.trail-step[data-state="done"] .trail-mark {
+  border-color: var(--action);
+  background: var(--selected);
+  color: var(--action);
+}
+.trail-step[data-state="current"] .trail-mark {
+  border-color: var(--action);
+  background: var(--action);
+  color: var(--on-action);
+}
+/* Celular: colunas iguais, o número em cima e o nome embaixo, sem ligação entre os passos. */
+@media (max-width: 719px) {
+  .trail {
+    display: grid;
+    grid-template-columns: repeat(var(--trail-count, 3), minmax(0, 1fr));
+    gap: 8px;
+    text-align: center;
+  }
+  .trail-step {
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .trail-step + .trail-step::before {
+    display: none;
+  }
+  .trail-item {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    width: 100%;
+    text-align: center;
+  }
+  button.trail-item {
+    margin: 0;
+    padding: 4px 6px;
+  }
+}
+/* Quatro passos (Datas) pedem mais largura: o mesmo desenho em colunas vale até 899px, para a fita não quebrar no meio. */
+@media (max-width: 899px) {
+  .trail-many {
+    display: grid;
+    grid-template-columns: repeat(var(--trail-count, 4), minmax(0, 1fr));
+    gap: 8px;
+    text-align: center;
+  }
+  .trail-many .trail-step {
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .trail-many .trail-step + .trail-step::before {
+    display: none;
+  }
+  .trail-many .trail-item {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    width: 100%;
+    text-align: center;
+  }
+  .trail-many button.trail-item {
+    margin: 0;
+    padding: 4px 6px;
+  }
+}
 .owl {
   flex-shrink: 0;
   object-fit: contain;
@@ -285,11 +522,11 @@ hr {
   display: flex;
   align-items: center;
   gap: 9px;
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 500;
 }
 .upload-copy p {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
   margin: 5px 0 0;
 }
@@ -304,7 +541,7 @@ hr {
   border-radius: var(--control-radius);
   background: var(--surface);
   color: var(--text);
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
   position: relative;
@@ -322,7 +559,7 @@ hr {
   padding: 10px 18px;
   border-radius: var(--action-radius);
   border: 1px solid transparent;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
 }
 .primary {
@@ -351,13 +588,13 @@ hr {
   align-items: center;
   justify-content: center;
   gap: 7px;
-  min-height: 38px;
-  padding: 6px 8px;
+  min-height: 44px;
+  padding: 6px 10px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 10px;
   background: transparent;
   color: var(--action);
-  font-size: 13px;
+  font-size: 0.875rem;
   font-weight: 500;
 }
 .text-button:hover:not(:disabled) {
@@ -408,7 +645,7 @@ hr {
   min-width: 0;
 }
 .field > span {
-  font-size: 13px;
+  font-size: 0.875rem;
   font-weight: 500;
 }
 .field input,
@@ -423,7 +660,7 @@ hr {
   background: var(--surface);
   padding: 10px 12px;
   line-height: 1.45;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .field select {
   appearance: none;
@@ -437,9 +674,11 @@ hr {
   color: var(--text);
   background: var(--surface);
 }
+/* Texto de exemplo dentro do campo: mais claro que o que a pessoa escreve (--placeholder), nunca o cinza padrão do navegador. */
+.application ::placeholder,
 .field input::placeholder,
 .field textarea::placeholder {
-  color: var(--muted);
+  color: var(--placeholder);
   opacity: 1;
 }
 .field input:disabled,
@@ -461,13 +700,11 @@ hr {
 }
 .field textarea.json-input {
   min-height: 250px;
-  font-family: ui-monospace, monospace;
-  font-size: 12px;
+  font-size: 0.875rem;
 }
 .field .prompt-text {
   min-height: 270px;
-  font-family: ui-monospace, monospace;
-  font-size: 12px;
+  font-size: 0.875rem;
 }
 .field.short {
   max-width: 220px;
@@ -475,7 +712,7 @@ hr {
 .field-help,
 .intro-help {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 0.875rem;
   line-height: 1.55;
   margin: 9px 0 16px;
 }
@@ -493,7 +730,7 @@ hr {
   gap: 10px;
   min-height: 44px;
   margin: 8px 0;
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.4;
 }
 .check-row input {
@@ -512,10 +749,11 @@ hr {
 }
 .form-details summary {
   cursor: pointer;
-  font-size: 13px;
+  font-size: 0.875rem;
   font-weight: 500;
-  padding: 6px 0;
-  min-height: 38px;
+  line-height: 1.57;
+  padding: 11px 0;
+  min-height: 44px;
 }
 .file-list {
   list-style: none;
@@ -537,33 +775,32 @@ hr {
   flex: 1;
   min-width: 0;
   overflow-wrap: anywhere;
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.4;
 }
 .file-list small,
 .preset-row small {
   display: block;
-  font-size: 11px;
+  font-size: 0.8125rem;
   color: var(--muted);
   margin-top: 4px;
 }
 .status-banner {
   max-width: 100%;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
   padding: 13px 17px;
   margin: 0 auto 15px;
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 12px;
   box-shadow: var(--shadow-card);
   line-height: 1.4;
-  font-size: 13px;
+  font-size: 0.875rem;
 }
 .status-banner > svg {
   flex-shrink: 0;
-  margin-top: 2px;
 }
 .status-banner > span {
   flex: 1;
@@ -583,7 +820,7 @@ hr {
   overflow-wrap: anywhere;
 }
 .notice {
-  font-size: 13px;
+  font-size: 0.875rem;
   line-height: 1.55;
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -597,6 +834,11 @@ hr {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+@keyframes wait-pulse {
+  to {
+    opacity: 0.35;
   }
 }
 .visually-hidden {
@@ -621,7 +863,7 @@ hr {
   align-items: center;
   gap: 9px;
   margin: 0 8px 14px;
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 .nav-title strong {
   font-weight: 600;
@@ -638,7 +880,7 @@ hr {
   border-radius: 10px;
   background: transparent;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 0.875rem;
   font-weight: 500;
   margin: 3px 0;
   line-height: 1.4;
@@ -662,7 +904,7 @@ hr {
   border: 1px solid var(--line);
   border-radius: 99px;
   background: var(--surface);
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
   line-height: 1;
@@ -677,7 +919,7 @@ hr {
 .section-nav small {
   display: block;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 0.875rem;
   margin-top: 3px;
   font-weight: 400;
 }
@@ -702,7 +944,7 @@ hr {
   overflow-wrap: anywhere;
 }
 .subtle {
-  font-size: 12px;
+  font-size: 0.875rem;
   color: var(--muted);
   margin-bottom: 4px;
 }
@@ -736,14 +978,14 @@ hr {
 }
 .activity-open strong {
   overflow-wrap: anywhere;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .activity-open small {
   color: var(--muted);
-  font-size: 11px;
+  font-size: 0.875rem;
 }
 .activity-type {
-  font-size: 10px;
+  font-size: 0.8125rem;
   padding: 3px 7px;
   border: 1px solid var(--line);
   border-radius: 5px;
@@ -782,7 +1024,7 @@ hr {
   border-color: #add4d2;
 }
 .activity-row .icon-actions button {
-  width: 35px;
+  width: 44px;
   height: 44px;
 }
 .activity-choices {
@@ -791,16 +1033,26 @@ hr {
   gap: 8px;
 }
 .activity-choices .secondary {
-  font-size: 12px;
+  font-size: 0.875rem;
   padding: 9px 11px;
+}
+/* "Atividades" e o botão de adicionar na mesma linha; os seis tipos só aparecem quando a pessoa pede (ou quando a
+   unidade está vazia), para a lista de atividades ficar à vista. */
+.activities-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  margin: 4px 0 12px;
+}
+.activities-head h3 {
+  margin: 0;
 }
 .add-activities {
   border-bottom: 1px solid var(--line);
-  margin: 4px 0 20px;
-  padding-bottom: 18px;
-}
-.add-activities h3 {
-  margin-bottom: 12px;
+  margin: 0 0 16px;
+  padding-bottom: 16px;
 }
 .empty-state {
   padding: 25px 14px;
@@ -809,21 +1061,17 @@ hr {
   border-radius: 14px;
   background: var(--support);
   color: var(--muted);
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .issues-panel h2 {
-  font-size: 16px;
-}
-.revision-label {
-  font-size: 12px;
-  color: var(--muted);
+  font-size: 1rem;
 }
 .issue-count,
 .valid-count {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: 0.875rem;
   line-height: 1.45;
 }
 .issue-count {
@@ -849,14 +1097,14 @@ hr {
   width: 100%;
   padding: 11px 0;
   color: var(--error);
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.45;
 }
 .issue-list small,
 .issue-link small {
   display: block;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 0.75rem;
   margin-top: 5px;
   overflow-wrap: anywhere;
 }
@@ -869,15 +1117,25 @@ hr {
   margin-top: 20px;
 }
 .delivery h2 {
-  font-size: 20px;
+  font-size: 1.25rem;
   margin-bottom: 8px;
 }
 .delivery p {
   margin-bottom: 8px;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 .delivery .primary {
   flex-shrink: 0;
+}
+/* Só quizzes: os passos de quem restaura o arquivo numa disciplina que já existe. */
+.delivery-steps {
+  margin: 0 0 8px;
+  padding-left: 1.25rem;
+  font-size: 0.8125rem;
+  list-style: decimal;
+}
+.delivery-steps li {
+  margin: 0 0 2px;
 }
 .rich-editor,
 .question-editor,
@@ -893,7 +1151,7 @@ hr {
 .question-editor legend,
 .grade-category legend,
 .attachment-selector legend {
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 500;
   padding: 0 8px;
   max-width: 100%;
@@ -913,11 +1171,11 @@ hr {
   align-items: center;
   justify-content: space-between;
   gap: 9px;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .block-heading .icon-actions button {
-  width: 36px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
 }
 .rich-editor .field {
   margin: 10px 0;
@@ -940,7 +1198,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 td,
 th {
@@ -957,7 +1215,7 @@ th {
 }
 .rich-editor td .field textarea {
   min-height: 65px;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .question-option {
   margin: 18px 0;
@@ -983,7 +1241,7 @@ th {
   margin: 16px 0 26px;
 }
 .add-file {
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 10px 16px;
 }
 .preset-row {
@@ -997,15 +1255,47 @@ th {
 .preset-row > span {
   min-width: 0;
   overflow-wrap: anywhere;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .preset-row button {
   flex-shrink: 0;
 }
+/* "Seus cursos": Reabrir e Excluir lado a lado; a confirmação de excluir troca os dois botões no mesmo lugar. */
+.preset-row > .saved-actions {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.saved-remove {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--error);
+}
+.saved-remove:hover:not(:disabled) {
+  border-color: var(--error);
+}
+.saved-failure {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 12px 0 0;
+  color: var(--error);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
 .modal {
   width: min(700px, calc(100vw - 32px));
+  /* dvh acompanha a barra de endereço do celular, que aparece e some; vh fica de reserva para navegador antigo. */
   max-height: calc(100vh - 50px);
+  max-height: calc(100dvh - 50px);
   overflow: auto;
+  /* Ao chegar ao fim da janela, a rolagem não passa para a página que está atrás. */
+  overscroll-behavior: contain;
+  /* Folga para o anel de foco não ficar cortado quando o teclado leva um botão até a borda da janela que rola. */
+  scroll-padding: 16px;
   margin: auto;
   padding: 25px 28px;
   background: var(--surface);
@@ -1033,7 +1323,7 @@ th {
 }
 .modal-title h2 {
   margin: 0;
-  font-size: 22px;
+  font-size: 1.375rem;
 }
 .modal-title .icon-button {
   margin-right: -8px;
@@ -1041,7 +1331,7 @@ th {
 .review-unit {
   padding: 13px 0;
   border-top: 1px solid var(--line);
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .review-unit ul {
   padding-left: 19px;
@@ -1064,7 +1354,7 @@ th {
 }
 .student-table input {
   padding: 8px;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .mapping-grid {
   display: grid;
@@ -1074,14 +1364,14 @@ th {
   padding: 8px 14px;
   margin: 18px 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 .sheet-preview td {
-  font-size: 12px;
+  font-size: 0.75rem;
   overflow-wrap: anywhere;
 }
 .tool-link {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--action);
   text-decoration: underline;
 }
@@ -1099,7 +1389,7 @@ th {
   justify-content: space-between;
 }
 .mobile-course-nav .text-button {
-  font-size: 11px;
+  font-size: 0.875rem;
 }
 .panel-tabs {
   display: flex;
@@ -1116,17 +1406,17 @@ th {
   padding: 8px 11px;
   color: var(--muted);
   background: var(--surface);
-  font-size: 12px;
+  font-size: 0.875rem;
   font-weight: 500;
 }
-.panel-tabs button[aria-pressed="true"] {
+.panel-tabs button[aria-selected="true"] {
   background: var(--selected);
   color: var(--text);
   border-color: var(--action);
 }
 .panel-tabs.compact button {
-  font-size: 11px;
-  padding: 7px 9px;
+  font-size: 0.8125rem;
+  padding: 7px 10px;
 }
 .question-option textarea {
   min-height: 65px;
@@ -1142,12 +1432,19 @@ th {
   color: var(--muted);
 }
 @media (max-width: 740px) {
+  /* No celular, campos com menos de 16px fazem o navegador ampliar a página quando recebem o foco. */
+  .field input,
+  .field textarea,
+  .field select,
+  .student-table input {
+    font-size: 1rem;
+  }
   .brand {
-    font-size: 23px;
+    font-size: 1.4375rem;
   }
   .header-action {
     padding: 8px 12px;
-    font-size: 12px;
+    font-size: 0.75rem;
   }
   .course-nav {
     display: none;
@@ -1160,7 +1457,7 @@ th {
     gap: 4px;
   }
   .panel-tabs button {
-    font-size: 11px;
+    font-size: 0.8125rem;
     padding: 7px 9px;
   }
   .question-editor {
@@ -1170,7 +1467,7 @@ th {
     margin-bottom: 8px;
   }
   .editor-content h2 {
-    font-size: 21px;
+    font-size: 1.3125rem;
   }
   .delivery {
     flex-direction: column;
@@ -1188,18 +1485,18 @@ th {
 @media (max-width: 600px) {
   .brand {
     align-self: flex-start;
-    font-size: 24px;
+    font-size: 1.5rem;
   }
   .header-actions {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 5px;
     width: 100%;
   }
   .header-action {
     flex-direction: column;
     gap: 2px;
-    font-size: 11px;
+    font-size: 0.875rem;
     padding: 5px 4px;
     min-height: 48px;
   }
@@ -1210,18 +1507,18 @@ th {
   .upload-row .file-button {
     grid-column: 2;
     justify-self: start;
-    font-size: 12px;
+    font-size: 0.75rem;
     margin-top: 1px;
   }
   .upload-copy label {
     display: block;
-    font-size: 14px;
+    font-size: 0.875rem;
   }
   .planning-group {
     padding: 8px 8px;
   }
   .upload-copy p {
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .field-grid {
     grid-template-columns: minmax(0, 1fr);
@@ -1231,20 +1528,21 @@ th {
     margin: 10px 0;
   }
   .field > span {
-    font-size: 12px;
+    font-size: 0.8125rem;
   }
   .primary,
   .secondary {
-    font-size: 13px;
+    font-size: 0.8125rem;
     padding: 10px 16px;
   }
   .modal {
     padding: 21px 20px;
     width: calc(100vw - 26px);
     max-height: calc(100vh - 30px);
+    max-height: calc(100dvh - 30px);
   }
   .modal-title h2 {
-    font-size: 20px;
+    font-size: 1.25rem;
   }
   .modal .button-row {
     flex-direction: column;
@@ -1254,7 +1552,7 @@ th {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .activity-choices .secondary {
-    font-size: 12px;
+    font-size: 0.75rem;
   }
   .section-heading {
     flex-direction: column;
@@ -1276,22 +1574,19 @@ th {
   }
   .status-banner {
     padding: 12px 13px;
-    font-size: 12px;
+    font-size: 0.875rem;
   }
   .status-banner .text-button {
-    font-size: 11px;
+    font-size: 0.875rem;
     padding: 5px;
   }
   .editor-tools .primary,
   .editor-tools .secondary {
-    font-size: 11px;
+    font-size: 0.8125rem;
     padding: 10px 9px;
   }
-  .block-heading .icon-actions button {
-    width: 32px;
-  }
   .block-heading {
-    font-size: 11px;
+    font-size: 0.75rem;
   }
 }
 @media (max-width: 360px) {
@@ -1299,14 +1594,14 @@ th {
     width: 16px;
   }
   .activity-choices .secondary {
-    font-size: 11px;
+    font-size: 0.75rem;
     padding: 9px 7px;
   }
   .modal {
     padding: 18px;
   }
   .modal-title h2 {
-    font-size: 19px;
+    font-size: 1.1875rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1316,5 +1611,37 @@ th {
     animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
+  }
+  /* Quem pediu menos movimento ainda precisa ver que a espera está andando: o ícone não gira, só clareia e
+     escurece devagar (sem deslocamento e bem abaixo de três piscadas por segundo). */
+  .spinner {
+    animation: wait-pulse 1.4s ease-in-out infinite alternate !important;
+  }
+}
+/* Alto contraste do sistema: a cor de fundo some, então o que está aberto ou escolhido (aba, item do Sumário,
+   página atual do cabeçalho, tema escuro ligado) ganha linha dupla fina, como nas outras telas. */
+@media (forced-colors: active) {
+  .panel-tabs button[aria-selected="true"],
+  .course-nav > button.selected,
+  .header-action[aria-pressed="true"],
+  .header-action[aria-current="page"] {
+    border-color: Highlight;
+    outline: 1px solid Highlight;
+    outline-offset: -3px;
+  }
+  .trail-step[data-state="current"] .trail-mark,
+  .trail-step[data-state="done"] .trail-mark {
+    border-color: Highlight;
+    outline: 1px solid Highlight;
+    outline-offset: -3px;
+  }
+  /* O anel de foco de 2px volta a valer em tudo: sem isso a linha dupla de "escolhido" (acima e nas telas) o
+     substituiria, e uma aba escolhida com foco ficaria igual a uma escolhida sem foco. */
+  :is(button, a, input, textarea, select, summary, [tabindex="0"]):focus-visible,
+  .stu-pill input:focus-visible + span,
+  .entry-pill input:focus-visible + span,
+  .file-button:focus-within {
+    outline: 2px solid Highlight !important;
+    outline-offset: 2px !important;
   }
 }

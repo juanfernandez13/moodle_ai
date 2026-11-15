@@ -98,7 +98,7 @@
    por fundo suave e borda de 1px na cor da ação, não só pela cor do texto. */
 .header-action {
   min-height: 44px;
-  font-size: 16px;
+  font-size: 1rem;
   white-space: nowrap;
 }
 .header-action svg {
@@ -109,6 +109,85 @@
 .header-action[aria-current="page"] {
   background: var(--selected);
   border-color: var(--action);
+}
+
+/* ---------- Ferramentas num botão só: mostra onde a pessoa está e abre a lista das outras ---------- */
+/* O cabeçalho fica acima dos painéis de vidro (cada painel cria a própria camada), senão a lista abriria por baixo deles. */
+.topbar {
+  position: relative;
+  z-index: 20;
+}
+.header-menu {
+  position: relative;
+}
+.header-menu-button {
+  gap: 8px;
+  padding-right: 12px;
+  background: var(--selected);
+  border-color: var(--action);
+}
+/* O botão de tema traz as duas opções e a folha de estilos esconde a que não vale: assim ele já nasce certo, sem
+   esperar o app carregar para trocar "Escuro" por "Claro". */
+.header-theme-option {
+  display: contents;
+}
+.theme-dark .header-theme-option[data-to="dark"],
+:root:not(.theme-dark) .header-theme-option[data-to="light"] {
+  display: none;
+}
+.theme-dark .header-menu-button {
+  background: var(--selected);
+}
+.header-menu-chevron {
+  color: var(--action);
+  transition: transform 0.15s ease;
+}
+.header-menu-button[aria-expanded="true"] .header-menu-chevron {
+  transform: rotate(180deg);
+}
+/* A lista é opaca (texto nunca sobre o caderno) e abre alinhada à direita do botão. */
+.header-menu-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 200px;
+  margin: 0;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--shadow-pop);
+  list-style: none;
+}
+.header-menu-list[hidden] {
+  display: none;
+}
+.header-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 8px 14px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  color: var(--text);
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.header-menu-item svg {
+  flex: none;
+  color: var(--action);
+}
+.header-menu-item:hover {
+  background: var(--support);
+}
+.header-menu-item[aria-current="page"] {
+  border-color: var(--action);
+  background: var(--selected);
 }
 
 .workspace-main {
@@ -166,19 +245,57 @@
 }
 
 @media (max-width: 600px) {
+  /* Celular: uma linha só. A marca à esquerda; o botão das ferramentas e o do tema (só o ícone, o nome
+     fica no aria-label) à direita. */
   .topbar {
-    flex-direction: column;
-    align-items: stretch;
     gap: 8px;
   }
-  /* Celular: três botões lado a lado, ícone ao lado da palavra (nada de rótulo de 11px empilhado). */
+  .brand {
+    align-self: center;
+    min-width: 0;
+  }
+  .header-actions {
+    display: flex;
+    flex: none;
+    gap: 8px;
+    width: auto;
+  }
   .header-action {
     flex-direction: row;
-    gap: 6px;
-    padding: 6px 4px;
+    gap: 7px;
     min-height: 48px;
+    padding: 8px 12px;
+    font-size: 1rem;
+  }
+  .header-theme {
+    width: 48px;
+    padding: 0;
+  }
+  .header-theme-word {
+    display: none;
   }
   .workspace-main {
     padding-bottom: 24px;
+  }
+}
+/* Celular estreito: a marca encolhe um pouco e o botão das ferramentas fica só com a palavra e a seta,
+   para os três caberem numa linha sem quebrar "Moodle IA". */
+@media (max-width: 420px) {
+  .brand {
+    font-size: 1.3125rem;
+    white-space: nowrap;
+  }
+  .header-menu-button {
+    padding-left: 14px;
+  }
+  .header-menu-button > svg:first-child {
+    display: none;
+  }
+}
+@media (max-width: 380px) {
+  .brand {
+    gap: 7px;
+    padding-right: 10px;
+    font-size: 1.25rem;
   }
 }

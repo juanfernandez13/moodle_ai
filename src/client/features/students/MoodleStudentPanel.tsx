@@ -56,9 +56,10 @@ export function MoodleStudentPanel({
       <span className="stu-card-icon" aria-hidden="true">
         <CloudUpload size={32} />
       </span>
+      {/* Aberto, o cartão trabalha com o botão de dentro ("Entrar", "Ver prévia"): este deixa de ser o principal. */}
       <button
         type="button"
-        className="primary stu-big"
+        className={`${open ? "secondary" : "primary"} stu-big`}
         aria-expanded={open}
         aria-controls="student-moodle-body"
         onClick={onToggle}
@@ -91,14 +92,14 @@ export function MoodleStudentPanel({
           )}
           {connected && moodle.courses.length > 0 && (
             <label className="field">
-              <span>Curso do Moodle</span>
+              <span>Disciplina do Moodle</span>
               <select
                 value=""
                 onChange={(event) => {
                   onDestinationsChange(event.target.value);
                 }}
               >
-                <option value="">Escolher curso</option>
+                <option value="">Escolher disciplina</option>
                 {moodle.courses.map((course) => (
                   <option
                     key={course.id}
@@ -118,8 +119,10 @@ export function MoodleStudentPanel({
             <button
               type="button"
               className="primary"
-              disabled={busy || unknownResult || previews.length === 0}
+              disabled={unknownResult || previews.length === 0}
+              aria-disabled={busy ? true : undefined}
               onClick={() => {
+                if (busy) return;
                 void onPreview();
               }}
             >

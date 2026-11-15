@@ -78,23 +78,35 @@ test("WebMCP refuses ambiguous repeated activity edits and empty edits", () => {
   );
 });
 
-test("optional async registration tolerates StrictMode and resumes without duplicate tools", async () => {
+interface PageTool {
+  name: string;
+  annotations?: { readOnlyHint?: boolean };
+  execute: (input: unknown) => Promise<unknown>;
+}
+
+/** Página de mentira com `document.modelContext`. `honorsSignal: false` imita um navegador antigo, que ignora o sinal. */
+async function withPage(
+  honorsSignal: boolean,
+  run: (page: {
+    registered: Map<string, PageTool>;
+    attempts: () => number;
+    drain: () => Promise<void>;
+  }) => Promise<void>,
+) {
   const previous = Object.getOwnPropertyDescriptor(globalThis, "document");
-  const registered = new Map<
-    string,
-    { execute: (input: unknown) => Promise<unknown> }
-  >();
+  const registered = new Map<string, PageTool>();
   let attempts = 0;
   const mock = {
     modelContext: {
-      async registerTool(tool: {
-        name: string;
-        execute: (input: unknown) => Promise<unknown>;
-      }) {
+      async registerTool(tool: PageTool, options?: { signal?: AbortSignal }) {
         await Promise.resolve();
         attempts++;
         if (registered.has(tool.name)) throw new Error("Duplicate tool name");
         registered.set(tool.name, tool);
+        if (honorsSignal)
+          options?.signal?.addEventListener("abort", () =>
+            registered.delete(tool.name),
+          );
       },
     },
   };
@@ -102,10 +114,25 @@ test("optional async registration tolerates StrictMode and resumes without dupli
     configurable: true,
     value: mock,
   });
-  const drain = () =>
-    (mock as unknown as { __moodleAiRegistration: { queue: Promise<void> } })
-      .__moodleAiRegistration.queue;
   try {
+    await run({
+      registered,
+      attempts: () => attempts,
+      drain: () =>
+        (
+          mock as unknown as {
+            __moodleAiRegistration: { queue: Promise<void> };
+          }
+        ).__moodleAiRegistration.queue,
+    });
+  } finally {
+    if (previous) Object.defineProperty(globalThis, "document", previous);
+    else Reflect.deleteProperty(globalThis, "document");
+  }
+}
+
+test("tools leave the page when the course screen closes and come back without duplicates", async () => {
+  await withPage(true, async ({ registered, attempts, drain }) => {
     const project = projectFixture();
     const firstCleanup = registerBuilderTools(
       () => project,
@@ -118,10 +145,13 @@ test("optional async registration tolerates StrictMode and resumes without dupli
     );
     await drain();
     assert.equal(registered.size, 5);
+    assert.equal(attempts(), 5, "StrictMode must not register twice");
+    const stale = registered.get("get_course_summary")!;
     secondCleanup();
     await drain();
-    await assert.rejects(
-      registered.get("get_course_summary")!.execute({}),
+    assert.equal(registered.size, 0, "no tool stays on the other screens");
+    assert.match(
+      ((await stale.execute({})) as { error: string }).error,
       /Abra um projeto/,
     );
     project.draft.revision++;
@@ -130,19 +160,78 @@ test("optional async registration tolerates StrictMode and resumes without dupli
       () => {},
     );
     await drain();
-    assert.equal(
-      attempts,
-      5,
-      "an API without unregister must reuse the existing tools",
-    );
+    assert.equal(registered.size, 5);
     const summary = (await registered
       .get("get_course_summary")!
       .execute({})) as { revision: number };
     assert.equal(summary.revision, project.draft.revision);
     finalCleanup();
     await drain();
-  } finally {
-    if (previous) Object.defineProperty(globalThis, "document", previous);
-    else Reflect.deleteProperty(globalThis, "document");
-  }
+    assert.equal(registered.size, 0);
+  });
+});
+
+test("a browser that ignores the registration signal keeps working tools after reopening", async () => {
+  await withPage(false, async ({ registered, drain }) => {
+    const project = projectFixture();
+    registerBuilderTools(
+      () => project,
+      () => {},
+    )();
+    await drain();
+    project.draft.revision++;
+    const cleanup = registerBuilderTools(
+      () => project,
+      () => {},
+    );
+    await drain();
+    assert.equal(registered.size, 5);
+    const summary = (await registered
+      .get("get_course_summary")!
+      .execute({})) as { revision: number };
+    assert.equal(summary.revision, project.draft.revision);
+    cleanup();
+    await drain();
+  });
+});
+
+test("tools say which ones only read and answer mistakes as values the agent can read", async () => {
+  await withPage(true, async ({ registered, drain }) => {
+    const project = projectFixture();
+    let proposals = 0;
+    const cleanup = registerBuilderTools(
+      () => project,
+      () => {
+        proposals++;
+      },
+    );
+    await drain();
+    for (const [name, tool] of registered)
+      assert.equal(
+        tool.annotations?.readOnlyHint,
+        name !== "propose_course_changes",
+        name,
+      );
+    const missing = (await registered
+      .get("get_activity")!
+      .execute({ activityId: "nao-existe" })) as { error: string };
+    assert.match(missing.error, /não encontrada/);
+    const invalid = (await registered.get("get_activity")!.execute({})) as {
+      error: string;
+    };
+    assert.match(invalid.error, /activityId/);
+    const stale = (await registered.get("propose_course_changes")!.execute({
+      expectedRevision: project.draft.revision + 1,
+      changes: [
+        {
+          activityId: project.draft.sections[0]!.activities[0]!.id,
+          title: "Desatualizado",
+        },
+      ],
+    })) as { error: string };
+    assert.match(stale.error, /stale_revision/);
+    assert.equal(proposals, 0);
+    cleanup();
+    await drain();
+  });
 });

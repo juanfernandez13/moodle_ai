@@ -130,7 +130,7 @@ export function useMoodle(options: { onSessionChange?: () => void } = {}) {
       // Catalogue authentication failures may be the first observation of an expired session.
       await refresh();
       if (expected !== generation.current) return;
-      setError(message(failure, "Não foi possível ler os cursos."));
+      setError(message(failure, "Não foi possível ler as disciplinas."));
     } finally {
       if (expected === generation.current) setBusy(false);
     }

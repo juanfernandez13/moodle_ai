@@ -1,0 +1,222 @@
+{
+ "title": "Quadro 1 · Mapa do semestre",
+ "purpose": "Mostrar de relance as três ferramentas na ordem do semestre, onde ficam os cursos guardados, a conexão com o Moodle compartilhada e o que acontece fora do app. Serve a professores, ao dono do produto e à equipe. Este quadro não tem perguntas nem erros (eles ficam nos quadros 2 a 6) e tem no máximo 16 cartões.",
+ "nodes": [
+  {
+   "id": "hoje",
+   "kind": "screen",
+   "label": "O que você quer fazer hoje?",
+   "detail": "Início. A coruja marrom de 96 px recebe com a fala, em Gambetta itálico, 'Por onde vamos começar?'. Três chips na ordem do semestre: Preparar um curso · Matricular alunos · Ajustar datas. Abaixo, 'Continuar de onde parou · editado ontem às 18:20'."
+  },
+  {
+   "id": "seus_cursos",
+   "kind": "interchange",
+   "label": "Seus cursos",
+   "detail": "Guardados neste navegador, o mais recente primeiro. Cada curso mostra o estado em texto: Rascunho · Conferido · Arquivo baixado · No Moodle (você confirmou). Ações: Abrir · Duplicar · Renomear · Guardar cópia no computador · Excluir. Também 'Abrir cópia do computador (.moodleai)'."
+  },
+  {
+   "id": "comecar",
+   "kind": "screen",
+   "label": "Como você quer começar?",
+   "detail": "Tenho um planejamento · Começar do zero · Ver um curso de exemplo. 'Outras formas de começar' fica dobrado na mesma tela."
+  },
+  {
+   "id": "encontramos",
+   "kind": "screen",
+   "label": "O que encontramos",
+   "detail": "Você vê o que foi lido antes de virar curso: 'Encontramos 8 unidades e 14 atividades.' Sempre abre como curso novo; nenhum curso é substituído."
+  },
+  {
+   "id": "caderno",
+   "kind": "screen",
+   "label": "Caderno do curso",
+   "detail": "Monte unidades, atividades, notas e arquivos. As correções ficam na margem. 'Salvo neste navegador há 1 minuto'."
+  },
+  {
+   "id": "entregar",
+   "kind": "screen",
+   "label": "Conferir e baixar",
+   "detail": "Boletim do curso, 'Gerar o arquivo para o Moodle' e 'Baixar curso (.mbz)'. Só abre sem correções."
+  },
+  {
+   "id": "restaurar",
+   "kind": "action",
+   "label": "Restaurar no Moodle",
+   "detail": "Fora do app (ficha com aba laranja e ícone de mão): crie um curso novo e vazio, abra 'Restaurar' e envie o .mbz."
+  },
+  {
+   "id": "planilha",
+   "kind": "screen",
+   "label": "Escolha e confira a planilha",
+   "detail": "Planilha da turma (.xlsx, .xls ou .csv, até 8 MB). Os erros aparecem na própria célula e os nomes repetidos ficam marcados."
+  },
+  {
+   "id": "cursos_lote",
+   "kind": "screen",
+   "label": "Em quais cursos?",
+   "detail": "Todos os alunos entram em todos os cursos escolhidos: '32 alunos × 2 cursos = 2 arquivos'."
+  },
+  {
+   "id": "entregar_alunos",
+   "kind": "screen",
+   "label": "Baixar ou enviar",
+   "detail": "'Baixar um arquivo por curso' (termina aqui, sem Moodle) ou 'Enviar direto ao Moodle'."
+  },
+  {
+   "id": "conectar",
+   "kind": "interchange",
+   "label": "Conectar ao Moodle",
+   "detail": "Uma folha só, para Alunos e Datas. Endereço sempre visível, conexão de 30 min, senha nunca guardada. 'Só o laboratório local foi testado.'"
+  },
+  {
+   "id": "alunos_fim",
+   "kind": "end",
+   "label": "Turma cadastrada",
+   "detail": "Resultado por aluno: Criado · Atualizado · Erro · Não sabemos."
+  },
+  {
+   "id": "qual_curso",
+   "kind": "screen",
+   "label": "Qual curso no Moodle?",
+   "detail": "Para cursos que já estão no Moodle, feitos aqui ou não. O curso do caderno aparece como sugestão; você confirma."
+  },
+  {
+   "id": "planeje",
+   "kind": "screen",
+   "label": "Planeje as datas",
+   "detail": "Começa pelas datas atuais: data de início, 'Uma unidade a cada 7 dias', horários de abertura e de fechamento, no horário de Brasília."
+  },
+  {
+   "id": "antes_depois",
+   "kind": "screen",
+   "label": "Antes e depois",
+   "detail": "Prévia semana a semana. 'Nada foi alterado ainda.'"
+  },
+  {
+   "id": "datas_fim",
+   "kind": "end",
+   "label": "Datas aplicadas",
+   "detail": "'22 de 24 aplicadas.' Não há promessa de desfazer."
+  }
+ ],
+ "edges": [
+  {
+   "from": "hoje",
+   "to": "comecar",
+   "label": "Preparar um curso",
+   "style": "main"
+  },
+  {
+   "from": "comecar",
+   "to": "encontramos",
+   "label": "Tenho um planejamento",
+   "style": "main"
+  },
+  {
+   "from": "encontramos",
+   "to": "caderno",
+   "label": "Abrir como novo curso",
+   "style": "main"
+  },
+  {
+   "from": "comecar",
+   "to": "caderno",
+   "label": "Do zero ou exemplo",
+   "style": "alternative"
+  },
+  {
+   "from": "caderno",
+   "to": "entregar",
+   "label": "Conferir o curso",
+   "style": "main"
+  },
+  {
+   "from": "entregar",
+   "to": "caderno",
+   "label": "Continuar editando",
+   "style": "loop"
+  },
+  {
+   "from": "entregar",
+   "to": "restaurar",
+   "label": "Baixar e levar",
+   "style": "main"
+  },
+  {
+   "from": "hoje",
+   "to": "seus_cursos",
+   "label": "Continuar",
+   "style": "alternative"
+  },
+  {
+   "from": "seus_cursos",
+   "to": "caderno",
+   "label": "Abrir",
+   "style": "alternative"
+  },
+  {
+   "from": "hoje",
+   "to": "planilha",
+   "label": "Matricular alunos",
+   "style": "alternative"
+  },
+  {
+   "from": "hoje",
+   "to": "qual_curso",
+   "label": "Ajustar datas",
+   "style": "alternative"
+  },
+  {
+   "from": "restaurar",
+   "to": "planilha",
+   "label": "Depois: alunos",
+   "style": "alternative"
+  },
+  {
+   "from": "planilha",
+   "to": "cursos_lote",
+   "style": "main"
+  },
+  {
+   "from": "cursos_lote",
+   "to": "entregar_alunos",
+   "style": "main"
+  },
+  {
+   "from": "entregar_alunos",
+   "to": "conectar",
+   "label": "Enviar ao Moodle",
+   "style": "alternative"
+  },
+  {
+   "from": "conectar",
+   "to": "alunos_fim",
+   "label": "Confirmar cadastro",
+   "style": "main"
+  },
+  {
+   "from": "qual_curso",
+   "to": "conectar",
+   "label": "Precisa entrar",
+   "style": "alternative"
+  },
+  {
+   "from": "qual_curso",
+   "to": "planeje",
+   "label": "Ler datas atuais",
+   "style": "main"
+  },
+  {
+   "from": "planeje",
+   "to": "antes_depois",
+   "style": "main"
+  },
+  {
+   "from": "antes_depois",
+   "to": "datas_fim",
+   "label": "Aplicar mudanças",
+   "style": "main"
+  }
+ ],
+ "layout_hint": "PRANCHA: paisagem, 1760 × 1300, fundo --paper.\n\nFITA DO SEMESTRE (y 40–140):\n- À esquerda, a coruja de 96 px com o marcador 'Hoje'.\n- Três cabeçalhos de coluna em Gambetta 600 24 px: 'Antes das aulas · Preparar curso' (x 320–800), 'Na matrícula · Alunos' (x 832–1072) e 'Durante o semestre · Datas' (x 1352–1592).\n- Os cabeçalhos são ligados por uma linha de 2 px em --ink-muted com chevrons. Ela mostra a ordem do tempo, não uma obrigação. Sem números.\n\nCOLUNAS:\n- H 'Hoje': x 48–288.\n- A: x 320–800, com duas subfaixas: A1 (x 320–560) para o caminho e A2 (x 576–800) para o ramo e a volta.\n- M: x 832–1072.\n- X (ponte): x 1092–1332.\n- D: x 1352–1592.\n\nLINHAS: y1 = 220, y2 = 380, y3 = 540, y4 = 700. Cartões de 220 × até 120.\n\nPORTA E FAIXA DO MOODLE: porta tracejada em y 840, de ponta a ponta. Faixa --moodle-soft de y 860 a 1060.\n\nPOSIÇÕES:\n- hoje: H·y1 (cartão maior, 240 × 140).\n- seus_cursos: H·y3.\n- comecar: A1·y1. encontramos: A1·y2. caderno: A1·y3. entregar: A1·y4.\n- restaurar: na faixa, sob A1 (y 920).\n- planilha: M·y1. cursos_lote: M·y2. entregar_alunos: M·y3.\n- conectar: X·y4, logo acima da porta.\n- alunos_fim: na faixa, sob M.\n- qual_curso: D·y1. planeje: D·y2. antes_depois: D·y3.\n- datas_fim: na faixa, sob D.\n- Legenda: abaixo da faixa, em duas colunas, x 48–700, y 1100–1260.\n\nROTAS:\n- hoje→planilha e hoje→qual_curso saem do topo de hoje e correm juntas num tronco em y 176, logo abaixo da fita. Cada uma desce no topo do seu destino. Os rótulos ficam no trecho horizontal, logo antes de cada descida.\n- comecar→caderno: desce por A2 em x 680 e entra pela direita de caderno, 24 px abaixo do topo.\n- entregar→caderno: sobe por x 760 e entra pela direita de caderno, 80 px abaixo do topo.\n- seus_cursos→caderno: horizontal na altura y3.\n- restaurar→planilha: sai pela direita na faixa, sobe pelo vão em x 816 e entra pela esquerda de planilha.\n- entregar_alunos→conectar: sai pela direita 40 px abaixo do topo e desce por x 1200 até o topo de conectar.\n- qual_curso→conectar: sai pela esquerda, desce por x 1260 e entra no topo de conectar.\n- conectar→alunos_fim: desce até a faixa e entra pela direita de alunos_fim.\n- Nenhuma linha cruza outra.\n\nVERSÃO DE 360 PX: uma pilha na ordem Hoje → Antes das aulas → Na matrícula → Durante o semestre. 'Conectar ao Moodle' fica entre as duas últimas, e a faixa do Moodle aparece no fim de cada coluna."
+}

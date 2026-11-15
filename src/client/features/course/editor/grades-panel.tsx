@@ -21,10 +21,10 @@ export function GradesPanel({
 }: Props) {
   return (
     <>
-      <h2>Avaliação e presets</h2>
+      <h2>Avaliação</h2>
       <p className="intro-help">
-        Defina as categorias e os vínculos. Sem categorias, o curso
-        conserva somente as notas máximas das atividades.
+        Defina as categorias e os vínculos. Sem categorias, a
+        disciplina conserva somente as notas máximas das atividades.
       </p>
       {project.draft.gradebook?.categories.map((category, index) => (
         <fieldset

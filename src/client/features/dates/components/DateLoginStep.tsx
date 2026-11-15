@@ -67,10 +67,6 @@ export function DateLoginStep({
           </div>
         </div>
         <div className="dw-actions">
-          <button type="button" className="primary dw-primary" onClick={onContinue}>
-            Continuar
-            <ArrowRight size={22} aria-hidden="true" />
-          </button>
           <button
             type="button"
             className="dw-link"
@@ -79,6 +75,10 @@ export function DateLoginStep({
           >
             <LogOut size={20} aria-hidden="true" />
             Trocar de conta
+          </button>
+          <button type="button" className="primary dw-primary" onClick={onContinue}>
+            Continuar
+            <ArrowRight size={22} aria-hidden="true" />
           </button>
         </div>
       </>
@@ -108,13 +108,15 @@ export function DateLoginStep({
             <label htmlFor={`${id}-url`}>Endereço do Moodle</label>
             <input
               id={`${id}-url`}
+              name="url"
               className="dw-input"
               type="url"
               inputMode="url"
               autoComplete="url"
               autoCapitalize="none"
+              autoCorrect="off"
               spellCheck={false}
-              placeholder="https://moodle.exemplo.edu.br"
+              placeholder="Ex.: https://moodle.suaescola.edu.br"
               value={url}
               disabled={moodle.busy}
               required
@@ -134,9 +136,12 @@ export function DateLoginStep({
             <label htmlFor={`${id}-user`}>Usuário</label>
             <input
               id={`${id}-user`}
+              name="username"
               className="dw-input"
+              type="text"
               autoComplete="username"
               autoCapitalize="none"
+              autoCorrect="off"
               spellCheck={false}
               value={username}
               disabled={moodle.busy}
@@ -149,6 +154,7 @@ export function DateLoginStep({
             <div className="dw-password">
               <input
                 id={`${id}-password`}
+                name="password"
                 className="dw-input"
                 type={reveal ? "text" : "password"}
                 autoComplete="current-password"
@@ -160,6 +166,7 @@ export function DateLoginStep({
               <button
                 type="button"
                 className="dw-reveal"
+                aria-label={reveal ? "Ocultar senha" : "Mostrar senha"}
                 onClick={() => setReveal(!reveal)}
               >
                 {reveal ? (
@@ -179,6 +186,7 @@ export function DateLoginStep({
         ))}
       </div>
       <div className="dw-actions">
+        <p className="dw-help">A senha não é guardada.</p>
         <button
           type="submit"
           form={formId}
@@ -192,7 +200,6 @@ export function DateLoginStep({
           )}
           {submitting ? "Entrando…" : "Entrar"}
         </button>
-        <p className="dw-help">A senha não é guardada.</p>
       </div>
     </>
   );

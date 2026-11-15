@@ -1,0 +1,237 @@
+{
+ "summary": "O Moodle IA passa a ser organizado como a agenda de quem dá aula. São três ferramentas de mesmo peso, na ordem do semestre: Preparar curso (antes das aulas) → Alunos (na matrícula) → Datas (durante o semestre). O Início pergunta 'O que você quer fazer hoje?' e guarda 'Seus cursos'. O curso percorre Começar → O que encontramos → Caderno do curso → Conferir → Seu curso está pronto! → Como levar ao Moodle → E agora?. Os fluxogramas falam a mesma língua do app: cada quadro abre com uma ficha de 'plano de aula'; o caminho principal desce em caneta azul; os erros ficam só na margem esquerda, como etiquetas 'Se…' que sempre têm volta; as voltas são pontilhadas, à direita; e uma faixa laranja 'No seu Moodle', na base, mostra o que acontece fora do app. São seis quadros: mapa geral, jornada principal, caderno e correções, alunos, datas e conexão, e erros e recuperação. A fonte é Switzer em tudo e Gambetta só nos títulos, com uma única coruja marrom 2D com o Moodle na barriga. Saem o vidro, a paisagem 3D, a coruja verde, os IDs e os status de implementação.",
+ "information_architecture": "PRINCÍPIOS: três ferramentas independentes, mostradas na ordem do semestre. Um Início pergunta a intenção. O curso em preparação só é editado no Caderno. Tudo o que mexe no Moodle passa por 'Conectar ao Moodle' e por uma prévia.\n\nCABEÇALHO (todas as telas, 64 px):\n- Esquerda: a coruja marrom 2D (de public/brand-owl.svg) + 'Moodle IA', que leva ao Início. É a única coruja do cabeçalho e também o favicon. Saem a coruja verde 'M', o Owl3D da entrada e o Owl() sem uso.\n- Centro: a fita do semestre, com três itens de mesmo peso ligados por uma linha fina com setas: 'Preparar curso' (legenda 'antes das aulas'), 'Alunos' ('na matrícula') e 'Datas' ('durante o semestre'). O item ativo tem aria-current e fundo --selected, inclusive o Curso. A fita não obriga nenhuma ordem: qualquer ferramenta abre direto.\n- Direita: o chip 'Moodle: não conectado' ou 'Conectado · 25 min', que abre a folha Conectar ao Moodle. Ao lado, o menu 'Mais': Aparência (claro, escuro ou automático, aplicada antes de pintar a página, sem piscar), Menos movimento, Como funciona e Limites e compatibilidade.\n- Saem: 'Fundo', a paisagem 3D, os vaga-lumes, os painéis de vidro e os links 'Voltar ao curso' repetidos.\n- No celular (até 740 px): barra inferior fixa com Início · Curso · Alunos · Datas (alvos de 56 px). O chip do Moodle fica no topo e 'Mais' vai para o menu da coruja.\n\nTRILHA DE ETAPAS (no topo de Curso, Alunos e Datas): usa os mesmos nomes dos divisores dos quadros.\n- Curso: Começar · Montar · Conferir · Baixar · Levar ao Moodle.\n- Alunos: Planilha · Conferir · Cursos · Entregar · Prévia · Resultado.\n- Datas: Conectar · Curso · Datas atuais · Planejar · Antes e depois · Resultado.\n- Etapas passadas ficam cheias e clicáveis; a atual mostra 'Você está aqui'; as próximas ficam vazadas.\n- Os estados são reais ('Lendo…', '3 correções', 'Baixado às 14:32 · você mudou depois').\n\nROTAS:\n- '/' é o Início, 'O que você quer fazer hoje?':\n  - três cartões: Preparar um curso · Matricular alunos · Ajustar datas;\n  - 'Continuar de onde parou · editado ontem às 18:20';\n  - o bloco 'Seus cursos', ordenado pela última edição. Cada curso mostra o estado em texto (Rascunho · Conferido · Arquivo baixado · No Moodle (você confirmou)) e as ações Abrir, Duplicar, Renomear, Guardar cópia no computador e Excluir (com confirmação e o nome do curso);\n  - 'Abrir cópia do computador (.moodleai)', que também aceita arrastar o arquivo;\n  - na primeira visita, o bloco dá lugar a 'Ver um curso de exemplo'.\n- '/curso/novo' é 'Como você quer começar?'. As etapas internas usam ?etapa=planejamento | do-zero | outras | lendo | encontramos, para o Voltar do navegador funcionar. Importar SEMPRE cria um curso novo.\n- '/curso/[id]' é o Caderno do curso:\n  - Sumário com Sobre a disciplina · Unidades · Notas e pesos · Arquivos do curso;\n  - página aberta no centro;\n  - coluna 'Para corrigir antes de baixar (N)', que no celular vira folha inferior com contador;\n  - endereço profundo ?onde=unidade-2/atividade-1/questao-3, para 'Ir até lá', para o Voltar e para recarregar;\n  - menu 'Mais ações do curso': Guardar cópia no computador (.moodleai) · Reimportar planejamento neste curso (mostra o que muda e guarda uma cópia antes) · Duplicar · Trocar de curso · Exportar dados (JSON, avançado).\n- '/curso/[id]/entregar' é uma página com quatro seções em sequência: Conferir o curso → Seu curso está pronto! → Como levar ao Moodle → E agora?.\n- '/alunos' (o antigo /cadastro-lote redireciona para cá) e '/datas': uma página cada, com etapas verticais numeradas.\n- '/como-funciona' (opcional): os quadros 1 a 5 como página navegável, gerada do mesmo arquivo de dados da trilha.\n- A folha lateral 'Conectar ao Moodle' é única. Ela é compartilhada por Alunos e Datas e também abre pelo chip. A lista de cursos carrega sozinha e serve às duas ferramentas.\n\nRELAÇÃO ENTRE AS FERRAMENTAS:\n- As três são independentes: Alunos e Datas funcionam com cursos que não nasceram no app.\n- O curso aberto no Caderno aparece só como sugestão ('Curso no caderno: Introdução à programação'): como destino em Alunos e como curso em Datas. A pessoa confirma.\n- A seção 'E agora?' da entrega leva a Alunos e a Datas.\n\nESTADO E SALVAMENTO:\n- O rascunho é salvo neste navegador mesmo com correções. As correções bloqueiam só a geração do .mbz.\n- O cabeçalho do Caderno distingue 'Salvo neste navegador há 1 minuto' (sem número de revisão) de 'Cópia no computador: 12/10, 14:20' (ou 'nenhuma ainda'), e mostra 'Último arquivo: hoje, 14:35'.\n- Falha ao salvar e cota cheia aparecem num aviso fixo, com 'Guardar cópia no computador'.\n- Se outra aba alterar o curso, aparece um aviso com 'Abrir a versão mais nova' e 'Guardar a minha como cópia'. Nunca há sobrescrita em silêncio.\n- Trocar de ferramenta nunca apaga trabalho. A planilha, a revisão, o plano de datas e o bloqueio de 'Não sabemos' ficam na memória desta janela; não vão para Seus cursos nem para arquivos.\n- Remover um item mostra 'Desfazer' por 10 segundos, no lugar de window.confirm. Excluir um curso inteiro pede confirmação com o nome.\n- Só tabelas grandes (alunos, prévias, resultados) são paginadas, cada uma com a sua própria paginação. Listas curtas (atividades da unidade, linhas de tabela) ficam inteiras.\n\nAVANÇADO:\n- 'Outras formas de começar' aparece dobrado, mas sempre visível, na primeira tela: Colar o texto do planejamento · Copiar instruções para outra IA · Colar a resposta da outra IA.\n- 'Quem vai ler?' (Sem IA, no seu computador, que é o padrão · OpenAI · Gemini) fica na tela 'Envie o planejamento'. A chave fica só nesta sessão e há um aviso de envio externo. O app nunca troca de provedor sozinho.\n- 'De onde veio cada parte' fica recolhido em Arquivos do curso.\n\nVOCABULÁRIO:\n- 'Unidade' é a palavra genérica. O nome de cada uma segue a organização escolhida ('Tópico 2' ou 'Semana 2').\n- 'Correção' é o que impede gerar; 'aviso' é o que vale olhar e não impede.\n- 'Arquivo do curso (.mbz)' é o pacote para o Moodle; 'cópia no computador (.moodleai)' é o projeto.\n- Datas aparecem no horário de Brasília, com o fuso indicado, nunca em ISO cru nem em UTC.",
+ "screen_inventory": [
+  {
+   "screen": "Início · O que você quer fazer hoje?",
+   "route": "/",
+   "main_action": "Preparar um curso (ou Continuar de onde parou)",
+   "replaces": "A abertura direta no formulário de entrada (app/page.tsx + entry-panel.tsx) e o Owl3D da entrada (entry-mascot.tsx)"
+  },
+  {
+   "screen": "Seus cursos (bloco do Início)",
+   "route": "/",
+   "main_action": "Abrir",
+   "replaces": "saved-projects-dialog.tsx e os botões 'Projetos salvos (N)' e 'Importar projeto'"
+  },
+  {
+   "screen": "Abrir cópia do computador · O que tem neste arquivo",
+   "route": "/ (folha)",
+   "main_action": "Abrir no caderno",
+   "replaces": "'Importar projeto' / 'Importar cópia portátil' (use-course-transfers.ts), que hoje recusa um curso já salvo e não oferece saída"
+  },
+  {
+   "screen": "Como você quer começar?",
+   "route": "/curso/novo",
+   "main_action": "Tenho um planejamento",
+   "replaces": "As abas 'Importar arquivos / Criar manualmente / Importar JSON' e os botões 'Usar exemplo' e 'Copiar prompt' (entry-panel.tsx)"
+  },
+  {
+   "screen": "Envie o planejamento",
+   "route": "/curso/novo?etapa=planejamento",
+   "main_action": "Ler o planejamento",
+   "replaces": "import-files-panel.tsx. O disclosure 'Organização: tópicos · Perfil local, sem IA' vira as perguntas visíveis 'Organizado por' e 'Quem vai ler?'"
+  },
+  {
+   "screen": "Começar do zero",
+   "route": "/curso/novo?etapa=do-zero",
+   "main_action": "Criar curso",
+   "replaces": "manual-course-form.tsx"
+  },
+  {
+   "screen": "Outras formas de começar",
+   "route": "/curso/novo?etapa=outras",
+   "main_action": "Colar a resposta da outra IA",
+   "replaces": "json-import-panel.tsx e prompt-dialog.tsx (o JSON Schema fica recolhido em 'Ver o texto completo')"
+  },
+  {
+   "screen": "Lendo o planejamento",
+   "route": "/curso/novo?etapa=lendo",
+   "main_action": "Cancelar (ou aguardar)",
+   "replaces": "As mensagens de progresso de status-messages.tsx durante a importação"
+  },
+  {
+   "screen": "O que encontramos",
+   "route": "/curso/novo?etapa=encontramos",
+   "main_action": "Abrir como novo curso",
+   "replaces": "import-proposal-dialog.tsx. O diálogo vira etapa e nunca substitui o curso aberto"
+  },
+  {
+   "screen": "Caderno do curso (Sumário, página, correções)",
+   "route": "/curso/[id]",
+   "main_action": "Abrir unidade",
+   "replaces": "editor-workspace.tsx, course-navigation.tsx, editor-header.tsx, course-metadata-panel.tsx e o '/' com o projeto só em memória"
+  },
+  {
+   "screen": "Abra uma unidade",
+   "route": "/curso/[id]?onde=unidade-2",
+   "main_action": "+ Atividade",
+   "replaces": "section-panel.tsx, sem a paginação de 5 em 5 e com o cabeçalho ambíguo de unidade e atividade separado"
+  },
+  {
+   "screen": "Que atividade?",
+   "route": "/curso/[id] (folha)",
+   "main_action": "Criar",
+   "replaces": "Os seis botões de tipo de section-panel.tsx, que criam '<Tipo>: novo conteúdo' (project.ts makeActivity)"
+  },
+  {
+   "screen": "Atividade aberta",
+   "route": "/curso/[id]?onde=unidade-2/atividade-1",
+   "main_action": "Editar conteúdo e datas",
+   "replaces": "activity-editor.tsx, activity-settings.tsx, glossary-editor.tsx e content.tsx. Fica um editor por campo, sem textarea duplicado, e o anexo entra dentro da atividade"
+  },
+  {
+   "screen": "Questões do quiz",
+   "route": "/curso/[id]?onde=unidade-2/atividade-3/questao-1",
+   "main_action": "Abrir uma questão",
+   "replaces": "quiz-editor.tsx, question-editor.tsx, multiple-choice-answers.tsx, matching-answers.tsx e essay-answer-settings.tsx. O select 'Questão em edição' vira uma lista de cartões"
+  },
+  {
+   "screen": "Notas e pesos",
+   "route": "/curso/[id]?onde=notas",
+   "main_action": "+ Categoria (nasce vazia)",
+   "replaces": "grades-panel.tsx e a área 'Avaliação e presets'"
+  },
+  {
+   "screen": "Arquivos do curso",
+   "route": "/curso/[id]?onde=arquivos",
+   "main_action": "Trocar o destino de um arquivo",
+   "replaces": "project-files-panel.tsx e provenance-viewer.tsx. 'Rastreabilidade dos campos' vira 'De onde veio cada parte', recolhido"
+  },
+  {
+   "screen": "Para corrigir antes de baixar (coluna; folha no celular)",
+   "route": "/curso/[id]",
+   "main_action": "Ir até lá",
+   "replaces": "review-sidebar.tsx (sem o corte em 30 e sem paths) e o banner vermelho de showIssue (use-course-navigation.ts)"
+  },
+  {
+   "screen": "Sugestões do assistente",
+   "route": "/curso/[id] (folha)",
+   "main_action": "Aplicar as mudanças (ou Recusar)",
+   "replaces": "agent-proposal-dialog.tsx, que ganha 'Recusar' e nomes legíveis no lugar dos IDs"
+  },
+  {
+   "screen": "Mais ações do curso",
+   "route": "/curso/[id] (menu)",
+   "main_action": "Guardar cópia no computador",
+   "replaces": "'Salvar cópia', 'Exportar JSON' e 'Projetos salvos', hoje repetidos na navegação e na navegação móvel"
+  },
+  {
+   "screen": "Conferir o curso",
+   "route": "/curso/[id]/entregar (seção 1)",
+   "main_action": "Gerar o arquivo para o Moodle",
+   "replaces": "course-review-dialog.tsx e os botões duplicados 'Conferir curso' / 'Conferir revisão'. A validação deixa de ser implícita ao abrir o diálogo"
+  },
+  {
+   "screen": "Seu curso está pronto!",
+   "route": "/curso/[id]/entregar (seção 2)",
+   "main_action": "Baixar curso (.mbz)",
+   "replaces": "delivery-panel.tsx ('Backup pronto', hoje escondido no fim do editor)"
+  },
+  {
+   "screen": "Como levar ao Moodle",
+   "route": "/curso/[id]/entregar (seção 3)",
+   "main_action": "Já restaurei no Moodle",
+   "replaces": "As instruções de restauração que hoje só estão no README e o aviso 'Moodle 4.1.17, build 20250317' repetido três vezes"
+  },
+  {
+   "screen": "E agora?",
+   "route": "/curso/[id]/entregar (seção 4)",
+   "main_action": "Matricular os alunos",
+   "replaces": "Nada: hoje a entrega termina sem próximo passo"
+  },
+  {
+   "screen": "Alunos · Escolha a planilha e Diga o que é cada coluna",
+   "route": "/alunos (o antigo /cadastro-lote redireciona)",
+   "main_action": "Escolher planilha",
+   "replaces": "StudentImport.tsx e StudentMapping.tsx, a etapa '1. Planilha' de StudentsWorkspace.tsx"
+  },
+  {
+   "screen": "Alunos · Confira os alunos",
+   "route": "/alunos (etapa 2)",
+   "main_action": "Corrigir na tabela",
+   "replaces": "StudentReview.tsx e EditableStudentTable.tsx ('0 pendências' vira contagem com plural certo)"
+  },
+  {
+   "screen": "Alunos · Em quais cursos matricular?",
+   "route": "/alunos (etapa 3)",
+   "main_action": "Escolher os cursos do lote",
+   "replaces": "A escolha de destinos espalhada entre a revisão e MoodleStudentPanel.tsx. Mudar o destino deixa de apagar os CSVs e de voltar para a etapa 2"
+  },
+  {
+   "screen": "Alunos · Como entregar (baixar ou enviar)",
+   "route": "/alunos (etapa 4)",
+   "main_action": "Baixar o CSV de cada curso / Enviar ao Moodle",
+   "replaces": "StudentExports.tsx e a etapa '3. Download', que escondia o envio ao Moodle"
+  },
+  {
+   "screen": "Alunos · Ver o que o Moodle vai fazer + Resultado por aluno",
+   "route": "/alunos (etapas 5 e 6)",
+   "main_action": "Confirmar cadastro de 32 alunos",
+   "replaces": "MoodleStudentPanel.tsx, MoodleStudentConfirmation.tsx e MoodleStudentResults.tsx. Ganham 'Fazer outro lote', e a prévia e o resultado passam a ter paginação separada"
+  },
+  {
+   "screen": "Conectar ao Moodle (folha lateral) + chip no cabeçalho",
+   "route": "qualquer rota (folha)",
+   "main_action": "Entrar no Moodle",
+   "replaces": "components/moodle-connection.tsx, features/moodle/components/moodle-connection.tsx e a parte de login de DateConnectionPanel.tsx. 'Carregar cursos' some, e 'Tentar de novo' passa a existir"
+  },
+  {
+   "screen": "Datas · Qual curso? e Datas atuais",
+   "route": "/datas (etapas 2 e 3)",
+   "main_action": "Escolher o curso",
+   "replaces": "O select de DateConnectionPanel.tsx e o textarea 'Alvos JSON' de DatePlanForm.tsx"
+  },
+  {
+   "screen": "Datas · Planeje as datas",
+   "route": "/datas (etapa 4)",
+   "main_action": "Ver antes e depois",
+   "replaces": "DatePlanForm.tsx, sem a data fixa 2026-10-19 e com 'Da unidade X até Y', 'Mesma data para todas' e ajuste linha a linha"
+  },
+  {
+   "screen": "Datas · Antes e depois",
+   "route": "/datas (etapa 5)",
+   "main_action": "Aplicar 24 mudanças",
+   "replaces": "DatePreviewTable.tsx, que passa a mostrar o horário de Brasília em vez de UTC"
+  },
+  {
+   "screen": "Datas · Resultado",
+   "route": "/datas (etapa 6)",
+   "main_action": "Ver as que faltaram",
+   "replaces": "DateResultsPanel.tsx"
+  },
+  {
+   "screen": "Experimentar sem o Moodle",
+   "route": "/datas?ensaio=1",
+   "main_action": "Conectar para aplicar",
+   "replaces": "'Simular cronograma' e 'Baixar plano conferido' (um JSON que nada usa), em DatesWorkspace.tsx"
+  },
+  {
+   "screen": "Cabeçalho com a fita do semestre + menu Mais",
+   "route": "todas",
+   "main_action": "Trocar de ferramenta",
+   "replaces": "O cabeçalho de shell.tsx (Alunos / Fundo / Tema, o Owl() sem uso, os links 'Voltar ao curso' repetidos), a paisagem 3D e os painéis de vidro (.glass em globals.css)"
+  },
+  {
+   "screen": "Como funciona (mapa do semestre)",
+   "route": "/como-funciona",
+   "main_action": "Ir para esta tela",
+   "replaces": "docs/screen-flow.html e docs/SCREEN_FLOW.md para o professor. PIPELINE.md e BUILDER_PIPELINE_PLAN.md continuam só como documentos de engenharia"
+  }
+ ],
+ "open_questions": [
+  "Ordem de Datas. O caminho principal lê o curso primeiro (conectar → qual curso → datas atuais → planejar), como no app antigo, mas os documentos dizem Planejar → Moodle → Conferir → Resultado. O ensaio sem Moodle mantém a opção de planejar antes. Confirmar qual ordem vale.",
+  "Vocabulário. A proposta usa 'unidade' como palavra genérica, e cada unidade é nomeada 'Tópico N' ou 'Semana N' conforme a organização. Confirmar, ou trocar por 'aula' ou 'seção' (o GLOSSARY.md usa 'Seção').",
+  "Fonte par. Gambetta só nos títulos, nos carimbos e na fala da coruja. A alternativa é Sentient, ou nenhuma, com Switzer 600 nos títulos. Falta verificar se a licença do Fontshare (ITF Free Font License) permite servir os woff2 a partir de public/fonts.",
+  "Marca. A coruja tem o logo do Moodle na barriga e a cor #F98012 aparece na faixa 'No seu Moodle'. Confirmar se isso respeita a política de marca do Moodle; se não, usar uma cor própria para o papel 'no seu Moodle'.",
+  "Coruja no Início e em 'Seu curso está pronto!'. A coruja grande aparece junto do logo pequeno do cabeçalho. É aceitável, já que é a mesma coruja, ou o logo deve virar só texto nessas duas telas?",
+  "Salvar o rascunho mesmo com correções muda o contrato de ProjectStore.save, de validateProject e da cópia .moodleai. É preciso aprovar essa mudança e a migração.",
+  "'Importar sempre cria um curso novo' + 'Reimportar planejamento neste curso' no menu do curso. Isso atende à regra de substituição explícita, ou também é preciso substituir direto a partir de 'O que encontramos'?",
+  "Planilha de alunos entre ferramentas. Hoje ela fica em memória e se perde ao trocar de tela. A proposta é guardar na memória da janela (por exemplo, sessionStorage), apagada ao fechar a janela. Confirmar, porque são dados pessoais.",
+  "'Conferir no Moodle' quando o resultado é desconhecido em Alunos. Existe uma leitura de usuários que não muda nada? Se não existir, a tela mostra só a instrução e um 'Já conferi no Moodle' explícito para desbloquear.",
+  "Versão na entrega. A proposta mostra uma linha só, 'Testado no Moodle 4.1 (laboratório)', e deixa a diferença de build (20250317 no perfil, 20250321 no backup) só na camada Equipe. Confirmar qual build é a oficial.",
+  "Funções do app antigo: aplicar datas em várias turmas de uma vez, glossário nas datas (hoje o domínio aceita só seção, tarefa, quiz e fórum), preset explícito de cadastro do IFCE (username = CPF etc.) e IA para mapear colunas bagunçadas. Entram agora, depois ou nunca?",
+  "A página '/como-funciona', interativa e gerada do mesmo arquivo de dados da trilha, entra no MVP, ou os quadros ficam só como pranchas de design?",
+  "O curso do Caderno vira sugestão de destino em Alunos e Datas, casando pelo nome breve. Isso pode errar (o caso do course1 truncado no app antigo). Basta uma sugestão confirmada pela pessoa, ou é preciso uma ligação explícita do curso com a turma?"
+ ]
+}

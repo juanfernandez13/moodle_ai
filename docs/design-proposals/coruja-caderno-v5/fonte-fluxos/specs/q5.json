@@ -1,0 +1,287 @@
+{
+ "title": "Quadro 5 · Datas e conexão com o Moodle",
+ "purpose": "Mostrar a folha 'Conectar ao Moodle', a mesma para Alunos e Datas, com seus limites (endereço visível, sessão de 30 minutos, endereços internos bloqueados exceto o laboratório local, senha nunca guardada). Em seguida, a ferramenta Datas para um curso já publicado: ler o curso primeiro, planejar, ver antes e depois, aplicar e ver o resultado por item, além do ensaio sem Moodle. Deixa claro que é diferente das datas do curso em preparação, que ficam no Caderno.",
+ "nodes": [
+  {
+   "id": "entrada",
+   "kind": "interchange",
+   "label": "Datas",
+   "detail": "Pela fita ('Datas · durante o semestre'), pelo Início ou por 'E agora?'. Nota --info no topo da página: 'Aqui você muda as datas de um curso que já está no Moodle. As datas do curso em preparação ficam no Caderno.'"
+  },
+  {
+   "id": "ensaio1",
+   "kind": "screen",
+   "label": "Experimentar sem o Moodle",
+   "detail": "Ensaio com um curso de exemplo, marcado 'Só simulação'. O planejamento é igual ao do passo 4."
+  },
+  {
+   "id": "ensaio2",
+   "kind": "screen",
+   "label": "Antes e depois (simulação)",
+   "detail": "Mostra o efeito do plano no curso de exemplo. Nada vai para o Moodle. Saída: 'Conectar para aplicar', e o plano é mantido."
+  },
+  {
+   "id": "ja_conectado",
+   "kind": "decision",
+   "label": "Já está conectado ao Moodle?",
+   "detail": "Antes da pergunta aparece 'Verificando a conexão…'."
+  },
+  {
+   "id": "entrar",
+   "kind": "screen",
+   "label": "Entrar no Moodle",
+   "detail": "Carimbo 1. Folha lateral compartilhada com Alunos. Campos: 'Endereço do Moodle' (ex.: http://localhost:3211; pode ter subpasta) · 'Usuário' · 'Senha'. Com http: 'Este endereço não protege a senha.' E sempre: 'A senha não é guardada em lugar nenhum.'"
+  },
+  {
+   "id": "entrando",
+   "kind": "system",
+   "label": "Entrando no Moodle…"
+  },
+  {
+   "id": "aceitou",
+   "kind": "decision",
+   "label": "O Moodle aceitou?"
+  },
+  {
+   "id": "err_entrar",
+   "kind": "error",
+   "label": "Se não der para entrar ou a conexão acabar",
+   "detail": "O que houve: senha não aceita, endereço não permitido (endereços internos ficam bloqueados; só o laboratório local é liberado), o Moodle não respondeu, ou passaram os 30 minutos. O que fica guardado: o endereço e o usuário (a senha é apagada), a planilha e o plano; as prévias abertas são descartadas. Como voltar: 'Tentar de novo', com o endereço já preenchido."
+  },
+  {
+   "id": "conectado",
+   "kind": "screen",
+   "label": "Conectado",
+   "detail": "Chip no cabeçalho: 'Conectado como Ana em localhost:3211 · 30 min'. Os cursos carregam sozinhos, sem 'Carregar cursos'. 'Conexão disponível. Só o laboratório local foi testado.' Aos 5 minutos do fim: 'Sua conexão termina em 5 min. Renovar?'. 'Trocar de Moodle' e 'Sair' avisam antes: 'As prévias feitas com este endereço serão descartadas.'"
+  },
+  {
+   "id": "volta_alunos",
+   "kind": "interchange",
+   "label": "Voltar para Alunos → Quadro 4"
+  },
+  {
+   "id": "qual_curso",
+   "kind": "screen",
+   "label": "Qual curso?",
+   "detail": "Carimbo 2. Busca pelo nome entre os cursos do Moodle conectado. Sugestão: o curso do caderno ('Introdução à programação'); você confirma."
+  },
+  {
+   "id": "lendo_datas",
+   "kind": "system",
+   "label": "Lendo as datas atuais…",
+   "detail": "Só lê; não muda nada."
+  },
+  {
+   "id": "datas_atuais",
+   "kind": "screen",
+   "label": "Datas atuais",
+   "detail": "Carimbo 3. '8 unidades · 21 atividades' (unidades, tarefas, quizzes e fóruns), no horário de Brasília."
+  },
+  {
+   "id": "planeje",
+   "kind": "screen",
+   "label": "Planeje as datas",
+   "detail": "Carimbo 4. 'Começa em' · 'Uma unidade a cada 7 dias' ou 'Mesma data para todas' · 'Da unidade 1 até a 8' · 'Abre às' / 'Fecha às' · 'Horário de Brasília (UTC−3)'. Também dá para ajustar linha a linha."
+  },
+  {
+   "id": "preparando",
+   "kind": "system",
+   "label": "Preparando a prévia no Moodle…"
+  },
+  {
+   "id": "antes_depois",
+   "kind": "screen",
+   "label": "Antes e depois",
+   "detail": "Carimbo 5. Régua semana a semana e tabela no horário de Brasília. 'Nada foi alterado ainda.' A prévia vale uma vez e expira; mudar o plano a descarta."
+  },
+  {
+   "id": "aplicar",
+   "kind": "action",
+   "label": "Aplicar 24 mudanças",
+   "detail": "Botão que muda o Moodle: borda dupla laranja e escudo. Aviso: 'Não há como desfazer pelo app.' Nada é reaplicado ao recarregar a página."
+  },
+  {
+   "id": "aplicando",
+   "kind": "system",
+   "label": "Aplicando no Moodle…"
+  },
+  {
+   "id": "resultado",
+   "kind": "screen",
+   "label": "Resultado",
+   "detail": "Carimbo 6. Por item: Aplicado · Erro · Não aplicado · Não sabemos. '22 de 24 aplicadas · Ver as 2 que faltaram'. As outras configurações do curso não mudam."
+  },
+  {
+   "id": "incerto",
+   "kind": "decision",
+   "label": "Algum 'Não sabemos'?"
+  },
+  {
+   "id": "err_incerto",
+   "kind": "error",
+   "label": "Se não soubermos se terminou",
+   "detail": "O que houve: a resposta do Moodle não chegou. O que fica guardado: o plano e o resultado. Como voltar: 'Reler as datas' (uma leitura que não muda nada) e só então uma nova prévia. Aplicar de novo fica bloqueado até isso, mesmo que você saia da página."
+  },
+  {
+   "id": "fim",
+   "kind": "end",
+   "label": "Datas aplicadas",
+   "detail": "No seu Moodle."
+  }
+ ],
+ "edges": [
+  {
+   "from": "entrada",
+   "to": "ja_conectado",
+   "style": "main"
+  },
+  {
+   "from": "entrada",
+   "to": "ensaio1",
+   "label": "Experimentar sem o Moodle",
+   "style": "alternative"
+  },
+  {
+   "from": "ensaio1",
+   "to": "ensaio2",
+   "label": "Ver antes e depois",
+   "style": "alternative"
+  },
+  {
+   "from": "ensaio2",
+   "to": "ja_conectado",
+   "label": "Conectar para aplicar",
+   "style": "alternative"
+  },
+  {
+   "from": "ja_conectado",
+   "to": "entrar",
+   "label": "não",
+   "style": "main"
+  },
+  {
+   "from": "ja_conectado",
+   "to": "conectado",
+   "label": "sim",
+   "style": "alternative"
+  },
+  {
+   "from": "entrar",
+   "to": "entrando",
+   "label": "Entrar no Moodle",
+   "style": "main"
+  },
+  {
+   "from": "entrando",
+   "to": "aceitou",
+   "style": "main"
+  },
+  {
+   "from": "aceitou",
+   "to": "conectado",
+   "label": "sim",
+   "style": "main"
+  },
+  {
+   "from": "aceitou",
+   "to": "err_entrar",
+   "label": "não",
+   "style": "error"
+  },
+  {
+   "from": "conectado",
+   "to": "err_entrar",
+   "label": "se acabar",
+   "style": "error"
+  },
+  {
+   "from": "err_entrar",
+   "to": "entrar",
+   "label": "Tentar de novo",
+   "style": "error"
+  },
+  {
+   "from": "conectado",
+   "to": "volta_alunos",
+   "label": "Veio de Alunos",
+   "style": "alternative"
+  },
+  {
+   "from": "conectado",
+   "to": "qual_curso",
+   "label": "Escolher o curso",
+   "style": "main"
+  },
+  {
+   "from": "qual_curso",
+   "to": "lendo_datas",
+   "style": "main"
+  },
+  {
+   "from": "lendo_datas",
+   "to": "datas_atuais",
+   "style": "main"
+  },
+  {
+   "from": "datas_atuais",
+   "to": "planeje",
+   "style": "main"
+  },
+  {
+   "from": "planeje",
+   "to": "preparando",
+   "label": "Ver antes e depois",
+   "style": "main"
+  },
+  {
+   "from": "preparando",
+   "to": "antes_depois",
+   "style": "main"
+  },
+  {
+   "from": "antes_depois",
+   "to": "planeje",
+   "label": "Voltar e mudar",
+   "style": "loop"
+  },
+  {
+   "from": "antes_depois",
+   "to": "aplicar",
+   "style": "main"
+  },
+  {
+   "from": "aplicar",
+   "to": "aplicando",
+   "style": "main"
+  },
+  {
+   "from": "aplicando",
+   "to": "resultado",
+   "style": "main"
+  },
+  {
+   "from": "resultado",
+   "to": "incerto",
+   "style": "main"
+  },
+  {
+   "from": "incerto",
+   "to": "fim",
+   "label": "não",
+   "style": "main"
+  },
+  {
+   "from": "incerto",
+   "to": "err_incerto",
+   "label": "sim",
+   "style": "error"
+  },
+  {
+   "from": "err_incerto",
+   "to": "lendo_datas",
+   "label": "Reler as datas",
+   "style": "error"
+  }
+ ],
+ "layout_hint": "PRANCHA: vertical, 1440 × 3560.\n\nCABEÇALHO 'Plano de aula':\n- Título: 'Ajustar datas e conectar ao Moodle'.\n- Objetivo: 'Mudar a abertura e os prazos de um curso que já está no Moodle'.\n- Quando usar: 'Durante o semestre'.\n- Você vai precisar: 'Endereço, usuário e senha do Moodle (nos exemplos, o laboratório local http://localhost:3211)'.\n\nFAIXAS: as mesmas do Quadro 2.\n\nBLOCO 'CONECTAR AO MOODLE' (r2 a r6): fundo --surface a 50%, com o rótulo 'Vale para Alunos e Datas'.\n\nLINHAS (y do topo):\n- r1 300: entrada; ensaio1 na faixa O; ensaio2 na faixa N.\n- r2 500: ja_conectado.\n- r3 660: entrar (altura de pelo menos 150).\n- r4 860: entrando.\n- r5 980: aceitou; err_entrar na faixa E (y 960–1240).\n- r6 1140: conectado (altura de pelo menos 160); volta_alunos na faixa O (y 1240–1292).\n- r7 1380: qual_curso.\n- r8 1560: lendo_datas.\n- r9 1680: datas_atuais.\n- r10 1860: planeje (altura de pelo menos 150).\n- r11 2060: preparando.\n- r12 2180: antes_depois.\n- r13 2380: aplicar.\n- r14 2500: aplicando.\n- r15 2620: resultado.\n- r16 2800: incerto; err_incerto na faixa E.\n\nPORTA E FAIXA DO MOODLE: porta em y 2980; faixa de y 3000 a 3260, com fim na faixa C.\n\nDIVISORES DE ETAPA: 'Conectar' acima de r2 · 'Curso' acima de r7 · 'Datas atuais' acima de r8 · 'Planejar' acima de r10 · 'Antes e depois' acima de r11 · 'Resultado' acima de r13.\n\nROTAS (entradas medidas a partir do topo do cartão):\n- entrada→ensaio1 e ensaio1→ensaio2: horizontais.\n- ensaio2→ja_conectado: desce pela faixa N até y 460, corre para a esquerda em y 460 e se junta à seta principal logo acima do losango, com um ponto de junção de 8 px.\n- ja_conectado→conectado: sai pelo vértice direito, desce por G2 (x 748) e entra pela direita de conectado a +40 px.\n- aceitou→err_entrar: horizontal.\n- conectado→err_entrar: horizontal, saindo de conectado a +40 px.\n- err_entrar→entrar: sobe pela faixa E (x 188) e entra pela esquerda de entrar a +60 px.\n- conectado→volta_alunos: sai da direita a +120 px.\n- antes_depois→planeje: trilho V em x 1088; entra em planeje a +60 px.\n- err_incerto→lendo_datas: sobe pela faixa E (x 188) e entra pela esquerda de lendo_datas.\n\nNenhuma linha cruza outra."
+}

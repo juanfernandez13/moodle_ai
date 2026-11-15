@@ -83,8 +83,9 @@ export function useCourseWorkspace({ setError, setAgentProposal }: Options) {
             projectIdentity(projectRef.current) === workspaceId &&
             projectRef.current.draft.revision === snapshot.draft.revision
           )
+            // Texto de gente ("às 14:32"), nunca "revisão 347".
             setSaveState(
-              `Salvo neste navegador · revisão ${snapshot.draft.revision}`,
+              `Salvo neste navegador às ${new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`,
             );
           setProjects(await store.current!.list());
         } catch (failure) {
@@ -133,6 +134,26 @@ export function useCourseWorkspace({ setError, setAgentProposal }: Options) {
     blocked.current.delete(id);
     return next;
   }
+  /**
+   * Exclui um curso salvo. Entra na mesma fila dos salvamentos, para um salvamento que ainda está a caminho não
+   * trazer o curso de volta. O curso aberto não é excluído por aqui (a janela nem oferece): ele seria salvo de novo.
+   */
+  async function removeSaved(id: string) {
+    if (!store.current) throw new Error("Armazenamento indisponível.");
+    const database = store.current;
+    const done = saveQueue.current
+      .catch(() => {})
+      .then(async () => {
+        await database.remove(id);
+        savedRevisions.current.delete(id);
+        blocked.current.delete(id);
+        setProjects(await database.list());
+      });
+    // A fila continua mesmo se a exclusão falhar; quem chamou recebe o erro.
+    saveQueue.current = done.catch(() => {});
+    workspaceSession.queue = saveQueue.current;
+    return done;
+  }
   return {
     project,
     setProject,
@@ -155,6 +176,7 @@ export function useCourseWorkspace({ setError, setAgentProposal }: Options) {
     setArtifact,
     commands,
     loadSaved,
+    removeSaved,
   };
 }
 

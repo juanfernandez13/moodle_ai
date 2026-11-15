@@ -1,9 +1,9 @@
 import { Fragment } from "react";
+import { splitFileName } from "./file-name.ts";
 
-/** Nome de arquivo que quebra depois de _ - . e espaço, em vez de no meio de uma palavra. */
+/** Nome de arquivo que quebra depois de _ - . e espaço, em vez de no meio de uma palavra. A extensão fica colada à palavra de antes. */
 export function Breakable({ text }: { text: string }) {
-  // Sem "lookbehind": navegadores mais antigos não o aceitam e a tela inteira falharia.
-  const parts = text.match(/[^_.\s-]*[_.\s-]+|[^_.\s-]+/g) ?? [text];
+  const { parts, extension } = splitFileName(text);
   return (
     <>
       {parts.map((part, index) => (
@@ -12,6 +12,7 @@ export function Breakable({ text }: { text: string }) {
           {index < parts.length - 1 && <wbr />}
         </Fragment>
       ))}
+      {extension}
     </>
   );
 }

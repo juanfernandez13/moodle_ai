@@ -57,6 +57,13 @@ export function ManualCourseForm({
         );
       }}
     >
+      {/* A coruja fica apoiada no cartão e faz a pergunta; os campos têm os rótulos de sempre. */}
+      <div className="entry-owl">
+        <div className="entry-bubble">
+          <p className="entry-bubble-say">Como vai se chamar a disciplina?</p>
+        </div>
+        <span className="entry-owl-art" aria-hidden="true" />
+      </div>
       <div className="entry-manual-card">
         <div className="entry-field">
           <label className="entry-label" htmlFor={nameId}>

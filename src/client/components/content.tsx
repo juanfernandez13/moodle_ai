@@ -1,9 +1,10 @@
 "use client";
-import { useEffect, useState, useId } from "react";
+import { useEffect, useRef, useState, useId } from "react";
 import type { ContentBlock, InlineBlock } from "../../domain/course/index.ts";
 import type { ProjectFile } from "../project.ts";
 import { newId } from "../project.ts";
 import { Pagination } from "./pagination.tsx";
+import { ScrollRegion } from "./scroll-region.tsx";
 import { richTableRowFocus } from "../navigation.ts";
 import type { ReactNode } from "react";
 import {
@@ -92,7 +93,7 @@ function TablePreview({
   );
   return (
     <div>
-      <div className="table-scroll">
+      <ScrollRegion className="table-scroll" label="Tabela">
         <table>
           <tbody>
             {block.rows
@@ -106,7 +107,7 @@ function TablePreview({
               ))}
           </tbody>
         </table>
-      </div>
+      </ScrollRegion>
       {block.rows.length > 5 && (
         <Pagination
           page={activePage}
@@ -149,6 +150,17 @@ export function RichEditor({
   const tableRow = (block: Extract<ContentBlock, { kind: "table" }>) =>
     Math.min(tableRows[block.id] ?? 0, block.rows.length - 1);
   const bodyId = useId();
+  // Abrir ou recolher troca um botão pelo outro: o foco vai para o botão novo, em vez de se perder.
+  const toggle = useRef<HTMLButtonElement>(null);
+  const wantExpanded = useRef<boolean | null>(null);
+  useEffect(() => {
+    const want = wantExpanded.current;
+    const button = toggle.current;
+    if (want === null || !button) return;
+    if ((button.getAttribute("aria-expanded") === "true") !== want) return;
+    wantExpanded.current = null;
+    button.focus();
+  });
   const images = assets.filter((entry) =>
     ["image/png", "image/jpeg", "image/gif", "image/webp"].includes(
       entry.mediaType,
@@ -160,15 +172,17 @@ export function RichEditor({
         <button
           type="button"
           className="text-button rich-enable"
+          ref={toggle}
           aria-expanded={false}
           aria-controls={bodyId}
           onClick={() => {
+            wantExpanded.current = true;
             setExpanded(true);
             if (blocks === undefined)
               onChange([{ id: newId("block"), kind: "text", text: fallback }]);
           }}
         >
-          <ImageIcon size={16} />
+          <ImageIcon size={16} aria-hidden="true" />
           Organizar texto, imagens e tabelas
           {blocks
             ? ` (${blocks.length} ${blocks.length === 1 ? "bloco" : "blocos"})`
@@ -198,9 +212,13 @@ export function RichEditor({
       <button
         type="button"
         className="text-button"
+        ref={toggle}
         aria-expanded={true}
         aria-controls={bodyId}
-        onClick={() => setExpanded(false)}
+        onClick={() => {
+          wantExpanded.current = false;
+          setExpanded(false);
+        }}
       >
         Recolher blocos
       </button>

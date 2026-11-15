@@ -46,6 +46,8 @@ export function DateReviewStep({
         </p>
       </div>
       <div className="dw-actions">
+        <DateBackLink onClick={onBack} />
+        {!demo && <p className="dw-help">Não dá para desfazer.</p>}
         {demo ? (
           <button type="button" className="primary dw-primary" onClick={onUseMoodle}>
             Usar no Moodle
@@ -55,8 +57,11 @@ export function DateReviewStep({
           <button
             type="button"
             className="primary dw-primary dw-apply"
-            disabled={busy}
-            onClick={onApply}
+            aria-disabled={busy ? true : undefined}
+            onClick={() => {
+              if (busy) return;
+              onApply();
+            }}
           >
             {busy ? (
               <LoaderCircle className="spinner" size={22} aria-hidden="true" />
@@ -66,8 +71,6 @@ export function DateReviewStep({
             Aplicar {plural(plan.changes.length, "mudança", "mudanças")}
           </button>
         )}
-        <DateBackLink onClick={onBack} />
-        {!demo && <p className="dw-help">Não dá para desfazer.</p>}
       </div>
     </>
   );

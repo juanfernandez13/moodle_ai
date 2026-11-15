@@ -57,7 +57,7 @@ export function DateScheduleStep({
           )}
           <div className="dw-question" role="group" aria-labelledby={`${id}-start`}>
             <h3 id={`${id}-start`} className="dw-prompt">
-              Quando o curso começa?
+              Quando a disciplina começa?
             </h3>
             <input
               className="dw-input dw-date"
@@ -99,10 +99,9 @@ export function DateScheduleStep({
           <p className="dw-times-line">
             <Clock size={22} aria-hidden="true" />
             <span>
-              Abre às <strong>{input.opensAtTime || "--:--"}</strong> · Fecha às{" "}
-              <strong>{input.closesAtTime || "--:--"}</strong>
+              Atividades abrem às <strong>{input.opensAtTime || "--:--"}</strong>{" "}
+              e fecham às <strong>{input.closesAtTime || "--:--"}</strong>
             </span>
-            <span className="dw-zone">Horário de Brasília</span>
           </p>
           <button
             type="button"
@@ -147,11 +146,16 @@ export function DateScheduleStep({
         )}
       </div>
       <div className="dw-actions">
+        {!demo && <DateBackLink onClick={onBack} />}
         <button
           type="button"
           className="primary dw-primary"
-          disabled={Boolean(problem) || working || (locked && !demo)}
-          onClick={onNext}
+          disabled={Boolean(problem) || (locked && !demo)}
+          aria-disabled={working ? true : undefined}
+          onClick={() => {
+            if (working) return;
+            onNext();
+          }}
         >
           {working ? (
             <LoaderCircle className="spinner" size={22} aria-hidden="true" />
@@ -160,7 +164,6 @@ export function DateScheduleStep({
           )}
           {working ? "Preparando…" : "Ver como fica"}
         </button>
-        {!demo && <DateBackLink onClick={onBack} />}
       </div>
     </>
   );

@@ -10,6 +10,8 @@ export type CourseCommand =
       title: string;
       summary: string;
       summaryBlocks?: Section["summaryBlocks"];
+      /** Só no pacote de quizzes: a seção do curso de destino. */
+      targetNumber?: number;
     }
   | { type: "remove_section"; sectionId: string }
   | { type: "move_section"; sectionId: string; to: number }
@@ -32,7 +34,7 @@ export function applyCommands(
     return {
       ok: false,
       code: "stale_revision",
-      message: "O curso mudou. Recalcule a proposta sobre a revisão atual.",
+      message: "A disciplina mudou. Recalcule a proposta sobre a revisão atual.",
     };
   const draft = structuredClone(input);
   try {
@@ -60,7 +62,7 @@ export function applyCommands(
           break;
         case "add_section":
           if (draft.sections.length >= 200)
-            throw new Error("O curso admite até 200 unidades.");
+            throw new Error("A disciplina admite até 200 unidades.");
           draft.sections.push(structuredClone(command.section));
           break;
         case "set_section":
@@ -69,6 +71,8 @@ export function applyCommands(
           section.summary = command.summary;
           if (command.summaryBlocks !== undefined)
             section.summaryBlocks = structuredClone(command.summaryBlocks);
+          if (command.targetNumber !== undefined)
+            section.targetNumber = command.targetNumber;
           break;
         case "remove_section":
           if (!section || draft.sections.length === 1)

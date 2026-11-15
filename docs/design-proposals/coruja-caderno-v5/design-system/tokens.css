@@ -1,0 +1,135 @@
+/* Moodle IA — generated from tokens.json */
+:root, [data-theme="light"] {
+  --page: #eef6f1;
+  --notebook-line: #d7e6dc;
+  --notebook-margin: rgba(249, 128, 18, 0.3);
+  --surface: #ffffff;
+  --glass: rgba(255, 255, 255, 0.62);
+  --glass-line: rgba(255, 255, 255, 0.75);
+  --surface-soft: #f3f8f4;
+  --selected: #d5e9dc;
+  --ink: #173e30;
+  --ink-muted: #345347;
+  --line: #bbd4c6;
+  --control-border: #789583;
+  --action: #26764f;
+  --action-strong: #1f6342;
+  --on-action: #ffffff;
+  --focus: #26764f;
+  --error: #a32638;
+  --error-soft: #fbe9ec;
+  --warning: #8a4b00;
+  --warning-soft: #fff3dc;
+  --warning-line: #9a6a1a;
+  --info: #2b5a86;
+  --info-soft: #e8f1fb;
+  --mint: #b6d8be;
+  --owl: #b68c62;
+  --owl-soft: #f4ebdf;
+  --owl-ink: #6b4a2b;
+  --moodle: #f98012;
+  --moodle-line: #c4600a;
+  --moodle-ink: #8a4300;
+  --moodle-soft: #fef1e4;
+  --forum-ink: #315683;
+  --forum-soft: #eaf2ff;
+  --forum-line: #bdd0eb;
+  --assignment-ink: #365944;
+  --assignment-soft: #e5f4e8;
+  --assignment-line: #bcd7c6;
+  --quiz-ink: #7a4a13;
+  --quiz-soft: #fcf0d5;
+  --quiz-line: #ddc28d;
+  --chat-ink: #64437b;
+  --chat-soft: #f1e8f8;
+  --chat-line: #d9c5e8;
+  --wiki-ink: #674b41;
+  --wiki-soft: #f6ece7;
+  --wiki-line: #dfc8bc;
+  --glossary-ink: #245e62;
+  --glossary-soft: #e5f5f4;
+  --glossary-line: #add4d2;
+  --shadow-card: 0 1px 2px rgba(23, 62, 48, 0.06), 0 6px 20px rgba(23, 62, 48, 0.06);
+  --shadow-pop: 0 12px 32px rgba(23, 62, 48, 0.16);
+}
+[data-theme="dark"] {
+  --page: #14241c;
+  --notebook-line: #1c3026;
+  --notebook-margin: rgba(249, 128, 18, 0.22);
+  --surface: #20362a;
+  --glass: rgba(28, 48, 37, 0.66);
+  --glass-line: rgba(214, 244, 224, 0.22);
+  --surface-soft: #284233;
+  --selected: #365b45;
+  --ink: #f0f7f2;
+  --ink-muted: #c5d9ce;
+  --line: #486653;
+  --control-border: #8dac95;
+  --action: #b6d8be;
+  --action-strong: #c8e3cf;
+  --on-action: #183728;
+  --focus: #a4dbba;
+  --error: #ffbdc6;
+  --error-soft: #3f2228;
+  --warning: #ffd18a;
+  --warning-soft: #3a2a10;
+  --warning-line: #b9843a;
+  --info: #b8d6f3;
+  --info-soft: #1d3247;
+  --mint: #b6d8be;
+  --owl: #c7a078;
+  --owl-soft: #3a2e22;
+  --owl-ink: #e3c49f;
+  --moodle: #f98012;
+  --moodle-line: #f98012;
+  --moodle-ink: #ffc48f;
+  --moodle-soft: #33251a;
+  --forum-ink: #b9d2f5;
+  --forum-soft: #1f3149;
+  --forum-line: #3d5a80;
+  --assignment-ink: #b7dcc3;
+  --assignment-soft: #1f3a2b;
+  --assignment-line: #3f6a52;
+  --quiz-ink: #f3cf8e;
+  --quiz-soft: #3d2e15;
+  --quiz-line: #7a5a25;
+  --chat-ink: #dcc4ef;
+  --chat-soft: #35264a;
+  --chat-line: #5e4680;
+  --wiki-ink: #e6c9bb;
+  --wiki-soft: #3b2a23;
+  --wiki-line: #6b4f43;
+  --glossary-ink: #a9dedb;
+  --glossary-soft: #163a3c;
+  --glossary-line: #2f6a6c;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.30), 0 6px 20px rgba(0, 0, 0, 0.20);
+  --shadow-pop: 0 12px 32px rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --notebook-margin-x: 72px;
+  --radius-badge: 6px;
+  --radius-control: 12px;
+  --radius-card: 16px;
+  --radius-pill: 999px;
+  --font-sans: Switzer, "Segoe UI", system-ui, sans-serif;
+}
+.display { font-family: var(--font-sans); font-size: 34px; line-height: 42px; font-weight: 600; letter-spacing: -0.025em; }
+.title { font-family: var(--font-sans); font-size: 27px; line-height: 34px; font-weight: 600; letter-spacing: -0.02em; }
+.heading { font-family: var(--font-sans); font-size: 21px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em; }
+.voice { font-family: var(--font-sans); font-size: 17px; line-height: 26px; font-weight: 400; font-style: italic; }
+.subheading { font-family: var(--font-sans); font-size: 17px; line-height: 24px; font-weight: 600; }
+.body { font-family: var(--font-sans); font-size: 16px; line-height: 25px; font-weight: 400; }
+.body-strong { font-family: var(--font-sans); font-size: 16px; line-height: 25px; font-weight: 500; }
+.label { font-family: var(--font-sans); font-size: 14px; line-height: 20px; font-weight: 500; }
+.small { font-family: var(--font-sans); font-size: 14px; line-height: 20px; font-weight: 400; }
+.caption { font-family: var(--font-sans); font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.02em; }
+@font-face { font-family: "Switzer"; src: url("fonts/Switzer-Variable.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Switzer"; src: url("fonts/Switzer-VariableItalic.woff2") format("woff2"); font-weight: 100 900; font-style: italic; font-display: swap; }

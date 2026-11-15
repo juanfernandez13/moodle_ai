@@ -38,25 +38,36 @@ export function DatesWorkspace() {
           <div className="dw-title">
             <h1>Ajustar datas</h1>
             {wizard.demo && (
-              <span className="dw-chip">
-                <FlaskConical size={18} aria-hidden="true" />
-                Só um teste
-              </span>
+              <>
+                <span className="dw-chip">
+                  <FlaskConical size={18} aria-hidden="true" />
+                  Só um teste
+                </span>
+                {/* A saída do teste fica ao lado do aviso, não no lugar de "Testar sem o Moodle": com um clique duplo, o
+                    segundo clique cairia no botão que acabou de trocar de nome e o teste terminaria antes de começar. */}
+                <button
+                  type="button"
+                  className="dw-link"
+                  disabled={wizard.applying}
+                  onClick={wizard.leaveDemo}
+                >
+                  <LogIn size={20} aria-hidden="true" />
+                  Usar o Moodle
+                </button>
+              </>
             )}
           </div>
-          <button
-            type="button"
-            className="dw-link dw-mode"
-            disabled={wizard.applying}
-            onClick={wizard.demo ? wizard.leaveDemo : wizard.startDemo}
-          >
-            {wizard.demo ? (
-              <LogIn size={20} aria-hidden="true" />
-            ) : (
+          {!wizard.demo && (
+            <button
+              type="button"
+              className="dw-link dw-mode"
+              disabled={wizard.applying}
+              onClick={wizard.startDemo}
+            >
               <FlaskConical size={20} aria-hidden="true" />
-            )}
-            {wizard.demo ? "Usar o Moodle" : "Testar sem o Moodle"}
-          </button>
+              Testar sem o Moodle
+            </button>
+          )}
           <DateSteps steps={wizard.steps} onGo={wizard.goTo} />
         </div>
         {wizard.message && (

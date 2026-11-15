@@ -4,9 +4,11 @@ import JSZip from "jszip";
 import { IDBFactory } from "fake-indexeddb";
 import { readFile } from "node:fs/promises";
 import { interpretText } from "../../src/server/import/index.ts";
+import { chatReply } from "../import/ai-fake.ts";
 import { createProject, projectIdentity } from "../../src/client/project.ts";
 import {
   captureProvenance,
+  importProvenanceSchema,
   withDraft,
   originRows,
 } from "../../src/client/provenance.ts";
@@ -36,23 +38,12 @@ test("the import pipeline preserves per-field sources, provider, model and promp
     },
     {
       fetch: async () =>
-        Response.json({
-          status: "completed",
-          output: [
-            {
-              type: "message",
-              content: [
-                {
-                  type: "output_text",
-                  text: JSON.stringify({
-                    draft: offline.draft,
-                    fields: offline.provenance.fields,
-                  }),
-                },
-              ],
-            },
-          ],
-        }),
+        chatReply(
+          JSON.stringify({
+            draft: offline.draft,
+            fields: offline.provenance.fields,
+          }),
+        ),
     },
   );
   assert.equal(result.ok, true);
@@ -90,7 +81,7 @@ test("the import pipeline preserves per-field sources, provider, model and promp
   }
   const restored = await readPortable(await createPortable(project));
   assert.deepEqual(restored.provenance, project.provenance);
-  assert.equal(restored.provenance?.promptVersion, "moodle-import-v1");
+  assert.equal(restored.provenance?.promptVersion, "moodle-import-v2");
   assert.equal(restored.provenance?.model, "audited-provider-fixture");
   assert.equal(restored.provenance?.provider, "openai");
   const store = new ProjectStore(new IDBFactory(), "provenance-roundtrip");
@@ -151,4 +142,23 @@ test("user and preset origins follow entity IDs through reordering, while old pr
   const privateProject = structuredClone(preset);
   Object.assign(privateProject.provenance!, { apiKey: "private" });
   await assert.rejects(createPortable(privateProject));
+});
+
+test("um projeto salvo com o prompt v1 continua válido depois que a importação passou a usar o v2", () => {
+  const saved = {
+    profile: "docx-topicos-v1",
+    provider: "openai",
+    promptVersion: "moodle-import-v1",
+    schemaVersion: 1,
+    fields: [],
+  };
+  assert.equal(importProvenanceSchema.safeParse(saved).success, true);
+  assert.equal(
+    importProvenanceSchema.safeParse({ ...saved, promptVersion: "moodle-import-v2" }).success,
+    true,
+  );
+  assert.equal(
+    importProvenanceSchema.safeParse({ ...saved, promptVersion: "moodle-import-v0" }).success,
+    false,
+  );
 });

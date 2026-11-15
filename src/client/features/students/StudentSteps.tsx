@@ -1,4 +1,5 @@
 "use client";
+import { Trail } from "../../components/trail.tsx";
 import type { StudentStage } from "./hooks/use-students-workflow.ts";
 
 const STEPS: { stage: StudentStage; label: string }[] = [
@@ -7,7 +8,10 @@ const STEPS: { stage: StudentStage; label: string }[] = [
   { stage: 3, label: "Enviar" },
 ];
 
-/** The three steps, always in view. A step opens once the one before it has produced something to show. */
+/**
+ * The three steps, always in view (the same Trail as the other tools). A finished step goes back with one click; the
+ * ones ahead are only a number: the main button of each step is the way forward.
+ */
 export function StudentSteps({
   stage,
   hasRows,
@@ -25,27 +29,23 @@ export function StudentSteps({
     3: hasFiles,
   };
   return (
-    <ol className="stu-steps" aria-label="Etapas do cadastro">
-      {STEPS.map((step) => (
-        <li
-          key={step.stage}
-          className={
-            step.stage === stage ? "current" : step.stage < stage ? "done" : ""
-          }
-        >
-          <button
-            type="button"
-            aria-current={step.stage === stage ? "step" : undefined}
-            disabled={!open[step.stage]}
-            onClick={() => onSelect(step.stage)}
-          >
-            <span className="stu-step-number" aria-hidden="true">
-              {step.stage}
-            </span>
-            <span className="stu-step-label">{step.label}</span>
-          </button>
-        </li>
-      ))}
-    </ol>
+    <Trail
+      className="stu-steps"
+      label="Etapas do cadastro"
+      steps={STEPS.map((step) => ({
+        id: String(step.stage),
+        label: step.label,
+        state:
+          step.stage === stage
+            ? "current"
+            : step.stage < stage
+              ? "done"
+              : "todo",
+        onGo:
+          step.stage < stage && open[step.stage]
+            ? () => onSelect(step.stage)
+            : undefined,
+      }))}
+    />
   );
 }

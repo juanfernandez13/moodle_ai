@@ -27,6 +27,8 @@ export function useStudentSource({
   });
   const [mappingOpen, setMappingOpen] = useState(false);
   const [page, setPage] = useState(0);
+  // The list was typed by hand: its lines have no spreadsheet to point back to (no "original" cells to show).
+  const [typed, setTyped] = useState(false);
   function changeRow(
     id: string,
     field: StudentEditField,
@@ -78,6 +80,7 @@ export function useStudentSource({
         );
       }
       setRows(result.rows);
+      setTyped(false);
       setPage(0);
       onReview();
       setMappingOpen(false);
@@ -97,6 +100,7 @@ export function useStudentSource({
     setFile(null);
     setMatrix(source);
     setRows(mapStudentRows(source));
+    setTyped(false);
     setPage(0);
     setSheets([]);
     onReview();
@@ -110,7 +114,11 @@ export function useStudentSource({
     }
     let mapped: StudentRow[];
     try {
-      mapped = mapStudentRows(typed);
+      // The lines are counted from 1: there is no header row in what the person typed.
+      mapped = mapStudentRows(typed).map((row, index) => ({
+        ...row,
+        rowNumber: index + 1,
+      }));
     } catch (failure) {
       setError(failure instanceof Error ? failure.message : "Confira os alunos.");
       return;
@@ -119,6 +127,7 @@ export function useStudentSource({
     setFile(null);
     setMatrix(typed);
     setRows(mapped);
+    setTyped(true);
     setPage(0);
     setSheets([]);
     onReview();
@@ -130,6 +139,7 @@ export function useStudentSource({
       const next = mapStudentRows(matrix, mapping);
       onInvalidate();
       setRows(next);
+      setTyped(false);
       setPage(0);
       onReview();
       setMappingOpen(false);
@@ -150,6 +160,7 @@ export function useStudentSource({
     mapping,
     mappingOpen,
     page,
+    typed,
     parse,
     example,
     fromManual,

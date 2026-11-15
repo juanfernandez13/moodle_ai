@@ -1,4 +1,5 @@
 import { validateDraft } from "../domain/course/index.ts";
+import type { AiProviderId } from "../shared/ai-providers.ts";
 import { UPLOAD_LIMITS, UPLOAD_MESSAGES } from "../shared/upload-limits.ts";
 import { validateProvenance } from "./provenance.ts";
 import type { ProjectProvenance } from "./provenance.ts";
@@ -40,7 +41,7 @@ export interface CourseProject {
   provenance?: ProjectProvenance | undefined;
   profiles: {
     importProfile: "docx-topicos-v1" | "docx-semanal-v1";
-    provider: "offline" | "openai" | "gemini";
+    provider: "offline" | AiProviderId;
     pedagogy: string;
     compatibility: "moodle-4.1-core-v1";
   };
@@ -97,6 +98,19 @@ export function makeSection(position: number): Section {
     id: newId("section"),
     title: `Unidade ${position}`,
     summary: "",
+    activities: [],
+  };
+}
+/** O nome da seção do pacote de quizzes é o número dela no curso de destino (0 é a seção geral). */
+export const quizSectionTitle = (target: number): string =>
+  target === 0 ? "Seção geral" : `Seção ${target}`;
+/** Seção nova do pacote de quizzes: leva o número escolhido, e o título acompanha. */
+export function makeQuizSection(target: number): Section {
+  return {
+    id: newId("section"),
+    title: quizSectionTitle(target),
+    summary: "",
+    targetNumber: target,
     activities: [],
   };
 }
@@ -161,7 +175,8 @@ export function makeActivity(type: string): Activity {
   const common = {
     id: newId("activity"),
     type,
-    title: `${activityLabels[type] ?? "Atividade"}: novo conteúdo`,
+    // "Fórum sem título", como o design system pede; nunca "novo conteúdo".
+    title: `${activityLabels[type] ?? "Atividade"} sem título`,
     description: "",
     attachmentIds: [],
   };
@@ -194,7 +209,7 @@ export function validateProject(project: CourseProject): void {
   const result = validateDraft(project.draft);
   if (!result.valid)
     throw new Error(
-      `O curso tem pendências: ${result.issues[0]?.message ?? "contrato inválido"}`,
+      `A disciplina tem pendências: ${result.issues[0]?.message ?? "contrato inválido"}`,
     );
   const ids = new Set<string>();
   const groups = [
@@ -203,7 +218,7 @@ export function validateProject(project: CourseProject): void {
       fileBytes: PROJECT_FILE_LIMITS.attachmentBytes,
       totalBytes: PROJECT_FILE_LIMITS.attachmentsTotalBytes,
       fileMessage: "Cada anexo pode ter até 16 MB.",
-      totalMessage: "Os anexos do curso podem somar até 64 MB.",
+      totalMessage: "Os anexos da disciplina podem somar até 64 MB.",
     },
     {
       files: project.sources,

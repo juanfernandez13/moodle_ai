@@ -2,6 +2,7 @@
 import { Modal } from "../../../components/modal.tsx";
 import { ContentPreview } from "../../../components/content.tsx";
 import type { CourseBuilderModel } from "../hooks/use-course-builder.ts";
+import { issueLines } from "../helpers.ts";
 
 type Props = Pick<
   CourseBuilderModel,
@@ -18,25 +19,33 @@ export function ImportProposalDialog({
   project,
   openProject
 }: Props) {
+  // Só quizzes: o que chega são seções do Moodle com quizzes dentro, não uma disciplina.
+  const quizOnly = proposal.project.draft.metadata.quizOnly === true;
   return (
     <Modal
-      title="Conferir a proposta de curso"
+      title={
+        quizOnly
+          ? "Conferir a proposta de quizzes"
+          : "Conferir a proposta de disciplina"
+      }
       returnFocus={proposalTrigger.current}
       onClose={() => setProposal(null)}
     >
       <h3>{proposal.project.draft.metadata.fullName}</h3>
       <p>
-        {proposal.project.draft.sections.length} unidades ·{" "}
+        {proposal.project.draft.sections.length}{" "}
+        {quizOnly ? "seções" : "unidades"} ·{" "}
         {proposal.project.draft.sections.reduce(
           (sum, entry) => sum + entry.activities.length,
           0,
         )}{" "}
-        atividades · {proposal.project.assets.length} arquivos
+        {quizOnly ? "quizzes" : "atividades"} · {proposal.project.assets.length}{" "}
+        arquivos
       </p>
       {project && (
         <p className="notice">
-          O curso aberto será substituído na tela. A versão salva neste
-          navegador continua em Projetos salvos.
+          A disciplina aberta será trocada na tela. Ela continua salva em
+          Suas disciplinas.
         </p>
       )}
       {proposal.issues.map((issue, index) => (
@@ -46,7 +55,7 @@ export function ImportProposalDialog({
             issue.severity === "error" ? "error-text" : "field-help"
           }
         >
-          {issue.path}: {issue.message}
+          {issueLines([issue])}
         </p>
       ))}
       {proposal.preview.map((entry, index) => (

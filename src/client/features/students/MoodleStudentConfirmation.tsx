@@ -1,6 +1,8 @@
 "use client";
 import { Loader2, Send } from "lucide-react";
+import { useStageFocus } from "./hooks/use-stage-focus.ts";
 import { Pagination } from "../../components/pagination.tsx";
+import { ScrollRegion } from "../../components/scroll-region.tsx";
 import { previewStatusLabel, STUDENT_PAGE_SIZE, studentPage } from "./helpers.ts";
 import type { MoodleStudentPreview } from "./schemas.ts";
 
@@ -24,13 +26,17 @@ export function MoodleStudentConfirmation({
 }) {
   const options = preview.effectiveOptions;
   const total = preview.rows.length;
+  // A prévia chega depois do botão "Ver prévia": o foco vai para o título dela, e o leitor de tela diz o que apareceu.
+  const heading = useStageFocus(true, false);
   return (
     <section className="stu-confirm" aria-labelledby="student-confirm-title">
       <header>
-        <h3 id="student-confirm-title">Confira antes de cadastrar</h3>
+        <h3 id="student-confirm-title" tabIndex={-1} ref={heading}>
+          Confira antes de cadastrar
+        </h3>
         <p className="stu-help">Nada foi cadastrado ainda.</p>
       </header>
-      <div className="table-scroll stu-table">
+      <ScrollRegion className="table-scroll stu-table" label="Prévia dos alunos">
         <table>
           <thead>
             <tr>
@@ -51,7 +57,7 @@ export function MoodleStudentConfirmation({
             ))}
           </tbody>
         </table>
-      </div>
+      </ScrollRegion>
       {total > STUDENT_PAGE_SIZE && (
         <Pagination page={page} count={total} onChange={onPageChange} />
       )}
@@ -74,11 +80,11 @@ export function MoodleStudentConfirmation({
           </dl>
         )}
         {options.enrolments.length > 0 && (
-          <div className="table-scroll stu-table">
+          <ScrollRegion className="table-scroll stu-table" label="Matrículas">
             <table>
               <thead>
                 <tr>
-                  <th scope="col">Curso</th>
+                  <th scope="col">Disciplina</th>
                   <th scope="col">Prazo</th>
                   <th scope="col">Aviso de fim</th>
                 </tr>
@@ -97,7 +103,7 @@ export function MoodleStudentConfirmation({
                 ))}
               </tbody>
             </table>
-          </div>
+          </ScrollRegion>
         )}
         <p>Nada é apagado, renomeado ou suspenso.</p>
       </details>

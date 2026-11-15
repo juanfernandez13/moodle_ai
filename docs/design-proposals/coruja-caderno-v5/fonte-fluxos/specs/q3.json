@@ -1,0 +1,220 @@
+{
+ "title": "Quadro 3 · Caderno do curso e correções",
+ "purpose": "Mostrar como o professor monta e ajusta o curso sem páginas longas (Sumário, unidade, tipo de atividade, atividade, questões, notas, arquivos) e como as correções levam ao campo exato até liberar a conferência. Mostra também o salvamento, os conflitos entre abas e as sugestões do assistente.",
+ "nodes": [
+  {
+   "id": "entrada",
+   "kind": "interchange",
+   "label": "Curso aberto",
+   "detail": "Vem de 'Abrir como novo curso' ou de 'Criar curso' (Quadro 2), do exemplo ou de Seus cursos. Abre na última página editada."
+  },
+  {
+   "id": "caderno",
+   "kind": "screen",
+   "label": "Caderno do curso",
+   "detail": "Carimbo 1. Sumário à esquerda: Sobre a disciplina · Unidades (Tópico 1, Tópico 2…) · Notas e pesos · Arquivos do curso. Página aberta no centro. Correções na margem direita; no celular, viram uma folha inferior com contador. No topo: 'Salvo neste navegador há 1 minuto' · 'Cópia no computador: nenhuma ainda'. Sem número de revisão."
+  },
+  {
+   "id": "err_salvar",
+   "kind": "error",
+   "label": "Se não der para salvar neste navegador",
+   "detail": "O que houve: o navegador está cheio, em modo privado ou com o armazenamento bloqueado. O que fica guardado: o curso aberto na tela, enquanto ela estiver aberta. Como voltar: 'Guardar cópia no computador'."
+  },
+  {
+   "id": "err_aba",
+   "kind": "error",
+   "label": "Se o curso mudar em outra aba",
+   "detail": "O que houve: o mesmo curso foi editado em outra aba às 14:10. O que fica guardado: a sua versão, até você escolher. Como voltar: 'Abrir a versão mais nova' · 'Guardar a minha como cópia'. Nada é sobrescrito em silêncio."
+  },
+  {
+   "id": "menu",
+   "kind": "screen",
+   "label": "Mais ações do curso",
+   "detail": "Guardar cópia no computador (.moodleai) · Reimportar planejamento neste curso (mostra o que muda e guarda uma cópia antes) · Duplicar · Trocar de curso (o atual continua em Seus cursos) · Exportar dados (JSON, avançado)."
+  },
+  {
+   "id": "sugestoes",
+   "kind": "screen",
+   "label": "Sugestões do assistente",
+   "detail": "Opcional (assistente do navegador). 'Um assistente sugeriu 3 mudanças', com antes → depois e nomes legíveis ('Unidade 2 › Fórum: título antigo → novo'), sem códigos. Botões 'Aplicar as mudanças' · 'Recusar'. Se o curso mudou no meio: 'O curso mudou. Peça novas sugestões.'"
+  },
+  {
+   "id": "notas",
+   "kind": "screen",
+   "label": "Notas e pesos",
+   "detail": "Categorias com pesos e a soma em texto ('Total: 100%'). Uma categoria nova nasce vazia e sem peso. Opcional: 'Usar um modelo de ensino' mostra o que muda e só aplica quando você confirma; nunca muda sem pedir o que já foi conferido."
+  },
+  {
+   "id": "arquivos",
+   "kind": "screen",
+   "label": "Arquivos do curso",
+   "detail": "Todo arquivo mostra para onde vai ('enunciado.pdf → Unidade 2 › Tarefa 1 · trocar'). Um nome sem o arquivo enviado vira correção. Recolhido: 'De onde veio cada parte'."
+  },
+  {
+   "id": "unidade",
+   "kind": "screen",
+   "label": "Abra uma unidade",
+   "detail": "Carimbo 2. Título, resumo e datas da unidade. As atividades ficam em lista, todas à vista, sem páginas de 5 em 5. Mover e remover a unidade ficam aqui; remover mostra 'Desfazer' por 10 segundos."
+  },
+  {
+   "id": "tipo",
+   "kind": "screen",
+   "label": "Que atividade?",
+   "detail": "Carimbo 3. Seis chips, cada um com ícone, nome e frase, e borda esquerda na cor da atividade: Fórum: conversa da turma (--forum) · Tarefa: entrega de trabalho (--task) · Quiz: questões com correção (--quiz) · Chat: conversa ao vivo (--chat) · Wiki: texto escrito em grupo (--wiki) · Glossário: lista de termos (--glossary). Uma unidade pode ter várias atividades do mesmo tipo."
+  },
+  {
+   "id": "atividade",
+   "kind": "screen",
+   "label": "Atividade aberta",
+   "detail": "Carimbo 4. Cabeçalho 'Unidade 2 › Tarefa 1', com mover e remover da própria atividade. Abas: Conteúdo · Datas e configurações · Questões (só no Quiz) · Arquivos anexados. Um editor por campo, sem textarea duplicado. Datas no horário de Brasília."
+  },
+  {
+   "id": "questoes",
+   "kind": "screen",
+   "label": "Questões do quiz",
+   "detail": "Todas as questões em cartões, uma aberta por vez, com o tipo e o peso à vista: Múltipla escolha · Associação · Discursiva. Dá para reordenar e duplicar; remover mostra 'Desfazer'."
+  },
+  {
+   "id": "anexar",
+   "kind": "action",
+   "label": "Anexar arquivo",
+   "detail": "Dentro da própria atividade, sem ir até Arquivos do curso. O arquivo já nasce com o destino certo."
+  },
+  {
+   "id": "correcoes",
+   "kind": "screen",
+   "label": "Para corrigir antes de baixar (3)",
+   "detail": "Carimbo 5. Lista completa ('Ver todas', sem corte), com plural certo ('1 correção'). Cada item diz onde está e o que fazer: 'Unidade 2 › Quiz “Revisão” › Questão 3: marque a resposta certa'. Abaixo, em marca-texto, 'Para ficar de olho (1)', com motivo e consequência; não impede."
+  },
+  {
+   "id": "campo",
+   "kind": "screen",
+   "label": "Correção ao lado do campo",
+   "detail": "Carimbo 6. 'Ir até lá' abre a unidade, a aba e o campo exatos. A nota vermelha aparece ao lado do campo, não num banner no topo. Barra-guia: 'Correção 1 de 3 · Anterior · Próxima · Voltar à lista'. Quando resolvido, o item ganha um risco e sai da lista."
+  },
+  {
+   "id": "aindafalta",
+   "kind": "decision",
+   "label": "Ainda falta alguma correção?"
+  },
+  {
+   "id": "conferir",
+   "kind": "interchange",
+   "label": "Conferir o curso → Quadro 2",
+   "detail": "'Tudo certo para conferir.' O botão 'Conferir o curso' fica em destaque (passo 5 do Quadro 2)."
+  }
+ ],
+ "edges": [
+  {
+   "from": "entrada",
+   "to": "caderno",
+   "style": "main"
+  },
+  {
+   "from": "caderno",
+   "to": "menu",
+   "label": "Mais ações",
+   "style": "alternative"
+  },
+  {
+   "from": "caderno",
+   "to": "notas",
+   "label": "Notas e pesos",
+   "style": "alternative"
+  },
+  {
+   "from": "caderno",
+   "to": "arquivos",
+   "label": "Arquivos",
+   "style": "alternative"
+  },
+  {
+   "from": "sugestoes",
+   "to": "caderno",
+   "label": "Aplicar as mudanças",
+   "style": "alternative"
+  },
+  {
+   "from": "caderno",
+   "to": "err_salvar",
+   "style": "error"
+  },
+  {
+   "from": "err_salvar",
+   "to": "caderno",
+   "label": "Guardar cópia",
+   "style": "error"
+  },
+  {
+   "from": "caderno",
+   "to": "err_aba",
+   "style": "error"
+  },
+  {
+   "from": "err_aba",
+   "to": "caderno",
+   "label": "Abrir versão nova",
+   "style": "error"
+  },
+  {
+   "from": "caderno",
+   "to": "unidade",
+   "label": "Abrir unidade",
+   "style": "main"
+  },
+  {
+   "from": "unidade",
+   "to": "tipo",
+   "label": "+ Atividade",
+   "style": "main"
+  },
+  {
+   "from": "tipo",
+   "to": "atividade",
+   "label": "Criar",
+   "style": "main"
+  },
+  {
+   "from": "atividade",
+   "to": "questoes",
+   "label": "Se for Quiz",
+   "style": "alternative"
+  },
+  {
+   "from": "atividade",
+   "to": "anexar",
+   "label": "Anexar arquivo",
+   "style": "alternative"
+  },
+  {
+   "from": "atividade",
+   "to": "correcoes",
+   "label": "Ver o que falta",
+   "style": "main"
+  },
+  {
+   "from": "correcoes",
+   "to": "campo",
+   "label": "Ir até lá",
+   "style": "main"
+  },
+  {
+   "from": "campo",
+   "to": "aindafalta",
+   "style": "main"
+  },
+  {
+   "from": "aindafalta",
+   "to": "campo",
+   "label": "sim: Próxima",
+   "style": "loop"
+  },
+  {
+   "from": "aindafalta",
+   "to": "conferir",
+   "label": "não",
+   "style": "main"
+  }
+ ],
+ "layout_hint": "PRANCHA: vertical, 1440 × 2400.\n\nCABEÇALHO 'Plano de aula':\n- Título: 'O caderno do curso e as correções'.\n- Objetivo: 'Deixar o curso como você vai dar a disciplina, sem nada faltando'.\n- Quando usar: 'Depois de abrir um curso'.\n- Você vai precisar: 'Os arquivos de tarefas e imagens, se houver'.\n\nFAIXAS: as mesmas do Quadro 2.\n\nLINHAS (y do topo):\n- r1 300: entrada.\n- r2 440: caderno (cartão alto, 320 × 300, vai até y 740). Ao lado dele:\n  - err_salvar na faixa E (y 440–600);\n  - err_aba na faixa E (y 620–780);\n  - menu na faixa O (y 440–580);\n  - notas na faixa O (y 640–760);\n  - sugestoes na faixa N (y 440–620).\n- r4 840: unidade; arquivos na faixa O (y 840–960).\n- r5 1020: tipo (cartão 320 × 200, com os 6 chips em 2 colunas).\n- r6 1280: atividade; questoes na faixa O.\n- r7 1460: anexar na faixa O. A faixa C fica vazia nesta altura.\n- r8 1600: correcoes (cartão 320 × 200).\n- r9 1860: campo.\n- r10 2040: aindafalta.\n- r11 2200: conferir.\n\nROTAS (posições medidas a partir do topo de caderno):\n- caderno→menu: horizontal a +30 px.\n- caderno→notas: horizontal a +240 px.\n- caderno→arquivos: sai pela direita a +290 px, desce por G2 e entra pela esquerda de arquivos 40 px abaixo do topo.\n- sugestoes→caderno: sobe até y 410, corre para a esquerda e entra no topo de caderno em x 650. A seta principal entra em x 548.\n- caderno→err_salvar a +40 px e a volta a +110 px: horizontais curtas.\n- caderno→err_aba a +210 px e a volta a +280 px: horizontais curtas.\n- atividade→questoes: horizontal, 40 px abaixo do topo de atividade.\n- atividade→anexar: sai 110 px abaixo do topo de atividade, desce por G2 e entra pela esquerda de anexar.\n- aindafalta→campo: trilho V em x 1088; entra pela direita de campo 60 px abaixo do topo.\n\nNenhuma linha cruza outra."
+}
