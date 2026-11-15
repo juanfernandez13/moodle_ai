@@ -7,7 +7,7 @@ export function Pagination({
 }: {
   page: number;
   count: number;
-  size?: number;
+  size?: number | undefined;
   onChange: (page: number) => void;
 }) {
   const pages = Math.max(1, Math.ceil(count / size));

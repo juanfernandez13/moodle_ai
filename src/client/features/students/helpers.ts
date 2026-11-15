@@ -6,7 +6,8 @@ export const studentFields = [
   ["lastName", "Sobrenome"], ["email", "E-mail"], ["username", "Usuário"],
   ["cpf", "CPF"], ["course", "Disciplina"],
 ] as const;
-export const editableStudentFields = ["firstName", "lastName", "email", "cpf", "course", "username"] as const;
+/** In the order of the review table: the CPF first (it is the login), then the name, the e-mail and the course. */
+export const editableStudentFields = ["cpf", "firstName", "lastName", "email", "course", "username"] as const;
 export type StudentEditField = typeof editableStudentFields[number];
 export const studentFieldLabels: Record<StudentEditField, string> = {
   username: "usuário",
@@ -110,6 +111,24 @@ export function previewStatusLabel(status: string): string {
   return status;
 }
 
-export function studentPage<T>(rows: T[], page: number): T[] {
-  return rows.slice(page * STUDENT_PAGE_SIZE, (page + 1) * STUDENT_PAGE_SIZE);
+export function studentPage<T>(rows: T[], page: number, size: number = STUDENT_PAGE_SIZE): T[] {
+  return rows.slice(page * size, (page + 1) * size);
+}
+
+/** The review table never shows fewer than this many students per page, even when the window is too low for them. */
+export const STUDENT_MIN_PAGE_SIZE = 3;
+
+/**
+ * How many students of the review table fit in `space` pixels (what is left of the window after everything else on
+ * the screen), `rowHeight` pixels each. Between the minimum and the ten of a full page: so a page is always seen
+ * whole, with no scroll inside the table.
+ */
+export function studentRowsThatFit(space: number, rowHeight: number): number {
+  if (!Number.isFinite(space) || !Number.isFinite(rowHeight) || rowHeight <= 0) return STUDENT_PAGE_SIZE;
+  return Math.max(STUDENT_MIN_PAGE_SIZE, Math.min(STUDENT_PAGE_SIZE, Math.floor(space / rowHeight)));
+}
+
+/** After the page size changed, the page that still shows the first student the person was looking at. */
+export function studentPageAfterResize(page: number, oldSize: number, newSize: number): number {
+  return Math.floor((page * oldSize) / newSize);
 }

@@ -23,7 +23,7 @@ Fontes locais, somente lidas: [jornada](../../CourseGen-AI/ui/app/cadastro-lote/
 
 ## Adaptação genérica
 
-- Usar “Usuário”, “Nome”, “Sobrenome”, “E-mail”, “Cidade” e “Papel” na revisão. A identificação por CPF pertence a um perfil, não a todos os lotes.
+- Na revisão, a primeira coluna é “CPF (usuário)”, como no original: o login é o CPF (só os dígitos); sem CPF, o começo do e-mail. A coluna “Usuário (login)” só aparece quando a planilha traz um login próprio (ou o login tem espaço ou símbolo). Depois vêm “Primeiro nome”, “Sobrenome”, “E-mail” e “Disciplina”. Atualizado em 15/11/2026 a pedido do usuário: “tem que ficar igual ao original”.
 - Manter o curso como destino do lote e usar o nome breve do curso no Moodle.
 - Não copiar senha fixa, cidade padrão ou endereço de uma instância. Política de contas, identificação e papéis exigem escolhas explícitas na futura integração.
 - Mostrar pendências por campo e por linha. Preencher qualquer texto não comprova que um e-mail ou identificador ficou válido.

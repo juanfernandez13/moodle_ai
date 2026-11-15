@@ -7,6 +7,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { load } from "cheerio";
 import {
   mapStudentRows,
+  deriveStudentUsername,
   buildStudentPreview,
   validateStudents,
 } from "../../src/domain/students/index.ts";
@@ -17,6 +18,8 @@ import {
   editableStudentFields,
   studentFieldLabels,
   studentPage,
+  studentPageAfterResize,
+  studentRowsThatFit,
 } from "../../src/client/features/students/helpers.ts";
 import {
   moodleStudentPreviewSchema,
@@ -83,6 +86,7 @@ function workflowFixture(
     useState,
     useRef: <T>(initial: T) => useState({ current: initial })[0],
     mapStudentRows,
+    deriveStudentUsername,
     createStudentExample,
     buildStudentPreview,
     buildStudentBatches,
@@ -446,5 +450,71 @@ test("editable student table keeps ten-row pages, stable targets, original cells
   assert.deepEqual(
     studentPage(rows, 1).map((row) => row.id),
     ["student-10", "student-11"],
+  );
+});
+
+test("the review table shows as many students per page as the window fits, never fewer than three or more than ten", () => {
+  // 49px rows: 245px of free space holds five of them.
+  assert.equal(studentRowsThatFit(245, 49), 5);
+  assert.equal(studentRowsThatFit(244, 49), 4);
+  assert.equal(studentRowsThatFit(2000, 49), 10);
+  // A window too low for even three rows still gets three; the body of the step scrolls.
+  assert.equal(studentRowsThatFit(40, 49), 3);
+  assert.equal(studentRowsThatFit(-300, 49), 3);
+  // Nothing measured yet (no row on screen): the usual ten.
+  assert.equal(studentRowsThatFit(500, 0), 10);
+  assert.equal(studentRowsThatFit(Number.NaN, 49), 10);
+});
+
+test("a page size that changes keeps the first student the person was looking at on screen", () => {
+  // Page 3 of 10 starts at the 31st student; with 4 per page that student is on page 7 (28th to 31st).
+  assert.equal(studentPageAfterResize(3, 10, 4), 7);
+  assert.equal(studentPageAfterResize(7, 4, 10), 2);
+  assert.equal(studentPageAfterResize(0, 10, 3), 0);
+  assert.equal(studentPageAfterResize(5, 6, 6), 5);
+  const rows = Array.from({ length: 60 }, (_, index) => index);
+  assert.deepEqual(studentPage(rows, 7, 4), [28, 29, 30, 31]);
+  assert.equal(studentPage(rows, 19, 3).length, 3);
+  assert.deepEqual(studentPage(rows, 1), rows.slice(10, 20));
+});
+
+test("editable student table follows the page size it is given and tells the pagination", () => {
+  const rows = Array.from({ length: 12 }, (_, index) => ({
+    ...mapStudentRows(createStudentExample())[0]!,
+    id: `student-${index}`,
+    rowNumber: index + 2,
+  }));
+  const paginations: Array<{ page: number; count: number; size?: number }> = [];
+  const Table = publicFunction<typeof EditableStudentTable>(
+    "../../src/client/features/students/EditableStudentTable.tsx",
+    "EditableStudentTable",
+    {
+      React,
+      editableStudentFields,
+      studentFieldLabels,
+      studentPage,
+      Pagination: (props: { page: number; count: number; size?: number }) => {
+        paginations.push(props);
+        return null;
+      },
+    },
+  );
+  const render = (page: number, size: number) =>
+    load(
+      renderToStaticMarkup(
+        createElement(Table, { rows, page, size, issues: [], onPageChange() {}, onRowChange() {} }),
+      ),
+    );
+  const first = render(0, 4);
+  assert.equal(first("tbody tr").length, 4);
+  assert.equal(first("tbody tr").first().attr("id"), "student-student-0");
+  const last = render(2, 5);
+  assert.deepEqual(
+    last("tbody tr").map((_, row) => last(row).attr("id")).get(),
+    ["student-student-10", "student-student-11"],
+  );
+  assert.deepEqual(
+    paginations.map((props) => [props.page, props.count, props.size]),
+    [[0, 12, 4], [2, 12, 5]],
   );
 });

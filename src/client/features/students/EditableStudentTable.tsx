@@ -11,6 +11,8 @@ export function EditableStudentTable({
   onPageChange,
   onRowChange,
   typed,
+  size,
+  login,
 }: {
   rows: StudentRow[];
   issues: StudentIssue[];
@@ -19,15 +21,20 @@ export function EditableStudentTable({
   onRowChange: (id: string, field: StudentEditField, value: string) => void;
   /** The students were typed by hand: there is no spreadsheet row to show as "original". */
   typed?: boolean | undefined;
+  /** Students per page; ten when the screen does not say (the review step measures what fits). */
+  size?: number | undefined;
+  /** The spreadsheet brought a login of its own: show it. Otherwise the login is the CPF (or the e-mail) and has no column. */
+  login?: boolean | undefined;
 }) {
   const headings: Record<StudentEditField, string> = {
     firstName: "Primeiro nome",
     lastName: "Sobrenome",
     email: "E-mail",
-    cpf: "CPF",
+    cpf: login ? "CPF" : "CPF (usuário)",
     course: "Disciplina",
-    username: "Usuário",
+    username: "Usuário (login)",
   };
+  const fields = editableStudentFields.filter((field) => login || field !== "username");
   return (
     <>
       <div className="table-scroll stu-table">
@@ -35,8 +42,8 @@ export function EditableStudentTable({
           <thead>
             <tr>
               <th scope="col">Linha</th>
-              {editableStudentFields.map((field) => (
-                <th scope="col" key={field}>
+              {fields.map((field) => (
+                <th scope="col" key={field} data-field={field}>
                   {headings[field]}
                 </th>
               ))}
@@ -48,13 +55,13 @@ export function EditableStudentTable({
             </tr>
           </thead>
           <tbody>
-            {studentPage(rows, page).map((row) => (
+            {studentPage(rows, page, size).map((row) => (
               <tr key={row.id} id={`student-${row.id}`}>
                 <td className="stu-row-number" data-label="Linha">
                   {row.rowNumber}
                 </td>
-                {editableStudentFields.map((field) => (
-                  <td key={field} data-label={headings[field]}>
+                {fields.map((field) => (
+                  <td key={field} data-label={headings[field]} data-field={field}>
                     <input
                       aria-label={`Linha ${row.rowNumber}: ${studentFieldLabels[field]}`}
                       value={row[field]}
@@ -92,8 +99,8 @@ export function EditableStudentTable({
           </tbody>
         </table>
       </div>
-      {studentPage(rows, 1).length > 0 && (
-        <Pagination page={page} count={rows.length} onChange={onPageChange} />
+      {studentPage(rows, 1, size).length > 0 && (
+        <Pagination page={page} count={rows.length} size={size} onChange={onPageChange} />
       )}
     </>
   );

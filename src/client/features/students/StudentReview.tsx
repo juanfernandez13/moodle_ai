@@ -1,9 +1,12 @@
 "use client";
+import { useLayoutEffect, useRef } from "react";
 import { AlertCircle, ArrowLeft, ArrowRight, Check, Loader2 } from "lucide-react";
 import type { StudentRow, StudentIssue, StudentOptions } from "../../../domain/students/index.ts";
 import { EditableStudentTable } from "./EditableStudentTable.tsx";
-import { STUDENT_PAGE_SIZE, studentCourseGaps } from "./helpers.ts";
+import { deriveStudentUsername } from "../../../domain/students/index.ts";
+import { studentCourseGaps, studentPageAfterResize } from "./helpers.ts";
 import type { StudentEditField } from "./helpers.ts";
+import { useReviewPageSize } from "./hooks/use-review-page-size.ts";
 import { useStageFocus } from "./hooks/use-stage-focus.ts";
 
 const MODES = [
@@ -46,8 +49,27 @@ export function StudentReview({
   onBack: () => void;
 }) {
   const heading = useStageFocus(true, false);
+  // The table shows as many students per page as fit the window, so a page is always seen whole.
+  const section = useRef<HTMLElement>(null);
+  const size = useReviewPageSize(section);
+  const sizeBefore = useRef(size);
+  // A new page size keeps the first student the person was looking at on screen.
+  useLayoutEffect(() => {
+    if (sizeBefore.current === size) return;
+    onPageChange(studentPageAfterResize(page, sizeBefore.current, size));
+    sizeBefore.current = size;
+  }, [size, page, onPageChange]);
   const gaps = studentCourseGaps(rows, options, destinations);
-  const count = validation.issues.length;
+  // Um aluno repetido repete e-mail, usuário e CPF com a mesma frase: uma pendência, não três (cada campo segue em vermelho).
+  const listed = validation.issues.filter(
+    (issue, index, all) => all.findIndex((other) => other.rowId === issue.rowId && other.message === issue.message) === index,
+  );
+  const count = listed.length;
+  // The login has a column only when the spreadsheet brought one that is not the CPF or the e-mail, or when the login itself
+  // is not allowed (spaces, symbols). A repeated or wrong CPF is told on the CPF column, not on a login nobody typed.
+  const login =
+    rows.some((row) => row.username !== deriveStudentUsername(row)) ||
+    validation.issues.some((issue) => issue.code === "invalid_username");
   const blocked = !validation.valid || gaps.length > 0;
   const bad = count > 0 || gaps.length > 0;
   // The course is written once, in the table. This field shows only when some student has none (or the person already
@@ -59,7 +81,7 @@ export function StudentReview({
   function open(issue: StudentIssue) {
     const index = rows.findIndex((row) => row.id === issue.rowId);
     if (index < 0) return;
-    onPageChange(Math.floor(index / STUDENT_PAGE_SIZE));
+    onPageChange(Math.floor(index / size));
     setTimeout(() => {
       const node = document.getElementById(`student-${issue.rowId}`);
       node?.scrollIntoView({ block: "center" });
@@ -70,7 +92,7 @@ export function StudentReview({
   }
 
   return (
-    <section className="stu-review" aria-labelledby="student-review-title">
+    <section className="stu-review" aria-labelledby="student-review-title" ref={section}>
       <header className="stu-stage-head">
         <div>
           <h2 id="student-review-title" tabIndex={-1} ref={heading}>
@@ -95,31 +117,6 @@ export function StudentReview({
               : "Tudo certo"}
         </p>
       </header>
-      <div className={`stu-review-table${rows.length > 2 ? " tall" : ""}`}>
-        <EditableStudentTable
-          rows={rows}
-          typed={typed}
-          issues={[...validation.issues, ...gaps]}
-          page={page}
-          onPageChange={onPageChange}
-          onRowChange={onRowChange}
-        />
-      </div>
-      {count > 0 && (
-        <ul className="stu-issues" aria-label="Pendências">
-          {validation.issues.map((issue, index) => {
-            const row = rows.find((entry) => entry.id === issue.rowId);
-            return (
-              <li key={index}>
-                <button type="button" className="issue-link" onClick={() => open(issue)}>
-                  {row ? `Linha ${row.rowNumber}: ` : ""}
-                  {issue.message}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      )}
       <div className="stu-options">
         <fieldset className="stu-mode">
           <legend>Tipo de cadastro</legend>
@@ -174,6 +171,33 @@ export function StudentReview({
           <span>Matricular na disciplina de cada aluno</span>
         </label>
       </div>
+      <div className="stu-review-table">
+        <EditableStudentTable
+          rows={rows}
+          typed={typed}
+          issues={[...validation.issues, ...gaps]}
+          page={page}
+          size={size}
+          login={login}
+          onPageChange={onPageChange}
+          onRowChange={onRowChange}
+        />
+      </div>
+      {count > 0 && (
+        <ul className="stu-issues" aria-label="Pendências">
+          {listed.map((issue, index) => {
+            const row = rows.find((entry) => entry.id === issue.rowId);
+            return (
+              <li key={index}>
+                <button type="button" className="issue-link" onClick={() => open(issue)}>
+                  {row ? `Linha ${row.rowNumber}: ` : ""}
+                  {issue.message}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      )}
       <div className="stu-actions">
         <button type="button" className="text-button" onClick={onBack}>
           <ArrowLeft size={20} aria-hidden="true" />

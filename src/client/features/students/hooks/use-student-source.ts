@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { mapStudentRows } from "../../../../domain/students/index.ts";
+import { deriveStudentUsername, mapStudentRows } from "../../../../domain/students/index.ts";
 import type { StudentRow, StudentMapping } from "../../../../domain/students/index.ts";
 import { createStudentExample, friendlyParseMessage } from "../helpers.ts";
 import type { StudentEditField } from "../helpers.ts";
@@ -36,7 +36,14 @@ export function useStudentSource({
   ) {
     onInvalidate();
     setRows((previous) =>
-      previous.map((row) => (row.id === id ? { ...row, [field]: value } : row)),
+      previous.map((row) => {
+        if (row.id !== id) return row;
+        const next = { ...row, [field]: value };
+        // The login the system worked out (from the CPF or the e-mail) follows the edit; one written in the spreadsheet stays.
+        if ((field === "cpf" || field === "email") && row.username === deriveStudentUsername(row))
+          next.username = deriveStudentUsername(next);
+        return next;
+      }),
     );
   }
   async function parse(source: File, targetSheet?: string) {
